@@ -1,41 +1,56 @@
-import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  KeyboardAvoidingView, 
-  Platform,
-  Dimensions
-} from 'react-native';
-import { Video } from 'expo-av';
-import { StatusBar } from 'expo-status-bar';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Video } from 'expo-av';
+import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-export default function LoginScreen() {
+export default function AuthScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleAuthAction = () => {
+    if (isRegistering) {
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      // Handle registration logic
+      console.log('Registering:', { username, email, password });
+    } else {
+      // Handle login logic
+      console.log('Logging in:', { username, password, rememberMe });
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* Video Background */}
       <Video
         source={require('../assets/nature-background.mp4')}
         rate={1.0}
         volume={0}
-        isMuted={true}
+        isMuted
         resizeMode="cover"
         shouldPlay
         isLooping
         style={styles.video}
       />
       
-      {/* Subtle dark overlay */}
       <LinearGradient
         colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.3)']}
         style={styles.gradient}
@@ -45,11 +60,24 @@ export default function LoginScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.formContainer}
       >
-        {/* Login Form */}
-        <View style={styles.loginForm}>
-          <Text style={styles.loginTitle}>Login</Text>
-          
-          {/* Username Input */}
+        <View style={styles.authForm}>
+          <Text style={styles.authTitle}>{isRegistering ? 'Register' : 'Login'}</Text>
+
+          {isRegistering && (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="rgba(255,255,255,0.7)"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <MaterialIcons name="email" size={20} color="white" style={styles.inputIcon} />
+            </View>
+          )}
+
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -57,11 +85,11 @@ export default function LoginScreen() {
               placeholderTextColor="rgba(255,255,255,0.7)"
               value={username}
               onChangeText={setUsername}
+              autoCapitalize="none"
             />
             <MaterialIcons name="person" size={20} color="white" style={styles.inputIcon} />
           </View>
-          
-          {/* Password Input */}
+
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -73,34 +101,57 @@ export default function LoginScreen() {
             />
             <MaterialIcons name="lock" size={20} color="white" style={styles.inputIcon} />
           </View>
-          
-          {/* Remember Me & Forgot Password */}
+
+          {isRegistering && (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Confirm Password"
+                placeholderTextColor="rgba(255,255,255,0.7)"
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+              />
+              <MaterialIcons name="lock-outline" size={20} color="white" style={styles.inputIcon} />
+            </View>
+          )}
+
           <View style={styles.optionsRow}>
-            <TouchableOpacity 
-              style={styles.rememberMeContainer} 
-              onPress={() => setRememberMe(!rememberMe)}
-            >
-              <View style={styles.checkbox}>
-                {rememberMe && <View style={styles.checkboxInner} />}
-              </View>
-              <Text style={styles.rememberMeText}>Remember me</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity>
-              <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-            </TouchableOpacity>
+            {!isRegistering && (
+              <>
+                <TouchableOpacity 
+                  style={styles.checkboxContainer}
+                  onPress={() => setRememberMe(!rememberMe)}
+                >
+                  <View style={styles.checkbox}>
+                    {rememberMe && <View style={styles.checkboxInner} />}
+                  </View>
+                  <Text style={styles.checkboxLabel}>Remember me</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
-          
-          {/* Login Button */}
-          <TouchableOpacity style={styles.loginButton}>
-            <Text style={styles.loginButtonText}>Login</Text>
+
+          <TouchableOpacity 
+            style={styles.authButton}
+            onPress={handleAuthAction}
+          >
+            <Text style={styles.authButtonText}>
+              {isRegistering ? 'Register' : 'Login'}
+            </Text>
           </TouchableOpacity>
-          
-          {/* Register Link */}
-          <View style={styles.registerContainer}>
-            <Text style={styles.noAccountText}>Don't have an account? </Text>
-            <TouchableOpacity>
-              <Text style={styles.registerText}>Register</Text>
+
+          <View style={styles.switchAuthContainer}>
+            <Text style={styles.switchAuthText}>
+              {isRegistering ? 'Already have an account? ' : 'Need an account? '}
+            </Text>
+            <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
+              <Text style={styles.switchAuthLink}>
+                {isRegistering ? 'Login' : 'Register'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -136,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  loginForm: {
+  authForm: {
     width: '100%',
     maxWidth: 400,
     padding: 24,
@@ -146,7 +197,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
   },
-  loginTitle: {
+  authTitle: {
     fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
@@ -177,7 +228,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 24,
   },
-  rememberMeContainer: {
+  checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -197,7 +248,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 2,
   },
-  rememberMeText: {
+  checkboxLabel: {
     color: 'white',
     fontSize: 14,
   },
@@ -205,7 +256,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
   },
-  loginButton: {
+  authButton: {
     width: '100%',
     height: 50,
     backgroundColor: 'white',
@@ -214,21 +265,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  loginButtonText: {
+  authButtonText: {
     color: '#333',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  registerContainer: {
+  switchAuthContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  noAccountText: {
+  switchAuthText: {
     color: 'rgba(255, 255, 255, 0.7)',
     fontSize: 14,
   },
-  registerText: {
+  switchAuthLink: {
     color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
