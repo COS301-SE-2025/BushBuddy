@@ -1,3 +1,4 @@
+
 import { MaterialIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -5,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
   Dimensions,
+  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -61,7 +63,20 @@ export default function AuthScreen() {
         style={styles.formContainer}
       >
         <View style={styles.authForm}>
-          <Text style={styles.authTitle}>{isRegistering ? 'Register' : 'Login'}</Text>
+          {/* Updated Title Section with Larger Logos */}
+          <View style={styles.titleContainer}>
+            <Image 
+              source={require('../assets/EpiUseLogo.jpg')} 
+              style={styles.logoImage} 
+              resizeMode="contain"
+            />
+            <Text style={styles.authTitle}>{isRegistering ? 'Register' : 'Login'}</Text>
+            <Image 
+              source={require('../assets/EpiUseLogo.jpg')} 
+              style={styles.logoImage} 
+              resizeMode="contain"
+            />
+          </View>
 
           {isRegistering && (
             <View style={styles.inputContainer}>
@@ -197,11 +212,22 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+    justifyContent: 'center',
+  },
+  logoImage: {
+    width: 60,    // Increased from 40 to 60
+    height: 60,   // Increased from 40 to 60
+    marginHorizontal: 12,  // Slightly adjusted spacing
+  },
   authTitle: {
     fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 24,
+    marginHorizontal: 5,  // Added some spacing for the title
   },
   inputContainer: {
     flexDirection: 'row',
