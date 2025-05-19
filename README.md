@@ -1,0 +1,1 @@
+Welcome to the AI Powered African Wildlife Detection Repository!
