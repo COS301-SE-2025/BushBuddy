@@ -1,5 +1,6 @@
-
+// index.js (Login/Authentication Screen)
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -25,6 +26,8 @@ export default function AuthScreen() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const navigation = useNavigation();
 
   const handleAuthAction = () => {
     if (isRegistering) {
@@ -34,9 +37,13 @@ export default function AuthScreen() {
       }
       // Handle registration logic
       console.log('Registering:', { username, email, password });
+      // For now, proceed with any credentials
+      navigation.navigate('MainScreen', { username });
     } else {
       // Handle login logic
       console.log('Logging in:', { username, password, rememberMe });
+      // For now, proceed with any credentials
+      navigation.navigate('MainScreen', { username });
     }
   };
 
@@ -219,15 +226,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoImage: {
-    width: 60,    // Increased from 40 to 60
-    height: 60,   // Increased from 40 to 60
-    marginHorizontal: 12,  // Slightly adjusted spacing
+    width: 60,
+    height: 60,
+    marginHorizontal: 12,
   },
   authTitle: {
     fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
-    marginHorizontal: 5,  // Added some spacing for the title
+    marginHorizontal: 5,
   },
   inputContainer: {
     flexDirection: 'row',
