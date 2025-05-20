@@ -1,9 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
+  Alert,
   FlatList,
   Image,
   SafeAreaView,
@@ -21,10 +22,11 @@ const MainScreen = ({ route }) => {
   
   // Safely access route params with default values if they don't exist
   const params = route?.params || {};
-  const username = params.username || 'User';
+  const username = params.username || 'Jean Steyn';
   
   const [activeTab, setActiveTab] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [cameraVisible, setCameraVisible] = useState(false);
 
   // Navigate to MapScreen
   const handleMapNavigation = () => {
@@ -37,14 +39,28 @@ const MainScreen = ({ route }) => {
   const handleFeedNavigation = () => {
     console.log('Navigating to FeedScreen...');
     navigation.navigate('FeedScreen');
-    setActiveTab('reports');
+    setActiveTab('feed');
   };
 
-  // Handle camera action
+  // Handle camera action - modified to work without expo-camera
   const handleCameraAction = () => {
-    // This could navigate to a camera screen or open the camera
-    alert('Opening camera for new detection...');
-    // Example: navigation.navigate('CameraScreen');
+    // For now, just show a placeholder screen that simulates the camera
+    setCameraVisible(true);
+    console.log('Camera would open here if expo-camera was installed');
+  };
+
+  // Simulate taking a photo
+  const takePicture = () => {
+    Alert.alert(
+      'Photo Captured',
+      'Wildlife detection in progress... (This is a simulation, install expo-camera for full functionality)',
+      [{ text: 'OK', onPress: () => setCameraVisible(false) }]
+    );
+  };
+
+  // Exit camera mode
+  const handleCloseCamera = () => {
+    setCameraVisible(false);
   };
 
   // Sample data for wildlife detection history
@@ -76,6 +92,46 @@ const MainScreen = ({ route }) => {
     </TouchableOpacity>
   );
 
+  // If the camera is visible, show a simulated camera screen
+  if (cameraVisible) {
+    return (
+      <View style={styles.cameraContainer}>
+        <View style={styles.camera}>
+          <View style={styles.cameraControls}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleCloseCamera}
+            >
+              <MaterialIcons name="close" size={28} color="white" />
+            </TouchableOpacity>
+            
+            <View style={styles.cameraButtonsRow}>
+              <TouchableOpacity 
+                style={styles.cameraButton}
+              >
+                <MaterialIcons name="flash-on" size={24} color="white" />
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.captureButton}
+                onPress={takePicture}
+              >
+                <View style={styles.captureButtonInner} />
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.cameraButton}
+              >
+                <MaterialIcons name="flip-camera-ios" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // Otherwise, show the main app UI
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -84,19 +140,22 @@ const MainScreen = ({ route }) => {
         style={styles.gradientContainer}
       >
         {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Image 
-              source={require('../assets/EpiUseLogo.png')} 
-              style={styles.logo} 
-              resizeMode="contain"
-            />
-            <Text style={styles.headerTitle}>Wildlife Detection</Text>
-          </View>
-          <TouchableOpacity style={styles.profileButton}>
-            <MaterialIcons name="person" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
+<View style={styles.header}>
+  <Image 
+    source={require('../assets/EpiUseLogo.png')} 
+    style={styles.logo} 
+    resizeMode="contain"
+  />
+  <View style={styles.titleContainer}>
+    <Text style={styles.headerTitle}>Wildlife Detection</Text>
+  </View>
+  <TouchableOpacity style={styles.profileButton}>
+    <Image 
+      source={require('../assets/Jean-Steyn-ProfilePic.jpg')}
+      style={styles.profileImage}
+    />
+  </TouchableOpacity>
+</View>
 
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
@@ -107,11 +166,11 @@ const MainScreen = ({ route }) => {
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <View style={styles.searchBar}>
-            <MaterialIcons name="search" size={20} color="#777" style={styles.searchIcon} />
+            <MaterialIcons name="search" size={20} color="#white" style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Search wildlife sightings..."
-              placeholderTextColor="#777"
+              placeholderTextColor="#white"
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
@@ -262,7 +321,7 @@ const MainScreen = ({ route }) => {
             onPress={handleFeedNavigation}
           >
             <MaterialIcons name="bar-chart" size={24} color={activeTab === 'reports' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Reports</Text>
+            <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Feed</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -288,25 +347,32 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
   },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   logo: {
-    width: 40,
-    height: 40,
-    marginRight: 12,
+    width: 80,
+    height: 80,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 12,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
+  },
+  profileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
   welcomeSection: {
     paddingHorizontal: 20,
@@ -322,13 +388,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   profileButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  backgroundColor: 'rgba(255,255,255,0.1)',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+},
+profileImage: {
+  width: '100%',
+  height: '100%',
+  borderRadius: 20,
+  resizeMode: 'cover',
+},
   searchContainer: {
     paddingHorizontal: 20,
     paddingBottom: 15,
@@ -528,6 +601,64 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  // Camera styles
+  // Not working without expo-camera
+  cameraContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  camera: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: '#000',
+  },
+  cameraControls: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: 20,
+    width: '100%',
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+  },
+  cameraButtonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    width: '100%',
+  },
+  cameraButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  captureButtonInner: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'white',
   },
 });
 

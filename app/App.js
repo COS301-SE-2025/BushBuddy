@@ -4,7 +4,7 @@ import 'react-native-gesture-handler'; // This must be the first import
 
 // Import screens
 import AuthScreen from './AuthScreen';
-//import FeedScreen from './FeedScreen';Later when i fixed it
+import FeedScreen from './FeedScreen';
 import MainScreen from './MainScreen';
 import MapScreen from './MapScreen';
 

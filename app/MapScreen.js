@@ -49,22 +49,21 @@ const MapScreen = ({ route }) => {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           {/* Header */}
           <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <Image 
-                source={require('../assets/EpiUseLogo.png')} 
-                style={styles.logo} 
-                resizeMode="contain"
-              />
-              <Text style={styles.headerTitle}>Wildlife Map</Text>
-            </View>
-          </View>
-
+    <Image 
+        source={require('../assets/EpiUseLogo.png')} 
+        style={styles.logo} 
+        resizeMode="contain"
+     />
+    <View style={styles.titleContainer}>
+        <Text style={styles.headerTitle}>Wildlife Map</Text>
+    </View>
+    </View>
           {/* Search Bar */}
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchInput}
               placeholder="Search locations..."
-              placeholderTextColor="#777"
+              placeholderTextColor="#white"
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
@@ -135,7 +134,7 @@ const MapScreen = ({ route }) => {
             onPress={() => handleNavigation('FeedScreen', 'reports')}
           >
             <MaterialIcons name="bar-chart" size={24} color={activeTab === 'reports' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Reports</Text>
+            <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Feed</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -164,19 +163,24 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
+    paddingTop: 40,
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 80,
+    height: 80,
+    marginRight: 12,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginRight: 52, // Compensates for logo width + margin
   },
   headerTitle: {
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
-    marginLeft: 10,
   },
   searchContainer: {
     paddingHorizontal: 20,
