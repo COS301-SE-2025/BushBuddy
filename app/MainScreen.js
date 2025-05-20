@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
@@ -14,17 +15,39 @@ import {
   View
 } from 'react-native';
 
-const MainScreen = ({ navigation, route }) => {
+const MainScreen = ({ route }) => {
+  // Use the navigation hook instead of prop
+  const navigation = useNavigation();
+  
   // Safely access route params with default values if they don't exist
-  // Error kept on recurring so added this
   const params = route?.params || {};
   const username = params.username || 'User';
   
   const [activeTab, setActiveTab] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Navigate to MapScreen
+  const handleMapNavigation = () => {
+    console.log('Navigating to MapScreen...');
+    navigation.navigate('MapScreen');
+    setActiveTab('map');
+  };
+
+  // Navigate to FeedScreen
+  const handleFeedNavigation = () => {
+    console.log('Navigating to FeedScreen...');
+    navigation.navigate('FeedScreen');
+    setActiveTab('reports');
+  };
+
+  // Handle camera action
+  const handleCameraAction = () => {
+    // This could navigate to a camera screen or open the camera
+    alert('Opening camera for new detection...');
+    // Example: navigation.navigate('CameraScreen');
+  };
+
   // Sample data for wildlife detection history
-  // Replace with actual data
   const recentEntries = [
     { id: '1', title: 'Elephant Detection', date: '2025-05-19', type: 'elephant', location: 'Sector A4' },
     { id: '2', title: 'Lion Sighting', date: '2025-05-19', type: 'lion', location: 'Sector B2' },
@@ -101,7 +124,10 @@ const MainScreen = ({ navigation, route }) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Quick Actions</Text>
             <View style={styles.quickActionsContainer}>
-              <TouchableOpacity style={styles.actionButton}>
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={handleCameraAction}
+              >
                 <View style={[styles.actionIcon, { backgroundColor: '#4CAF50' }]}>
                   <MaterialIcons name="camera-alt" size={24} color="white" />
                 </View>
@@ -115,7 +141,10 @@ const MainScreen = ({ navigation, route }) => {
                 <Text style={styles.actionText}>History</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity style={styles.actionButton}>
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={handleMapNavigation}
+              >
                 <View style={[styles.actionIcon, { backgroundColor: '#2196F3' }]}>
                   <MaterialIcons name="map" size={24} color="white" />
                 </View>
@@ -138,7 +167,10 @@ const MainScreen = ({ navigation, route }) => {
             </Text>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity 
+                style={styles.button}
+                onPress={handleCameraAction}
+              >
                 <Text style={styles.buttonText}>Start Detection</Text>
               </TouchableOpacity>
               
@@ -212,19 +244,22 @@ const MainScreen = ({ navigation, route }) => {
           
           <TouchableOpacity 
             style={[styles.navItem, activeTab === 'map' && styles.activeNavItem]} 
-            onPress={() => setActiveTab('map')}
+            onPress={handleMapNavigation}
           >
             <MaterialIcons name="map" size={24} color={activeTab === 'map' ? 'white' : '#A0A0A0'} />
             <Text style={[styles.navText, activeTab === 'map' && styles.activeNavText]}>Map</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity 
+            style={styles.addButton}
+            onPress={handleCameraAction}
+          >
             <MaterialIcons name="camera-alt" size={32} color="white" />
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={[styles.navItem, activeTab === 'reports' && styles.activeNavItem]} 
-            onPress={() => setActiveTab('reports')}
+            onPress={handleFeedNavigation}
           >
             <MaterialIcons name="bar-chart" size={24} color={activeTab === 'reports' ? 'white' : '#A0A0A0'} />
             <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Reports</Text>

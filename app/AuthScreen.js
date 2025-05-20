@@ -1,15 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import {
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-// Remove the MaterialIcons import
+// Removed the MaterialIcons import becauase it kept on failing
 
 const AuthScreen = ({ navigation }) => {
   return (
@@ -34,7 +34,7 @@ const AuthScreen = ({ navigation }) => {
             onPress={() => navigation.navigate('MainScreen')}
           >
             <Text style={styles.buttonText}>Get Started</Text>
-            {/* Replace MaterialIcons with a text arrow */}
+            {/* Replace MaterialIcons with a text arrow because of the error can fix it in the future if needed*/}
             <Text style={styles.arrowText}>→</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
