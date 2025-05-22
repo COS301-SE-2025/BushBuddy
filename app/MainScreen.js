@@ -102,11 +102,146 @@ const MainScreen = ({ route }) => {
     diet:
     lifespan: 
     */
-
+  // Just mock data for now such that filters look better
+  // All the animals from the intial project proposal
   // Bestiary data
-  const bestiaryData = [
+const bestiaryData = [
+  // ANTELOPES
   {
     id: '1',
+    name: 'Impala',
+    scientificName: 'Aepyceros melampus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/Impala.jpg'),
+    description: 'Medium-sized antelope known for its incredible jumping ability and graceful movements.',
+    facts: [
+      'Can leap up to 10 feet high and 30 feet in length',
+      'Lives in herds of 15-100 individuals',
+      'Males have distinctive lyre-shaped horns',
+      'Can reach speeds of 60 km/h',
+      'Known for their synchronized leaping displays'
+    ],
+    habitat: 'Savannas, woodlands, and bushlands',
+    diet: 'Herbivore - grasses, fruits, seeds, and leaves',
+    lifespan: '12-15 years in the wild'
+  },
+  {
+    id: '2',
+    name: 'Greater Kudu',
+    scientificName: 'Tragelaphus strepsiceros',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/GreaterKudu.jpg'),
+    description: 'Large antelope with distinctive spiral horns and white body stripes.',
+    facts: [
+      'Males have magnificent spiral horns up to 1.8m long',
+      'Excellent jumpers despite their size',
+      'Live in small groups of 6-20 individuals',
+      'Can go without water for extended periods',
+      'Known for their distinctive white tail flash when fleeing'
+    ],
+    habitat: 'Dense bushland, rocky hills, and dry savannas',
+    diet: 'Herbivore - leaves, shoots, fruits, and flowers',
+    lifespan: '20-25 years in the wild'
+  },
+  {
+    id: '3',
+    name: 'Lesser Kudu',
+    scientificName: 'Tragelaphus imberbis',
+    status: 'Near Threatened',
+    category: 'Antelope',
+    image: require('../assets/LesserKudu.jpg'),
+    description: 'Smaller cousin of the Greater Kudu with more prominent white stripes.',
+    facts: [
+      'More secretive and elusive than Greater Kudu',
+      'Males have shorter but equally impressive spiral horns',
+      'Females are hornless with more prominent stripes',
+      'Excellent at hiding in dense vegetation',
+      'More dependent on water than Greater Kudu'
+    ],
+    habitat: 'Dense acacia bushland and dry thornbush',
+    diet: 'Herbivore - leaves, shoots, fruits, and flowers',
+    lifespan: '15-18 years in the wild'
+  },
+  {
+    id: '4',
+    name: 'Nyala',
+    scientificName: 'Tragelaphus angasii',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/Nyala.jpg'),
+    description: 'Medium-sized antelope with striking sexual dimorphism between males and females.',
+    facts: [
+      'Males are much larger and darker than females',
+      'Only males have horns with white tips',
+      'Live in small groups of 2-10 individuals',
+      'Prefer areas near water sources',
+      'Males develop a distinctive shaggy coat'
+    ],
+    habitat: 'Dense woodlands and thickets near water',
+    diet: 'Herbivore - leaves, fruits, flowers, and grasses',
+    lifespan: '16-20 years in the wild'
+  },
+  {
+    id: '5',
+    name: 'Bushbuck',
+    scientificName: 'Tragelaphus scriptus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/BushBuck.jpg'),
+    description: 'Small to medium antelope known for its secretive nature and distinctive white markings.',
+    facts: [
+      'Solitary and highly territorial animals',
+      'Males have short, straight horns with slight spiraling',
+      'Excellent swimmers and climbers',
+      'Active during dawn and dusk hours',
+      'Known for their distinctive alarm bark'
+    ],
+    habitat: 'Dense woodlands, riverine forests, and thick bush',
+    diet: 'Herbivore - leaves, shoots, fruits, and flowers',
+    lifespan: '12-15 years in the wild'
+  },
+  {
+    id: '6',
+    name: 'Waterbuck',
+    scientificName: 'Kobus ellipsiprymnus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/WaterBuck.jpg'),
+    description: 'Large antelope always found near water sources with distinctive white ring marking.',
+    facts: [
+      'Never found more than 1km from water',
+      'Males have long, curved horns',
+      'Distinctive white ring around their rump',
+      'Can weigh up to 300kg',
+      'Have a strong, musky odor'
+    ],
+    habitat: 'Grasslands and woodlands near water sources',
+    diet: 'Herbivore - grasses and occasionally browse',
+    lifespan: '18-22 years in the wild'
+  },
+  {
+    id: '7',
+    name: 'Sable Antelope',
+    scientificName: 'Hippotragus niger',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/SableAntelope.jpg'),
+    description: 'Magnificent antelope with long, curved horns and striking black and white coloration.',
+    facts: [
+      'Both sexes have impressive curved horns',
+      'Males turn jet black with age',
+      'Extremely aggressive when threatened',
+      'Live in herds of 10-30 individuals',
+      'Known for their fierce fighting ability'
+    ],
+    habitat: 'Wooded savannas and grasslands',
+    diet: 'Herbivore - primarily grasses',
+    lifespan: '16-20 years in the wild'
+  },
+  {
+    id: '8',
     name: 'Eland',
     scientificName: 'Taurotragus oryx',
     status: 'Least Concern',
@@ -124,31 +259,33 @@ const MainScreen = ({ route }) => {
     diet: 'Herbivore - grasses, leaves, fruits, and bark',
     lifespan: '15-20 years in the wild'
   },
+
+  // LARGE MAMMALS
   {
-    id: '2',
-    name: 'Rhino',
-    scientificName: 'Ceratotherium simum',
-    status: 'Near Threatened',
-    category: 'Mammal',
-    image: require('../assets/Rhino.jpg'),
-    description: 'Large herbivorous mammal known for its distinctive horn and thick protective skin.',
+    id: '9',
+    name: 'Giraffe',
+    scientificName: 'Giraffa camelopardalis',
+    status: 'Vulnerable',
+    category: 'Large Mammal',
+    image: require('../assets/Giraffe.jpg'),
+    description: 'World\'s tallest mammal with distinctive long neck and unique spot patterns.',
     facts: [
-      'Can weigh up to 2,300 kg',
-      'Horn made of keratin, same material as human hair',
-      'Excellent hearing and sense of smell',
-      'Can run up to 50 km/h despite their size',
-      'Poor eyesight but keen sense of smell'
+      'Can reach heights of up to 18 feet',
+      'Heart weighs 25 pounds to pump blood to brain',
+      'Tongue is 18-20 inches long and dark blue',
+      'Can run up to 35 mph despite their height',
+      'Sleep only 30 minutes to 2 hours per day'
     ],
-    habitat: 'Grasslands, savannas, and shrublands',
-    diet: 'Herbivore - grasses and low shrubs',
-    lifespan: '35-50 years in the wild'
+    habitat: 'Savannas, grasslands, and open woodlands',
+    diet: 'Herbivore - primarily acacia leaves',
+    lifespan: '20-25 years in the wild'
   },
   {
-    id: '3',
-    name: 'Buffalo',
+    id: '10',
+    name: 'African Buffalo',
     scientificName: 'Syncerus caffer',
     status: 'Least Concern',
-    category: 'Mammal',
+    category: 'Large Mammal',
     image: require('../assets/Bufalo.jpg'),
     description: 'African buffalo or Cape buffalo, one of the Big Five African game animals.',
     facts: [
@@ -163,23 +300,563 @@ const MainScreen = ({ route }) => {
     lifespan: '15-25 years in the wild'
   },
   {
-    id: '4',
-    name: 'Elephant',
-    scientificName: 'Loxodonta africana',
-    status: 'Endangered',
-    category: 'Mammal',
-    image: require('../assets/Elephant.jpg'),
-    description: 'Largest land mammal known for intelligence, strong family bonds, and conservation importance.',
+    id: '11',
+    name: 'White Rhinoceros',
+    scientificName: 'Ceratotherium simum',
+    status: 'Near Threatened',
+    category: 'Large Mammal',
+    image: require('../assets/WhiteRhino.jpg'),
+    description: 'Second largest land mammal with distinctive square-shaped lip for grazing.',
     facts: [
-      'Can live 60-70 years in the wild',
-      'Weighs up to 6,000 kg',
-      'Excellent memory - can remember other elephants for decades',
-      'Trunk contains over 40,000 muscles',
-      'Communicate through infrasonic sounds'
+      'Actually grey in color, not white',
+      'Can weigh up to 2,300 kg',
+      'Horn made of keratin, same material as human hair',
+      'Can run up to 50 km/h despite their size',
+      'Square lip adapted for grazing'
     ],
-    habitat: 'Savannas, forests, and grasslands',
-    diet: 'Herbivore - grasses, fruits, bark, and roots',
-    lifespan: '60-70 years in the wild'
+    habitat: 'Grasslands, savannas, and shrublands',
+    diet: 'Herbivore - grasses and low shrubs',
+    lifespan: '40-50 years in the wild'
+  },
+  {
+    id: '12',
+    name: 'Black Rhinoceros',
+    scientificName: 'Diceros bicornis',
+    status: 'Critically Endangered',
+    category: 'Large Mammal',
+    image: require('../assets/BlackRhino.jpg'),
+    description: 'Critically endangered rhino species with a pointed lip for browsing.',
+    facts: [
+      'Also grey in color despite the name',
+      'Pointed lip adapted for browsing leaves',
+      'More aggressive than white rhinos',
+      'Excellent hearing and sense of smell',
+      'Can charge at speeds up to 55 km/h'
+    ],
+    habitat: 'Dense bushland, scrublands, and desert regions',
+    diet: 'Herbivore - leaves, shoots, and branches',
+    lifespan: '35-50 years in the wild'
+  },
+  {
+    id: '13',
+    name: 'Hippopotamus',
+    scientificName: 'Hippopotamus amphibius',
+    status: 'Vulnerable',
+    category: 'Large Mammal',
+    image: require('../assets/Hippo.jpg'),
+    description: 'Large semi-aquatic mammal known as one of Africa\'s most dangerous animals.',
+    facts: [
+      'Spend up to 16 hours a day in water',
+      'Can weigh up to 4,000 kg',
+      'Can run 30 km/h on land despite their bulk',
+      'Secrete pink "sweat" that acts as sunscreen',
+      'Responsible for more human deaths than most large animals'
+    ],
+    habitat: 'Rivers, lakes, and wetlands',
+    diet: 'Herbivore - grasses eaten primarily at night',
+    lifespan: '40-50 years in the wild'
+  },
+  {
+    id: '14',
+    name: 'Plains Zebra',
+    scientificName: 'Equus quagga',
+    status: 'Near Threatened',
+    category: 'Large Mammal',
+    image: require('../assets/Zebra.jpg'),
+    description: 'Most common zebra species with distinctive black and white stripes.',
+    facts: [
+      'Each zebra has a unique stripe pattern',
+      'Live in family groups led by a stallion',
+      'Can run up to 65 km/h',
+      'Stripes may help confuse predators and flies',
+      'Communicate through various vocalizations and body language'
+    ],
+    habitat: 'Grasslands, savannas, and woodlands',
+    diet: 'Herbivore - primarily grasses',
+    lifespan: '20-25 years in the wild'
+  },
+  {
+    id: '15',
+    name: 'Common Warthog',
+    scientificName: 'Phacochoerus africanus',
+    status: 'Least Concern',
+    category: 'Large Mammal',
+    image: require('../assets/Warthog.jpg'),
+    description: 'Wild pig species known for their distinctive facial "warts" and tusks.',
+    facts: [
+      'Facial "warts" are actually protective fat deposits',
+      'Can run up to 48 km/h',
+      'Sleep in burrows for protection',
+      'Both sexes have tusks, males\' are larger',
+      'Known for backing into burrows to defend with tusks'
+    ],
+    habitat: 'Savannas, woodlands, and semi-desert regions',
+    diet: 'Omnivore - roots, fruits, vegetables, and occasionally small animals',
+    lifespan: '12-18 years in the wild'
+  },
+  {
+    id: '16',
+    name: 'Bushpig',
+    scientificName: 'Potamochoerus larvatus',
+    status: 'Least Concern',
+    category: 'Large Mammal',
+    image: require('../assets/Bushpig.jpg'),
+    description: 'Forest-dwelling pig with reddish-brown coat and distinctive white facial markings.',
+    facts: [
+      'More colorful than warthogs with reddish coat',
+      'Excellent swimmers and climbers',
+      'Live in family groups called sounders',
+      'Active primarily at night',
+      'Have excellent hearing and sense of smell'
+    ],
+    habitat: 'Dense forests, woodlands, and riverine areas',
+    diet: 'Omnivore - roots, fruits, crops, and small animals',
+    lifespan: '15-20 years in the wild'
+  },
+
+  // PREDATORS
+  {
+    id: '17',
+    name: 'Lion',
+    scientificName: 'Panthera leo',
+    status: 'Vulnerable',
+    category: 'Predator',
+    image: require('../assets/Lion.jpg'),
+    description: 'Apex predator and king of the African savanna, living in social groups called prides.',
+    facts: [
+      'Only cat species that lives in social groups',
+      'Males can weigh up to 250 kg',
+      'Roar can be heard up to 8 km away',
+      'Females do most of the hunting',
+      'Can sleep up to 20 hours per day'
+    ],
+    habitat: 'Savannas, grasslands, and open woodlands',
+    diet: 'Carnivore - large mammals like buffalo, zebra, and antelope',
+    lifespan: '10-14 years in the wild'
+  },
+  {
+    id: '18',
+    name: 'Leopard',
+    scientificName: 'Panthera pardus',
+    status: 'Near Threatened',
+    category: 'Predator',
+    image: require('../assets/Leopard.jpg'),
+    description: 'Solitary and adaptable big cat known for its strength and climbing ability.',
+    facts: [
+      'Can carry prey twice their body weight up trees',
+      'Excellent climbers and swimmers',
+      'Most adaptable of all big cats',
+      'Can leap 20 feet horizontally',
+      'Each leopard has unique rosette patterns'
+    ],
+    habitat: 'Diverse habitats from forests to deserts',
+    diet: 'Carnivore - various mammals, birds, and reptiles',
+    lifespan: '12-17 years in the wild'
+  },
+  {
+    id: '19',
+    name: 'Cheetah',
+    scientificName: 'Acinonyx jubatus',
+    status: 'Vulnerable',
+    category: 'Predator',
+    image: require('../assets/Cheetah.jpg'),
+    description: 'World\'s fastest land animal, built for speed with distinctive black tear marks.',
+    facts: [
+      'Can reach speeds of 110 km/h in short bursts',
+      'Cannot retract their claws like other cats',
+      'Distinctive black "tear marks" reduce glare',
+      'Cannot roar, but can purr like domestic cats',
+      'Low genetic diversity makes them vulnerable'
+    ],
+    habitat: 'Open savannas, grasslands, and semi-desert areas',
+    diet: 'Carnivore - small to medium antelopes',
+    lifespan: '8-12 years in the wild'
+  },
+  {
+    id: '20',
+    name: 'Spotted Hyena',
+    scientificName: 'Crocuta crocuta',
+    status: 'Least Concern',
+    category: 'Predator',
+    image: require('../assets/SpottedHyena.jpg'),
+    description: 'Powerful scavenger and hunter with incredibly strong jaws and complex social structure.',
+    facts: [
+      'Strongest bite force among African carnivores',
+      'Live in matriarchal societies led by females',
+      'Can digest bones with their powerful stomach acid',
+      'Communicate through various vocalizations including "laughter"',
+      'More closely related to cats than dogs'
+    ],
+    habitat: 'Savannas, grasslands, and woodland edges',
+    diet: 'Carnivore - scavenging and hunting various mammals',
+    lifespan: '20-25 years in the wild'
+  },
+  {
+    id: '21',
+    name: 'Brown Hyena',
+    scientificName: 'Parahyaena brunnea',
+    status: 'Near Threatened',
+    category: 'Predator',
+    image: require('../assets/BrownHyena.jpg'),
+    description: 'Solitary scavenger with long, shaggy brown coat adapted to arid environments.',
+    facts: [
+      'More solitary than spotted hyenas',
+      'Excellent scavengers with incredible endurance',
+      'Can travel up to 50 km in one night foraging',
+      'Have a distinctive long, shaggy coat',
+      'Communicate through scent marking'
+    ],
+    habitat: 'Arid savannas, semi-deserts, and coastal areas',
+    diet: 'Carnivore - primarily scavenging, some small prey',
+    lifespan: '12-15 years in the wild'
+  },
+  {
+    id: '22',
+    name: 'African Wild Dog',
+    scientificName: 'Lycaon pictus',
+    status: 'Endangered',
+    category: 'Predator',
+    image: require('../assets/AfricanWildDog.jpg'),
+    description: 'Highly social and efficient pack hunters with distinctive mottled coat patterns.',
+    facts: [
+      'Most successful hunters in Africa with 80% success rate',
+      'Live in packs with complex social hierarchies',
+      'Each individual has unique coat patterns',
+      'Can run at sustained speeds of 60 km/h',
+      'Communicate through various vocalizations and body language'
+    ],
+    habitat: 'Open savannas, grasslands, and semi-arid regions',
+    diet: 'Carnivore - medium-sized antelopes and other mammals',
+    lifespan: '10-12 years in the wild'
+  },
+
+  // SMALL AND MEDIUM MAMMALS
+  {
+    id: '23',
+    name: 'Chacma Baboon',
+    scientificName: 'Papio ursinus',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/ChacmaBaboon.jpg'),
+    description: 'Largest baboon species with complex social structure and high intelligence.',
+    facts: [
+      'Live in troops of 20-150 individuals',
+      'Complex social hierarchies with alpha males and females',
+      'Excellent problem-solvers and tool users',
+      'Can weigh up to 45 kg (males)',
+      'Communicate through facial expressions and vocalizations'
+    ],
+    habitat: 'Savannas, woodlands, and rocky areas',
+    diet: 'Omnivore - fruits, seeds, insects, and small animals',
+    lifespan: '20-30 years in the wild'
+  },
+  {
+    id: '24',
+    name: 'Vervet Monkey',
+    scientificName: 'Chlorocebus pygerythrus',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/VervetMonkey.jpg'),
+    description: 'Small, highly social monkey known for their distinct alarm calls and blue coloration.',
+    facts: [
+      'Have specific alarm calls for different predators',
+      'Males have distinctive blue and red coloration',
+      'Live in troops of 10-50 individuals',
+      'Excellent swimmers when necessary',
+      'Show complex social behaviors and hierarchies'
+    ],
+    habitat: 'Savannas, woodlands, and riverine forests',
+    diet: 'Omnivore - fruits, leaves, seeds, and insects',
+    lifespan: '10-15 years in the wild'
+  },
+  {
+    id: '25',
+    name: 'Meerkat',
+    scientificName: 'Suricata suricatta',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Meerkat.jpg'),
+    description: 'Small mongoose known for their upright posture and complex social sentinel system.',
+    facts: [
+      'Live in groups called mobs or gangs',
+      'Take turns standing guard while others forage',
+      'Have a complex system of alarm calls',
+      'Can close their ears while digging',
+      'Dark patches around eyes reduce glare'
+    ],
+    habitat: 'Open grasslands and semi-desert regions',
+    diet: 'Omnivore - insects, small reptiles, and eggs',
+    lifespan: '10-14 years in the wild'
+  },
+  {
+    id: '26',
+    name: 'Rock Hyrax',
+    scientificName: 'Procavia capensis',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/RockHyrax.jpg'),
+    description: 'Small mammal most closely related to elephants, living in rocky outcrops.',
+    facts: [
+      'Closest living relatives are elephants and manatees',
+      'Live in colonies of 5-60 individuals',
+      'Have specialized feet for gripping rocky surfaces',
+      'Cannot regulate body temperature well',
+      'Communicate through various calls and scent marking'
+    ],
+    habitat: 'Rocky outcrops, cliffs, and boulder formations',
+    diet: 'Herbivore - leaves, fruits, and bark',
+    lifespan: '9-14 years in the wild'
+  },
+  {
+    id: '27',
+    name: 'African Wild Cat',
+    scientificName: 'Felis lybica',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/AfricanWildCat.jpg'),
+    description: 'Wild ancestor of domestic cats, adapted to various African environments.',
+    facts: [
+      'Direct ancestor of domestic house cats',
+      'Excellent hunters with keen senses',
+      'Can survive in very arid conditions',
+      'Primarily nocturnal and solitary',
+      'Can interbreed with domestic cats'
+    ],
+    habitat: 'Various habitats from forests to semi-deserts',
+    diet: 'Carnivore - small mammals, birds, and reptiles',
+    lifespan: '12-15 years in the wild'
+  },
+  {
+    id: '28',
+    name: 'Caracal',
+    scientificName: 'Caracal caracal',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Caracal.jpg'),
+    description: 'Medium-sized wild cat with distinctive tufted ears and incredible jumping ability.',
+    facts: [
+      'Can leap 12 feet high to catch birds in flight',
+      'Distinctive black ear tufts help with hearing',
+      'Excellent climbers and swimmers',
+      'Can survive without water for long periods',
+      'Known for their incredible speed and agility'
+    ],
+    habitat: 'Savannas, semi-deserts, and scrublands',
+    diet: 'Carnivore - small mammals, birds, and reptiles',
+    lifespan: '12-16 years in the wild'
+  },
+  {
+    id: '29',
+    name: 'Serval',
+    scientificName: 'Leptailurus serval',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Serval.jpg'),
+    description: 'Long-legged wild cat with large ears, adapted for hunting in tall grasslands.',
+    facts: [
+      'Has the longest legs relative to body size of any cat',
+      'Large ears help locate prey in tall grass',
+      'Can jump 9 feet high from standing position',
+      'Excellent at catching small mammals and birds',
+      'Primarily active during dawn and dusk'
+    ],
+    habitat: 'Tall grasslands, wetlands, and reed beds',
+    diet: 'Carnivore - small mammals, birds, and reptiles',
+    lifespan: '12-20 years in the wild'
+  },
+  {
+    id: '30',
+    name: 'Honey Badger',
+    scientificName: 'Mellivora capensis',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/HoneyBadger.jpg'),
+    description: 'Fearless and tenacious carnivore known for its aggressive nature and thick skin.',
+    facts: [
+      'Extremely thick skin protects from bee stings and snake bites',
+      'Known to attack animals much larger than themselves',
+      'Excellent diggers with powerful claws',
+      'Partially immune to snake venom',
+      'Will steal honey from beehives, hence the name'
+    ],
+    habitat: 'Various habitats from forests to semi-deserts',
+    diet: 'Omnivore - small mammals, reptiles, insects, and honey',
+    lifespan: '20-24 years in the wild'
+  },
+  {
+    id: '31',
+    name: 'Aardvark',
+    scientificName: 'Orycteropus afer',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Aardvark.jpg'),
+    description: 'Unique nocturnal mammal specialized for eating ants and termites.',
+    facts: [
+      'Can dig through termite mounds with powerful claws',
+      'Long sticky tongue can extend 12 inches',
+      'Excellent hearing and sense of smell',
+      'Can close nostrils to keep out dirt while digging',
+      'Primarily active at night'
+    ],
+    habitat: 'Savannas, grasslands, and woodlands',
+    diet: 'Insectivore - primarily ants and termites',
+    lifespan: '18-23 years in the wild'
+  },
+  {
+    id: '32',
+    name: 'Pangolin',
+    scientificName: 'Smutsia temminckii',
+    status: 'Vulnerable',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Pangolin.jpg'),
+    description: 'Unique scaled mammal that rolls into a ball when threatened.',
+    facts: [
+      'Only mammal covered in scales made of keratin',
+      'Can roll into a complete ball for protection',
+      'Long sticky tongue for catching ants and termites',
+      'Excellent diggers with powerful claws',
+      'Most trafficked mammal in the world'
+    ],
+    habitat: 'Savannas, woodlands, and grasslands',
+    diet: 'Insectivore - ants and termites exclusively',
+    lifespan: '20+ years in the wild'
+  },
+
+  // ADDITIONAL ANTELOPES
+  {
+    id: '33',
+    name: 'Blue Wildebeest',
+    scientificName: 'Connochaetes taurinus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/BlueWildebeest.jpg'),
+    description: 'Large antelope famous for the Great Migration across East Africa.',
+    facts: [
+      'Participate in the largest land animal migration',
+      'Live in herds that can number in hundreds of thousands',
+      'Both sexes have curved horns',
+      'Excellent runners, can reach 50 km/h',
+      'Calves can run within minutes of birth'
+    ],
+    habitat: 'Open grasslands and savannas',
+    diet: 'Herbivore - primarily short grasses',
+    lifespan: '15-20 years in the wild'
+  },
+  {
+    id: '34',
+    name: 'Black Wildebeest',
+    scientificName: 'Connochaetes gnou',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/BlackWildebeest.jpg'),
+    description: 'Smaller wildebeest species with distinctive white tail and forward-curved horns.',
+    facts: [
+      'Smaller than blue wildebeest with distinctive white tail',
+      'More territorial than their blue cousins',
+      'Both sexes have forward-curving horns',
+      'Endemic to southern Africa',
+      'Nearly went extinct but recovered through conservation'
+    ],
+    habitat: 'High altitude grasslands and plains',
+    diet: 'Herbivore - short grasses and herbs',
+    lifespan: '15-20 years in the wild'
+  },
+  {
+    id: '35',
+    name: 'Red Hartebeest',
+    scientificName: 'Alcelaphus buselaphus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/RedHartebeest.jpg'),
+    description: 'Fast antelope with distinctive heart-shaped horns and reddish-brown coat.',
+    facts: [
+      'Can run at speeds up to 70 km/h',
+      'Both sexes have heart-shaped horns',
+      'Live in herds of 20-300 individuals',
+      'Excellent endurance runners',
+      'Can survive in semi-arid conditions'
+    ],
+    habitat: 'Open grasslands and semi-arid savannas',
+    diet: 'Herbivore - grasses and occasionally browse',
+    lifespan: '15-19 years in the wild'
+  },
+  {
+    id: '36',
+    name: 'Blesbok',
+    scientificName: 'Damaliscus pygargus phillipsi',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/Blesbok.jpg'),
+    description: 'Medium-sized antelope with distinctive white facial blaze and reddish-brown coat.',
+    facts: [
+      'Distinctive white blaze on face and white rump patch',
+      'Both sexes have ringed horns',
+      'Form large herds during winter months',
+      'Endemic to South Africa',
+      'Nearly extinct but saved through conservation efforts'
+    ],
+    habitat: 'Highveld grasslands and open plains',
+    diet: 'Herbivore - short grasses and herbs',
+    lifespan: '13-17 years in the wild'
+  },
+
+  // ADDITIONAL SMALL MAMMALS
+  {
+    id: '37',
+    name: 'Bontebok',
+    scientificName: 'Damaliscus pygargus pygargus',
+    status: 'Vulnerable',
+    category: 'Antelope',
+    image: require('../assets/Bontebok.jpg'),
+    description: 'Rare antelope subspecies with chocolate brown coat and distinctive white markings.',
+    facts: [
+      'Rarest antelope species in Africa',
+      'Distinctive chocolate brown coat with white patches',
+      'Both sexes have lyre-shaped horns',
+      'Endemic to a small area in South Africa',
+      'Population recovered from just 17 individuals'
+    ],
+    habitat: 'Coastal fynbos and renosterveld',
+    diet: 'Herbivore - grasses and fynbos vegetation',
+    lifespan: '12-16 years in the wild'
+  },
+  {
+    id: '38',
+    name: 'Steenbok',
+    scientificName: 'Raphicerus campestris',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Steenbok.jpg'),
+    description: 'Small antelope with large ears and reddish-golden coat.',
+    facts: [
+      'One of the smallest African antelopes',
+      'Only males have short, straight horns',
+      'Solitary animals, rarely seen in pairs',
+      'Can survive without drinking water',
+      'Known for their large, prominent ears'
+    ],
+    habitat: 'Open grasslands, savannas, and semi-arid regions',
+    diet: 'Herbivore - leaves, fruits, and flowers',
+    lifespan: '7-12 years in the wild'
+  },
+  {
+    id: '39',
+    name: 'Duiker',
+    scientificName: 'Sylvicapra grimmia',
+    status: 'Least Concern',
+    category: 'Small and Medium Mammal',
+    image: require('../assets/Duiker.jpg'),
+    description: 'Small forest antelope known for diving into thick cover when threatened.',
+    facts: [
+      'Name means "diver" in Afrikaans',
+      'Only males have short, spike-like horns',
+      'Excellent at hiding in dense vegetation',
+      'Primarily active during dawn and dusk',
+      'Can live in various habitat types'
+    ],
+    habitat: 'Forests, woodlands, and thick bush',
+    diet: 'Herbivore - leaves, fruits, flowers, and bark',
+    lifespan: '10-15 years in the wild'
   }
 ];
 
@@ -331,6 +1008,14 @@ const MainScreen = ({ route }) => {
       </Modal>
     );
   };
+
+const categoryMap = {
+  'Antelopes': 'Antelope',
+  'Large Mammals': 'Large Mammal',
+  'Predators': 'Predator',
+  'Small and Medium Mammals': 'Small and Medium Mammal'
+};
+
 
   // If the camera is visible, show a simulated camera screen
   if (cameraVisible) {
