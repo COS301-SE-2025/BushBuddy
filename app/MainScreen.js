@@ -71,6 +71,18 @@ const MainScreen = ({ route }) => {
     { id: '3', title: 'Rhino Tracking', date: '2025-05-18', type: 'rhino', location: 'Sector C7' },
   ];
 
+  // Fields for database?
+  /*
+    id:
+    name:
+    scientificName:
+    status:
+    category: 
+    image:
+    image:
+    description:
+    facts:
+ */
   // Bestiary data
   const bestiaryData = [
   {
@@ -79,17 +91,19 @@ const MainScreen = ({ route }) => {
     scientificName: 'Taurotragus oryx',
     status: 'Least Concern',
     category: 'Antelope',
-    image: '/api/placeholder/150/120',
+    //image: '../assets/Eland.jpg',// fix this later when using real images
+    image: require('../assets/Eland.jpg'),
     description: 'The largest antelope in Africa',
     facts: ['Can jump 8 feet high', 'Weighs up to 940 kg', 'Lives in herds']
-  },  // Fixed comma added here
+  },
   {
     id: '2',
     name: 'Rhino',
     scientificName: 'Ceratotherium simum',
     status: 'Near Threatened',
     category: 'Mammal',
-    image: '/api/placeholder/150/120',
+    //image: '../assets/Rhino.jpg',
+    image: require('../assets/Rhino.jpg'),
     description: 'Large herbivorous mammal',
     facts: ['Can weigh up to 2,300 kg', 'Horn made of keratin', 'Excellent hearing']
   },
@@ -99,7 +113,8 @@ const MainScreen = ({ route }) => {
     scientificName: 'Syncerus caffer',
     status: 'Least Concern',
     category: 'Mammal',
-    image: '/api/placeholder/150/120',
+    //image: '../assets/Bufalo.jpg',
+    image: require('../assets/Bufalo.jpg'),
     description: 'African buffalo or Cape buffalo',
     facts: ['Live in herds of 50-500', 'Excellent memory', 'Can weigh 900 kg']
   },
@@ -109,7 +124,8 @@ const MainScreen = ({ route }) => {
     scientificName: 'Loxodonta africana',
     status: 'Endangered',
     category: 'Mammal',
-    image: '/api/placeholder/150/120',
+    //image: '../assets/Elephant.jpg',
+    image: require('../assets/Elephant.jpg'),
     description: 'Largest land mammal',
     facts: ['Can live 60-70 years', 'Weighs up to 6,000 kg', 'Excellent memory']
   }
@@ -156,7 +172,7 @@ const MainScreen = ({ route }) => {
 
   const renderBestiaryItem = ({ item }) => (
     <TouchableOpacity style={styles.bestiaryCard}>
-      <Image source={{ uri: item.image }} style={styles.bestiaryImage} />
+      <Image source={item.image} style={styles.bestiaryImage} />
       <View style={styles.bestiaryContent}>
         <Text style={styles.bestiaryName}>{item.name}</Text>
         <Text style={styles.bestiaryScientific}>{item.scientificName}</Text>
@@ -262,109 +278,104 @@ const MainScreen = ({ route }) => {
           {/* Quick Actions */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Quick Actions</Text>
-            <View style={styles.quickActionsContainer}>
-              <TouchableOpacity 
-                style={styles.actionButton}
-                onPress={handleCameraAction}
-              >
-                <View style={[styles.actionIcon, { backgroundColor: '#4CAF50' }]}>
-                  <MaterialIcons name="camera-alt" size={24} color="white" />
-                </View>
-                <Text style={styles.actionText}>New Detection</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton}>
-                <View style={[styles.actionIcon, { backgroundColor: '#FF9800' }]}>
-                  <MaterialIcons name="history" size={24} color="white" />
-                </View>
-                <Text style={styles.actionText}>History</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={styles.actionButton}
-                onPress={handleMapNavigation}
-              >
-                <View style={[styles.actionIcon, { backgroundColor: '#2196F3' }]}>
-                  <MaterialIcons name="map" size={24} color="white" />
-                </View>
-                <Text style={styles.actionText}>Map View</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton}>
-                <View style={[styles.actionIcon, { backgroundColor: '#9C27B0' }]}>
-                  <MaterialIcons name="settings" size={24} color="white" />
-                </View>
-                <Text style={styles.actionText}>Settings</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Description */}
-          <View style={styles.section}>
-            <Text style={styles.description}>
-              Use this app to identify and learn about African wildlife through our advanced AI detection system.
-            </Text>
-          </View>
-
-          {/* Bestiary Section */}
-          <View style={styles.section}>
-            <View style={styles.bestiaryHeader}>
-              <Text style={styles.sectionTitle}>Bestiary</Text>
-              <TouchableOpacity style={styles.achievementsButton}>
-                <Text style={styles.achievementsText}>Achievements</Text>
-              </TouchableOpacity>
-            </View>
-            
-            {/* Bestiary Search and Filter */}
-            <View style={styles.bestiaryControls}>
-              <View style={styles.bestiarySearchContainer}>
-                <MaterialIcons name="search" size={16} color="white" />
-                <TextInput
-                  style={styles.bestiarySearchInput}
-                  placeholder="Search"
-                  placeholderTextColor="white"
-                />
-              </View>
-              <View style={styles.filterContainer}>
-                <Text style={styles.filterLabel}>All</Text>
-                <MaterialIcons name="keyboard-arrow-down" size={16} color="#777" />
-              </View>
-            </View>
-
-            {/* Filter Pills */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterPills}>
-              {bestiaryCategories.map((category, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.filterPill,
-                    bestiaryFilter === category && styles.activeFilterPill
-                  ]}
-                  onPress={() => setBestiaryFilter(category)}
+            <View style={styles.quickActionsCard}>
+              <View style={styles.quickActionsContainer}>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={handleCameraAction}
                 >
-                  <Text style={[
-                    styles.filterPillText,
-                    bestiaryFilter === category && styles.activeFilterPillText
-                  ]}>
-                    {category}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-
-            {/* Bestiary Grid */}
-            <View style={styles.bestiaryGrid}>
-              {filteredBestiary.map((animal, index) => (
-                <TouchableOpacity key={animal.id} style={styles.bestiaryGridItem}>
-                  <Image source={{ uri: animal.image }} style={styles.bestiaryGridImage} />
-                  <Text style={styles.bestiaryGridName}>{animal.name}</Text>
-                  <View style={styles.bestiaryGridStatus}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(animal.status) }]} />
+                  <View style={[styles.actionIcon, { backgroundColor: '#4CAF50' }]}>
+                    <MaterialIcons name="camera-alt" size={24} color="white" />
                   </View>
+                  <Text style={styles.actionText}>New Detection</Text>
                 </TouchableOpacity>
-              ))}
+                
+                <TouchableOpacity style={styles.actionButton}>
+                  <View style={[styles.actionIcon, { backgroundColor: '#FF9800' }]}>
+                    <MaterialIcons name="history" size={24} color="white" />
+                  </View>
+                  <Text style={styles.actionText}>History</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={handleMapNavigation}
+                >
+                  <View style={[styles.actionIcon, { backgroundColor: '#2196F3' }]}>
+                    <MaterialIcons name="map" size={24} color="white" />
+                  </View>
+                  <Text style={styles.actionText}>Map View</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={styles.actionButton}>
+                  <View style={[styles.actionIcon, { backgroundColor: '#9C27B0' }]}>
+                    <MaterialIcons name="settings" size={24} color="white" />
+                  </View>
+                  <Text style={styles.actionText}>Settings</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
+          {/* Fix this using uri when using real images..for now demo data */}
+          {/* Bestiary Section */}
+<View style={styles.section}>
+  <View style={styles.bestiaryHeader}>
+    <Text style={styles.sectionTitle}>Bestiary</Text>
+    <TouchableOpacity style={styles.achievementsButton}>
+      <Text style={styles.achievementsText}>Achievements</Text>
+    </TouchableOpacity>
+  </View>
+
+  {/* Bestiary Search and Filter */}
+  <View style={styles.bestiaryControls}>
+    <View style={styles.bestiarySearchContainer}>
+      <MaterialIcons name="search" size={16} color="white" />
+      <TextInput
+        style={styles.bestiarySearchInput}
+        placeholder="Search"
+        placeholderTextColor="white"
+      />
+    </View>
+    <View style={styles.filterContainer}>
+      <Text style={styles.filterLabel}>All</Text>
+      <MaterialIcons name="keyboard-arrow-down" size={16} color="#777" />
+    </View>
+  </View>
+
+  {/* Filter Pills */}
+  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterPills}>
+    {bestiaryCategories.map((category, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[
+          styles.filterPill,
+          bestiaryFilter === category && styles.activeFilterPill
+        ]}
+        onPress={() => setBestiaryFilter(category)}
+      >
+        <Text style={[
+          styles.filterPillText,
+          bestiaryFilter === category && styles.activeFilterPillText
+        ]}>
+          {category}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </ScrollView>
+
+  {/* Bestiary Grid */}
+  <View style={styles.bestiaryGrid}>
+    {filteredBestiary.map((animal) => (
+      <TouchableOpacity key={animal.id} style={styles.bestiaryGridItem}>
+        <Image source={animal.image} style={styles.bestiaryGridImage} />
+        <Text style={styles.bestiaryGridName}>{animal.name}</Text>
+        <View style={styles.bestiaryGridStatus}>
+          <View style={[styles.statusDot, { backgroundColor: getStatusColor(animal.status) }]} />
+        </View>
+      </TouchableOpacity>
+    ))}
+  </View>
+</View>
 
           {/* Recent Detections */}
           <View style={styles.section}>
@@ -555,16 +566,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 15,
   },
-  description: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    lineHeight: 24,
-    marginBottom: 20,
+  quickActionsCard: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 15,
+    padding: 20,
   },
   quickActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
   },
   actionButton: {
     alignItems: 'center',
