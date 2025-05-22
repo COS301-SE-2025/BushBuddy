@@ -108,23 +108,23 @@ const MainScreen = ({ route }) => {
 const bestiaryData = [
   // ANTELOPES
   {
-    id: '1',
-    name: 'Impala',
-    scientificName: 'Aepyceros melampus',
-    status: 'Least Concern',
-    category: 'Antelope',
-    image: require('../assets/Impala.jpg'),
-    description: 'Medium-sized antelope known for its incredible jumping ability and graceful movements.',
+    id: '17',
+    name: 'Lion',
+    scientificName: 'Panthera leo',
+    status: 'Vulnerable',
+    category: 'Predator',
+    image: require('../assets/Lion.jpg'),
+    description: 'Apex predator and king of the African savanna, living in social groups called prides.',
     facts: [
-      'Can leap up to 10 feet high and 30 feet in length',
-      'Lives in herds of 15-100 individuals',
-      'Males have distinctive lyre-shaped horns',
-      'Can reach speeds of 60 km/h',
-      'Known for their synchronized leaping displays'
+      'Only cat species that lives in social groups',
+      'Males can weigh up to 250 kg',
+      'Roar can be heard up to 8 km away',
+      'Females do most of the hunting',
+      'Can sleep up to 20 hours per day'
     ],
-    habitat: 'Savannas, woodlands, and bushlands',
-    diet: 'Herbivore - grasses, fruits, seeds, and leaves',
-    lifespan: '12-15 years in the wild'
+    habitat: 'Savannas, grasslands, and open woodlands',
+    diet: 'Carnivore - large mammals like buffalo, zebra, and antelope',
+    lifespan: '10-14 years in the wild'
   },
   {
     id: '2',
@@ -146,23 +146,23 @@ const bestiaryData = [
     lifespan: '20-25 years in the wild'
   },
   {
-    id: '3',
-    name: 'Lesser Kudu',
-    scientificName: 'Tragelaphus imberbis',
-    status: 'Near Threatened',
-    category: 'Antelope',
-    image: require('../assets/LesserKudu.jpg'),
-    description: 'Smaller cousin of the Greater Kudu with more prominent white stripes.',
+    id: '12',
+    name: 'Black Rhinoceros',
+    scientificName: 'Diceros bicornis',
+    status: 'Critically Endangered',
+    category: 'Large Mammal',
+    image: require('../assets/BlackRhino.jpg'),
+    description: 'Critically endangered rhino species with a pointed lip for browsing.',
     facts: [
-      'More secretive and elusive than Greater Kudu',
-      'Males have shorter but equally impressive spiral horns',
-      'Females are hornless with more prominent stripes',
-      'Excellent at hiding in dense vegetation',
-      'More dependent on water than Greater Kudu'
+      'Also grey in color despite the name',
+      'Pointed lip adapted for browsing leaves',
+      'More aggressive than white rhinos',
+      'Excellent hearing and sense of smell',
+      'Can charge at speeds up to 55 km/h'
     ],
-    habitat: 'Dense acacia bushland and dry thornbush',
-    diet: 'Herbivore - leaves, shoots, fruits, and flowers',
-    lifespan: '15-18 years in the wild'
+    habitat: 'Dense bushland, scrublands, and desert regions',
+    diet: 'Herbivore - leaves, shoots, and branches',
+    lifespan: '35-50 years in the wild'
   },
   {
     id: '4',
@@ -203,23 +203,23 @@ const bestiaryData = [
     lifespan: '12-15 years in the wild'
   },
   {
-    id: '6',
-    name: 'Waterbuck',
-    scientificName: 'Kobus ellipsiprymnus',
-    status: 'Least Concern',
-    category: 'Antelope',
-    image: require('../assets/WaterBuck.jpg'),
-    description: 'Large antelope always found near water sources with distinctive white ring marking.',
+    id: '18',
+    name: 'Leopard',
+    scientificName: 'Panthera pardus',
+    status: 'Near Threatened',
+    category: 'Predator',
+    image: require('../assets/Leopard.jpg'),
+    description: 'Solitary and adaptable big cat known for its strength and climbing ability.',
     facts: [
-      'Never found more than 1km from water',
-      'Males have long, curved horns',
-      'Distinctive white ring around their rump',
-      'Can weigh up to 300kg',
-      'Have a strong, musky odor'
+      'Can carry prey twice their body weight up trees',
+      'Excellent climbers and swimmers',
+      'Most adaptable of all big cats',
+      'Can leap 20 feet horizontally',
+      'Each leopard has unique rosette patterns'
     ],
-    habitat: 'Grasslands and woodlands near water sources',
-    diet: 'Herbivore - grasses and occasionally browse',
-    lifespan: '18-22 years in the wild'
+    habitat: 'Diverse habitats from forests to deserts',
+    diet: 'Carnivore - various mammals, birds, and reptiles',
+    lifespan: '12-17 years in the wild'
   },
   {
     id: '7',
@@ -319,23 +319,23 @@ const bestiaryData = [
     lifespan: '40-50 years in the wild'
   },
   {
-    id: '12',
-    name: 'Black Rhinoceros',
-    scientificName: 'Diceros bicornis',
-    status: 'Critically Endangered',
-    category: 'Large Mammal',
-    image: require('../assets/BlackRhino.jpg'),
-    description: 'Critically endangered rhino species with a pointed lip for browsing.',
+    id: '3',
+    name: 'Lesser Kudu',
+    scientificName: 'Tragelaphus imberbis',
+    status: 'Near Threatened',
+    category: 'Antelope',
+    image: require('../assets/LesserKudu.jpg'),
+    description: 'Smaller cousin of the Greater Kudu with more prominent white stripes.',
     facts: [
-      'Also grey in color despite the name',
-      'Pointed lip adapted for browsing leaves',
-      'More aggressive than white rhinos',
-      'Excellent hearing and sense of smell',
-      'Can charge at speeds up to 55 km/h'
+      'More secretive and elusive than Greater Kudu',
+      'Males have shorter but equally impressive spiral horns',
+      'Females are hornless with more prominent stripes',
+      'Excellent at hiding in dense vegetation',
+      'More dependent on water than Greater Kudu'
     ],
-    habitat: 'Dense bushland, scrublands, and desert regions',
-    diet: 'Herbivore - leaves, shoots, and branches',
-    lifespan: '35-50 years in the wild'
+    habitat: 'Dense acacia bushland and dry thornbush',
+    diet: 'Herbivore - leaves, shoots, fruits, and flowers',
+    lifespan: '15-18 years in the wild'
   },
   {
     id: '13',
@@ -416,42 +416,42 @@ const bestiaryData = [
 
   // PREDATORS
   {
-    id: '17',
-    name: 'Lion',
-    scientificName: 'Panthera leo',
-    status: 'Vulnerable',
-    category: 'Predator',
-    image: require('../assets/Lion.jpg'),
-    description: 'Apex predator and king of the African savanna, living in social groups called prides.',
+    id: '1',
+    name: 'Impala',
+    scientificName: 'Aepyceros melampus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/Impala.jpg'),
+    description: 'Medium-sized antelope known for its incredible jumping ability and graceful movements.',
     facts: [
-      'Only cat species that lives in social groups',
-      'Males can weigh up to 250 kg',
-      'Roar can be heard up to 8 km away',
-      'Females do most of the hunting',
-      'Can sleep up to 20 hours per day'
+      'Can leap up to 10 feet high and 30 feet in length',
+      'Lives in herds of 15-100 individuals',
+      'Males have distinctive lyre-shaped horns',
+      'Can reach speeds of 60 km/h',
+      'Known for their synchronized leaping displays'
     ],
-    habitat: 'Savannas, grasslands, and open woodlands',
-    diet: 'Carnivore - large mammals like buffalo, zebra, and antelope',
-    lifespan: '10-14 years in the wild'
+    habitat: 'Savannas, woodlands, and bushlands',
+    diet: 'Herbivore - grasses, fruits, seeds, and leaves',
+    lifespan: '12-15 years in the wild'
   },
   {
-    id: '18',
-    name: 'Leopard',
-    scientificName: 'Panthera pardus',
-    status: 'Near Threatened',
-    category: 'Predator',
-    image: require('../assets/Leopard.jpg'),
-    description: 'Solitary and adaptable big cat known for its strength and climbing ability.',
+    id: '6',
+    name: 'Waterbuck',
+    scientificName: 'Kobus ellipsiprymnus',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: require('../assets/WaterBuck.jpg'),
+    description: 'Large antelope always found near water sources with distinctive white ring marking.',
     facts: [
-      'Can carry prey twice their body weight up trees',
-      'Excellent climbers and swimmers',
-      'Most adaptable of all big cats',
-      'Can leap 20 feet horizontally',
-      'Each leopard has unique rosette patterns'
+      'Never found more than 1km from water',
+      'Males have long, curved horns',
+      'Distinctive white ring around their rump',
+      'Can weigh up to 300kg',
+      'Have a strong, musky odor'
     ],
-    habitat: 'Diverse habitats from forests to deserts',
-    diet: 'Carnivore - various mammals, birds, and reptiles',
-    lifespan: '12-17 years in the wild'
+    habitat: 'Grasslands and woodlands near water sources',
+    diet: 'Herbivore - grasses and occasionally browse',
+    lifespan: '18-22 years in the wild'
   },
   {
     id: '19',
@@ -860,12 +860,6 @@ const bestiaryData = [
   }
 ];
 
-  const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'Small and Medium Mammals'];
-
-  const filteredBestiary = bestiaryFilter === 'All' 
-    ? bestiaryData 
-    : bestiaryData.filter(animal => animal.category === bestiaryFilter);
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'Endangered': return '#FF5722';
@@ -898,116 +892,121 @@ const bestiaryData = [
     </TouchableOpacity>
   );
 
-  const renderBestiaryItem = ({ item }) => (
-    <TouchableOpacity style={styles.bestiaryCard}>
-      <Image source={item.image} style={styles.bestiaryImage} />
-      <View style={styles.bestiaryContent}>
-        <Text style={styles.bestiaryName}>{item.name}</Text>
-        <Text style={styles.bestiaryScientific}>{item.scientificName}</Text>
-        <View style={styles.bestiaryStatusContainer}>
-          <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status) }]} />
-          <Text style={styles.bestiaryStatus}>{item.status}</Text>
-        </View>
-        <Text style={styles.bestiaryDescription} numberOfLines={2}>
-          {item.description}
-        </Text>
+
+
+const renderBestiaryItem = ({ item }) => (
+  <TouchableOpacity 
+    style={styles.bestiaryCard}
+    onPress={() => handleAnimalPress(item)}
+  >
+    <Image source={item.image} style={styles.bestiaryImage} />
+    <View style={styles.bestiaryContent}>
+      <Text style={styles.bestiaryName}>{item.name}</Text>
+      <Text style={styles.bestiaryScientific}>{item.scientificName}</Text>
+      <View style={styles.bestiaryStatusContainer}>
+        <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status) }]} />
+        <Text style={styles.bestiaryStatus}>{item.status}</Text>
       </View>
-      <MaterialIcons name="chevron-right" size={20} color="#777" />
-    </TouchableOpacity>
-  );
+      <Text style={styles.bestiaryDescription} numberOfLines={2}>
+        {item.description}
+      </Text>
+    </View>
+    <MaterialIcons name="chevron-right" size={20} color="#777" />
+  </TouchableOpacity>
+);
 
-  // Animal Detail Modal Component
-  const AnimalDetailModal = () => {
-    if (!selectedAnimal) return null;
+// Animal Detail Modal Component
+const AnimalDetailModal = () => {
+  if (!selectedAnimal) return null;
 
-    return (
-      <Modal
-        visible={showAnimalModal}
-        animationType="slide"
-        transparent={false}
-        onRequestClose={closeAnimalModal}
-      >
-        <View style={styles.modalContainer}>
-          <LinearGradient
-            colors={['#4c8c4a', '#1e3b1d']}
-            style={styles.modalGradient}
-          >
-            {/* Modal Header */}
-            <View style={styles.modalHeader}>
-              <TouchableOpacity 
-                style={styles.modalCloseButton}
-                onPress={closeAnimalModal}
-              >
-                <MaterialIcons name="close" size={28} color="white" />
-              </TouchableOpacity>
-              <View style={styles.modalStatusContainer}>
-                <View style={[styles.modalStatusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
-                <MaterialIcons name="check-circle" size={20} color="#4CAF50" />
-              </View>
+  return (
+    <Modal
+      visible={showAnimalModal}
+      animationType="slide"
+      transparent={false}
+      onRequestClose={closeAnimalModal}
+    >
+      <View style={styles.modalContainer}>
+        <LinearGradient
+          colors={['#4c8c4a', '#1e3b1d']}
+          style={styles.modalGradient}
+        >
+          {/* Modal Header */}
+          <View style={styles.modalHeader}>
+            <TouchableOpacity 
+              style={styles.modalCloseButton}
+              onPress={closeAnimalModal}
+            >
+              <MaterialIcons name="close" size={28} color="white" />
+            </TouchableOpacity>
+            <View style={styles.modalStatusContainer}>
+              <View style={[styles.modalStatusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
+              <MaterialIcons name="check-circle" size={20} color="#4CAF50" />
+            </View>
+          </View>
+
+          <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+            {/* Animal Image */}
+            <View style={styles.modalImageContainer}>
+              <Image source={selectedAnimal.image} style={styles.modalImage} />
             </View>
 
-            <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
-              {/* Animal Image */}
-              <View style={styles.modalImageContainer}>
-                <Image source={selectedAnimal.image} style={styles.modalImage} />
+            {/* Animal Info */}
+            <View style={styles.modalInfoContainer}>
+              <Text style={styles.modalAnimalName}>{selectedAnimal.name}</Text>
+              <Text style={styles.modalScientificName}>{selectedAnimal.scientificName}</Text>
+              
+              <View style={styles.modalStatusRow}>
+                <View style={[styles.statusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
+                <Text style={styles.modalStatusText}>{selectedAnimal.status}</Text>
               </View>
 
-              {/* Animal Info */}
-              <View style={styles.modalInfoContainer}>
-                <Text style={styles.modalAnimalName}>{selectedAnimal.name}</Text>
-                <Text style={styles.modalScientificName}>{selectedAnimal.scientificName}</Text>
+              {/* Description */}
+              <View style={styles.modalSection}>
+                <Text style={styles.modalSectionTitle}>Description</Text>
+                <Text style={styles.modalDescription}>{selectedAnimal.description}</Text>
+              </View>
+
+              {/* Fun Facts */}
+              <View style={styles.modalSection}>
+                <Text style={styles.modalSectionTitle}>Fun Facts</Text>
+                {selectedAnimal.facts.map((fact, index) => (
+                  <View key={index} style={styles.factRow}>
+                    <Text style={styles.factBullet}>•</Text>
+                    <Text style={styles.factText}>{fact}</Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* Additional Info */}
+              <View style={styles.modalSection}>
+                <Text style={styles.modalSectionTitle}>Details</Text>
                 
-                <View style={styles.modalStatusRow}>
-                  <View style={[styles.statusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
-                  <Text style={styles.modalStatusText}>{selectedAnimal.status}</Text>
+                <View style={styles.detailRow}>
+                  <MaterialIcons name="home" size={16} color="#4CAF50" />
+                  <Text style={styles.detailLabel}>Habitat:</Text>
+                  <Text style={styles.detailValue}>{selectedAnimal.habitat}</Text>
                 </View>
-
-                {/* Description */}
-                <View style={styles.modalSection}>
-                  <Text style={styles.modalSectionTitle}>Description</Text>
-                  <Text style={styles.modalDescription}>{selectedAnimal.description}</Text>
+                
+                <View style={styles.detailRow}>
+                  <MaterialIcons name="restaurant" size={16} color="#4CAF50" />
+                  <Text style={styles.detailLabel}>Diet:</Text>
+                  <Text style={styles.detailValue}>{selectedAnimal.diet}</Text>
                 </View>
-
-                {/* Fun Facts */}
-                <View style={styles.modalSection}>
-                  <Text style={styles.modalSectionTitle}>Fun Facts</Text>
-                  {selectedAnimal.facts.map((fact, index) => (
-                    <View key={index} style={styles.factRow}>
-                      <Text style={styles.factBullet}>•</Text>
-                      <Text style={styles.factText}>{fact}</Text>
-                    </View>
-                  ))}
-                </View>
-
-                {/* Additional Info */}
-                <View style={styles.modalSection}>
-                  <Text style={styles.modalSectionTitle}>Details</Text>
-                  
-                  <View style={styles.detailRow}>
-                    <MaterialIcons name="home" size={16} color="#4CAF50" />
-                    <Text style={styles.detailLabel}>Habitat:</Text>
-                    <Text style={styles.detailValue}>{selectedAnimal.habitat}</Text>
-                  </View>
-                  
-                  <View style={styles.detailRow}>
-                    <MaterialIcons name="restaurant" size={16} color="#4CAF50" />
-                    <Text style={styles.detailLabel}>Diet:</Text>
-                    <Text style={styles.detailValue}>{selectedAnimal.diet}</Text>
-                  </View>
-                  
-                  <View style={styles.detailRow}>
-                    <MaterialIcons name="schedule" size={16} color="#4CAF50" />
-                    <Text style={styles.detailLabel}>Lifespan:</Text>
-                    <Text style={styles.detailValue}>{selectedAnimal.lifespan}</Text>
-                  </View>
+                
+                <View style={styles.detailRow}>
+                  <MaterialIcons name="schedule" size={16} color="#4CAF50" />
+                  <Text style={styles.detailLabel}>Lifespan:</Text>
+                  <Text style={styles.detailValue}>{selectedAnimal.lifespan}</Text>
                 </View>
               </View>
-            </ScrollView>
-          </LinearGradient>
-        </View>
-      </Modal>
-    );
-  };
+            </View>
+          </ScrollView>
+        </LinearGradient>
+      </View>
+    </Modal>
+  );
+};
 
 const categoryMap = {
   'Antelopes': 'Antelope',
@@ -1016,6 +1015,13 @@ const categoryMap = {
   'Small and Medium Mammals': 'Small and Medium Mammal'
 };
 
+// Update your filteredBestiary calculation
+const filteredBestiary = bestiaryFilter === 'All' 
+  ? bestiaryData 
+  : bestiaryData.filter(animal => animal.category === categoryMap[bestiaryFilter]);
+
+// Keep your categories array as-is
+const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'Small and Medium Mammals'];
 
   // If the camera is visible, show a simulated camera screen
   if (cameraVisible) {
