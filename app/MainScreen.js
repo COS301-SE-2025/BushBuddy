@@ -27,6 +27,7 @@ const MainScreen = ({ route }) => {
   const [activeTab, setActiveTab] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [cameraVisible, setCameraVisible] = useState(false);
+  const [bestiaryFilter, setBestiaryFilter] = useState('All');
 
   // Navigate to MapScreen
   const handleMapNavigation = () => {
@@ -70,6 +71,67 @@ const MainScreen = ({ route }) => {
     { id: '3', title: 'Rhino Tracking', date: '2025-05-18', type: 'rhino', location: 'Sector C7' },
   ];
 
+  // Bestiary data
+  const bestiaryData = [
+  {
+    id: '1',
+    name: 'Eland',
+    scientificName: 'Taurotragus oryx',
+    status: 'Least Concern',
+    category: 'Antelope',
+    image: '/api/placeholder/150/120',
+    description: 'The largest antelope in Africa',
+    facts: ['Can jump 8 feet high', 'Weighs up to 940 kg', 'Lives in herds']
+  },  // Fixed comma added here
+  {
+    id: '2',
+    name: 'Rhino',
+    scientificName: 'Ceratotherium simum',
+    status: 'Near Threatened',
+    category: 'Mammal',
+    image: '/api/placeholder/150/120',
+    description: 'Large herbivorous mammal',
+    facts: ['Can weigh up to 2,300 kg', 'Horn made of keratin', 'Excellent hearing']
+  },
+  {
+    id: '3',
+    name: 'Buffalo',
+    scientificName: 'Syncerus caffer',
+    status: 'Least Concern',
+    category: 'Mammal',
+    image: '/api/placeholder/150/120',
+    description: 'African buffalo or Cape buffalo',
+    facts: ['Live in herds of 50-500', 'Excellent memory', 'Can weigh 900 kg']
+  },
+  {
+    id: '4',
+    name: 'Elephant',
+    scientificName: 'Loxodonta africana',
+    status: 'Endangered',
+    category: 'Mammal',
+    image: '/api/placeholder/150/120',
+    description: 'Largest land mammal',
+    facts: ['Can live 60-70 years', 'Weighs up to 6,000 kg', 'Excellent memory']
+  }
+];
+
+
+  const bestiaryCategories = ['All', 'Mammal', 'Antelope', 'Bird', 'Reptile'];
+
+  const filteredBestiary = bestiaryFilter === 'All' 
+    ? bestiaryData 
+    : bestiaryData.filter(animal => animal.category === bestiaryFilter);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Endangered': return '#FF5722';
+      case 'Near Threatened': return '#FF9800';
+      case 'Vulnerable': return '#FFC107';
+      case 'Least Concern': return '#4CAF50';
+      default: return '#757575';
+    }
+  };
+
   const renderEntryItem = ({ item }) => (
     <TouchableOpacity style={styles.entryCard}>
       <View style={[styles.entryIconContainer, 
@@ -89,6 +151,24 @@ const MainScreen = ({ route }) => {
         <Text style={styles.entryDate}>{item.date}</Text>
       </View>
       <MaterialIcons name="chevron-right" size={24} color="#777" />
+    </TouchableOpacity>
+  );
+
+  const renderBestiaryItem = ({ item }) => (
+    <TouchableOpacity style={styles.bestiaryCard}>
+      <Image source={{ uri: item.image }} style={styles.bestiaryImage} />
+      <View style={styles.bestiaryContent}>
+        <Text style={styles.bestiaryName}>{item.name}</Text>
+        <Text style={styles.bestiaryScientific}>{item.scientificName}</Text>
+        <View style={styles.bestiaryStatusContainer}>
+          <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status) }]} />
+          <Text style={styles.bestiaryStatus}>{item.status}</Text>
+        </View>
+        <Text style={styles.bestiaryDescription} numberOfLines={2}>
+          {item.description}
+        </Text>
+      </View>
+      <MaterialIcons name="chevron-right" size={20} color="#777" />
     </TouchableOpacity>
   );
 
@@ -140,22 +220,22 @@ const MainScreen = ({ route }) => {
         style={styles.gradientContainer}
       >
         {/* Header */}
-<View style={styles.header}>
-  <Image 
-    source={require('../assets/EpiUseLogo.png')} 
-    style={styles.logo} 
-    resizeMode="contain"
-  />
-  <View style={styles.titleContainer}>
-    <Text style={styles.headerTitle}>Wildlife Detection</Text>
-  </View>
-  <TouchableOpacity style={styles.profileButton}>
-    <Image 
-      source={require('../assets/Jean-Steyn-ProfilePic.jpg')}
-      style={styles.profileImage}
-    />
-  </TouchableOpacity>
-</View>
+        <View style={styles.header}>
+          <Image 
+            source={require('../assets/EpiUseLogo.png')} 
+            style={styles.logo} 
+            resizeMode="contain"
+          />
+          <View style={styles.titleContainer}>
+            <Text style={styles.headerTitle}>Wildlife Detection</Text>
+          </View>
+          <TouchableOpacity style={styles.profileButton}>
+            <Image 
+              source={require('../assets/Jean-Steyn-ProfilePic.jpg')}
+              style={styles.profileImage}
+            />
+          </TouchableOpacity>
+        </View>
 
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
@@ -224,18 +304,65 @@ const MainScreen = ({ route }) => {
             <Text style={styles.description}>
               Use this app to identify and learn about African wildlife through our advanced AI detection system.
             </Text>
+          </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity 
-                style={styles.button}
-                onPress={handleCameraAction}
-              >
-                <Text style={styles.buttonText}>Start Detection</Text>
+          {/* Bestiary Section */}
+          <View style={styles.section}>
+            <View style={styles.bestiaryHeader}>
+              <Text style={styles.sectionTitle}>Bestiary</Text>
+              <TouchableOpacity style={styles.achievementsButton}>
+                <Text style={styles.achievementsText}>Achievements</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
-                <Text style={styles.buttonText}>View Gallery</Text>
-              </TouchableOpacity>
+            </View>
+            
+            {/* Bestiary Search and Filter */}
+            <View style={styles.bestiaryControls}>
+              <View style={styles.bestiarySearchContainer}>
+                <MaterialIcons name="search" size={16} color="white" />
+                <TextInput
+                  style={styles.bestiarySearchInput}
+                  placeholder="Search"
+                  placeholderTextColor="white"
+                />
+              </View>
+              <View style={styles.filterContainer}>
+                <Text style={styles.filterLabel}>All</Text>
+                <MaterialIcons name="keyboard-arrow-down" size={16} color="#777" />
+              </View>
+            </View>
+
+            {/* Filter Pills */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterPills}>
+              {bestiaryCategories.map((category, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.filterPill,
+                    bestiaryFilter === category && styles.activeFilterPill
+                  ]}
+                  onPress={() => setBestiaryFilter(category)}
+                >
+                  <Text style={[
+                    styles.filterPillText,
+                    bestiaryFilter === category && styles.activeFilterPillText
+                  ]}>
+                    {category}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            {/* Bestiary Grid */}
+            <View style={styles.bestiaryGrid}>
+              {filteredBestiary.map((animal, index) => (
+                <TouchableOpacity key={animal.id} style={styles.bestiaryGridItem}>
+                  <Image source={{ uri: animal.image }} style={styles.bestiaryGridImage} />
+                  <Text style={styles.bestiaryGridName}>{animal.name}</Text>
+                  <View style={styles.bestiaryGridStatus}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(animal.status) }]} />
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
 
@@ -372,7 +499,16 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+    resizeMode: 'cover',
   },
   welcomeSection: {
     paddingHorizontal: 20,
@@ -387,21 +523,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  profileButton: {
-  width: 40,
-  height: 40,
-  borderRadius: 20,
-  backgroundColor: 'rgba(255,255,255,0.1)',
-  justifyContent: 'center',
-  alignItems: 'center',
-  overflow: 'hidden',
-},
-profileImage: {
-  width: '100%',
-  height: '100%',
-  borderRadius: 20,
-  resizeMode: 'cover',
-},
   searchContainer: {
     paddingHorizontal: 20,
     paddingBottom: 15,
@@ -440,24 +561,6 @@ profileImage: {
     lineHeight: 24,
     marginBottom: 20,
   },
-  buttonContainer: {
-    marginBottom: 15,
-    gap: 15,
-  },
-  button: {
-    backgroundColor: '#ff6b00',
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  secondaryButton: {
-    backgroundColor: '#2e5e2b',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   quickActionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -479,6 +582,156 @@ profileImage: {
     color: 'white',
     fontSize: 12,
     textAlign: 'center',
+  },
+  // Bestiary Styles
+  bestiaryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  achievementsButton: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+  },
+  achievementsText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  bestiaryControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+  bestiarySearchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flex: 1,
+    marginRight: 10,
+  },
+  bestiarySearchInput: {
+    color: 'white',
+    fontSize: 14,
+    marginLeft: 8,
+    flex: 1,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  filterLabel: {
+    color: 'white',
+    fontSize: 14,
+    marginRight: 4,
+  },
+  filterPills: {
+    marginBottom: 15,
+  },
+  filterPill: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  activeFilterPill: {
+    backgroundColor: '#ff6b00',
+  },
+  filterPillText: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 14,
+  },
+  activeFilterPillText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  bestiaryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  bestiaryGridItem: {
+    width: '48%',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  bestiaryGridImage: {
+    width: '100%',
+    height: 80,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  bestiaryGridName: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  bestiaryGridStatus: {
+    alignItems: 'center',
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  bestiaryCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+  },
+  bestiaryImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 15,
+  },
+  bestiaryContent: {
+    flex: 1,
+  },
+  bestiaryName: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  bestiaryScientific: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 12,
+    fontStyle: 'italic',
+    marginTop: 2,
+  },
+  bestiaryStatusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  bestiaryStatus: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 12,
+    marginLeft: 6,
+  },
+  bestiaryDescription: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 12,
+    marginTop: 4,
   },
   entryCard: {
     flexDirection: 'row',
@@ -603,7 +856,6 @@ profileImage: {
     elevation: 5,
   },
   // Camera styles
-  // Not working without expo-camera
   cameraContainer: {
     flex: 1,
     backgroundColor: 'black',
