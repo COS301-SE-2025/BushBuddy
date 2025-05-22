@@ -5,8 +5,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
   Alert,
+  Dimensions,
   FlatList,
   Image,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -15,6 +17,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const MainScreen = ({ route }) => {
   // Use the navigation hook instead of prop
@@ -28,6 +32,8 @@ const MainScreen = ({ route }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cameraVisible, setCameraVisible] = useState(false);
   const [bestiaryFilter, setBestiaryFilter] = useState('All');
+  const [selectedAnimal, setSelectedAnimal] = useState(null);
+  const [showAnimalModal, setShowAnimalModal] = useState(false);
 
   // Navigate to MapScreen
   const handleMapNavigation = () => {
@@ -64,25 +70,39 @@ const MainScreen = ({ route }) => {
     setCameraVisible(false);
   };
 
+  // Handle animal selection
+  const handleAnimalPress = (animal) => {
+    setSelectedAnimal(animal);
+    setShowAnimalModal(true);
+  };
+
+  // Close animal modal
+  const closeAnimalModal = () => {
+    setShowAnimalModal(false);
+    setSelectedAnimal(null);
+  };
+
   // Sample data for wildlife detection history
   const recentEntries = [
     { id: '1', title: 'Elephant Detection', date: '2025-05-19', type: 'elephant', location: 'Sector A4' },
     { id: '2', title: 'Lion Sighting', date: '2025-05-19', type: 'lion', location: 'Sector B2' },
     { id: '3', title: 'Rhino Tracking', date: '2025-05-18', type: 'rhino', location: 'Sector C7' },
   ];
-
-  // Fields for database?
+  //json format that would be used to store the data
   /*
     id:
     name:
     scientificName:
     status:
-    category: 
-    image:
+    category:
     image:
     description:
     facts:
- */
+    habitat:
+    diet:
+    lifespan: 
+    */
+
   // Bestiary data
   const bestiaryData = [
   {
@@ -91,10 +111,18 @@ const MainScreen = ({ route }) => {
     scientificName: 'Taurotragus oryx',
     status: 'Least Concern',
     category: 'Antelope',
-    //image: '../assets/Eland.jpg',// fix this later when using real images
     image: require('../assets/Eland.jpg'),
-    description: 'The largest antelope in Africa',
-    facts: ['Can jump 8 feet high', 'Weighs up to 940 kg', 'Lives in herds']
+    description: 'The largest antelope in Africa, known for its impressive size and graceful movements.',
+    facts: [
+      'Can jump 8 feet high from a standing position',
+      'Weighs up to 940 kg, making it the largest antelope',
+      'Lives in herds of 25-60 individuals',
+      'Can survive without water for long periods',
+      'Both males and females have spiral horns'
+    ],
+    habitat: 'Savannas, grasslands, and semi-desert regions',
+    diet: 'Herbivore - grasses, leaves, fruits, and bark',
+    lifespan: '15-20 years in the wild'
   },
   {
     id: '2',
@@ -102,10 +130,18 @@ const MainScreen = ({ route }) => {
     scientificName: 'Ceratotherium simum',
     status: 'Near Threatened',
     category: 'Mammal',
-    //image: '../assets/Rhino.jpg',
     image: require('../assets/Rhino.jpg'),
-    description: 'Large herbivorous mammal',
-    facts: ['Can weigh up to 2,300 kg', 'Horn made of keratin', 'Excellent hearing']
+    description: 'Large herbivorous mammal known for its distinctive horn and thick protective skin.',
+    facts: [
+      'Can weigh up to 2,300 kg',
+      'Horn made of keratin, same material as human hair',
+      'Excellent hearing and sense of smell',
+      'Can run up to 50 km/h despite their size',
+      'Poor eyesight but keen sense of smell'
+    ],
+    habitat: 'Grasslands, savannas, and shrublands',
+    diet: 'Herbivore - grasses and low shrubs',
+    lifespan: '35-50 years in the wild'
   },
   {
     id: '3',
@@ -113,10 +149,18 @@ const MainScreen = ({ route }) => {
     scientificName: 'Syncerus caffer',
     status: 'Least Concern',
     category: 'Mammal',
-    //image: '../assets/Bufalo.jpg',
     image: require('../assets/Bufalo.jpg'),
-    description: 'African buffalo or Cape buffalo',
-    facts: ['Live in herds of 50-500', 'Excellent memory', 'Can weigh 900 kg']
+    description: 'African buffalo or Cape buffalo, one of the Big Five African game animals.',
+    facts: [
+      'Live in herds of 50-500 individuals',
+      'Excellent memory and can hold grudges',
+      'Can weigh up to 900 kg',
+      'Known for their unpredictable temperament',
+      'Both males and females have horns'
+    ],
+    habitat: 'Savannas, woodlands, and wetlands',
+    diet: 'Herbivore - primarily grasses',
+    lifespan: '15-25 years in the wild'
   },
   {
     id: '4',
@@ -124,15 +168,22 @@ const MainScreen = ({ route }) => {
     scientificName: 'Loxodonta africana',
     status: 'Endangered',
     category: 'Mammal',
-    //image: '../assets/Elephant.jpg',
     image: require('../assets/Elephant.jpg'),
-    description: 'Largest land mammal',
-    facts: ['Can live 60-70 years', 'Weighs up to 6,000 kg', 'Excellent memory']
+    description: 'Largest land mammal known for intelligence, strong family bonds, and conservation importance.',
+    facts: [
+      'Can live 60-70 years in the wild',
+      'Weighs up to 6,000 kg',
+      'Excellent memory - can remember other elephants for decades',
+      'Trunk contains over 40,000 muscles',
+      'Communicate through infrasonic sounds'
+    ],
+    habitat: 'Savannas, forests, and grasslands',
+    diet: 'Herbivore - grasses, fruits, bark, and roots',
+    lifespan: '60-70 years in the wild'
   }
 ];
 
-
-  const bestiaryCategories = ['All', 'Mammal', 'Antelope', 'Bird', 'Reptile'];
+  const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'Small and Medium Mammals'];
 
   const filteredBestiary = bestiaryFilter === 'All' 
     ? bestiaryData 
@@ -187,6 +238,99 @@ const MainScreen = ({ route }) => {
       <MaterialIcons name="chevron-right" size={20} color="#777" />
     </TouchableOpacity>
   );
+
+  // Animal Detail Modal Component
+  const AnimalDetailModal = () => {
+    if (!selectedAnimal) return null;
+
+    return (
+      <Modal
+        visible={showAnimalModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={closeAnimalModal}
+      >
+        <View style={styles.modalContainer}>
+          <LinearGradient
+            colors={['#4c8c4a', '#1e3b1d']}
+            style={styles.modalGradient}
+          >
+            {/* Modal Header */}
+            <View style={styles.modalHeader}>
+              <TouchableOpacity 
+                style={styles.modalCloseButton}
+                onPress={closeAnimalModal}
+              >
+                <MaterialIcons name="close" size={28} color="white" />
+              </TouchableOpacity>
+              <View style={styles.modalStatusContainer}>
+                <View style={[styles.modalStatusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
+                <MaterialIcons name="check-circle" size={20} color="#4CAF50" />
+              </View>
+            </View>
+
+            <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+              {/* Animal Image */}
+              <View style={styles.modalImageContainer}>
+                <Image source={selectedAnimal.image} style={styles.modalImage} />
+              </View>
+
+              {/* Animal Info */}
+              <View style={styles.modalInfoContainer}>
+                <Text style={styles.modalAnimalName}>{selectedAnimal.name}</Text>
+                <Text style={styles.modalScientificName}>{selectedAnimal.scientificName}</Text>
+                
+                <View style={styles.modalStatusRow}>
+                  <View style={[styles.statusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
+                  <Text style={styles.modalStatusText}>{selectedAnimal.status}</Text>
+                </View>
+
+                {/* Description */}
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Description</Text>
+                  <Text style={styles.modalDescription}>{selectedAnimal.description}</Text>
+                </View>
+
+                {/* Fun Facts */}
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Fun Facts</Text>
+                  {selectedAnimal.facts.map((fact, index) => (
+                    <View key={index} style={styles.factRow}>
+                      <Text style={styles.factBullet}>•</Text>
+                      <Text style={styles.factText}>{fact}</Text>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Additional Info */}
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Details</Text>
+                  
+                  <View style={styles.detailRow}>
+                    <MaterialIcons name="home" size={16} color="#4CAF50" />
+                    <Text style={styles.detailLabel}>Habitat:</Text>
+                    <Text style={styles.detailValue}>{selectedAnimal.habitat}</Text>
+                  </View>
+                  
+                  <View style={styles.detailRow}>
+                    <MaterialIcons name="restaurant" size={16} color="#4CAF50" />
+                    <Text style={styles.detailLabel}>Diet:</Text>
+                    <Text style={styles.detailValue}>{selectedAnimal.diet}</Text>
+                  </View>
+                  
+                  <View style={styles.detailRow}>
+                    <MaterialIcons name="schedule" size={16} color="#4CAF50" />
+                    <Text style={styles.detailLabel}>Lifespan:</Text>
+                    <Text style={styles.detailValue}>{selectedAnimal.lifespan}</Text>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          </LinearGradient>
+        </View>
+      </Modal>
+    );
+  };
 
   // If the camera is visible, show a simulated camera screen
   if (cameraVisible) {
@@ -316,66 +460,70 @@ const MainScreen = ({ route }) => {
               </View>
             </View>
           </View>
-          {/* Fix this using uri when using real images..for now demo data */}
+
           {/* Bestiary Section */}
-<View style={styles.section}>
-  <View style={styles.bestiaryHeader}>
-    <Text style={styles.sectionTitle}>Bestiary</Text>
-    <TouchableOpacity style={styles.achievementsButton}>
-      <Text style={styles.achievementsText}>Achievements</Text>
-    </TouchableOpacity>
-  </View>
+          <View style={styles.section}>
+            <View style={styles.bestiaryHeader}>
+              <Text style={styles.sectionTitle}>Bestiary</Text>
+              <TouchableOpacity style={styles.achievementsButton}>
+                <Text style={styles.achievementsText}>Achievements</Text>
+              </TouchableOpacity>
+            </View>
 
-  {/* Bestiary Search and Filter */}
-  <View style={styles.bestiaryControls}>
-    <View style={styles.bestiarySearchContainer}>
-      <MaterialIcons name="search" size={16} color="white" />
-      <TextInput
-        style={styles.bestiarySearchInput}
-        placeholder="Search"
-        placeholderTextColor="white"
-      />
-    </View>
-    <View style={styles.filterContainer}>
-      <Text style={styles.filterLabel}>All</Text>
-      <MaterialIcons name="keyboard-arrow-down" size={16} color="#777" />
-    </View>
-  </View>
+            {/* Bestiary Search and Filter */}
+            <View style={styles.bestiaryControls}>
+              <View style={styles.bestiarySearchContainer}>
+                <MaterialIcons name="search" size={16} color="white" />
+                <TextInput
+                  style={styles.bestiarySearchInput}
+                  placeholder="Search"
+                  placeholderTextColor="white"
+                />
+              </View>
+              <View style={styles.filterContainer}>
+                <Text style={styles.filterLabel}>All</Text>
+                <MaterialIcons name="keyboard-arrow-down" size={16} color="#777" />
+              </View>
+            </View>
 
-  {/* Filter Pills */}
-  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterPills}>
-    {bestiaryCategories.map((category, index) => (
-      <TouchableOpacity
-        key={index}
-        style={[
-          styles.filterPill,
-          bestiaryFilter === category && styles.activeFilterPill
-        ]}
-        onPress={() => setBestiaryFilter(category)}
-      >
-        <Text style={[
-          styles.filterPillText,
-          bestiaryFilter === category && styles.activeFilterPillText
-        ]}>
-          {category}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </ScrollView>
+            {/* Filter Pills */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterPills}>
+              {bestiaryCategories.map((category, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.filterPill,
+                    bestiaryFilter === category && styles.activeFilterPill
+                  ]}
+                  onPress={() => setBestiaryFilter(category)}
+                >
+                  <Text style={[
+                    styles.filterPillText,
+                    bestiaryFilter === category && styles.activeFilterPillText
+                  ]}>
+                    {category}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
-  {/* Bestiary Grid */}
-  <View style={styles.bestiaryGrid}>
-    {filteredBestiary.map((animal) => (
-      <TouchableOpacity key={animal.id} style={styles.bestiaryGridItem}>
-        <Image source={animal.image} style={styles.bestiaryGridImage} />
-        <Text style={styles.bestiaryGridName}>{animal.name}</Text>
-        <View style={styles.bestiaryGridStatus}>
-          <View style={[styles.statusDot, { backgroundColor: getStatusColor(animal.status) }]} />
-        </View>
-      </TouchableOpacity>
-    ))}
-  </View>
-</View>
+            {/* Bestiary Grid */}
+            <View style={styles.bestiaryGrid}>
+              {filteredBestiary.map((animal) => (
+                <TouchableOpacity 
+                  key={animal.id} 
+                  style={styles.bestiaryGridItem}
+                  onPress={() => handleAnimalPress(animal)}
+                >
+                  <Image source={animal.image} style={styles.bestiaryGridImage} />
+                  <Text style={styles.bestiaryGridName}>{animal.name}</Text>
+                  <View style={styles.bestiaryGridStatus}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(animal.status) }]} />
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
 
           {/* Recent Detections */}
           <View style={styles.section}>
@@ -471,6 +619,9 @@ const MainScreen = ({ route }) => {
           </TouchableOpacity>
         </View>
       </LinearGradient>
+
+      {/* Animal Detail Modal */}
+      <AnimalDetailModal />
     </SafeAreaView>
   );
 };
@@ -863,6 +1014,120 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#1e3b1d',
+  },
+  modalGradient: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight || 40,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+  },
+  modalCloseButton: {
+    padding: 8,
+  },
+  modalStatusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  modalStatusDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  modalContent: {
+    flex: 1,
+  },
+  modalImageContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  modalImage: {
+    width: width * 0.9,
+    height: height * 0.3,
+    borderRadius: 15,
+    alignSelf: 'center',
+  },
+  modalInfoContainer: {
+    paddingHorizontal: 20,
+  },
+  modalAnimalName: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  modalScientificName: {
+    color: '#4CAF50',
+    fontSize: 16,
+    fontStyle: 'italic',
+    marginBottom: 12,
+  },
+  modalStatusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 20,
+  },
+  modalStatusText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  modalSection: {
+    marginBottom: 25,
+  },
+  modalSectionTitle: {
+    color: '#4CAF50',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  modalDescription: {
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  factRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+  },
+  factBullet: {
+    color: '#4CAF50',
+    fontSize: 16,
+  },
+  factText: {
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 16,
+    flex: 1,
+    lineHeight: 22,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 15,
+  },
+  detailLabel: {
+    color: '#4CAF50',
+    fontSize: 16,
+    fontWeight: '500',
+    width: 80,
+  },
+  detailValue: {
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 16,
+    flex: 1,
   },
   // Camera styles
   cameraContainer: {
