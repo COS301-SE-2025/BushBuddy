@@ -6,7 +6,6 @@ import { useState } from 'react';
 import {
     FlatList,
     Image,
-    Modal,
     SafeAreaView,
     StyleSheet,
     Text,
@@ -18,236 +17,175 @@ import {
 const FeedScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState('all'); // 'all', 'elephant', 'lion', 'rhino' for now
-  const [selectedEntry, setSelectedEntry] = useState(null);
-  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('Friends');
 
-  // Sample data for wildlife detection history
-  //what would the api need?
-  /*const historyEntries = [
+  // Sample data for social wildlife feed
+  const feedEntries = [
     { 
-      id:
-      title: 
-      date:
-      time:
-      type:
-      location:
-      count: 
-      description:
-      confidence:
-      image:
-    },*/
-  const historyEntries = [
-    { 
-      id: '1', 
-      title: 'Elephant Herd Detection', 
-      date: '2025-05-19', 
-      time: '14:30:22',
-      type: 'elephant', 
-      location: 'Sector A4',
-      count: 8,
-      description: 'Large herd of elephants detected near the water hole. Multiple calves present.',
-      confidence: 98,
-      image: require('../assets/Elephant-Herd-Demo.jpg') // Placeholder replace with cool pics later future Jean dont forget
+      id: '1',
+      type: 'elephant',
+      title: 'Elephant Bull Spotted',
+      user: 'Ruan Esterhuizen',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      location: 'Kruger National Park',
+      timestamp: '21/05/2025 8:45',
+      image: require('../assets/Elephant-Herd-Demo.jpg'),
+      likes: 24,
+      comments: 8,
+      isLiked: false
     },
     { 
-      id: '2', 
-      title: 'Lion Pride Sighting', 
-      date: '2025-05-19', 
-      time: '11:15:46',
-      type: 'lion', 
-      location: 'Sector B2',
-      count: 5,
-      description: 'Pride of lions spotted resting in the shade. Two males and three females identified.',
-      confidence: 94,
-      image: require('../assets/Pride-Lions-Demo.jpg') // Placeholder
+      id: '2',
+      type: 'lion',
+      title: 'Pride of Lions',
+      user: 'Ruben Goda',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      location: 'Mabula Nature Reserve',
+      timestamp: '20/05/2025 17:45',
+      image: require('../assets/Pride-Lions-Demo.jpg'),
+      likes: 18,
+      comments: 5,
+      isLiked: true
     },
     { 
-      id: '3', 
-      title: 'Rhino Tracking', 
-      date: '2025-05-18', 
-      time: '09:45:10',
-      type: 'rhino', 
-      location: 'Sector C7',
-      count: 2,
-      description: 'Two rhinoceros tracked moving across the savanna. One adult and one juvenile.',
-      confidence: 96,
-      image: require('../assets/rhino-demo.jpg') // Placeholder
+      id: '3',
+      type: 'rhino',
+      title: 'White Rhinos Spotted',
+      user: 'Raffie',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      location: 'Dinokeng',
+      timestamp: '21/05/2025 8:45',
+      image: require('../assets/rhino-demo.jpg'),
+      likes: 31,
+      comments: 12,
+      isLiked: false
     },
     { 
-      id: '4', 
-      title: 'Elephant Bull Detection', 
-      date: '2025-05-18', 
-      time: '16:20:05',
-      type: 'elephant', 
-      location: 'Sector D3',
-      count: 1,
-      description: 'Lone bull elephant detected moving through the grasslands. Large tusks noted.',
-      confidence: 99,
-      image: require('../assets/Rhino-Bull-Demo.jpg') // Placeholder
-    },
-    { 
-      id: '5', 
-      title: 'Lion Hunt Observation', 
-      date: '2025-05-17', 
-      time: '07:30:42',
-      type: 'lion', 
-      location: 'Sector B5',
-      count: 3,
-      description: 'Three lionesses observed in hunting formation. Tracking a herd of gazelles.',
-      confidence: 92,
-      image: require('../assets/Lion-Hunt.jpg') // Placeholder
+      id: '4',
+      type: 'antelope',
+      title: 'Eland Spotted',
+      user: 'Tom',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      location: 'Rietvlei Nature Reserve',
+      timestamp: '21/05/2025 8:45',
+      image: require('../assets/Eland.jpg'),
+      likes: 15,
+      comments: 3,
+      isLiked: false
     },
   ];
 
-  // Make 
-  // Filter the entries based on the selected filter
-  const filteredEntries = historyEntries.filter(entry => {
-    // Apply search filter first
+  // Filter options
+  const filterOptions = ['Friends', 'Following', 'Nearby', 'Popular'];
+
+  // Animal type icons for the top filter bar
+  const animalFilters = [
+    { type: 'all', icon: 'pets', color: '#FF6B35' },
+    { type: 'elephant', icon: 'pets', color: '#4CAF50' },
+    { type: 'lion', icon: 'warning', color: '#FF9800' },
+    { type: 'rhino', icon: 'track-changes', color: '#2196F3' },
+    { type: 'antelope', icon: 'nature', color: '#9C27B0' },
+    { type: 'bird', icon: 'flight', color: '#00BCD4' }
+  ];
+
+  const [selectedAnimalFilter, setSelectedAnimalFilter] = useState('all');
+
+  // Filter entries based on search and filters
+  const filteredEntries = feedEntries.filter(entry => {
     const matchesSearch = entry.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                        entry.location.toLowerCase().includes(searchQuery.toLowerCase());
+                        entry.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        entry.user.toLowerCase().includes(searchQuery.toLowerCase());
     
-    // Then apply type filter
-    if (filter === 'all') {
+    if (selectedAnimalFilter === 'all') {
       return matchesSearch;
     } else {
-      return entry.type === filter && matchesSearch;
+      return entry.type === selectedAnimalFilter && matchesSearch;
     }
   });
 
-  const renderEntryItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.entryCard}
-      onPress={() => {
-        setSelectedEntry(item);
-        setDetailModalVisible(true);
-      }}
-    >
-      <Image source={item.image} style={styles.entryImage} />
-      <View style={styles.entryContent}>
-        <View style={styles.entryHeader}>
-          <View style={[
-            styles.typeIndicator,
-            item.type === 'elephant' ? { backgroundColor: '#4CAF50' } :
-            item.type === 'lion' ? { backgroundColor: '#FF9800' } :
-            { backgroundColor: '#2196F3' }
-          ]} />
-          <Text style={styles.entryTitle}>{item.title}</Text>
-        </View>
-        <View style={styles.entryDetails}>
-          <View style={styles.detailRow}>
-            <MaterialIcons name="location-on" size={14} color="#777" />
-            <Text style={styles.detailText}>{item.location}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <MaterialIcons name="access-time" size={14} color="#777" />
-            <Text style={styles.detailText}>{item.date}, {item.time}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <MaterialIcons name="group" size={14} color="#777" />
-            <Text style={styles.detailText}>{item.count} detected</Text>
-          </View>
-        </View>
-      </View>
-      <MaterialIcons name="chevron-right" size={24} color="#777" />
-    </TouchableOpacity>
-  );
-
-  // Modal for detailed view
-  const renderDetailModal = () => {
-    if (!selectedEntry) return null;
-    
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={detailModalVisible}
-        onRequestClose={() => setDetailModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity 
-                style={styles.closeButton}
-                onPress={() => setDetailModalVisible(false)}
-              >
-                <MaterialIcons name="close" size={24} color="#333" />
-              </TouchableOpacity>
-              <Text style={styles.modalTitle}>Detection Details</Text>
-              <TouchableOpacity style={styles.shareButton}>
-                <MaterialIcons name="share" size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-            
-            <Image source={selectedEntry.image} style={styles.detailImage} />
-            
-            <View style={styles.detailContent}>
-              <View style={styles.detailHeader}>
-                <View style={[
-                  styles.detailTypeIndicator,
-                  selectedEntry.type === 'elephant' ? { backgroundColor: '#4CAF50' } :
-                  selectedEntry.type === 'lion' ? { backgroundColor: '#FF9800' } :
-                  { backgroundColor: '#2196F3' }
-                ]}>
-                  <MaterialIcons 
-                    name={
-                      selectedEntry.type === 'elephant' ? 'pets' : 
-                      selectedEntry.type === 'lion' ? 'warning' : 
-                      'track-changes'
-                    } 
-                    size={24} 
-                    color="white" 
-                  />
-                </View>
-                <Text style={styles.detailTitle}>{selectedEntry.title}</Text>
-              </View>
-              
-              <View style={styles.infoSection}>
-                <View style={styles.infoRow}>
-                  <MaterialIcons name="location-on" size={20} color="#666" />
-                  <Text style={styles.infoText}>{selectedEntry.location}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <MaterialIcons name="access-time" size={20} color="#666" />
-                  <Text style={styles.infoText}>{selectedEntry.date}, {selectedEntry.time}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <MaterialIcons name="group" size={20} color="#666" />
-                  <Text style={styles.infoText}>{selectedEntry.count} individuals detected</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <MaterialIcons name="verified" size={20} color="#666" />
-                  <Text style={styles.infoText}>Confidence: {selectedEntry.confidence}%</Text>
-                </View>
-              </View>
-              
-              <View style={styles.descriptionSection}>
-                <Text style={styles.descriptionTitle}>Description</Text>
-                <Text style={styles.descriptionText}>{selectedEntry.description}</Text>
-              </View>
-              
-              <View style={styles.actionButtons}>
-                <TouchableOpacity 
-                  style={[styles.actionButton, { backgroundColor: '#2196F3' }]}
-                  onPress={() => {
-                    setDetailModalVisible(false);
-                    navigation.navigate('MapScreen');
-                  }}
-                >
-                  <MaterialIcons name="map" size={20} color="white" />
-                  <Text style={styles.actionButtonText}>View on Map</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#4CAF50' }]}>
-                  <MaterialIcons name="edit" size={20} color="white" />
-                  <Text style={styles.actionButtonText}>Add Notes</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    );
+  const toggleLike = (entryId) => {
+    // In a real app, this would make an API call
+    console.log('Toggle like for entry:', entryId);
   };
+
+  const renderFeedItem = ({ item }) => (
+    <View style={styles.feedCard}>
+      {/* User Header */}
+      <View style={styles.userHeader}>
+        <View style={styles.userInfo}>
+          <View style={[
+            styles.animalTypeIcon,
+            { backgroundColor: 
+              item.type === 'elephant' ? '#4CAF50' :
+              item.type === 'lion' ? '#FF9800' :
+              item.type === 'rhino' ? '#2196F3' :
+              '#9C27B0'
+            }
+          ]}>
+            <MaterialIcons 
+              name={
+                item.type === 'elephant' ? 'pets' :
+                item.type === 'lion' ? 'warning' :
+                item.type === 'rhino' ? 'track-changes' :
+                'nature'
+              } 
+              size={20} 
+              color="white" 
+            />
+          </View>
+          <View style={styles.userDetails}>
+            <Text style={styles.animalTitle}>{item.title}</Text>
+            <Text style={styles.userName}>{item.user}</Text>
+          </View>
+        </View>
+        <TouchableOpacity style={styles.moreButton}>
+          <MaterialIcons name="more-vert" size={20} color="#666" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Location and Time */}
+      <View style={styles.locationInfo}>
+        <MaterialIcons name="location-on" size={16} color="#FF6B35" />
+        <Text style={styles.locationText}>{item.location}</Text>
+        <Text style={styles.timestampText}>{item.timestamp}</Text>
+      </View>
+
+      {/* Image */}
+      <Image source={item.image} style={styles.feedImage} />
+
+      {/* Actions */}
+      <View style={styles.actionBar}>
+        <TouchableOpacity 
+          style={styles.actionButton}
+          onPress={() => toggleLike(item.id)}
+        >
+          <MaterialIcons 
+            name={item.isLiked ? "favorite" : "favorite-border"} 
+            size={24} 
+            color={item.isLiked ? "#FF6B35" : "#666"} 
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton}>
+          <MaterialIcons name="chat-bubble-outline" size={24} color="#666" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton}>
+          <MaterialIcons name="share" size={24} color="#666" />
+        </TouchableOpacity>
+        <View style={styles.spacer} />
+        <TouchableOpacity style={styles.actionButton}>
+          <MaterialIcons name="bookmark-border" size={24} color="#666" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Like and comment counts */}
+      <View style={styles.engagementInfo}>
+        <Text style={styles.likesText}>{item.likes} likes</Text>
+        {item.comments > 0 && (
+          <Text style={styles.commentsText}>View all {item.comments} comments</Text>
+        )}
+      </View>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -258,103 +196,85 @@ const FeedScreen = () => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialIcons name="arrow-back" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Detection History</Text>
-          <TouchableOpacity style={styles.optionsButton}>
-            <MaterialIcons name="more-vert" size={24} color="white" />
+          <Text style={styles.headerTitle}>Feed</Text>
+          <TouchableOpacity style={styles.profileButton}>
+            <View style={styles.profilePlaceholder} />
           </TouchableOpacity>
         </View>
 
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <View style={styles.searchBar}>
-            <MaterialIcons name="search" size={20} color="#white" style={styles.searchIcon} />
+            <MaterialIcons name="search" size={20} color="rgba(255,255,255,0.7)" />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search detections..."
-              placeholderTextColor="#white"
+              placeholder="Search Sightings"
+              placeholderTextColor="rgba(255,255,255,0.7)"
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
-            {searchQuery.length > 0 && (
-              <TouchableOpacity 
-                style={styles.clearButton}
-                onPress={() => setSearchQuery('')}
-              >
-                <MaterialIcons name="clear" size={20} color="#777" />
-              </TouchableOpacity>
-            )}
           </View>
         </View>
 
-        {/* Filter Tabs */}
-        <View style={styles.filterTabs}>
-          <TouchableOpacity 
-            style={[styles.filterTab, filter === 'all' && styles.activeFilterTab]}
-            onPress={() => setFilter('all')}
-          >
-            <Text style={[styles.filterTabText, filter === 'all' && styles.activeFilterTabText]}>All</Text>
+        {/* Filter Dropdown and Icons */}
+        <View style={styles.filtersContainer}>
+          {/* Dropdown Filter */}
+          <TouchableOpacity style={styles.dropdownFilter}>
+            <Text style={styles.dropdownText}>{selectedFilter}</Text>
+            <MaterialIcons name="keyboard-arrow-down" size={20} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.filterTab, filter === 'elephant' && styles.activeFilterTab]}
-            onPress={() => setFilter('elephant')}
-          >
-            <MaterialIcons 
-              name="pets" 
-              size={18} 
-              color={filter === 'elephant' ? 'white' : '#A0A0A0'} 
-              style={styles.filterIcon}
-            />
-            <Text style={[styles.filterTabText, filter === 'elephant' && styles.activeFilterTabText]}>Elephants</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.filterTab, filter === 'lion' && styles.activeFilterTab]}
-            onPress={() => setFilter('lion')}
-          >
-            <MaterialIcons 
-              name="warning" 
-              size={18} 
-              color={filter === 'lion' ? 'white' : '#A0A0A0'} 
-              style={styles.filterIcon}
-            />
-            <Text style={[styles.filterTabText, filter === 'lion' && styles.activeFilterTabText]}>Lions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.filterTab, filter === 'rhino' && styles.activeFilterTab]}
-            onPress={() => setFilter('rhino')}
-          >
-            <MaterialIcons 
-              name="track-changes" 
-              size={18} 
-              color={filter === 'rhino' ? 'white' : '#A0A0A0'} 
-              style={styles.filterIcon}
-            />
-            <Text style={[styles.filterTabText, filter === 'rhino' && styles.activeFilterTabText]}>Rhinos</Text>
-          </TouchableOpacity>
+
+          {/* Menu and Filter Icons */}
+          <View style={styles.filterIcons}>
+            <TouchableOpacity style={styles.filterIconButton}>
+              <MaterialIcons name="menu" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.filterIconButton}>
+              <MaterialIcons name="filter-list" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Entries List */}
+        {/* Animal Type Filter */}
+        <View style={styles.animalFilterContainer}>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={animalFilters}
+            keyExtractor={(item) => item.type}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.animalFilterButton,
+                  selectedAnimalFilter === item.type && { backgroundColor: item.color }
+                ]}
+                onPress={() => setSelectedAnimalFilter(item.type)}
+              >
+                <MaterialIcons 
+                  name={item.icon} 
+                  size={24} 
+                  color={selectedAnimalFilter === item.type ? "white" : item.color} 
+                />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+
+        {/* Feed List */}
         <FlatList
           data={filteredEntries}
-          renderItem={renderEntryItem}
+          renderItem={renderFeedItem}
           keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContainer}
+          contentContainerStyle={styles.feedContainer}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
-              <MaterialIcons name="search-off" size={60} color="rgba(255,255,255,0.3)" />
-              <Text style={styles.emptyText}>No detections found</Text>
-              <Text style={styles.emptySubText}>Try adjusting your filters</Text>
+              <MaterialIcons name="photo-camera" size={60} color="rgba(255,255,255,0.3)" />
+              <Text style={styles.emptyText}>No sightings found</Text>
+              <Text style={styles.emptySubText}>Try adjusting your search or filters</Text>
             </View>
           )}
         />
-
-        {/* Detail Modal */}
-        {renderDetailModal()}
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
@@ -382,11 +302,11 @@ const FeedScreen = () => {
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.navItem}
-            onPress={() => navigation.navigate('ReportsScreen')}
+            style={[styles.navItem, styles.activeNavItem]}
+            onPress={() => navigation.navigate('FeedScreen')}
           >
-            <MaterialIcons name="bar-chart" size={24} color="#A0A0A0" />
-            <Text style={styles.navText}>Feed</Text>
+            <MaterialIcons name="article" size={24} color="#FF6B35" />
+            <Text style={[styles.navText, styles.activeNavText]}>Feed</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -402,7 +322,6 @@ const FeedScreen = () => {
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -419,26 +338,24 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingHorizontal: 20,
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
   },
-  optionsButton: {
+  profileButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  profilePlaceholder: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#ccc',
   },
   searchContainer: {
     paddingHorizontal: 20,
@@ -449,94 +366,158 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 25,
-    padding: 10,
-  },
-  searchIcon: {
-    marginRight: 10,
+    padding: 12,
+    gap: 10,
   },
   searchInput: {
     flex: 1,
     color: 'white',
     fontSize: 16,
   },
-  clearButton: {
-    padding: 5,
-  },
-  filterTabs: {
+  filtersContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 15,
   },
-  filterTab: {
+  dropdownFilter: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 8,
+    gap: 5,
   },
-  activeFilterTab: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  filterIcon: {
-    marginRight: 5,
-  },
-  filterTabText: {
-    color: '#A0A0A0',
-    fontSize: 14,
-  },
-  activeFilterTabText: {
+  dropdownText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '500',
   },
-  listContainer: {
-    paddingHorizontal: 20,
+  filterIcons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  filterIconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animalFilterContainer: {
+    paddingHorizontal: 15,
     paddingBottom: 20,
   },
-  entryCard: {
-    flexDirection: 'row',
+  animalFilterButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  feedContainer: {
+    paddingBottom: 20,
+  },
+  feedCard: {
+    backgroundColor: 'white',
+    marginHorizontal: 15,
+    marginBottom: 20,
     borderRadius: 15,
-    marginBottom: 15,
     overflow: 'hidden',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  entryImage: {
-    width: 100,
-    height: 100,
-  },
-  entryContent: {
-    flex: 1,
+  userHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 15,
   },
-  entryHeader: {
+  userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
   },
-  typeIndicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 10,
+  animalTypeIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
-  entryTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  userDetails: {
     flex: 1,
   },
-  entryDetails: {
-    marginTop: 5,
+  animalTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
   },
-  detailRow: {
+  userName: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
+  },
+  moreButton: {
+    padding: 5,
+  },
+  locationInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingBottom: 10,
+    gap: 5,
+  },
+  locationText: {
+    fontSize: 14,
+    color: '#666',
+    flex: 1,
+  },
+  timestampText: {
+    fontSize: 12,
+    color: '#999',
+  },
+  feedImage: {
+    width: '100%',
+    height: 250,
+    resizeMode: 'cover',
+  },
+  actionBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+  },
+  actionButton: {
+    marginRight: 15,
+  },
+  spacer: {
+    flex: 1,
+  },
+  engagementInfo: {
+    paddingHorizontal: 15,
+    paddingBottom: 15,
+  },
+  likesText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
     marginBottom: 5,
   },
-  detailText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 12,
-    marginLeft: 5,
+  commentsText: {
+    fontSize: 14,
+    color: '#666',
   },
   emptyContainer: {
     alignItems: 'center',
@@ -554,112 +535,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 10,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: '90%',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  closeButton: {
-    padding: 5,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  shareButton: {
-    padding: 5,
-  },
-  detailImage: {
-    width: '100%',
-    height: 200,
-  },
-  detailContent: {
-    padding: 20,
-  },
-  detailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  detailTypeIndicator: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  detailTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    flex: 1,
-  },
-  infoSection: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  infoText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#444',
-  },
-  descriptionSection: {
-    marginBottom: 20,
-  },
-  descriptionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-  },
-  descriptionText: {
-    fontSize: 16,
-    color: '#444',
-    lineHeight: 24,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    borderRadius: 10,
-    marginHorizontal: 5,
-  },
-  actionButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
   bottomNav: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -674,10 +549,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
+  activeNavItem: {
+    // Active state styling
+  },
   navText: {
     color: '#A0A0A0',
     fontSize: 12,
     marginTop: 2,
+  },
+  activeNavText: {
+    color: '#FF6B35',
   },
   addButton: {
     width: 60,

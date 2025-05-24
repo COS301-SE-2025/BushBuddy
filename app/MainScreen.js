@@ -109,7 +109,7 @@ const bestiaryData = [
   // ANTELOPES
   {
     id: '17',
-    name: 'Lion',
+    name: 'Lion',  
     scientificName: 'Panthera leo',
     status: 'Vulnerable',
     category: 'Predator',
