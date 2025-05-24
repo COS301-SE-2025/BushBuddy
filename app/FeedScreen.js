@@ -6,7 +6,9 @@ import { useState } from 'react';
 import {
     FlatList,
     Image,
+    Modal,
     SafeAreaView,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -18,6 +20,8 @@ const FeedScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('Friends');
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [postDetailVisible, setPostDetailVisible] = useState(false);
 
   // Sample data for social wildlife feed
   const feedEntries = [
@@ -25,11 +29,13 @@ const FeedScreen = () => {
       id: '1',
       type: 'elephant',
       title: 'Elephant Bull Spotted',
-      user: 'Ruan Esterhuizen',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      user: 'Ruan',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
       location: 'Kruger National Park',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/Elephant-Herd-Demo.jpg'),
+      image: require('../assets/Elephant.jpg'),
+      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      description: 'I spotted this large Elephant bull near Bateleur road this morning while on a game drive',
       likes: 24,
       comments: 8,
       isLiked: false
@@ -38,11 +44,13 @@ const FeedScreen = () => {
       id: '2',
       type: 'lion',
       title: 'Pride of Lions',
-      user: 'Ruben Goda',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      user: 'Ruben',
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
       location: 'Mabula Nature Reserve',
       timestamp: '20/05/2025 17:45',
       image: require('../assets/Pride-Lions-Demo.jpg'),
+      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      description: 'Amazing pride of lions spotted resting under acacia trees. The cubs were playing while the adults kept watch.',
       likes: 18,
       comments: 5,
       isLiked: true
@@ -52,10 +60,12 @@ const FeedScreen = () => {
       type: 'rhino',
       title: 'White Rhinos Spotted',
       user: 'Raffie',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
       location: 'Dinokeng',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/rhino-demo.jpg'),
+      image: require('../assets/rhino-group.jpg'),
+      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      description: 'Two magnificent white rhinos grazing peacefully in the early morning light. Such incredible creatures!',
       likes: 31,
       comments: 12,
       isLiked: false
@@ -65,10 +75,12 @@ const FeedScreen = () => {
       type: 'antelope',
       title: 'Eland Spotted',
       user: 'Tom',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
       location: 'Rietvlei Nature Reserve',
       timestamp: '21/05/2025 8:45',
       image: require('../assets/Eland.jpg'),
+      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      description: 'Beautiful herd of eland antelope spotted during sunset. They were so graceful moving across the grassland.',
       likes: 15,
       comments: 3,
       isLiked: false
@@ -91,6 +103,7 @@ const FeedScreen = () => {
   const [selectedAnimalFilter, setSelectedAnimalFilter] = useState('all');
 
   // Filter entries based on search and filters
+  // Add more demo data later future Jean
   const filteredEntries = feedEntries.filter(entry => {
     const matchesSearch = entry.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                         entry.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -109,7 +122,13 @@ const FeedScreen = () => {
   };
 
   const renderFeedItem = ({ item }) => (
-    <View style={styles.feedCard}>
+    <TouchableOpacity 
+      style={styles.feedCard}
+      onPress={() => {
+        setSelectedPost(item);
+        setPostDetailVisible(true);
+      }}
+    >
       {/* User Header */}
       <View style={styles.userHeader}>
         <View style={styles.userInfo}>
@@ -184,8 +203,130 @@ const FeedScreen = () => {
           <Text style={styles.commentsText}>View all {item.comments} comments</Text>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
+
+  // Detailed Post Modal
+  const renderPostDetailModal = () => {
+    if (!selectedPost) return null;
+    
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={postDetailVisible}
+        onRequestClose={() => setPostDetailVisible(false)}
+      >
+        <SafeAreaView style={styles.modalContainer}>
+          <StatusBar style="dark" />
+          
+          {/* Modal Header */}
+          <View style={styles.modalHeader}>
+            <TouchableOpacity 
+              style={styles.backButton}
+              onPress={() => setPostDetailVisible(false)}
+            >
+              <MaterialIcons name="arrow-back" size={24} color="#333" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.moreOptionsButton}>
+              <MaterialIcons name="more-horiz" size={24} color="#333" />
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+            {/* Animal Type Header */}
+            <View style={styles.modalAnimalHeader}>
+              <View style={[
+                styles.modalAnimalIcon,
+                { backgroundColor: 
+                  selectedPost.type === 'elephant' ? '#4CAF50' :
+                  selectedPost.type === 'lion' ? '#FF9800' :
+                  selectedPost.type === 'rhino' ? '#2196F3' :
+                  '#9C27B0'
+                }
+              ]}>
+                <MaterialIcons 
+                  name={
+                    selectedPost.type === 'elephant' ? 'pets' :
+                    selectedPost.type === 'lion' ? 'warning' :
+                    selectedPost.type === 'rhino' ? 'track-changes' :
+                    'nature'
+                  } 
+                  size={24} 
+                  color="white" 
+                />
+              </View>
+              <Text style={styles.modalAnimalTitle}>{selectedPost.title}</Text>
+            </View>
+
+            {/* Main Image */}
+            <Image source={selectedPost.image} style={styles.modalMainImage} />
+
+            {/* Map View */}
+            <View style={styles.mapSection}>
+              <Image source={selectedPost.mapImage} style={styles.modalMapImage} />
+              <View style={styles.mapOverlay}>
+                <MaterialIcons name="location-on" size={20} color="white" />
+              </View>
+            </View>
+
+            {/* User Info Section */}
+            <View style={styles.modalUserSection}>
+              <View style={styles.modalUserInfo}>
+                <View style={styles.modalUserAvatar}>
+                  <Text style={styles.avatarText}>{selectedPost.user.charAt(0)}</Text>
+                </View>
+                <View style={styles.modalUserDetails}>
+                  <Text style={styles.modalUserName}>{selectedPost.user}</Text>
+                  <Text style={styles.modalTimestamp}>{selectedPost.timestamp}</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Description */}
+            <View style={styles.descriptionSection}>
+              <Text style={styles.descriptionText}>{selectedPost.description}</Text>
+            </View>
+
+            {/* Action Bar */}
+            <View style={styles.modalActionBar}>
+              <TouchableOpacity 
+                style={styles.modalActionButton}
+                onPress={() => toggleLike(selectedPost.id)}
+              >
+                <MaterialIcons 
+                  name={selectedPost.isLiked ? "favorite" : "favorite-border"} 
+                  size={28} 
+                  color={selectedPost.isLiked ? "#FF6B35" : "#666"} 
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalActionButton}>
+                <MaterialIcons name="chat-bubble-outline" size={28} color="#666" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalActionButton}>
+                <MaterialIcons name="share" size={28} color="#666" />
+              </TouchableOpacity>
+              <View style={styles.spacer} />
+              <TouchableOpacity style={styles.modalActionButton}>
+                <MaterialIcons name="bookmark-border" size={28} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Engagement Stats */}
+            <View style={styles.modalEngagementInfo}>
+              <Text style={styles.modalLikesText}>{selectedPost.likes} likes</Text>
+              {selectedPost.comments > 0 && (
+                <Text style={styles.modalCommentsText}>View all {selectedPost.comments} comments</Text>
+              )}
+            </View>
+
+            {/* Bottom Padding for scroll */}
+            <View style={styles.modalBottomPadding} />
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -198,7 +339,10 @@ const FeedScreen = () => {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Feed</Text>
           <TouchableOpacity style={styles.profileButton}>
-            <View style={styles.profilePlaceholder} />
+            <Image 
+              source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+              style={styles.profileImage}
+            />
           </TouchableOpacity>
         </View>
 
@@ -276,6 +420,9 @@ const FeedScreen = () => {
           )}
         />
 
+        {/* Post Detail Modal */}
+        {renderPostDetailModal()}
+
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
           <TouchableOpacity 
@@ -350,6 +497,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    resizeMode: 'cover',
   },
   profilePlaceholder: {
     width: 32,
@@ -576,6 +730,156 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  backButton: {
+    padding: 5,
+  },
+  moreOptionsButton: {
+    padding: 5,
+  },
+  modalContent: {
+    flex: 1,
+  },
+  modalAnimalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+  },
+  modalAnimalIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  modalAnimalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1,
+  },
+  modalMainImage: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'cover',
+  },
+  mapSection: {
+    position: 'relative',
+  },
+  modalMapImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  mapOverlay: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -10 }, { translateY: -10 }],
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FF6B35',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalUserSection: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#4CAF50',
+  },
+  modalUserInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  modalUserAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  avatarText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalUserDetails: {
+    flex: 1,
+  },
+  modalUserName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  modalTimestamp: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
+  },
+  descriptionSection: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  descriptionText: {
+    fontSize: 16,
+    color: '#333',
+    lineHeight: 24,
+  },
+  modalActionBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
+  },
+  modalActionButton: {
+    marginRight: 20,
+  },
+  modalEngagementInfo: {
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+  },
+  modalLikesText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 5,
+  },
+  modalCommentsText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  modalBottomPadding: {
+    height: 50,
   },
 });
 
