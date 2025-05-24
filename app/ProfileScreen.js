@@ -1,3 +1,6 @@
+// We should maybe rethink if we need the Account at the option since we have the Profile edit profile functionality
+// The change email and password options can be moved to the Edit Profile modal and is hence redundant
+// I still left it in for now, but we can remove it later if we want to
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,8 +14,12 @@ import {
     StyleSheet,
     Switch,
     Text,
+    TextInput,
     TouchableOpacity,
-    View
+    View,
+    Modal,
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
 
 const ProfileScreen = ({ route }) => {
@@ -26,20 +33,35 @@ const ProfileScreen = ({ route }) => {
   const [darkMode, setDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [locationTracking, setLocationTracking] = useState(true);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   
-  // Sample user data
-  const userData = {
-    fullName: 'Jean Steyn',
+  // Sample user data (now using state so it can be updated)
+  // This data can be fetched from an API or database later when we implement backend functionality
+  const [userData, setUserData] = useState({
+    fullName: 'Johannes Gerhardus Jean Steyn',
     role: 'Wildlife Researcher',
     location: 'Kruger National Park',
     joinDate: 'Member since January 2025',
-    email: 'JeanSteyn@wildlife.org',
+    email: 'jeanateyn007@gmail.com',
     detections: 87,
     contributions: 42,
-    accuracy: '94%'
-  };
+    accuracy: '94%',
+    bio: 'Passionate about wildlife conservation and research. Dedicated to protecting endangered species in South Africa.',
+    phone: '+27 60 702 5919'
+  });
+
+  // Edit form state
+  const [editFormData, setEditFormData] = useState({
+    fullName: userData.fullName,
+    role: userData.role,
+    location: userData.location,
+    email: userData.email,
+    bio: userData.bio,
+    phone: userData.phone
+  });
   
   // Sample achievements
+  // Add more later future Jean
   const achievements = [
     { id: '1', title: 'Big Five Spotter', description: 'Detected all Big Five animals', icon: 'emoji-events', completed: true },
     { id: '2', title: 'Bird Watcher', description: 'Identified 20 different bird species', icon: 'flight', completed: true },
@@ -91,11 +113,81 @@ const ProfileScreen = ({ route }) => {
 
   // Handle edit profile
   const handleEditProfile = () => {
+    setEditFormData({
+      fullName: userData.fullName,
+      role: userData.role,
+      location: userData.location,
+      email: userData.email,
+      bio: userData.bio,
+      phone: userData.phone
+    });
+    setIsEditModalVisible(true);
+  };
+
+
+  // Handle profile photo change
+  const handleChangeProfilePhoto = () => {
     Alert.alert(
-      'Edit Profile',
-      'This would open profile editing screen',
+      'Change Profile Photo', // Looks good on iOS and Android
+      'Choose an option',
+      [
+        { text: 'Camera', onPress: () => console.log('Open camera') },
+        { text: 'Gallery', onPress: () => console.log('Open gallery') },
+        { text: 'Cancel', style: 'cancel' }
+      ]
+    );
+  };
+
+  // Handle save profile changes
+  const handleSaveProfile = () => {
+    // Validate required fields
+    // Does this count as testing?
+    if (!editFormData.fullName.trim() || !editFormData.email.trim()) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
+    }
+
+    // Simple email validation
+    // Does this count as testing?
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(editFormData.email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
+    // Update user data
+    setUserData(prevData => ({
+      ...prevData,
+      ...editFormData
+    }));
+
+    setIsEditModalVisible(false);
+    
+    Alert.alert(
+      'Success',
+      'Profile updated successfully!',
       [{ text: 'OK' }]
     );
+  };
+
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    Alert.alert(
+      'Discard Changes',
+      'Are you sure you want to discard your changes?',
+      [
+        { text: 'Keep Editing', style: 'cancel' },
+        { text: 'Discard', onPress: () => setIsEditModalVisible(false) }
+      ]
+    );
+  };
+
+  // Update form field
+  const updateFormField = (field, value) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
@@ -107,55 +199,65 @@ const ProfileScreen = ({ route }) => {
       >
         {/* Header */}
         <View style={styles.header}>
-  <Image 
-    source={require('../assets/EpiUseLogo.png')} 
-    style={styles.logo} 
-    resizeMode="contain"
-  />
-  <View style={styles.titleContainer}>
-    <Text style={styles.headerTitle}>My Profile</Text>
-  </View>
-  <TouchableOpacity 
-    style={styles.settingsButton}
-    onPress={() => Alert.alert('Settings', 'Would open detailed settings')}
-  >
-    <MaterialIcons name="settings" size={24} color="white" />
-  </TouchableOpacity>
-</View>
+          <Image 
+            source={require('../assets/EpiUseLogo.png')} 
+            style={styles.logo} 
+            resizeMode="contain"
+          />
+          <View style={styles.titleContainer}>
+            <Text style={styles.headerTitle}>My Profile</Text>
+          </View>
+          <TouchableOpacity 
+            style={styles.settingsButton}
+            onPress={() => Alert.alert('Settings', 'Would open detailed settings')}
+          >
+            <MaterialIcons name="settings" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
 
         {/* Main Content */}
-<ScrollView style={styles.content}>
-  {/* Profile Card */}
-  <View style={styles.profileCard}>
-    <View style={styles.profileHeader}>
-      <View style={styles.profileImageContainer}>
-        <Image 
-          source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
-          style={styles.profileImage}
-          resizeMode="cover"
-        />
-        <TouchableOpacity style={styles.editImageButton}>
-          <MaterialIcons name="camera-alt" size={16} color="white" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.profileName}>{userData.fullName}</Text>
-        <Text style={styles.profileRole}>{userData.role}</Text>
-        <Text style={styles.profileLocation}>
-          <MaterialIcons name="location-on" size={14} color="rgba(255,255,255,0.7)" /> {userData.location}
-        </Text>
-        <Text style={styles.profileJoinDate}>{userData.joinDate}</Text>
-      </View>
-    </View>
-    
-    <TouchableOpacity 
-      style={styles.editProfileButton}
-      onPress={handleEditProfile}
-    >
-      <Text style={styles.editProfileText}>Edit Profile</Text>
-      <MaterialIcons name="edit" size={16} color="white" />
-    </TouchableOpacity>
-  </View>
+        <ScrollView style={styles.content}>
+          {/* Profile Card */}
+          <View style={styles.profileCard}>
+            <View style={styles.profileHeader}>
+              <View style={styles.profileImageContainer}>
+                <Image 
+                  source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+                  style={styles.profileImage}
+                  resizeMode="cover"
+                />
+                <TouchableOpacity 
+                  style={styles.editImageButton}
+                  onPress={handleChangeProfilePhoto}
+                >
+                  <MaterialIcons name="camera-alt" size={16} color="white" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.profileInfo}>
+                <Text style={styles.profileName}>{userData.fullName}</Text>
+                <Text style={styles.profileRole}>{userData.role}</Text>
+                <Text style={styles.profileLocation}>
+                  <MaterialIcons name="location-on" size={14} color="rgba(255,255,255,0.7)" /> {userData.location}
+                </Text>
+                <Text style={styles.profileJoinDate}>{userData.joinDate}</Text>
+              </View>
+            </View>
+            
+            {/* Bio Section */}
+            {userData.bio && (
+              <View style={styles.bioSection}>
+                <Text style={styles.bioText}>{userData.bio}</Text>
+              </View>
+            )}
+            
+            <TouchableOpacity 
+              style={styles.editProfileButton}
+              onPress={handleEditProfile}
+            >
+              <Text style={styles.editProfileText}>Edit Profile</Text>
+              <MaterialIcons name="edit" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
 
           {/* Statistics Section */}
           <View style={styles.section}>
@@ -335,6 +437,159 @@ const ProfileScreen = ({ route }) => {
             <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Edit Profile Modal */}
+        <Modal
+          visible={isEditModalVisible}
+          animationType="slide"
+          presentationStyle="pageSheet"
+          onRequestClose={handleCancelEdit}
+        >
+          <KeyboardAvoidingView 
+            style={styles.modalContainer}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <LinearGradient
+              colors={['#4c8c4a', '#1e3b1d']}
+              style={styles.modalGradient}
+            >
+              {/* Modal Header */}
+              <View style={styles.modalHeader}>
+                <TouchableOpacity 
+                  style={styles.modalCloseButton}
+                  onPress={handleCancelEdit}
+                >
+                  <MaterialIcons name="close" size={24} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.modalTitle}>Edit Profile</Text>
+                <TouchableOpacity 
+                  style={styles.modalSaveButton}
+                  onPress={handleSaveProfile}
+                >
+                  <Text style={styles.modalSaveText}>Save</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Modal Content */}
+              <ScrollView style={styles.modalContent}>
+                {/* Profile Photo Section */}
+                <View style={styles.modalPhotoSection}>
+                  <View style={styles.modalProfileImageContainer}>
+                    <Image 
+                      source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+                      style={styles.modalProfileImage}
+                      resizeMode="cover"
+                    />
+                    <TouchableOpacity 
+                      style={styles.modalEditImageButton}
+                      onPress={handleChangeProfilePhoto}
+                    >
+                      <MaterialIcons name="camera-alt" size={18} color="white" />
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity 
+                    style={styles.changePhotoButton}
+                    onPress={handleChangeProfilePhoto}
+                  >
+                    <Text style={styles.changePhotoText}>Change Photo</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Form Fields */}
+                <View style={styles.formContainer}>
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Full Name *</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={editFormData.fullName}
+                      onChangeText={(text) => updateFormField('fullName', text)}
+                      placeholder="Enter your full name"
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Role/Title</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={editFormData.role}
+                      onChangeText={(text) => updateFormField('role', text)}
+                      placeholder="Enter your role or title"
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Location</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={editFormData.location}
+                      onChangeText={(text) => updateFormField('location', text)}
+                      placeholder="Enter your location"
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Email *</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={editFormData.email}
+                      onChangeText={(text) => updateFormField('email', text)}
+                      placeholder="Enter your email"
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Phone</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={editFormData.phone}
+                      onChangeText={(text) => updateFormField('phone', text)}
+                      placeholder="Enter your phone number"
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                      keyboardType="phone-pad"
+                    />
+                  </View>
+
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputLabel}>Bio</Text>
+                    <TextInput
+                      style={[styles.textInput, styles.textArea]}
+                      value={editFormData.bio}
+                      onChangeText={(text) => updateFormField('bio', text)}
+                      placeholder="Tell us about yourself..."
+                      placeholderTextColor="rgba(255,255,255,0.5)"
+                      multiline
+                      numberOfLines={4}
+                      textAlignVertical="top"
+                    />
+                  </View>
+                </View>
+
+                {/* Action Buttons */}
+                <View style={styles.modalActions}>
+                  <TouchableOpacity 
+                    style={styles.cancelButton}
+                    onPress={handleCancelEdit}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={styles.saveButton}
+                    onPress={handleSaveProfile}
+                  >
+                    <Text style={styles.saveButtonText}>Save Changes</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </LinearGradient>
+          </KeyboardAvoidingView>
+        </Modal>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -446,6 +701,18 @@ const styles = StyleSheet.create({
   profileJoinDate: {
     color: 'rgba(255,255,255,0.6)',
     fontSize: 12,
+  },
+  bioSection: {
+    marginBottom: 15,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+  },
+  bioText: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 14,
+    lineHeight: 20,
+    fontStyle: 'italic',
   },
   editProfileButton: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -632,6 +899,147 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+  },
+  modalGradient: {
+    flex: 1,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  modalCloseButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  modalSaveButton: {
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  modalSaveText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContent: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  modalPhotoSection: {
+    alignItems: 'center',
+    paddingVertical: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+    marginBottom: 30,
+  },
+  modalProfileImageContainer: {
+    position: 'relative',
+    marginBottom: 15,
+  },
+  modalProfileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: '#fff',
+  },
+  modalEditImageButton: {
+    position: 'absolute',
+    bottom: 5,
+    right: 5,
+    backgroundColor: '#ff6b00',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  changePhotoButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  changePhotoText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  formContainer: {
+    paddingBottom: 30,
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  textInput: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    color: 'white',
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  textArea: {
+    height: 100,
+    paddingTop: 12,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    paddingBottom: 40,
+    gap: 15,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    paddingVertical: 15,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  cancelButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  saveButton: {
+    flex: 1,
+    backgroundColor: '#4CAF50',
+    borderRadius: 10,
+    paddingVertical: 15,
+    alignItems: 'center',
   },
 });
 
