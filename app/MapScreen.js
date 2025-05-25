@@ -14,10 +14,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Modal
 } from 'react-native';
-// We'll use a mock map implementation that doesn't require external dependencies
-// This will ensure compatibility with your current setup
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,118 +26,84 @@ const MapScreen = ({ route }) => {
   const username = params.username || 'User';
   
   const [activeTab, setActiveTab] = useState('map');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const [region, setRegion] = useState({
-    latitude: -1.2921,
-    longitude: 36.8219,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.1
-  });
-  const [userLocation, setUserLocation] = useState(null);
+  const [selectedScale, setSelectedScale] = useState('10km');
+  const [showScaleDropdown, setShowScaleDropdown] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedAnimal, setSelectedAnimal] = useState(null);
-  const [isMapReady, setIsMapReady] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
 
   // Animation values
   const detailsAnimation = useRef(new Animated.Value(0)).current;
-  const mapRef = useRef(null);
 
-  // Sample map markers data with enhanced details
+  // Scale options
+  const scaleOptions = ['1km', '5km', '10km', '25km', '50km'];
+
+  // Sample map markers data matching wireframe
   const mapMarkers = [
     { 
       id: '1', 
-      type: 'elephant', 
+      type: 'elephant_group', 
       species: 'African Bush Elephant',
       latitude: -1.2921, 
       longitude: 36.8219, 
-      count: 12, 
+      count: 3, 
       timestamp: '2h ago',
-      description: 'Herd moving north toward water source',
+      description: 'Small herd grazing near water source',
       conservation: 'Vulnerable',
-      movement: [
-        { latitude: -1.2951, longitude: 36.8200, timestamp: '4h ago' },
-        { latitude: -1.2935, longitude: 36.8210, timestamp: '3h ago' },
-        { latitude: -1.2921, longitude: 36.8219, timestamp: '2h ago' }
-      ],
-      color: '#4CAF50'
+      color: '#4CAF50',
+      position: { left: '25%', top: '35%' }
     },
     { 
       id: '2', 
-      type: 'lion', 
-      species: 'East African Lion',
+      type: 'elephant_group', 
+      species: 'African Bush Elephant',
       latitude: -1.3011, 
       longitude: 36.8565, 
-      count: 3, 
-      timestamp: '5h ago',
-      description: 'Pride resting after hunt',
+      count: 4, 
+      timestamp: '4h ago',
+      description: 'Herd moving toward eastern plains',
       conservation: 'Vulnerable',
-      movement: [
-        { latitude: -1.3020, longitude: 36.8545, timestamp: '7h ago' },
-        { latitude: -1.3015, longitude: 36.8555, timestamp: '6h ago' },
-        { latitude: -1.3011, longitude: 36.8565, timestamp: '5h ago' }
-      ],
-      color: '#FF9800'
+      color: '#4CAF50',
+      position: { left: '30%', top: '50%' }
     },
     { 
       id: '3', 
-      type: 'rhino', 
-      species: 'Black Rhinoceros',
+      type: 'elephant_group', 
+      species: 'African Bush Elephant',
       latitude: -1.2741, 
       longitude: 36.8243, 
       count: 2, 
-      timestamp: '1d ago',
-      description: 'Mother and calf spotted near south ridge',
-      conservation: 'Critically Endangered',
-      movement: [
-        { latitude: -1.2751, longitude: 36.8233, timestamp: '36h ago' },
-        { latitude: -1.2746, longitude: 36.8238, timestamp: '24h ago' },
-        { latitude: -1.2741, longitude: 36.8243, timestamp: '1d ago' }
-      ],
-      color: '#2196F3'
+      timestamp: '6h ago',
+      description: 'Mother and juvenile spotted',
+      conservation: 'Vulnerable',
+      color: '#4CAF50',
+      position: { left: '35%', top: '65%' }
     },
     { 
       id: '4', 
-      type: 'giraffe', 
-      species: 'Rothschild Giraffe',
+      type: 'warning', 
+      category: 'Alert Zone',
       latitude: -1.2851, 
       longitude: 36.8300, 
-      count: 5, 
-      timestamp: '3h ago',
-      description: 'Small group feeding on acacia trees',
-      conservation: 'Near Threatened',
-      movement: [
-        { latitude: -1.2861, longitude: 36.8290, timestamp: '5h ago' },
-        { latitude: -1.2855, longitude: 36.8295, timestamp: '4h ago' },
-        { latitude: -1.2851, longitude: 36.8300, timestamp: '3h ago' }
-      ],
-      color: '#9C27B0'
+      timestamp: '1h ago',
+      description: 'Increased human activity detected',
+      urgency: 'Medium',
+      color: '#FF5722',
+      position: { left: '40%', top: '40%' }
     },
     { 
       id: '5', 
-      type: 'warning', 
-      category: 'Poaching Risk',
-      latitude: -1.2981, 
-      longitude: 36.8319, 
-      timestamp: '30m ago',
-      description: 'Suspicious vehicle spotted near elephant territory',
-      urgency: 'High',
-      color: '#F44336'
+      type: 'camera', 
+      category: 'Camera Station',
+      latitude: -1.2881, 
+      longitude: 36.8419, 
+      timestamp: 'Active',
+      description: 'Wildlife monitoring station',
+      status: 'Online',
+      color: '#2196F3',
+      position: { left: '65%', top: '30%' }
     }
   ];
-
-  const filterOptions = ['All', 'Elephants', 'Lions', 'Rhinos', 'Giraffes', 'Alerts'];
-
-  // Get user location on component mount
-  useEffect(() => {
-    // Mock getting user location instead of using expo-location
-    setTimeout(() => {
-      setUserLocation({
-        latitude: -1.2900,
-        longitude: 36.8220
-      });
-    }, 1000);
-  }, []);
 
   // Handle showing/hiding animal details
   useEffect(() => {
@@ -157,17 +122,8 @@ const MapScreen = ({ route }) => {
     }
   }, [showDetails]);
 
-  // Filter handlers
-  const filteredMarkers = selectedFilter === 'All' 
-    ? mapMarkers 
-    : mapMarkers.filter(marker => {
-        if (selectedFilter === 'Alerts') return marker.type === 'warning';
-        return marker.type.toLowerCase() === selectedFilter.toLowerCase().slice(0, -1);
-      });
-
-  // Navigate to specific marker on map
+  // Focus on marker
   const focusMarker = (marker) => {
-    // Instead of animating the map, we just set the selected animal
     setSelectedAnimal(marker);
     setShowDetails(true);
   };
@@ -178,31 +134,15 @@ const MapScreen = ({ route }) => {
     setActiveTab(tab);
   };
 
-  // Handle map ready event
-  const onMapReady = () => {
-    setIsMapReady(true);
-  };
-
-  // Report sighting
-  const reportSighting = () => {
-    Alert.alert(
-      "Report Wildlife Sighting",
-      "Use camera to document and report wildlife sightings",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Open Camera", onPress: () => alert('Camera functionality would open here') }
-      ]
-    );
-  };
-
   // Get appropriate icon for marker
   const getMarkerIcon = (type) => {
     switch(type) {
-      case 'elephant': return 'elephant';
+      case 'elephant_group': return 'elephant';
       case 'lion': return 'cat';
       case 'rhino': return 'rhino';
       case 'giraffe': return 'giraffe';
       case 'warning': return 'alert-circle';
+      case 'camera': return 'camera';
       default: return 'paw';
     }
   };
@@ -214,183 +154,197 @@ const MapScreen = ({ route }) => {
         colors={['#4c8c4a', '#1e3b1d']}
         style={styles.gradientContainer}
       >
-        {/* Main Content */}
-        <View style={styles.mainContent}>
-          {/* Header */}
-          <View style={styles.header}>
-            <Image 
-                source={require('../assets/EpiUseLogo.png')} 
-                style={styles.logo} 
-                resizeMode="contain"
-            />
-            <View style={styles.titleContainer}>
-                <Text style={styles.headerTitle}>Wildlife Map</Text>
-            </View>
+        {/* Header */}
+        <View style={styles.header}>
+          <Image 
+              source={require('../assets/EpiUseLogo.png')} 
+              style={styles.logo} 
+              resizeMode="contain"
+          />
+          <View style={styles.titleContainer}>
+              <Text style={styles.headerTitle}>Wildlife Map</Text>
           </View>
-          
-          {/* Search Bar */}
-          <View style={styles.searchContainer}>
-            <MaterialIcons name="search" size={24} color="white" style={styles.searchIcon} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search locations..."
-              placeholderTextColor="rgba(255,255,255,0.7)"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-
-          {/* Filter Pills */}
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false} 
-            contentContainerStyle={styles.filterContainer}
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => setShowInfoModal(true)}
           >
-            {filterOptions.map((filter) => (
-              <TouchableOpacity
-                key={filter}
-                style={[
-                  styles.filterPill,
-                  selectedFilter === filter && styles.activeFilterPill
-                ]}
-                onPress={() => setSelectedFilter(filter)}
-              >
-                <Text 
-                  style={[
-                    styles.filterText,
-                    selectedFilter === filter && styles.activeFilterText
-                  ]}
-                >
-                  {filter}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+            <MaterialIcons name="info-outline" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
 
-          {/* Map Content */}
-          <View style={styles.mapContainer}>
-            <Text style={styles.sectionTitle}>Interactive Map</Text>
-            
-            {/* Custom Map Implementation */}
-            <View style={styles.customMapContainer}>
-              {/* Map Background */}
-              <View style={styles.mapBackground}>
-                <MaterialIcons name="map" size={60} color="rgba(255,255,255,0.3)" />
-              </View>
-              
-              {/* Map Markers */}
-              {filteredMarkers.map((marker) => (
+        {/* Scale Selector */}
+        <View style={styles.scaleContainer}>
+          <TouchableOpacity 
+            style={styles.scaleSelector}
+            onPress={() => setShowScaleDropdown(!showScaleDropdown)}
+          >
+            <Text style={styles.scaleText}>{selectedScale}</Text>
+            <MaterialIcons 
+              name={showScaleDropdown ? "keyboard-arrow-up" : "keyboard-arrow-down"} 
+              size={20} 
+              color="white" 
+            />
+          </TouchableOpacity>
+          
+          {showScaleDropdown && (
+            <View style={styles.scaleDropdown}>
+              {scaleOptions.map((scale) => (
                 <TouchableOpacity
-                  key={marker.id}
-                  style={[
-                    styles.customMarker,
-                    {
-                      backgroundColor: marker.color,
-                      left: `${30 + Math.random() * 40}%`, // Random position for demo
-                      top: `${20 + Math.random() * 50}%`,  // Random position for demo
-                    }
-                  ]}
-                  onPress={() => focusMarker(marker)}
+                  key={scale}
+                  style={styles.scaleOption}
+                  onPress={() => {
+                    setSelectedScale(scale);
+                    setShowScaleDropdown(false);
+                  }}
                 >
-                  <MaterialCommunityIcons
-                    name={getMarkerIcon(marker.type)}
-                    size={18}
-                    color="white"
-                  />
-                  {marker.count && (
-                    <Text style={styles.markerCount}>{marker.count}</Text>
-                  )}
+                  <Text style={[
+                    styles.scaleOptionText,
+                    selectedScale === scale && styles.selectedScaleText
+                  ]}>
+                    {scale}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
-            
-            {/* Map Controls */}
-            <View style={styles.mapControls}>
-              <TouchableOpacity 
-                style={styles.mapControlButton}
-                onPress={() => alert('Center map on your location')}
-              >
-                <MaterialIcons name="my-location" size={24} color="white" />
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={styles.mapControlButton}
-                onPress={reportSighting}
-              >
-                <MaterialIcons name="add-location" size={24} color="white" />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Animal Detail Panel (animated) */}
-          {selectedAnimal && (
-            <Animated.View style={[
-              styles.animalDetailPanel,
-              {
-                transform: [
-                  { translateY: detailsAnimation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [300, 0]
-                    })
-                  }
-                ],
-                opacity: detailsAnimation
-              }
-            ]}>
-              <View style={styles.detailHandle}>
-                <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
-                  <View style={styles.handleBar} />
-                </TouchableOpacity>
-              </View>
-              
-              <ScrollView style={styles.detailContent}>
-                <View style={styles.detailHeader}>
-                  <MaterialCommunityIcons name={getMarkerIcon(selectedAnimal.type)} size={24} color={selectedAnimal.color} />
-                  <View style={styles.detailHeaderText}>
-                    <Text style={styles.detailTitle}>
-                      {selectedAnimal.type !== 'warning' 
-                        ? `${selectedAnimal.species || selectedAnimal.type} (${selectedAnimal.count})`
-                        : selectedAnimal.category}
-                    </Text>
-                    <Text style={styles.detailSubtitle}>
-                      {selectedAnimal.timestamp} • {selectedAnimal.type !== 'warning' ? 'Conservation Status: ' + (selectedAnimal.conservation || 'Unknown') : 'Urgency: ' + selectedAnimal.urgency}
-                    </Text>
-                  </View>
-                </View>
-                
-                <Text style={styles.detailDescription}>
-                  {selectedAnimal.description}
-                </Text>
-                
-                {selectedAnimal.type !== 'warning' && (
-                  <View style={styles.activityGraph}>
-                    <Text style={styles.graphTitle}>Movement History</Text>
-                    <View style={styles.graphContainer}>
-                      {selectedAnimal.movement.map((point, index) => (
-                        <View key={index} style={styles.timelinePoint}>
-                          <View style={[styles.timelineDot, { backgroundColor: selectedAnimal.color }]} />
-                          <Text style={styles.timelineText}>{point.timestamp}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                )}
-
-                {selectedAnimal.type === 'warning' ? (
-                  <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#F44336' }]}>
-                    <Text style={styles.actionButtonText}>Report Incident</Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity style={[styles.actionButton, { backgroundColor: selectedAnimal.color }]}>
-                    <Text style={styles.actionButtonText}>Track Movement</Text>
-                  </TouchableOpacity>
-                )}
-              </ScrollView>
-            </Animated.View>
           )}
         </View>
 
-        {/* Fixed Bottom Navigation */}
+        {/* Map Container */}
+        <View style={styles.mapContainer}>
+          {/* Satellite-style map background */}
+          <View style={styles.satelliteMap}>
+            {/* Simulated satellite imagery pattern */}
+            <View style={styles.terrainPattern} />
+            
+            {/* Road/Path overlay */}
+            <View style={styles.roadOverlay} />
+            
+            {/* Map Markers */}
+            {mapMarkers.map((marker) => (
+              <TouchableOpacity
+                key={marker.id}
+                style={[
+                  styles.mapMarker,
+                  {
+                    left: marker.position.left,
+                    top: marker.position.top,
+                  }
+                ]}
+                onPress={() => focusMarker(marker)}
+              >
+                {marker.type === 'elephant_group' ? (
+                  <View style={styles.elephantMarker}>
+                    <MaterialCommunityIcons name="elephant" size={16} color="white" />
+                    <Text style={styles.markerCount}>{marker.count}</Text>
+                  </View>
+                ) : marker.type === 'warning' ? (
+                  <View style={[styles.alertMarker, { backgroundColor: marker.color }]}>
+                    <MaterialIcons name="warning" size={16} color="white" />
+                  </View>
+                ) : (
+                  <View style={[styles.cameraMarker, { backgroundColor: marker.color }]}>
+                    <MaterialIcons name="camera-alt" size={16} color="white" />
+                  </View>
+                )}
+              </TouchableOpacity>
+            ))}
+            
+            {/* Paw print icon (from wireframe) */}
+            <View style={styles.pawPrintIcon}>
+              <MaterialIcons name="pets" size={30} color="rgba(139, 69, 19, 0.8)" />
+            </View>
+          </View>
+
+          {/* Google attribution */}
+          <View style={styles.googleAttribution}>
+            <Text style={styles.googleText}>Google</Text>
+          </View>
+        </View>
+
+        {/* Animal Detail Panel */}
+        {selectedAnimal && (
+          <Animated.View style={[
+            styles.animalDetailPanel,
+            {
+              transform: [
+                { translateY: detailsAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [300, 0]
+                  })
+                }
+              ],
+              opacity: detailsAnimation
+            }
+          ]}>
+            <View style={styles.detailHandle}>
+              <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
+                <View style={styles.handleBar} />
+              </TouchableOpacity>
+            </View>
+            
+            <ScrollView style={styles.detailContent}>
+              <View style={styles.detailHeader}>
+                <MaterialCommunityIcons 
+                  name={getMarkerIcon(selectedAnimal.type)} 
+                  size={24} 
+                  color={selectedAnimal.color} 
+                />
+                <View style={styles.detailHeaderText}>
+                  <Text style={styles.detailTitle}>
+                    {selectedAnimal.type !== 'warning' 
+                      ? `${selectedAnimal.species || selectedAnimal.category} ${selectedAnimal.count ? `(${selectedAnimal.count})` : ''}`
+                      : selectedAnimal.category}
+                  </Text>
+                  <Text style={styles.detailSubtitle}>
+                    {selectedAnimal.timestamp} • {selectedAnimal.conservation || selectedAnimal.status || selectedAnimal.urgency}
+                  </Text>
+                </View>
+              </View>
+              
+              <Text style={styles.detailDescription}>
+                {selectedAnimal.description}
+              </Text>
+              
+              <TouchableOpacity style={[styles.actionButton, { backgroundColor: selectedAnimal.color }]}>
+                <Text style={styles.actionButtonText}>
+                  {selectedAnimal.type === 'warning' ? 'View Alert Details' : 'Track Activity'}
+                </Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </Animated.View>
+        )}
+
+        {/* Info Modal */}
+        <Modal
+          visible={showInfoModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowInfoModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Map Information</Text>
+                <TouchableOpacity onPress={() => setShowInfoModal(false)}>
+                  <MaterialIcons name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.modalText}>
+                This interactive map shows real-time wildlife tracking data from the Maasai Mara ecosystem.
+              </Text>
+              <Text style={styles.modalText}>
+                • Green markers: Elephant herds{'\n'}
+                • Red markers: Alert zones{'\n'}
+                • Blue markers: Camera stations
+              </Text>
+              <Text style={styles.modalText}>
+                Tap on any marker to view detailed information about wildlife activity in that area.
+              </Text>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
           <TouchableOpacity 
             style={[styles.navItem, activeTab === 'home' && styles.activeNavItem]} 
@@ -444,10 +398,6 @@ const styles = StyleSheet.create({
   gradientContainer: {
     flex: 1,
   },
-  mainContent: {
-    flex: 1,
-    position: 'relative',
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -469,136 +419,162 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  searchContainer: {
+  iconButton: {
+    padding: 8,
+  },
+  scaleContainer: {
+    position: 'absolute',
+    top: 130,
+    left: 20,
+    zIndex: 10,
+  },
+  scaleSelector: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: 15,
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 30,
-    zIndex: 1,
-  },
-  searchInput: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingLeft: 45,
-    paddingRight: 20,
-    color: 'white',
-  },
-  filterContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 15,
-  },
-  filterPill: {
-    paddingHorizontal: 16,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    marginRight: 10,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
-  activeFilterPill: {
-    backgroundColor: '#ff6b00',
-  },
-  filterText: {
+  scaleText: {
+    fontSize: 14,
     color: 'white',
+    marginRight: 4,
     fontWeight: '500',
   },
-  activeFilterText: {
+  scaleDropdown: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(30, 59, 29, 0.95)',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  scaleOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  scaleOptionText: {
+    fontSize: 14,
     color: 'white',
-    fontWeight: 'bold',
+  },
+  selectedScaleText: {
+    color: '#ff6b00',
+    fontWeight: '600',
   },
   mapContainer: {
     flex: 1,
     position: 'relative',
-    overflow: 'hidden',
-    borderRadius: 15,
     margin: 20,
-    marginBottom: 10,
-    height: 300,
-  },
-  customMapContainer: {
-    flex: 1,
-    position: 'relative',
-    backgroundColor: '#27502a',
+    marginTop: 60,
     borderRadius: 15,
     overflow: 'hidden',
   },
-  mapBackground: {
+  satelliteMap: {
+    flex: 1,
+    backgroundColor: '#8B7355',
+    position: 'relative',
+  },
+  terrainPattern: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#27502a',
+    backgroundColor: '#8B7355',
+    backgroundImage: 'linear-gradient(45deg, #A0926B 25%, transparent 25%), linear-gradient(-45deg, #A0926B 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #A0926B 75%), linear-gradient(-45deg, transparent 75%, #A0926B 75%)',
+    opacity: 0.3,
   },
-  customMarker: {
+  roadOverlay: {
     position: 'absolute',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    padding: 8,
-    zIndex: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    top: '20%',
+    right: '10%',
+    bottom: '10%',
+    width: 3,
+    backgroundColor: '#666',
+    opacity: 0.6,
   },
-  markerContainer: {
+  mapMarker: {
+    position: 'absolute',
+    zIndex: 5,
+  },
+  elephantMarker: {
+    backgroundColor: '#4CAF50',
     borderRadius: 20,
-    padding: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     flexDirection: 'row',
-    elevation: 3,
+    alignItems: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   markerCount: {
     color: 'white',
-    fontWeight: 'bold',
-    marginLeft: 4,
     fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 2,
   },
-  mapControls: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
-    zIndex: 10,
-  },
-  mapControlButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
-    elevation: 3,
+  alertMarker: {
+    borderRadius: 15,
+    padding: 6,
     shadowColor: '#000',
-    shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  cameraMarker: {
+    borderRadius: 15,
+    padding: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  pawPrintIcon: {
+    position: 'absolute',
+    top: '15%',
+    right: '15%',
+    zIndex: 3,
+  },
+  googleAttribution: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 3,
+  },
+  googleText: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
   },
   animalDetailPanel: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 80,
     left: 0,
     right: 0,
     backgroundColor: 'rgba(30, 59, 29, 0.95)',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingBottom: 80,
-    maxHeight: height * 0.6,
+    maxHeight: height * 0.4,
     shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: -3 },
@@ -613,12 +589,13 @@ const styles = StyleSheet.create({
   },
   handleBar: {
     width: 40,
-    height: 5,
+    height: 4,
     backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: 3,
+    borderRadius: 2,
   },
   detailContent: {
     padding: 20,
+    paddingTop: 0,
   },
   detailHeader: {
     flexDirection: 'row',
@@ -630,59 +607,61 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   detailTitle: {
-    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
   },
   detailSubtitle: {
-    color: 'rgba(255,255,255,0.7)',
     fontSize: 12,
+    color: 'rgba(255,255,255,0.7)',
     marginTop: 4,
   },
   detailDescription: {
+    fontSize: 14,
     color: 'white',
-    fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 20,
     marginBottom: 20,
   },
-  activityGraph: {
-    marginVertical: 15,
-  },
-  graphTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  graphContainer: {
-    paddingVertical: 10,
-  },
-  timelinePoint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  timelineDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 10,
-  },
-  timelineText: {
-    color: 'white',
-  },
   actionButton: {
-    padding: 15,
-    borderRadius: 10,
+    padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
   },
   actionButtonText: {
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: '600',
+    fontSize: 14,
   },
-  // Bottom Navigation Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    margin: 20,
+    borderRadius: 10,
+    padding: 20,
+    maxWidth: 300,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  modalText: {
+    fontSize: 14,
+    color: '#555',
+    lineHeight: 20,
+    marginBottom: 10,
+  },
   bottomNav: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -700,6 +679,9 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     flex: 1,
+  },
+  activeNavItem: {
+    // Add any active state styling if needed
   },
   navText: {
     color: '#A0A0A0',
