@@ -34,6 +34,7 @@ const ProfileScreen = ({ route }) => {
   const [notifications, setNotifications] = useState(true);
   const [locationTracking, setLocationTracking] = useState(true);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isAchievementsModalVisible, setIsAchievementsModalVisible] = useState(false);
   
   // Sample user data (now using state so it can be updated)
   // This data can be fetched from an API or database later when we implement backend functionality
@@ -60,14 +61,258 @@ const ProfileScreen = ({ route }) => {
     phone: userData.phone
   });
   
-  // Sample achievements
-  // Add more later future Jean
+  // More achievements with categories
+  // Wildlife Detection Achievements
+  // Conservation Achievements
+  // Activity Achievements
+  // Social & Community Achievements
+  // Technical Achievements
+  // Special Achievements
+  // Add more categories if can think of any
   const achievements = [
-    { id: '1', title: 'Big Five Spotter', description: 'Detected all Big Five animals', icon: 'emoji-events', completed: true },
-    { id: '2', title: 'Bird Watcher', description: 'Identified 20 different bird species', icon: 'flight', completed: true },
-    { id: '3', title: 'Conservation Hero', description: 'Reported 5 potential threats', icon: 'security', completed: false },
-    { id: '4', title: 'Night Explorer', description: 'Made 10 nocturnal detections', icon: 'nightlight', completed: true },
+    // Wildlife Detection Achievements
+    { 
+      id: '1', 
+      title: 'Big Five Spotter', 
+      description: 'Detected all Big Five animals', 
+      icon: 'emoji-events', 
+      completed: true,
+      category: 'Wildlife Detection',
+      rarity: 'legendary'
+    },
+    { 
+      id: '2', 
+      title: 'Bird Watcher', 
+      description: 'Identified 20 different bird species', 
+      icon: 'flight', 
+      completed: true,
+      category: 'Wildlife Detection',
+      rarity: 'common'
+    },
+    { 
+      id: '3', 
+      title: 'Reptile Enthusiast', 
+      description: 'Spotted 10 different reptile species', 
+      icon: 'pets', 
+      completed: false,
+      category: 'Wildlife Detection',
+      rarity: 'rare'
+    },
+    { 
+      id: '4', 
+      title: 'Primate Observer', 
+      description: 'Detected 5 primate species', 
+      icon: 'face', 
+      completed: true,
+      category: 'Wildlife Detection',
+      rarity: 'uncommon'
+    },
+    { 
+      id: '5', 
+      title: 'Marine Life Explorer', 
+      description: 'Identified 15 aquatic species', 
+      icon: 'waves', 
+      completed: false,
+      category: 'Wildlife Detection',
+      rarity: 'rare'
+    },
+    
+    // Conservation Achievements
+    { 
+      id: '6', 
+      title: 'Conservation Hero', 
+      description: 'Reported 5 potential threats', 
+      icon: 'security', 
+      completed: false,
+      category: 'Conservation',
+      rarity: 'epic'
+    },
+    { 
+      id: '7', 
+      title: 'Environmental Guardian', 
+      description: 'Reported 10 environmental issues', 
+      icon: 'eco', 
+      completed: true,
+      category: 'Conservation',
+      rarity: 'rare'
+    },
+    { 
+      id: '8', 
+      title: 'Habitat Protector', 
+      description: 'Documented habitat preservation efforts', 
+      icon: 'forest', 
+      completed: false,
+      category: 'Conservation',
+      rarity: 'epic'
+    },
+    
+    // Activity Achievements
+    { 
+      id: '9', 
+      title: 'Night Explorer', 
+      description: 'Made 10 nocturnal detections', 
+      icon: 'nightlight', 
+      completed: true,
+      category: 'Activity',
+      rarity: 'uncommon'
+    },
+    { 
+      id: '10', 
+      title: 'Dawn Patrol', 
+      description: 'Active during 5 sunrise sessions', 
+      icon: 'wb-sunny', 
+      completed: true,
+      category: 'Activity',
+      rarity: 'common'
+    },
+    { 
+      id: '11', 
+      title: 'Weather Warrior', 
+      description: 'Detected wildlife in 3 different weather conditions', 
+      icon: 'cloud', 
+      completed: false,
+      category: 'Activity',
+      rarity: 'uncommon'
+    },
+    { 
+      id: '12', 
+      title: 'Distance Tracker', 
+      description: 'Covered 100km while wildlife spotting', 
+      icon: 'directions-walk', 
+      completed: true,
+      category: 'Activity',
+      rarity: 'rare'
+    },
+    
+    // Social & Community Achievements
+    { 
+      id: '13', 
+      title: 'Community Helper', 
+      description: 'Helped 10 other researchers', 
+      icon: 'group', 
+      completed: false,
+      category: 'Community',
+      rarity: 'uncommon'
+    },
+    { 
+      id: '14', 
+      title: 'Knowledge Sharer', 
+      description: 'Shared findings with 20 community members', 
+      icon: 'share', 
+      completed: true,
+      category: 'Community',
+      rarity: 'common'
+    },
+    { 
+      id: '15', 
+      title: 'Mentor', 
+      description: 'Guided 5 new researchers', 
+      icon: 'school', 
+      completed: false,
+      category: 'Community',
+      rarity: 'epic'
+    },
+    
+    // Technical Achievements
+    { 
+      id: '16', 
+      title: 'Photo Pro', 
+      description: 'Captured 100 high-quality wildlife photos', 
+      icon: 'camera-alt', 
+      completed: true,
+      category: 'Technical',
+      rarity: 'rare'
+    },
+    { 
+      id: '17', 
+      title: 'Data Collector', 
+      description: 'Logged 500 data points', 
+      icon: 'assessment', 
+      completed: false,
+      category: 'Technical',
+      rarity: 'uncommon'
+    },
+    { 
+      id: '18', 
+      title: 'Tech Savvy', 
+      description: 'Used 5 different detection tools', 
+      icon: 'build', 
+      completed: true,
+      category: 'Technical',
+      rarity: 'common'
+    },
+    
+    // Special Achievements
+    { 
+      id: '19', 
+      title: 'Rare Species Hunter', 
+      description: 'Spotted 3 endangered species', 
+      icon: 'star', 
+      completed: false,
+      category: 'Special',
+      rarity: 'legendary'
+    },
+    { 
+      id: '20', 
+      title: 'First Discovery', 
+      description: 'First to spot a species in your region', 
+      icon: 'explore', 
+      completed: false,
+      category: 'Special',
+      rarity: 'legendary'
+    },
+    { 
+      id: '21', 
+      title: 'Consistency Champion', 
+      description: 'Active for 30 consecutive days', 
+      icon: 'event-available', 
+      completed: true,
+      category: 'Special',
+      rarity: 'epic'
+    },
+    { 
+      id: '22', 
+      title: 'Explorer', 
+      description: 'Visited 10 different locations', 
+      icon: 'map', 
+      completed: true,
+      category: 'Special',
+      rarity: 'rare'
+    }
   ];
+
+  // Get rarity color
+  // Fancy stuff see what the members think
+  const getRarityColor = (rarity) => {
+    switch (rarity) {
+      case 'common': return '#4CAF50';
+      case 'uncommon': return '#2196F3';
+      case 'rare': return '#9C27B0';
+      case 'epic': return '#FF9800';
+      case 'legendary': return '#FFD700';
+      default: return '#4CAF50';
+    }
+  };
+
+  // Get achievements by category
+  const getAchievementsByCategory = () => {
+    const categories = {};
+    achievements.forEach(achievement => {
+      if (!categories[achievement.category]) {
+        categories[achievement.category] = [];
+      }
+      categories[achievement.category].push(achievement);
+    });
+    return categories;
+  };
+
+  // Get completion stats
+  const getCompletionStats = () => {
+    const completed = achievements.filter(a => a.completed).length;
+    const total = achievements.length;
+    const percentage = Math.round((completed / total) * 100);
+    return { completed, total, percentage };
+  };
 
   // Navigate to other screens
   const handleHomeNavigation = () => {
@@ -124,6 +369,10 @@ const ProfileScreen = ({ route }) => {
     setIsEditModalVisible(true);
   };
 
+  // Handle view all achievements
+  const handleViewAllAchievements = () => {
+    setIsAchievementsModalVisible(true);
+  };
 
   // Handle profile photo change
   const handleChangeProfilePhoto = () => {
@@ -189,6 +438,17 @@ const ProfileScreen = ({ route }) => {
       [field]: value
     }));
   };
+
+  // Get featured achievements (first 4 completed + first 2 incomplete)
+  const getFeaturedAchievements = () => {
+    const completed = achievements.filter(a => a.completed).slice(0, 4);
+    const incomplete = achievements.filter(a => !a.completed).slice(0, 2);
+    return [...completed, ...incomplete].slice(0, 4);
+  };
+
+  const completionStats = getCompletionStats();
+  const featuredAchievements = getFeaturedAchievements();
+  const achievementsByCategory = getAchievementsByCategory();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -281,9 +541,16 @@ const ProfileScreen = ({ route }) => {
           </View>
 
           {/* Achievements Section */}
+          {/* Added more achievements for the demo */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Achievements</Text>
-            {achievements.map((achievement) => (
+            <View style={styles.achievementHeader}>
+              <Text style={styles.sectionTitle}>Achievements</Text>
+              <Text style={styles.achievementProgress}>
+                {completionStats.completed}/{completionStats.total} ({completionStats.percentage}%)
+              </Text>
+            </View>
+            
+            {featuredAchievements.map((achievement) => (
               <View 
                 key={achievement.id} 
                 style={[
@@ -291,16 +558,19 @@ const ProfileScreen = ({ route }) => {
                   achievement.completed ? styles.achievementCompleted : styles.achievementIncomplete
                 ]}
               >
-                <View style={styles.achievementIconContainer}>
+                <View style={[styles.achievementIconContainer, { borderColor: getRarityColor(achievement.rarity) }]}>
                   <MaterialIcons 
                     name={achievement.icon} 
                     size={24} 
-                    color={achievement.completed ? '#FFD700' : 'rgba(255,255,255,0.4)'} 
+                    color={achievement.completed ? getRarityColor(achievement.rarity) : 'rgba(255,255,255,0.4)'} 
                   />
                 </View>
                 <View style={styles.achievementInfo}>
                   <Text style={styles.achievementTitle}>{achievement.title}</Text>
                   <Text style={styles.achievementDescription}>{achievement.description}</Text>
+                  <Text style={[styles.achievementRarity, { color: getRarityColor(achievement.rarity) }]}>
+                    {achievement.rarity.charAt(0).toUpperCase() + achievement.rarity.slice(1)}
+                  </Text>
                 </View>
                 {achievement.completed ? (
                   <MaterialIcons name="check-circle" size={24} color="#4CAF50" />
@@ -310,7 +580,10 @@ const ProfileScreen = ({ route }) => {
               </View>
             ))}
             
-            <TouchableOpacity style={styles.viewAllButton}>
+            <TouchableOpacity 
+              style={styles.viewAllButton}
+              onPress={handleViewAllAchievements}
+            >
               <Text style={styles.viewAllText}>View All Achievements</Text>
               <MaterialIcons name="chevron-right" size={20} color="#ff6b00" />
             </TouchableOpacity>
@@ -563,32 +836,96 @@ const ProfileScreen = ({ route }) => {
                       onChangeText={(text) => updateFormField('bio', text)}
                       placeholder="Tell us about yourself..."
                       placeholderTextColor="rgba(255,255,255,0.5)"
-                      multiline
+                      multiline={true}
                       numberOfLines={4}
                       textAlignVertical="top"
                     />
                   </View>
                 </View>
-
-                {/* Action Buttons */}
-                <View style={styles.modalActions}>
-                  <TouchableOpacity 
-                    style={styles.cancelButton}
-                    onPress={handleCancelEdit}
-                  >
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
-                  </TouchableOpacity>
-                  
-                  <TouchableOpacity 
-                    style={styles.saveButton}
-                    onPress={handleSaveProfile}
-                  >
-                    <Text style={styles.saveButtonText}>Save Changes</Text>
-                  </TouchableOpacity>
-                </View>
               </ScrollView>
             </LinearGradient>
           </KeyboardAvoidingView>
+        </Modal>
+
+        {/* Achievements Modal */}
+        <Modal
+          visible={isAchievementsModalVisible}
+          animationType="slide"
+          presentationStyle="pageSheet"
+          onRequestClose={() => setIsAchievementsModalVisible(false)}
+        >
+          <SafeAreaView style={styles.modalContainer}>
+            <LinearGradient
+              colors={['#4c8c4a', '#1e3b1d']}
+              style={styles.modalGradient}
+            >
+              {/* Achievements Modal Header */}
+              <View style={styles.modalHeader}>
+                <TouchableOpacity 
+                  style={styles.modalCloseButton}
+                  onPress={() => setIsAchievementsModalVisible(false)}
+                >
+                  <MaterialIcons name="close" size={24} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.modalTitle}>All Achievements</Text>
+                <View style={styles.modalCloseButton} />
+              </View>
+
+              {/* Achievement Stats */}
+              <View style={styles.achievementStatsContainer}>
+                <Text style={styles.achievementStatsText}>
+                  Progress: {completionStats.completed}/{completionStats.total} ({completionStats.percentage}%)
+                </Text>
+              </View>
+
+              {/* Achievements Content */}
+              <ScrollView style={styles.modalContent}>
+                {Object.entries(achievementsByCategory).map(([category, categoryAchievements]) => (
+                  <View key={category} style={styles.categorySection}>
+                    <Text style={styles.categoryTitle}>{category}</Text>
+                    <Text style={styles.categorySubtitle}>
+                      {categoryAchievements.filter(a => a.completed).length}/{categoryAchievements.length} completed
+                    </Text>
+                    
+                    {categoryAchievements.map((achievement) => (
+                      <View 
+                        key={achievement.id} 
+                        style={[
+                          styles.modalAchievementItem, 
+                          achievement.completed ? styles.modalAchievementCompleted : styles.modalAchievementIncomplete
+                        ]}
+                      >
+                        <View style={[styles.modalAchievementIconContainer, { borderColor: getRarityColor(achievement.rarity) }]}>
+                          <MaterialIcons 
+                            name={achievement.icon} 
+                            size={28} 
+                            color={achievement.completed ? getRarityColor(achievement.rarity) : 'rgba(255,255,255,0.4)'} 
+                          />
+                        </View>
+                        <View style={styles.modalAchievementInfo}>
+                          <Text style={styles.modalAchievementTitle}>{achievement.title}</Text>
+                          <Text style={styles.modalAchievementDescription}>{achievement.description}</Text>
+                          <View style={styles.modalAchievementMeta}>
+                            <Text style={[styles.modalAchievementRarity, { color: getRarityColor(achievement.rarity) }]}>
+                              {achievement.rarity.charAt(0).toUpperCase() + achievement.rarity.slice(1)}
+                            </Text>
+                            {achievement.completed && (
+                              <Text style={styles.completedText}>✓ Completed</Text>
+                            )}
+                          </View>
+                        </View>
+                        {achievement.completed ? (
+                          <MaterialIcons name="check-circle" size={28} color="#4CAF50" />
+                        ) : (
+                          <MaterialIcons name="radio-button-unchecked" size={28} color="rgba(255,255,255,0.4)" />
+                        )}
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </ScrollView>
+            </LinearGradient>
+          </SafeAreaView>
         </Modal>
       </LinearGradient>
     </SafeAreaView>
@@ -598,55 +935,50 @@ const ProfileScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1e3b1d',
+    backgroundColor: '#1a1a1a',
   },
   gradientContainer: {
     flex: 1,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
+    paddingTop: 10,
     paddingBottom: 15,
   },
   logo: {
-    width: 80,
-    height: 80,
-    marginRight: 12,
+    width: 40,
+    height: 40,
   },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
-    marginLeft: -92,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
+    color: 'white',
   },
   settingsButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 8,
   },
   content: {
     flex: 1,
     paddingHorizontal: 20,
   },
+  
+  // Profile Card Styles
   profileCard: {
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 15,
     padding: 20,
-    marginBottom: 25,
+    marginBottom: 20,
   },
   profileHeader: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 15,
   },
   profileImageContainer: {
@@ -657,50 +989,44 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#fff',
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
   editImageButton: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#ff6b00',
+    backgroundColor: '#4c8c4a',
+    borderRadius: 15,
     width: 30,
     height: 30,
-    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: 'white',
   },
   profileInfo: {
     flex: 1,
-    justifyContent: 'center',
   },
   profileName: {
-    color: 'white',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 2,
+    color: 'white',
+    marginBottom: 4,
   },
   profileRole: {
+    fontSize: 14,
     color: 'rgba(255,255,255,0.8)',
-    fontSize: 16,
-    marginBottom: 2,
+    marginBottom: 4,
   },
   profileLocation: {
+    fontSize: 12,
     color: 'rgba(255,255,255,0.7)',
-    fontSize: 14,
-    marginBottom: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: 4,
   },
   profileJoinDate: {
-    color: 'rgba(255,255,255,0.6)',
     fontSize: 12,
+    color: 'rgba(255,255,255,0.6)',
   },
   bioSection: {
     marginBottom: 15,
@@ -709,197 +1035,237 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255,255,255,0.1)',
   },
   bioText: {
-    color: 'rgba(255,255,255,0.8)',
     fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
     lineHeight: 20,
-    fontStyle: 'italic',
   },
   editProfileButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    backgroundColor: '#ff6b00',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     marginTop: 10,
   },
   editProfileText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
     marginRight: 8,
   },
+
+  // Section Styles
   section: {
-    marginBottom: 25,
-  },
-  sectionTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  statsContainer: {
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 15,
-    padding: 15,
+    padding: 20,
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 15,
+  },
+
+  // Stats Styles
+  statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   statItem: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
   },
   statValue: {
-    color: '#fff',
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: '#ff6b00',
+    marginBottom: 4,
   },
   statLabel: {
+    fontSize: 12,
     color: 'rgba(255,255,255,0.7)',
-    fontSize: 14,
-    marginTop: 5,
   },
   divider: {
     width: 1,
-    height: '80%',
+    height: 40,
     backgroundColor: 'rgba(255,255,255,0.2)',
+    marginHorizontal: 20,
+  },
+
+  // Achievement Styles
+  achievementHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  achievementProgress: {
+    fontSize: 14,
+    color: '#ff6b00',
+    fontWeight: '600',
   },
   achievementItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 12,
     padding: 15,
     marginBottom: 10,
   },
   achievementCompleted: {
-    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.3)',
   },
   achievementIncomplete: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   achievementIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
+    backgroundColor: 'rgba(255,255,255,0.1)',
   },
   achievementInfo: {
     flex: 1,
   },
   achievementTitle: {
-    color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: 'white',
+    marginBottom: 4,
   },
   achievementDescription: {
+    fontSize: 12,
     color: 'rgba(255,255,255,0.7)',
-    fontSize: 14,
+    marginBottom: 4,
+  },
+  achievementRarity: {
+    fontSize: 11,
+    fontWeight: '600',
+    textTransform: 'uppercase',
   },
   viewAllButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(255, 107, 0, 0.2)',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#ff6b00',
   },
   viewAllText: {
     color: '#ff6b00',
-    fontSize: 16,
-    marginRight: 5,
+    fontWeight: '600',
+    marginRight: 8,
   },
+
+  // Settings Styles
   settingsContainer: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
     padding: 5,
   },
   settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
   },
   settingText: {
-    color: 'white',
-    fontSize: 16,
-    marginLeft: 15,
     flex: 1,
+    fontSize: 16,
+    color: 'white',
+    marginLeft: 15,
   },
+
+  // Account Styles
   accountContainer: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 15,
-    marginBottom: 15,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    padding: 5,
   },
   accountOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
   },
   accountOptionText: {
-    color: 'white',
-    fontSize: 16,
-    marginLeft: 15,
     flex: 1,
+    fontSize: 16,
+    color: 'white',
+    marginLeft: 15,
   },
   logoutButton: {
-    backgroundColor: '#e53935',
-    borderRadius: 10,
-    paddingVertical: 12,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(220, 53, 70, 0.83)', // Better red such that the logout looks nicer
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginTop: 15,
+    borderWidth: 1,
+    borderColor: '#f44336',
   },
   logoutText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginLeft: 8,
   },
+
+  // Bottom Navigation Styles future Jean
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   navItem: {
     alignItems: 'center',
-    flex: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+  },
+  activeNavItem: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
   },
   navText: {
-    color: '#A0A0A0',
     fontSize: 12,
-    marginTop: 2,
+    color: '#A0A0A0',
+    marginTop: 4,
   },
   activeNavText: {
     color: 'white',
   },
   addButton: {
+    backgroundColor: '#ff6b00',
+    borderRadius: 30,
     width: 60,
     height: 60,
-    borderRadius: 30,
-    backgroundColor: '#ff6b00',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
+
   // Modal Styles
   modalContainer: {
     flex: 1,
@@ -909,47 +1275,42 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   modalCloseButton: {
+    padding: 8,
     width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
+    textAlign: 'center',
   },
   modalSaveButton: {
-    backgroundColor: '#4CAF50',
-    paddingHorizontal: 20,
+    backgroundColor: '#ff6b00',
+    paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: 6,
   },
   modalSaveText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   modalContent: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
+
+  // Edit Profile Modal Styles
   modalPhotoSection: {
     alignItems: 'center',
-    paddingVertical: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
     marginBottom: 30,
   },
   modalProfileImageContainer: {
@@ -957,89 +1318,148 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   modalProfileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     borderWidth: 3,
-    borderColor: '#fff',
+    borderColor: 'rgba(255,255,255,0.3)',
   },
   modalEditImageButton: {
     position: 'absolute',
-    bottom: 5,
-    right: 5,
-    backgroundColor: '#ff6b00',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#4c8c4a',
+    borderRadius: 18,
     width: 36,
     height: 36,
-    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: 'white',
   },
   changePhotoButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 20,
+    backgroundColor: 'rgba(255, 107, 0, 0.2)',
+    borderRadius: 6,
     paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#ff6b00',
   },
   changePhotoText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '500',
+    color: '#ff6b00',
+    fontWeight: '600',
   },
   formContainer: {
-    paddingBottom: 30,
+    flex: 1,
   },
   inputGroup: {
     marginBottom: 20,
   },
   inputLabel: {
-    color: 'white',
     fontSize: 16,
     fontWeight: '600',
+    color: 'white',
     marginBottom: 8,
   },
   textInput: {
     backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingHorizontal: 15,
     paddingVertical: 12,
-    color: 'white',
     fontSize: 16,
+    color: 'white',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
   },
   textArea: {
     height: 100,
-    paddingTop: 12,
+    textAlignVertical: 'top',
   },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingBottom: 40,
-    gap: 15,
-  },
-  cancelButton: {
-    flex: 1,
+
+  // Achievements Modal Styles
+  achievementStatsContainer: {
     backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 10,
-    paddingVertical: 15,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 8,
   },
-  cancelButtonText: {
-    color: 'white',
+  achievementStatsText: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#ff6b00',
+    textAlign: 'center',
   },
-  saveButton: {
-    flex: 1,
-    backgroundColor: '#4CAF50',
-    borderRadius: 10,
-    paddingVertical: 15,
+  categorySection: {
+    marginBottom: 30,
+  },
+  categoryTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 5,
+  },
+  categorySubtitle: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 15,
+  },
+  modalAchievementItem: {
+    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 12,
+  },
+  modalAchievementCompleted: {
+    backgroundColor: 'rgba(76, 175, 80, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.4)',
+  },
+  modalAchievementIncomplete: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  modalAchievementIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  modalAchievementInfo: {
+    flex: 1,
+  },
+  modalAchievementTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: 'white',
+    marginBottom: 6,
+  },
+  modalAchievementDescription: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 6,
+    lineHeight: 18,
+  },
+  modalAchievementMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  modalAchievementRarity: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    marginRight: 12,
+  },
+  completedText: {
+    fontSize: 12,
+    color: '#4CAF50',
+    fontWeight: '600',
   },
 });
 

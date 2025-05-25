@@ -49,6 +49,13 @@ const MainScreen = ({ route }) => {
     setActiveTab('feed');
   };
 
+  // Navigate to ProfileScreen
+  const handleProfileNavigation = () => {
+    console.log('Navigating to ProfileScreen...');
+    navigation.navigate('ProfileScreen');
+    setActiveTab('profile');
+  };
+
   // Handle camera action - modified to work without expo-camera
   const handleCameraAction = () => {
     // For now, just show a placeholder screen that simulates the camera
@@ -1303,7 +1310,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           
           <TouchableOpacity 
             style={[styles.navItem, activeTab === 'profile' && styles.activeNavItem]} 
-            onPress={() => setActiveTab('profile')}
+            onPress={handleProfileNavigation}
           >
             <MaterialIcons name="person" size={24} color={activeTab === 'profile' ? 'white' : '#A0A0A0'} />
             <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
