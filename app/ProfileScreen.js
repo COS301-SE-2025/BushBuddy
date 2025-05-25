@@ -61,7 +61,14 @@ const ProfileScreen = ({ route }) => {
     phone: userData.phone
   });
   
-  // Expanded achievements with categories
+  // More achievements with categories
+  // Wildlife Detection Achievements
+  // Conservation Achievements
+  // Activity Achievements
+  // Social & Community Achievements
+  // Technical Achievements
+  // Special Achievements
+  // Add more categories if can think of any
   const achievements = [
     // Wildlife Detection Achievements
     { 
@@ -275,6 +282,7 @@ const ProfileScreen = ({ route }) => {
   ];
 
   // Get rarity color
+  // Fancy stuff see what the members think
   const getRarityColor = (rarity) => {
     switch (rarity) {
       case 'common': return '#4CAF50';
@@ -533,6 +541,7 @@ const ProfileScreen = ({ route }) => {
           </View>
 
           {/* Achievements Section */}
+          {/* Added more achievements for the demo */}
           <View style={styles.section}>
             <View style={styles.achievementHeader}>
               <Text style={styles.sectionTitle}>Achievements</Text>
@@ -1203,7 +1212,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(244, 67, 54, 0.2)',
+    backgroundColor: 'rgba(220, 53, 70, 0.83)', // Better red such that the logout looks nicer
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -1212,12 +1221,12 @@ const styles = StyleSheet.create({
     borderColor: '#f44336',
   },
   logoutText: {
-    color: '#f44336',
+    color: 'white',
     fontWeight: '600',
     marginLeft: 8,
   },
 
-  // Bottom Navigation Styles
+  // Bottom Navigation Styles future Jean
   bottomNav: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0.8)',
