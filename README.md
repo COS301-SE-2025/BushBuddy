@@ -84,6 +84,9 @@ both visual and audio detection.
       </p>
       <a href="https://www.linkedin.com/in/ruan-esterhuizen-87b841328/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/RuanEsterhuizen"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="mailto:u23532387@tuks.co.za">
+        <img src="https://img.shields.io/badge/email-u23532387%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+      </a>
     </td>
   </tr>
   <!-- Second Row -->
@@ -110,6 +113,9 @@ both visual and audio detection.
       </p>
       <a href="https://www.linkedin.com/in/ruben-gadd-227619356/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/RubenGadd"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+    <a href="mailto:u23633353@tuks.co.za">
+        <img src="https://img.shields.io/badge/email-u23633353%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+      </a>
     </td>
   </tr>
   <!-- Third Row -->
@@ -135,6 +141,9 @@ both visual and audio detection.
       </p>
       <a href="https://www.linkedin.com/in/raphael-rato-597a43203/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/raphaelrato"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="mailto:u22887581@tuks.co.za">
+        <img src="https://img.shields.io/badge/email-u22887581%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+      </a>
     </td>
   </tr>
   <!-- Fourth Row -->
@@ -154,6 +163,9 @@ both visual and audio detection.
       </p>
       <a href="https://www.linkedin.com/in/tom-schulz-18979a155/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href=https://github.com/tomschulz02><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="mailto:u05039364@tuks.co.za">
+        <img src="https://img.shields.io/badge/email-u05039364%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+      </a>
     </td>
   </tr>
   <!-- Fifth Row -->
@@ -179,6 +191,9 @@ both visual and audio detection.
       </p>
       <a href="https://www.linkedin.com/in/jean-steyn-6a9380356/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/JeanSteyn"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="mailto:u22537229@tuks.co.za">
+        <img src="https://img.shields.io/badge/email-u22537229%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+      </a>
     </td>
 <!-- <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;"> -->
 
