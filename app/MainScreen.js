@@ -56,12 +56,19 @@ const MainScreen = ({ route }) => {
     setActiveTab('profile');
   };
 
-  // Handle camera action - modified to work without expo-camera
-  const handleCameraAction = () => {
-    // For now, just show a placeholder screen that simulates the camera
-    setCameraVisible(true);
-    console.log('Camera would open here if expo-camera was installed');
+  // Navigate to CameraPage
+  const handleCameraNavigation = () => {
+    console.log('Navigating to CameraPage...');
+    navigation.navigate('CameraPage');
+    setActiveTab('camera');
   };
+
+  // Handle camera action - modified to work without expo-camera
+  // const handleCameraAction = () => {
+  //   // For now, just show a placeholder screen that simulates the camera
+  //   setCameraVisible(true);
+  //   console.log('Camera would open here if expo-camera was installed');
+  // };
 
   // Simulate taking a photo
   const takePicture = () => {
@@ -1124,7 +1131,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
               <View style={styles.quickActionsContainer}>
                 <TouchableOpacity 
                   style={styles.actionButton}
-                  onPress={handleCameraAction}
+                  onPress={handleCameraNavigation}
                 >
                   <View style={[styles.actionIcon, { backgroundColor: '#4CAF50' }]}>
                     <MaterialIcons name="camera-alt" size={24} color="white" />
@@ -1295,7 +1302,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           
           <TouchableOpacity 
             style={styles.addButton}
-            onPress={handleCameraAction}
+            onPress={handleCameraNavigation}
           >
             <MaterialIcons name="camera-alt" size={32} color="white" />
           </TouchableOpacity>

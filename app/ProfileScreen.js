@@ -7,19 +7,19 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-    Alert,
-    Image,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    Modal,
-    KeyboardAvoidingView,
-    Platform
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 const ProfileScreen = ({ route }) => {
@@ -690,7 +690,7 @@ const ProfileScreen = ({ route }) => {
           
           <TouchableOpacity 
             style={styles.addButton}
-            onPress={handleCameraAction}
+            onPress={handleMapNavigation}
           >
             <MaterialIcons name="camera-alt" size={32} color="white" />
           </TouchableOpacity>

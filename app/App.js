@@ -4,6 +4,7 @@ import 'react-native-gesture-handler'; // This must be the first import
 
 // Import screens
 import AuthScreen from './AuthScreen';
+import CameraPage from './CameraPage';
 import FeedScreen from './FeedScreen';
 import MainScreen from './MainScreen';
 import MapScreen from './MapScreen';
@@ -37,6 +38,11 @@ export default function App() {
         <Stack.Screen 
           name="ProfileScreen" 
           component={ProfileScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="CameraPage" 
+          component={CameraPage} 
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
