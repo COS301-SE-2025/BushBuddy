@@ -330,6 +330,11 @@ const ProfileScreen = ({ route }) => {
     setActiveTab('feed');
   };
 
+  // Camera navigation handler
+  const handleCameraNavigation = () => {
+    navigation.navigate('CameraPage');
+  };
+
   // Handle camera action
   const handleCameraAction = () => {
     Alert.alert(
@@ -671,45 +676,45 @@ const ProfileScreen = ({ route }) => {
         </ScrollView>
 
         {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'home' && styles.activeNavItem]} 
-            onPress={handleHomeNavigation}
-          >
-            <MaterialIcons name="home" size={24} color={activeTab === 'home' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'home' && styles.activeNavText]}>Home</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'map' && styles.activeNavItem]} 
-            onPress={handleMapNavigation}
-          >
-            <MaterialIcons name="map" size={24} color={activeTab === 'map' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'map' && styles.activeNavText]}>Map</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.addButton}
-            onPress={handleMapNavigation}
-          >
-            <MaterialIcons name="camera-alt" size={32} color="white" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'feed' && styles.activeNavItem]} 
-            onPress={handleFeedNavigation}
-          >
-            <MaterialIcons name="bar-chart" size={24} color={activeTab === 'feed' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'feed' && styles.activeNavText]}>Feed</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'profile' && styles.activeNavItem]} 
-          >
-            <MaterialIcons name="person" size={24} color={activeTab === 'profile' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
-          </TouchableOpacity>
-        </View>
+<View style={styles.bottomNav}>
+  <TouchableOpacity 
+    style={[styles.navItem, activeTab === 'home' && styles.activeNavItem]} 
+    onPress={handleHomeNavigation}
+  >
+    <MaterialIcons name="home" size={24} color={activeTab === 'home' ? 'white' : '#A0A0A0'} />
+    <Text style={[styles.navText, activeTab === 'home' && styles.activeNavText]}>Home</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={[styles.navItem, activeTab === 'map' && styles.activeNavItem]} 
+    onPress={handleMapNavigation}
+  >
+    <MaterialIcons name="map" size={24} color={activeTab === 'map' ? 'white' : '#A0A0A0'} />
+    <Text style={[styles.navText, activeTab === 'map' && styles.activeNavText]}>Map</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={styles.addButton}
+    onPress={handleCameraNavigation}
+  >
+    <MaterialIcons name="camera-alt" size={32} color="white" />
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={[styles.navItem, activeTab === 'feed' && styles.activeNavItem]} 
+    onPress={handleFeedNavigation}
+  >
+    <MaterialIcons name="bar-chart" size={24} color={activeTab === 'feed' ? 'white' : '#A0A0A0'} />
+    <Text style={[styles.navText, activeTab === 'feed' && styles.activeNavText]}>Feed</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={[styles.navItem, activeTab === 'profile' && styles.activeNavItem]} 
+  >
+    <MaterialIcons name="person" size={24} color={activeTab === 'profile' ? 'white' : '#A0A0A0'} />
+    <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
+  </TouchableOpacity>
+</View>
 
         {/* Edit Profile Modal */}
         <Modal

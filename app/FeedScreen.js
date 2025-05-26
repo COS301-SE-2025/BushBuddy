@@ -4,16 +4,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-    FlatList,
-    Image,
-    Modal,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  FlatList,
+  Image,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 const FeedScreen = () => {
@@ -424,46 +424,46 @@ const FeedScreen = () => {
         {renderPostDetailModal()}
 
         {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity 
-            style={styles.navItem}
-            onPress={() => navigation.navigate('MainScreen')}
-          >
-            <MaterialIcons name="home" size={24} color="#A0A0A0" />
-            <Text style={styles.navText}>Home</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.navItem}
-            onPress={() => navigation.navigate('MapScreen')}
-          >
-            <MaterialIcons name="map" size={24} color="#A0A0A0" />
-            <Text style={styles.navText}>Map</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.addButton}
-            onPress={() => navigation.navigate('DetectionScreen')}
-          >
-            <MaterialIcons name="camera-alt" size={32} color="white" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.navItem, styles.activeNavItem]}
-            onPress={() => navigation.navigate('FeedScreen')}
-          >
-            <MaterialIcons name="article" size={24} color="#FF6B35" />
-            <Text style={[styles.navText, styles.activeNavText]}>Feed</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.navItem}
-            onPress={() => navigation.navigate('ProfileScreen')}
-          >
-            <MaterialIcons name="person" size={24} color="#A0A0A0" />
-            <Text style={styles.navText}>Profile</Text>
-          </TouchableOpacity>
-        </View>
+<View style={styles.bottomNav}>
+  <TouchableOpacity 
+    style={styles.navItem}
+    onPress={() => navigation.navigate('MainScreen')}
+  >
+    <MaterialIcons name="home" size={24} color="#A0A0A0" />
+    <Text style={styles.navText}>Home</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={styles.navItem}
+    onPress={() => navigation.navigate('MapScreen')}
+  >
+    <MaterialIcons name="map" size={24} color="#A0A0A0" />
+    <Text style={styles.navText}>Map</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={styles.addButton}
+    onPress={() => navigation.navigate('CameraPage')}
+  >
+    <MaterialIcons name="camera-alt" size={32} color="white" />
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={[styles.navItem, styles.activeNavItem]}
+    onPress={() => navigation.navigate('FeedScreen')}
+  >
+    <MaterialIcons name="article" size={24} color="#FF6B35" />
+    <Text style={[styles.navText, styles.activeNavText]}>Feed</Text>
+  </TouchableOpacity>
+  
+  <TouchableOpacity 
+    style={styles.navItem}
+    onPress={() => navigation.navigate('ProfileScreen')}
+  >
+    <MaterialIcons name="person" size={24} color="#A0A0A0" />
+    <Text style={styles.navText}>Profile</Text>
+  </TouchableOpacity>
+</View>
       </LinearGradient>
     </SafeAreaView>
   );

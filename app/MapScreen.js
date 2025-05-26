@@ -141,6 +141,11 @@ const MapScreen = ({ route }) => {
     setActiveTab(tab);
   };
 
+  // Camera navigation handler
+  const handleCameraPress = () => {
+    navigation.navigate('CameraPage');
+  };
+
   // Get the right icon for marker
   const getMarkerIcon = (type) => {
     switch (type) {
@@ -360,7 +365,7 @@ const MapScreen = ({ route }) => {
 
           <TouchableOpacity
             style={styles.addButton}
-            onPress={() => alert('Camera functionality')}
+            onPress={handleCameraPress}
           >
             <MaterialIcons name="camera-alt" size={32} color="white" />
           </TouchableOpacity>
