@@ -1,10 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'; // NB remember to install @react-navigation/native and @react-navigation/native-stack
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-// import { styles } from './MapScreen';
 
-export default function CameraPage({ navigation }) {
+const CameraPage = () => {
+  const navigation = useNavigation();
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [activeTab, setActiveTab] = useState('camera');
@@ -61,56 +62,60 @@ export default function CameraPage({ navigation }) {
         </View>
       </CameraView>
       
-
       {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'home' && styles.activeNavItem]} 
-            onPress={() => handleNavigation('MainScreen', 'home')} 
-          >
-            <MaterialIcons name="home" size={24} color={activeTab === 'home' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'home' && styles.activeNavText]}>Home</Text>
-          </TouchableOpacity>
+      <View style={styles.bottomNav}>
+        <TouchableOpacity 
+          style={[styles.navItem, activeTab === 'home' && styles.activeNavItem]} 
+          onPress={() => handleNavigation('MainScreen', 'home')} 
+        >
+          <MaterialIcons name="home" size={24} color={activeTab === 'home' ? 'white' : '#A0A0A0'} />
+          <Text style={[styles.navText, activeTab === 'home' && styles.activeNavText]}>Home</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'map' && styles.activeNavItem]} 
-            onPress={() => handleNavigation('MapScreen', 'map')}
-          >
-            <MaterialIcons name="map" size={24} color={activeTab === 'map' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'map' && styles.activeNavText]}>Map</Text>
-          </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.navItem, activeTab === 'map' && styles.activeNavItem]} 
+          onPress={() => handleNavigation('MapScreen', 'map')}
+        >
+          <MaterialIcons name="map" size={24} color={activeTab === 'map' ? 'white' : '#A0A0A0'} />
+          <Text style={[styles.navText, activeTab === 'map' && styles.activeNavText]}>Map</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.addButton}
-            onPress={() => alert('Camera functionality')}
-          >
-            <MaterialIcons name="camera-alt" size={32} color="white" />
-          </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.addButton, styles.activeNavItem]}
+          onPress={() => alert('Camera functionality')}
+        >
+          <MaterialIcons name="camera-alt" size={32} color="white" />
+        </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'reports' && styles.activeNavItem]} 
-            onPress={() => handleNavigation('FeedScreen', 'reports')}
-          >
-            <MaterialIcons name="bar-chart" size={24} color={activeTab === 'reports' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Feed</Text>
-          </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.navItem, activeTab === 'reports' && styles.activeNavItem]} 
+          onPress={() => handleNavigation('FeedScreen', 'reports')}
+        >
+          <MaterialIcons name="bar-chart" size={24} color={activeTab === 'reports' ? 'white' : '#A0A0A0'} />
+          <Text style={[styles.navText, activeTab === 'reports' && styles.activeNavText]}>Feed</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.navItem, activeTab === 'profile' && styles.activeNavItem]} 
-            onPress={() => handleNavigation('ProfileScreen', 'profile')}
-          >
-            <MaterialIcons name="person" size={24} color={activeTab === 'profile' ? 'white' : '#A0A0A0'} />
-            <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity 
+          style={[styles.navItem, activeTab === 'profile' && styles.activeNavItem]} 
+          onPress={() => handleNavigation('ProfileScreen', 'profile')}
+        >
+          <MaterialIcons name="person" size={24} color={activeTab === 'profile' ? 'white' : '#A0A0A0'} />
+          <Text style={[styles.navText, activeTab === 'profile' && styles.activeNavText]}>Profile</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1a1a1a',
+  },
+  message: {
+    textAlign: 'center',
+    paddingBottom: 10,
+    color: 'white',
   },
   camera: {
     flex: 1,
@@ -195,3 +200,5 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
 });
+
+export default CameraPage;
