@@ -595,7 +595,7 @@ const ProfileScreen = ({ route }) => {
           </View>
 
           {/* Settings Section */}
-          <View style={styles.section}>
+          <View style={styles.section} testID='darkModeSwitch'>
             <Text style={styles.sectionTitle}>App Settings</Text>
             <View style={styles.settingsContainer}>
               <View style={styles.settingItem}>

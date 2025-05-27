@@ -879,7 +879,7 @@ const bestiaryData = [
       case 'Endangered': return '#FF5722';
       case 'Near Threatened': return '#FF9800';
       case 'Vulnerable': return '#FFC107';
-      case 'Least Concern': return '#4CAF50';
+      case 'Least concern': return '#4CAF50';
       default: return '#757575';
     }
   };
@@ -1252,7 +1252,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
                 </View>
                 <View style={styles.summaryItem}>
                   <Text style={styles.summaryValue}>5</Text>
-                  <Text style={styles.summaryLabel}>Lions</Text>
+                  <Text style={styles.summaryLabel} testID="lions">Lions</Text>
                 </View>
                 <View style={styles.summaryItem}>
                   <Text style={styles.summaryValue}>3</Text>
