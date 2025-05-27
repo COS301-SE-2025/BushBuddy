@@ -59,14 +59,16 @@ both visual and audio detection.
 
 <img src="res\img\ReturnZero_ logo.png" alt="ReturnZero Logo" height="150">
 
+<img src="res\img\team\team_full.jpg" alt="ReturnZero Logo" width="500">
+
 <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;">
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
-      <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
+      <img src="res\img\team\ruan.jpg" width="2000" height="auto">
     </td>
     <td style="vertical-align: top; width: 70%; padding: 20px;">
-      <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuixen</b></h2>
+      <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuizen</b></h2>
       <b style="font-size: 18px; color: #555;">Project Manager, UX Designer</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I’m a final-year BSc Computer Science student with a keen interest in software engineering and
