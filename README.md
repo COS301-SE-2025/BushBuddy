@@ -3,7 +3,7 @@
 # ReturnZero - BushBuddy
 AI-Powered African Wildlife Detection System
 
-<img src="/res/img/bushbuddy_logo.png" alt="BushBuddy Logo" height="250">
+<img src="/res/img/BushBuddy.png" alt="BushBuddy Logo" width="500">
 
 [![codecov](https://img.shields.io/badge/codecov-n%2Fa-lightgrey)](https://codecov.io/github/COS301-SE-2024/WorkWise-Central)
 ---
