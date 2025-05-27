@@ -79,7 +79,7 @@ export default function AuthScreen() {
             />
             <Text style={styles.authTitle}>{isRegistering ? 'Register' : 'Login'}</Text>
             <Image 
-              source={require('../assets/EpiUseLogo.jpg')} 
+              source={require('../assets/BushBuddy.png')} 
               style={styles.logoImage} 
               resizeMode="contain"
             />

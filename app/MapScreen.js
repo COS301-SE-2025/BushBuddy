@@ -169,7 +169,7 @@ const MapScreen = ({ route }) => {
         {/* Header */}
         <View style={styles.header}>
           <Image
-            source={require('../assets/EpiUseLogo.png')}
+            source={require('../assets/BushBuddy.png')}
             style={styles.logo}
             resizeMode="contain"
           />

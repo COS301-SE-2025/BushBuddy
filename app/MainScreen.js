@@ -1087,7 +1087,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
         {/* Header */}
         <View style={styles.header}>
           <Image 
-            source={require('../assets/EpiUseLogo.png')} 
+            source={require('../assets/BushBuddy.png')} 
             style={styles.logo} 
             resizeMode="contain"
           />
