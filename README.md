@@ -3,7 +3,7 @@
 # ReturnZero - BushBuddy
 AI-Powered African Wildlife Detection System
 
-<img src="/res/img/BushBuddy.png" alt="BushBuddy Logo" width="750">
+<img src="/res/img/BushBuddy.png" alt="BushBuddy Logo" width="600">
 
 [![codecov](https://img.shields.io/badge/codecov-n%2Fa-lightgrey)](https://codecov.io/github/COS301-SE-2024/WorkWise-Central)
 ---
@@ -201,10 +201,10 @@ both visual and audio detection.
 
 </table>
 
+</details>
+
 <h3>Contact Us</h3>
 <a href="mailto:g24capstone@gmail.com"><img src="https://img.shields.io/badge/email-g24capstone%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
-
-</details>
 
 # Stakeholders
 <img src="res\img\EPI-USE-Logo.png" alt="Epi-Use Logo" width="400">&nbsp;
