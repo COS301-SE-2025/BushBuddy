@@ -43,7 +43,8 @@ both visual and audio detection.
 ## Demos
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
-[[Demo 1 Presentation](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
+
+[Demo 1 Presentation](https://docs.google.com/presentation/d/1PDjBW1dMg7eQv7tizgYXK06lGu0DerfK/edit?usp=drive_link&ouid=113157144451905761383&rtpof=true&sd=true)
 
 
 ## Documentation 
