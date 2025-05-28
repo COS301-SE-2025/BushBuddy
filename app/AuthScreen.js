@@ -26,6 +26,7 @@ const AuthScreen = ({ navigation }) => {
           <Image
             source={require('../assets/EpiUseLogo.png')}
             style={styles.logo}
+            testID = "logo" 
           />
           <Text style={styles.title}>African Wildlife Detection</Text>
           

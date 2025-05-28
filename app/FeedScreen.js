@@ -124,6 +124,7 @@ const FeedScreen = () => {
   const renderFeedItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.feedCard}
+      testID={`feedItem-${item.id}`}
       onPress={() => {
         setSelectedPost(item);
         setPostDetailVisible(true);
@@ -256,7 +257,9 @@ const FeedScreen = () => {
                   color="white" 
                 />
               </View>
-              <Text style={styles.modalAnimalTitle}>{selectedPost.title}</Text>
+              <Text style={styles.modalAnimalTitle} testID="modalTitle">
+                {selectedPost.title}
+              </Text>
             </View>
 
             {/* Main Image */}
@@ -337,7 +340,10 @@ const FeedScreen = () => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Feed</Text>
+          <Text 
+          style={styles.headerTitle}
+          testID='Feed'
+          >Feed</Text>
           <TouchableOpacity style={styles.profileButton}>
             <Image 
               source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
