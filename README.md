@@ -46,7 +46,7 @@ both visual and audio detection.
 
 ## Documentation 
 ### Functional Requirements Documentation
-[SRS Document](https://docs.google.com/document/d/1eJ-vx4wUhmz_olI72GIk3GrhcHGdppb9SucASzeYsE4/edit?usp=sharing)
+[SRS Document]([https://docs.google.com/document/d/1eJ-vx4wUhmz_olI72GIk3GrhcHGdppb9SucASzeYsE4/edit?usp=sharing](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing))
 
 
 ## GitHub Project Board
