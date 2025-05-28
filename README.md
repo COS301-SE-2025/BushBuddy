@@ -44,12 +44,13 @@ both visual and audio detection.
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
 
-[Demo 1 Presentation](https://docs.google.com/presentation/d/1PDjBW1dMg7eQv7tizgYXK06lGu0DerfK/edit?usp=drive_link&ouid=113157144451905761383&rtpof=true&sd=true)
+[Demo 1 Presentation](https://www.canva.com/design/DAGolPXXyvY/6SCDsRvBD6g2kgGMPxQ1ZA/edit?utm_content=DAGolPXXyvY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 
 ## Documentation 
 ### Functional Requirements Documentation
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
+
 [SRS Document](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
 
 
