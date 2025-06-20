@@ -1,0 +1,6 @@
+*.pt
+python/yolov5/data/images/
+runs/
+venv/
+__pycache__/
+*.pyc
