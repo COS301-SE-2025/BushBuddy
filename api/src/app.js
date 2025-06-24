@@ -1,6 +1,6 @@
-import express from "express";
+import express from 'express';
 
-import authRoute from "./routes/authRoute.js";
+import authRoute from './routes/authRoute.js';
 
 const app = express();
 
@@ -13,6 +13,6 @@ app.use((req, res, next) => {
 });
 
 // routes go here
-app.use("/api/auth", authRoute);
+app.use('/api/auth', authRoute);
 
 export default app;
