@@ -26,3 +26,18 @@ function deleteDocument(collection, id) {
 		db.get(collection).delete(id);
 	}
 }
+
+export const localDB = {
+	save: (collection, id, document) => {
+		saveDocument(collection, id, document);
+	},
+	get: (collection, id) => {
+		return getDocument(collection, id);
+	},
+	getAll: (collection) => {
+		return getAllDocuments(collection);
+	},
+	delete: (collection, id) => {
+		deleteDocument(collection, id);
+	},
+};
