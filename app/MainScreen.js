@@ -1346,11 +1346,12 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
-    backgroundColor: '#395936'
+    backgroundColor: '#395936',
+    height: 100
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
   },
   titleContainer: {
     flex: 1,
@@ -1379,6 +1380,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   welcomeSection: {
+    marginBottom: 10,
+    marginTop: 10,
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
