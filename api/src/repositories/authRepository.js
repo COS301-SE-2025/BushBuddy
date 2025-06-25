@@ -1,14 +1,15 @@
-import nanoid from 'nanoid';
-import { db } from '../db/index.js';
+import { nanoid } from 'nanoid';
+import db from '../db/index.js';
 
 async function createUser(userData) {
 	const { username, password, email } = userData;
 	const userId = nanoid(8);
 
-	db.query(
-		'INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4) RETURNING (id, username, email)',
-		[userId, username, email, password]
-	)
+	return db
+		.query(
+			'INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4) RETURNING (id, username, email)',
+			[userId, username, email, password]
+		)
 		.then(() => {
 			return { id: userId, username, email };
 		})
@@ -18,7 +19,8 @@ async function createUser(userData) {
 }
 
 async function getUserById(userId) {
-	db.query('SELECT username, email FROM users WHERE id = $1', [userId])
+	return db
+		.query('SELECT username, email FROM users WHERE id = $1', [userId])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
@@ -28,7 +30,8 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(username) {
-	db.query('SELECT id, email FROM users WHERE username = $1', [username])
+	return db
+		.query('SELECT id, email FROM users WHERE username = $1', [username])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
@@ -40,11 +43,12 @@ async function getUserByUsername(username) {
 async function updateUserPreferences(userId, updatedData) {
 	const { isPrivate, useGeolocation } = updatedData;
 
-	db.query('UPDATE users SET is_private = $1, use_geolocation = $2 WHERE id = $3 RETURNING (id, username, email)', [
-		isPrivate,
-		useGeolocation,
-		userId,
-	])
+	return db
+		.query('UPDATE users SET is_private = $1, use_geolocation = $2 WHERE id = $3 RETURNING (id, username, email)', [
+			isPrivate,
+			useGeolocation,
+			userId,
+		])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
@@ -54,7 +58,8 @@ async function updateUserPreferences(userId, updatedData) {
 }
 
 async function deleteUser(userId) {
-	db.query('DELETE FROM users WHERE id = $1', [userId])
+	return db
+		.query('DELETE FROM users WHERE id = $1', [userId])
 		.then(() => {
 			return { message: 'User deleted successfully' };
 		})
@@ -64,7 +69,8 @@ async function deleteUser(userId) {
 }
 
 async function getAllUsers() {
-	db.query('SELECT id, username, email FROM users')
+	return db
+		.query('SELECT id, username, email FROM users')
 		.then((result) => {
 			return result.rows;
 		})
@@ -74,7 +80,8 @@ async function getAllUsers() {
 }
 
 async function userExists(username) {
-	db.query('SELECT COUNT(*) FROM users WHERE username = $1', [username])
+	return db
+		.query('SELECT COUNT(*) FROM users WHERE username = $1', [username])
 		.then((result) => {
 			return result.rows[0].count > 0;
 		})

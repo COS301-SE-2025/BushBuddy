@@ -1,17 +1,20 @@
-import { nanoid } from 'nanoid';
-import { db } from '../../src/db/index.js';
-import { authRepository } from '../../src/repositories/authRepository.js';
+import { jest } from '@jest/globals';
 
 jest.mock('../../src/db/index.js', () => ({
-	__esmodule: true,
+	__esModule: true,
 	default: {
 		query: jest.fn(),
 	},
 }));
 
 jest.mock('nanoid', () => ({
+	__esModule: true,
 	nanoid: jest.fn(() => 'fixed-test-id'),
 }));
+
+import { nanoid } from 'nanoid';
+import db from '../../src/db/index.js';
+import { authRepository } from '../../src/repositories/authRepository.js';
 
 describe('Testing AuthRespository', () => {
 	beforeEach(() => {
@@ -20,7 +23,7 @@ describe('Testing AuthRespository', () => {
 
 	test('createUser should insert a new user into the database', async () => {
 		const mockUser = { id: 'fixed-test-id', username: 'testuser', email: 'test@user.com', password: 'hashedpassword' };
-		db.query.mockResolvedValue({ rows: [mockUser] });
+		db.query.mockResolvedValueOnce({ rows: [mockUser] });
 
 		const result = await authRepository.createUser({
 			username: 'testuser',
@@ -35,7 +38,6 @@ describe('Testing AuthRespository', () => {
 			'test@user.com',
 			'hashedpassword',
 		]);
-
 		expect(result).toEqual({
 			id: 'fixed-test-id',
 			username: 'testuser',
