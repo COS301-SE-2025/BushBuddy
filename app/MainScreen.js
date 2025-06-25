@@ -942,7 +942,7 @@ const AnimalDetailModal = () => {
     >
       <View style={styles.modalContainer}>
         <LinearGradient
-          colors={['#4c8c4a', '#1e3b1d']}
+          colors={['#F7FAF8', '#F7FAF8']}
           style={styles.modalGradient}
         >
           {/* Modal Header */}
@@ -951,7 +951,7 @@ const AnimalDetailModal = () => {
               style={styles.modalCloseButton}
               onPress={closeAnimalModal}
             >
-              <MaterialIcons name="close" size={28} color="white" />
+              <MaterialIcons name="close" size={28} color="black" />
             </TouchableOpacity>
             <View style={styles.modalStatusContainer}>
               <View style={[styles.modalStatusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
@@ -1081,7 +1081,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
@@ -1334,7 +1334,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1e3b1d',
+    backgroundColor: '#F7FAF8',
   },
   gradientContainer: {
     flex: 1,
@@ -1346,6 +1346,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
+    backgroundColor: '#395936'
   },
   logo: {
     width: 80,
@@ -1382,11 +1383,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   welcomeText: {
-    color: 'rgba(255,255,255,0.7)',
+    color: '#263924',
     fontSize: 14,
   },
   usernameText: {
-    color: 'white',
+    color: '#263924',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -1397,9 +1398,10 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 25,
     padding: 10,
+    opacity: 0.9
   },
   searchIcon: {
     marginRight: 10,
@@ -1417,15 +1419,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   sectionTitle: {
-    color: 'white',
+    color: '#263924',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
   },
   quickActionsCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 15,
     padding: 20,
+    opacity: 0.9
   },
   quickActionsContainer: {
     flexDirection: 'row',
@@ -1456,10 +1459,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   achievementsButton: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
+    opacity: 0.9
   },
   achievementsText: {
     color: 'white',
@@ -1474,12 +1478,13 @@ const styles = StyleSheet.create({
   bestiarySearchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
     flex: 1,
     marginRight: 10,
+    opacity: 0.9
   },
   bestiarySearchInput: {
     color: 'white',
@@ -1490,13 +1495,14 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    opacity: 0.9
   },
   filterLabel: {
-    color: 'white',
+    color: '#263924',
     fontSize: 14,
     marginRight: 4,
   },
@@ -1504,17 +1510,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   filterPill: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
+    opacity: 0.9
   },
   activeFilterPill: {
     backgroundColor: '#ff6b00',
   },
   filterPillText: {
-    color: 'rgba(255,255,255,0.7)',
+    color: 'white',
     fontSize: 14,
   },
   activeFilterPillText: {
@@ -1528,11 +1535,12 @@ const styles = StyleSheet.create({
   },
   bestiaryGridItem: {
     width: '48%',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 12,
     padding: 10,
     marginBottom: 12,
     alignItems: 'center',
+    opacity: 0.9
   },
   bestiaryGridImage: {
     width: '100%',
@@ -1601,10 +1609,11 @@ const styles = StyleSheet.create({
   entryCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
     marginBottom: 10,
+    opacity: 0.9
   },
   entryIconContainer: {
     width: 40,
@@ -1633,9 +1642,10 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   summaryCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
+    opacity: 0.9
   },
   summaryRow: {
     flexDirection: 'row',
@@ -1666,9 +1676,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   statusCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
+    opacity: 0.9
   },
   statusRow: {
     flexDirection: 'row',
@@ -1683,7 +1694,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#395936',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,
@@ -1723,7 +1734,7 @@ const styles = StyleSheet.create({
   // Modal Styles
   modalContainer: {
     flex: 1,
-    backgroundColor: '#1e3b1d',
+    backgroundColor: '#263924',
   },
   modalGradient: {
     flex: 1,
@@ -1766,13 +1777,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalAnimalName: {
-    color: 'white',
+    color: '#385335',
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 4,
   },
   modalScientificName: {
-    color: '#4CAF50',
+    color: '#161616',
     fontSize: 16,
     fontStyle: 'italic',
     marginBottom: 12,
@@ -1784,7 +1795,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalStatusText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: '500',
   },
@@ -1792,13 +1803,13 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   modalSectionTitle: {
-    color: '#4CAF50',
+    color: '#385335',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
   },
   modalDescription: {
-    color: 'rgba(255,255,255,0.9)',
+    color: 'black',
     fontSize: 16,
     lineHeight: 24,
   },
@@ -1812,7 +1823,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   factText: {
-    color: 'rgba(255,255,255,0.9)',
+    color: '#161616',
     fontSize: 16,
     flex: 1,
     lineHeight: 22,
@@ -1830,7 +1841,7 @@ const styles = StyleSheet.create({
     width: 80,
   },
   detailValue: {
-    color: 'rgba(255,255,255,0.9)',
+    color: 'black',
     fontSize: 16,
     flex: 1,
   },
