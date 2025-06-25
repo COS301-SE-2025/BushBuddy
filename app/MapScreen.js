@@ -163,13 +163,13 @@ const MapScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
         <View style={styles.header}>
           <Image
-            source={require('../assets/BushBuddy.png')}
+            source={require('../assets/BushBuddy.webp')}
             style={styles.logo}
             resizeMode="contain"
           />
@@ -194,7 +194,7 @@ const MapScreen = ({ route }) => {
             <MaterialIcons
               name={showScaleDropdown ? "keyboard-arrow-up" : "keyboard-arrow-down"}
               size={20}
-              color="white"
+              color="black"
             />
           </TouchableOpacity>
 
@@ -225,7 +225,7 @@ const MapScreen = ({ route }) => {
         <View style={styles.mapContainer}>
           {/* Map Demo Image */}
           <Image
-            source={require('../assets/Map-Demo.jpg')}// For now just use this static image
+            source={require('../assets/Map-Demo.webp')}// For now just use this static image
             style={styles.mapImage}
             resizeMode="cover"
           />
@@ -404,6 +404,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     paddingTop: 40,
+    backgroundColor: "#395936",
+    height: 100
   },
   logo: {
     width: 60,
@@ -425,9 +427,11 @@ const styles = StyleSheet.create({
   },
   scaleContainer: {
     position: 'absolute',
-    top: 130,
+    top: 110,
     left: 20,
     zIndex: 10,
+    backgroundColor: "#395936",
+    borderRadius: 5
   },
   scaleSelector: {
     flexDirection: 'row',
@@ -626,7 +630,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#395936',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,

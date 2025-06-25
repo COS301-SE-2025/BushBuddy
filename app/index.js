@@ -79,7 +79,7 @@ export default function AuthScreen() {
             />
             <Text style={styles.authTitle}>{isRegistering ? 'Register' : 'Login'}</Text>
             <Image 
-              source={require('../assets/BushBuddy.png')} 
+              source={require('../assets/BushBuddy.webp')} 
               style={styles.logoImage} 
               resizeMode="contain"
             />
