@@ -465,7 +465,7 @@ const ProfileScreen = ({ route }) => {
         {/* Header */}
         <View style={styles.header}>
           <Image 
-            source={require('../assets/BushBuddy.png')} 
+            source={require('../assets/BushBuddy.webp')} 
             style={styles.logo} 
             resizeMode="contain"
           />
@@ -487,7 +487,7 @@ const ProfileScreen = ({ route }) => {
             <View style={styles.profileHeader}>
               <View style={styles.profileImageContainer}>
                 <Image 
-                  source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+                  source={require('../assets/Jean-Steyn-ProfilePic.webp')} 
                   style={styles.profileImage}
                   resizeMode="cover"
                 />
@@ -754,7 +754,7 @@ const ProfileScreen = ({ route }) => {
                 <View style={styles.modalPhotoSection}>
                   <View style={styles.modalProfileImageContainer}>
                     <Image 
-                      source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+                      source={require('../assets/Jean-Steyn-ProfilePic.webp')} 
                       style={styles.modalProfileImage}
                       resizeMode="cover"
                     />

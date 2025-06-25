@@ -127,7 +127,7 @@ const bestiaryData = [
     scientificName: 'Panthera leo',
     status: 'Vulnerable',
     category: 'Predator',
-    image: require('../assets/Lion.jpg'),
+    image: require('../assets/Lion.webp'),
     description: 'Apex predator and king of the African savanna, living in social groups called prides.',
     facts: [
       'Only cat species that lives in social groups',
@@ -146,7 +146,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus strepsiceros',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/GreaterKudu.jpg'),
+    image: require('../assets/GreaterKudu.webp'),
     description: 'Large antelope with distinctive spiral horns and white body stripes.',
     facts: [
       'Males have magnificent spiral horns up to 1.8m long',
@@ -165,7 +165,7 @@ const bestiaryData = [
     scientificName: 'Diceros bicornis',
     status: 'Critically Endangered',
     category: 'Large Mammal',
-    image: require('../assets/BlackRhino.jpg'),
+    image: require('../assets/BlackRhino.webp'),
     description: 'Critically endangered rhino species with a pointed lip for browsing.',
     facts: [
       'Also grey in color despite the name',
@@ -184,7 +184,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus angasii',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Nyala.jpg'),
+    image: require('../assets/Nyala.webp'),
     description: 'Medium-sized antelope with striking sexual dimorphism between males and females.',
     facts: [
       'Males are much larger and darker than females',
@@ -203,7 +203,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus scriptus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BushBuck.jpg'),
+    image: require('../assets/BushBuck.webp'),
     description: 'Small to medium antelope known for its secretive nature and distinctive white markings.',
     facts: [
       'Solitary and highly territorial animals',
@@ -222,7 +222,7 @@ const bestiaryData = [
     scientificName: 'Panthera pardus',
     status: 'Near Threatened',
     category: 'Predator',
-    image: require('../assets/Leopard.jpg'),
+    image: require('../assets/Leopard.webp'),
     description: 'Solitary and adaptable big cat known for its strength and climbing ability.',
     facts: [
       'Can carry prey twice their body weight up trees',
@@ -241,7 +241,7 @@ const bestiaryData = [
     scientificName: 'Hippotragus niger',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/SableAntelope.jpg'),
+    image: require('../assets/SableAntelope.webp'),
     description: 'Magnificent antelope with long, curved horns and striking black and white coloration.',
     facts: [
       'Both sexes have impressive curved horns',
@@ -260,7 +260,7 @@ const bestiaryData = [
     scientificName: 'Taurotragus oryx',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Eland.jpg'),
+    image: require('../assets/Eland.webp'),
     description: 'The largest antelope in Africa, known for its impressive size and graceful movements.',
     facts: [
       'Can jump 8 feet high from a standing position',
@@ -281,7 +281,7 @@ const bestiaryData = [
     scientificName: 'Giraffa camelopardalis',
     status: 'Vulnerable',
     category: 'Large Mammal',
-    image: require('../assets/Giraffe.jpg'),
+    image: require('../assets/Giraffe.webp'),
     description: 'World\'s tallest mammal with distinctive long neck and unique spot patterns.',
     facts: [
       'Can reach heights of up to 18 feet',
@@ -300,7 +300,7 @@ const bestiaryData = [
     scientificName: 'Syncerus caffer',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Bufalo.jpg'),
+    image: require('../assets/Bufalo.webp'),
     description: 'African buffalo or Cape buffalo, one of the Big Five African game animals.',
     facts: [
       'Live in herds of 50-500 individuals',
@@ -319,7 +319,7 @@ const bestiaryData = [
     scientificName: 'Ceratotherium simum',
     status: 'Near Threatened',
     category: 'Large Mammal',
-    image: require('../assets/WhiteRhino.jpg'),
+    image: require('../assets/WhiteRhino.webp'),
     description: 'Second largest land mammal with distinctive square-shaped lip for grazing.',
     facts: [
       'Actually grey in color, not white',
@@ -338,7 +338,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus imberbis',
     status: 'Near Threatened',
     category: 'Antelope',
-    image: require('../assets/LesserKudu.jpg'),
+    image: require('../assets/LesserKudu.webp'),
     description: 'Smaller cousin of the Greater Kudu with more prominent white stripes.',
     facts: [
       'More secretive and elusive than Greater Kudu',
@@ -357,7 +357,7 @@ const bestiaryData = [
     scientificName: 'Hippopotamus amphibius',
     status: 'Vulnerable',
     category: 'Large Mammal',
-    image: require('../assets/Hippo.jpg'),
+    image: require('../assets/Hippo.webp'),
     description: 'Large semi-aquatic mammal known as one of Africa\'s most dangerous animals.',
     facts: [
       'Spend up to 16 hours a day in water',
@@ -376,7 +376,7 @@ const bestiaryData = [
     scientificName: 'Equus quagga',
     status: 'Near Threatened',
     category: 'Large Mammal',
-    image: require('../assets/Zebra.jpg'),
+    image: require('../assets/Zebra.webp'),
     description: 'Most common zebra species with distinctive black and white stripes.',
     facts: [
       'Each zebra has a unique stripe pattern',
@@ -395,7 +395,7 @@ const bestiaryData = [
     scientificName: 'Phacochoerus africanus',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Warthog.jpg'),
+    image: require('../assets/Warthog.webp'),
     description: 'Wild pig species known for their distinctive facial "warts" and tusks.',
     facts: [
       'Facial "warts" are actually protective fat deposits',
@@ -414,7 +414,7 @@ const bestiaryData = [
     scientificName: 'Potamochoerus larvatus',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Bushpig.jpg'),
+    image: require('../assets/Bushpig.webp'),
     description: 'Forest-dwelling pig with reddish-brown coat and distinctive white facial markings.',
     facts: [
       'More colorful than warthogs with reddish coat',
@@ -435,7 +435,7 @@ const bestiaryData = [
     scientificName: 'Aepyceros melampus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Impala.jpg'),
+    image: require('../assets/Impala.webp'),
     description: 'Medium-sized antelope known for its incredible jumping ability and graceful movements.',
     facts: [
       'Can leap up to 10 feet high and 30 feet in length',
@@ -454,7 +454,7 @@ const bestiaryData = [
     scientificName: 'Kobus ellipsiprymnus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/WaterBuck.jpg'),
+    image: require('../assets/WaterBuck.webp'),
     description: 'Large antelope always found near water sources with distinctive white ring marking.',
     facts: [
       'Never found more than 1km from water',
@@ -473,7 +473,7 @@ const bestiaryData = [
     scientificName: 'Acinonyx jubatus',
     status: 'Vulnerable',
     category: 'Predator',
-    image: require('../assets/Cheetah.jpg'),
+    image: require('../assets/Cheetah.webp'),
     description: 'World\'s fastest land animal, built for speed with distinctive black tear marks.',
     facts: [
       'Can reach speeds of 110 km/h in short bursts',
@@ -492,7 +492,7 @@ const bestiaryData = [
     scientificName: 'Crocuta crocuta',
     status: 'Least Concern',
     category: 'Predator',
-    image: require('../assets/SpottedHyena.jpg'),
+    image: require('../assets/SpottedHyena.webp'),
     description: 'Powerful scavenger and hunter with incredibly strong jaws and complex social structure.',
     facts: [
       'Strongest bite force among African carnivores',
@@ -511,7 +511,7 @@ const bestiaryData = [
     scientificName: 'Parahyaena brunnea',
     status: 'Near Threatened',
     category: 'Predator',
-    image: require('../assets/BrownHyena.jpg'),
+    image: require('../assets/BrownHyena.webp'),
     description: 'Solitary scavenger with long, shaggy brown coat adapted to arid environments.',
     facts: [
       'More solitary than spotted hyenas',
@@ -530,7 +530,7 @@ const bestiaryData = [
     scientificName: 'Lycaon pictus',
     status: 'Endangered',
     category: 'Predator',
-    image: require('../assets/AfricanWildDog.jpg'),
+    image: require('../assets/AfricanWildDog.webp'),
     description: 'Highly social and efficient pack hunters with distinctive mottled coat patterns.',
     facts: [
       'Most successful hunters in Africa with 80% success rate',
@@ -551,7 +551,7 @@ const bestiaryData = [
     scientificName: 'Papio ursinus',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/ChacmaBaboon.jpg'),
+    image: require('../assets/ChacmaBaboon.webp'),
     description: 'Largest baboon species with complex social structure and high intelligence.',
     facts: [
       'Live in troops of 20-150 individuals',
@@ -570,7 +570,7 @@ const bestiaryData = [
     scientificName: 'Chlorocebus pygerythrus',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/VervetMonkey.jpg'),
+    image: require('../assets/VervetMonkey.webp'),
     description: 'Small, highly social monkey known for their distinct alarm calls and blue coloration.',
     facts: [
       'Have specific alarm calls for different predators',
@@ -589,7 +589,7 @@ const bestiaryData = [
     scientificName: 'Suricata suricatta',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Meerkat.jpg'),
+    image: require('../assets/Meerkat.webp'),
     description: 'Small mongoose known for their upright posture and complex social sentinel system.',
     facts: [
       'Live in groups called mobs or gangs',
@@ -608,7 +608,7 @@ const bestiaryData = [
     scientificName: 'Procavia capensis',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/RockHyrax.jpg'),
+    image: require('../assets/RockHyrax.webp'),
     description: 'Small mammal most closely related to elephants, living in rocky outcrops.',
     facts: [
       'Closest living relatives are elephants and manatees',
@@ -627,7 +627,7 @@ const bestiaryData = [
     scientificName: 'Felis lybica',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/AfricanWildCat.jpg'),
+    image: require('../assets/AfricanWildCat.webp'),
     description: 'Wild ancestor of domestic cats, adapted to various African environments.',
     facts: [
       'Direct ancestor of domestic house cats',
@@ -646,7 +646,7 @@ const bestiaryData = [
     scientificName: 'Caracal caracal',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Caracal.jpg'),
+    image: require('../assets/Caracal.webp'),
     description: 'Medium-sized wild cat with distinctive tufted ears and incredible jumping ability.',
     facts: [
       'Can leap 12 feet high to catch birds in flight',
@@ -665,7 +665,7 @@ const bestiaryData = [
     scientificName: 'Leptailurus serval',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Serval.jpg'),
+    image: require('../assets/Serval.webp'),
     description: 'Long-legged wild cat with large ears, adapted for hunting in tall grasslands.',
     facts: [
       'Has the longest legs relative to body size of any cat',
@@ -684,7 +684,7 @@ const bestiaryData = [
     scientificName: 'Mellivora capensis',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/HoneyBadger.jpg'),
+    image: require('../assets/HoneyBadger.webp'),
     description: 'Fearless and tenacious carnivore known for its aggressive nature and thick skin.',
     facts: [
       'Extremely thick skin protects from bee stings and snake bites',
@@ -703,7 +703,7 @@ const bestiaryData = [
     scientificName: 'Orycteropus afer',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Aardvark.jpg'),
+    image: require('../assets/Aardvark.webp'),
     description: 'Unique nocturnal mammal specialized for eating ants and termites.',
     facts: [
       'Can dig through termite mounds with powerful claws',
@@ -722,7 +722,7 @@ const bestiaryData = [
     scientificName: 'Smutsia temminckii',
     status: 'Vulnerable',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Pangolin.jpg'),
+    image: require('../assets/Pangolin.webp'),
     description: 'Unique scaled mammal that rolls into a ball when threatened.',
     facts: [
       'Only mammal covered in scales made of keratin',
@@ -743,7 +743,7 @@ const bestiaryData = [
     scientificName: 'Connochaetes taurinus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BlueWildebeest.jpg'),
+    image: require('../assets/BlueWildebeest.webp'),
     description: 'Large antelope famous for the Great Migration across East Africa.',
     facts: [
       'Participate in the largest land animal migration',
@@ -762,7 +762,7 @@ const bestiaryData = [
     scientificName: 'Connochaetes gnou',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BlackWildebeest.jpg'),
+    image: require('../assets/BlackWildebeest.webp'),
     description: 'Smaller wildebeest species with distinctive white tail and forward-curved horns.',
     facts: [
       'Smaller than blue wildebeest with distinctive white tail',
@@ -781,7 +781,7 @@ const bestiaryData = [
     scientificName: 'Alcelaphus buselaphus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/RedHartebeest.jpg'),
+    image: require('../assets/RedHartebeest.webp'),
     description: 'Fast antelope with distinctive heart-shaped horns and reddish-brown coat.',
     facts: [
       'Can run at speeds up to 70 km/h',
@@ -800,7 +800,7 @@ const bestiaryData = [
     scientificName: 'Damaliscus pygargus phillipsi',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Blesbok.jpg'),
+    image: require('../assets/Blesbok.webp'),
     description: 'Medium-sized antelope with distinctive white facial blaze and reddish-brown coat.',
     facts: [
       'Distinctive white blaze on face and white rump patch',
@@ -821,7 +821,7 @@ const bestiaryData = [
     scientificName: 'Damaliscus pygargus pygargus',
     status: 'Vulnerable',
     category: 'Antelope',
-    image: require('../assets/Bontebok.jpg'),
+    image: require('../assets/Bontebok.webp'),
     description: 'Rare antelope subspecies with chocolate brown coat and distinctive white markings.',
     facts: [
       'Rarest antelope species in Africa',
@@ -840,7 +840,7 @@ const bestiaryData = [
     scientificName: 'Raphicerus campestris',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Steenbok.jpg'),
+    image: require('../assets/Steenbok.webp'),
     description: 'Small antelope with large ears and reddish-golden coat.',
     facts: [
       'One of the smallest African antelopes',
@@ -859,7 +859,7 @@ const bestiaryData = [
     scientificName: 'Sylvicapra grimmia',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Duiker.jpg'),
+    image: require('../assets/Duiker.webp'),
     description: 'Small forest antelope known for diving into thick cover when threatened.',
     facts: [
       'Name means "diver" in Afrikaans',
@@ -1087,7 +1087,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
         {/* Header */}
         <View style={styles.header}>
           <Image 
-            source={require('../assets/BushBuddy.png')} 
+            source={require('../assets/BushBuddy.webp')} 
             style={styles.logo} 
             resizeMode="contain"
           />
@@ -1096,7 +1096,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           </View>
           <TouchableOpacity style={styles.profileButton}>
             <Image 
-              source={require('../assets/Jean-Steyn-ProfilePic.jpg')}
+              source={require('../assets/Jean-Steyn-ProfilePic.webp')}
               style={styles.profileImage}
             />
           </TouchableOpacity>

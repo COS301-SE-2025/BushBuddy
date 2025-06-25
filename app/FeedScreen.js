@@ -30,11 +30,11 @@ const FeedScreen = () => {
       type: 'elephant',
       title: 'Elephant Bull Spotted',
       user: 'Ruan',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Kruger National Park',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/Elephant.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Elephant.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'I spotted this large Elephant bull near Bateleur road this morning while on a game drive',
       likes: 24,
       comments: 8,
@@ -45,11 +45,11 @@ const FeedScreen = () => {
       type: 'lion',
       title: 'Pride of Lions',
       user: 'Ruben',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Mabula Nature Reserve',
       timestamp: '20/05/2025 17:45',
-      image: require('../assets/Pride-Lions-Demo.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Pride-Lions-Demo.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Amazing pride of lions spotted resting under acacia trees. The cubs were playing while the adults kept watch.',
       likes: 18,
       comments: 5,
@@ -60,11 +60,11 @@ const FeedScreen = () => {
       type: 'rhino',
       title: 'White Rhinos Spotted',
       user: 'Raffie',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Dinokeng',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/rhino-group.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/rhino-group.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Two magnificent white rhinos grazing peacefully in the early morning light. Such incredible creatures!',
       likes: 31,
       comments: 12,
@@ -75,11 +75,11 @@ const FeedScreen = () => {
       type: 'antelope',
       title: 'Eland Spotted',
       user: 'Tom',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Rietvlei Nature Reserve',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/Eland.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Eland.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Beautiful herd of eland antelope spotted during sunset. They were so graceful moving across the grassland.',
       likes: 15,
       comments: 3,
@@ -346,7 +346,7 @@ const FeedScreen = () => {
           >Feed</Text>
           <TouchableOpacity style={styles.profileButton}>
             <Image 
-              source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+              source={require('../assets/Jean-Steyn-ProfilePic.webp')} 
               style={styles.profileImage}
             />
           </TouchableOpacity>

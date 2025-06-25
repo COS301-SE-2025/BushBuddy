@@ -169,7 +169,7 @@ const MapScreen = ({ route }) => {
         {/* Header */}
         <View style={styles.header}>
           <Image
-            source={require('../assets/BushBuddy.png')}
+            source={require('../assets/BushBuddy.webp')}
             style={styles.logo}
             resizeMode="contain"
           />
@@ -225,7 +225,7 @@ const MapScreen = ({ route }) => {
         <View style={styles.mapContainer}>
           {/* Map Demo Image */}
           <Image
-            source={require('../assets/Map-Demo.jpg')}// For now just use this static image
+            source={require('../assets/Map-Demo.webp')}// For now just use this static image
             style={styles.mapImage}
             resizeMode="cover"
           />
