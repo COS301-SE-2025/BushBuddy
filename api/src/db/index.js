@@ -7,7 +7,8 @@ class Database {
 		}
 
 		this.pool = new Pool({
-			connectionString: process.env.DATABASE_URL,
+			connectionString:
+				process.env.ENVIRONMENT === 'dev' ? process.env.DATABASE_URL_DEV : process.env.DATABASE_URL_PROD,
 			ssl: {
 				rejectUnauthorized: false,
 			},

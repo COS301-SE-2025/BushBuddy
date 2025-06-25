@@ -15,7 +15,14 @@ async function registerUser({ username, password, email }) {
 			userData.password = hash;
 		})
 		.then(() => {
-			return authRepository.createUser(userData);
+			authRepository
+				.createUser(userData)
+				.then((user) => {
+					return user;
+				})
+				.catch((error) => {
+					throw new Error(`Error creating user: ${error.message}`);
+				});
 		});
 }
 
@@ -23,19 +30,22 @@ async function loginUser({ username, password }) {
 	if (!username || !password) {
 		throw new Error('Username and password are required');
 	}
-	const user = await authRepository.getUserByUsername(username);
-	if (!user) {
-		throw new Error('User not found');
-	}
-	bcrypt
-		.compare(password, user.password, (err, result) => {
-			if (err) throw new Error('Error comparing passwords');
-			if (!result) {
-				throw new Error('Invalid password');
+	authRepository
+		.getUserByUsername(username)
+		.then((user) => {
+			if (!user) {
+				throw new Error('User not found');
 			}
+			bcrypt.compare(password, user.password, (err, result) => {
+				if (err) throw new Error('Error comparing passwords');
+				if (!result) {
+					throw new Error('Invalid password');
+				}
+				return { id: user.id, username: user.username, email: user.email };
+			});
 		})
-		.then(() => {
-			return user;
+		.catch((error) => {
+			throw new Error(`Error logging in user: ${error.message}`);
 		});
 }
 
