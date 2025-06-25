@@ -335,7 +335,7 @@ const FeedScreen = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
@@ -490,6 +490,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
+    backgroundColor: "#395936",
+    height: 100,
   },
   headerTitle: {
     fontSize: 24,
@@ -524,10 +526,12 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 25,
     padding: 12,
     gap: 10,
+    marginTop: 10,
+    opacity: 0.9
   },
   searchInput: {
     flex: 1,
@@ -544,11 +548,12 @@ const styles = StyleSheet.create({
   dropdownFilter: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 8,
     gap: 5,
+    opacity: 0.9
   },
   dropdownText: {
     color: 'white',
@@ -563,9 +568,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.9
   },
   animalFilterContainer: {
     paddingHorizontal: 15,
@@ -575,28 +581,29 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 5,
+    opacity: 0.9
   },
   feedContainer: {
     paddingBottom: 20,
   },
   feedCard: {
-    backgroundColor: 'white',
+    backgroundColor: '#EFF5EF',
     marginHorizontal: 15,
     marginBottom: 20,
     borderRadius: 15,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: 1,
       height: 2,
     },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   userHeader: {
     flexDirection: 'row',
@@ -697,7 +704,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#395936',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,

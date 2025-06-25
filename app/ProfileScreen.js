@@ -459,7 +459,7 @@ const ProfileScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
@@ -728,7 +728,7 @@ const ProfileScreen = ({ route }) => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
             <LinearGradient
-              colors={['#4c8c4a', '#1e3b1d']}
+              colors={['#F7FAF8', '#F7FAF8']}
               style={styles.modalGradient}
             >
               {/* Modal Header */}
@@ -940,7 +940,7 @@ const ProfileScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#F7FAF8',
   },
   gradientContainer: {
     flex: 1,
@@ -952,10 +952,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 15,
+    height: 100,
+    backgroundColor: "#395936"
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
   titleContainer: {
     flex: 1,
@@ -976,10 +978,12 @@ const styles = StyleSheet.create({
   
   // Profile Card Styles
   profileCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
+    opacity: 0.9,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
+    marginTop: 10
   },
   profileHeader: {
     flexDirection: 'row',
@@ -1062,7 +1066,8 @@ const styles = StyleSheet.create({
 
   // Section Styles
   section: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
+    opacity: 0.9,
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
@@ -1234,7 +1239,7 @@ const styles = StyleSheet.create({
   // Bottom Navigation Styles future Jean
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: '#395936',
     paddingVertical: 10,
     paddingHorizontal: 20,
     justifyContent: 'space-around',
