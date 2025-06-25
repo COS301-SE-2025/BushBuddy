@@ -5,12 +5,10 @@ async function createUser(userData) {
 	const { username, password, email } = userData;
 	const userId = nanoid(8);
 
-	db.query('INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4)', [
-		userId,
-		username,
-		email,
-		password,
-	])
+	db.query(
+		'INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4) RETURNING (id, username, email)',
+		[userId, username, email, password]
+	)
 		.then(() => {
 			return { id: userId, username, email };
 		})
@@ -30,7 +28,7 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(username) {
-	db.query('SELECT id, username, email FROM users WHERE username = $1', [username])
+	db.query('SELECT id, email FROM users WHERE username = $1', [username])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
@@ -42,7 +40,11 @@ async function getUserByUsername(username) {
 async function updateUserPreferences(userId, updatedData) {
 	const { isPrivate, useGeolocation } = updatedData;
 
-	db.query('UPDATE users SET is_private = $1, use_geolocation = $2 WHERE id = $3', [isPrivate, useGeolocation, userId])
+	db.query('UPDATE users SET is_private = $1, use_geolocation = $2 WHERE id = $3 RETURNING (id, username, email)', [
+		isPrivate,
+		useGeolocation,
+		userId,
+	])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
