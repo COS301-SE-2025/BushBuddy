@@ -1,14 +1,15 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // NB remember to install @react-navigation/native and @react-navigation/native-stack
+import { useNavigation } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const CameraPage = () => {
   const navigation = useNavigation();
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [activeTab, setActiveTab] = useState('camera');
+  const cameraRef = useRef(null);
 
   if (!permission) {
     return <View />;
@@ -27,6 +28,29 @@ const CameraPage = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      try {
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.8,
+          base64: false,
+          exif: true,
+        });
+        
+        // Here you can handle the captured photo
+        console.log('Photo captured:', photo.uri);
+        Alert.alert('Photo Captured!', `Photo saved to: ${photo.uri}`);
+        
+        // You could navigate to a preview screen or save the photo
+        // navigation.navigate('PhotoPreview', { photoUri: photo.uri });
+        
+      } catch (error) {
+        console.error('Error taking picture:', error);
+        Alert.alert('Error', 'Failed to take picture');
+      }
+    }
+  };
+
   // Navigation handlers
   const handleNavigation = (screen, tab) => {
     navigation.navigate(screen);
@@ -37,28 +61,29 @@ const CameraPage = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        {/* <Image 
-          source={require('../assets/EpiUseLogo.png')} 
-          style={styles.logo} 
-          resizeMode="contain"
-        /> */}
         <View style={styles.titleContainer}>
           <Text style={styles.headerTitle}>Beast Scanner</Text>
         </View>
-        {/* <TouchableOpacity 
-          style={styles.settingsButton}
-          onPress={() => Alert.alert('Settings', 'Would open detailed settings')}
-        >
-          <MaterialIcons name="settings" size={24} color="white" />
-        </TouchableOpacity> */}
       </View>
 
       {/* Camera View */}
-      <CameraView style={styles.camera} facing={facing}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+        <View style={styles.cameraOverlay}>
+          {/* Top Controls */}
+          <View style={styles.topControls}>
+            <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
+              <MaterialIcons name="flip-camera-ios" size={28} color="white" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Bottom Controls */}
+          <View style={styles.cameraControls}>
+            <View style={styles.captureContainer}>
+              <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+                <View style={styles.captureButtonInner} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </CameraView>
       
@@ -120,19 +145,53 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-  buttonContainer: {
+  cameraOverlay: {
     flex: 1,
     backgroundColor: 'transparent',
-    flexDirection: 'row',
-    margin: 20,
   },
-  button: {
-    alignSelf: 'flex-end',
+  topControls: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  flipButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cameraControls: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
     alignItems: 'center',
   },
-  text: {
-    fontSize: 18,
-    color: 'white',
+  captureContainer: {
+    alignItems: 'center',
+  },
+  captureButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    borderWidth: 4,
+    borderColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  captureButtonInner: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -143,10 +202,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     backgroundColor: '#1a1a1a',
   },
-  logo: {
-    width: 40,
-    height: 40,
-  },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
@@ -156,11 +211,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  settingsButton: {
-    padding: 8,
-  },
   
-  // Bottom Navigation styles - consistent with ProfileScreen
+  // Bottom Navigation styles
   bottomNav: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0,0,0,0.8)',
