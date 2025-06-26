@@ -1,6 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; // NB remember to install @react-navigation/native and @react-navigation/native-stack
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as Haptics from 'expo-haptics'; //for haptic feedback
 import { useRef, useState } from 'react';
 import { Alert, Animated, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -28,6 +29,8 @@ const CameraPage = () => {
   }
 
   function toggleCameraFacing() {
+    // Add haptic feedback for camera flip
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
@@ -35,6 +38,9 @@ const CameraPage = () => {
     if (cameraRef.current && !isCapturing) {
       try {
         setIsCapturing(true);
+        
+        // Add haptic feedback for capture
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         
         // Snapchat-style flash animation
         Animated.sequence([
@@ -62,7 +68,7 @@ const CameraPage = () => {
         // Here you can handle the captured photo
         console.log('Photo captured:', photo.uri);
         
-        // Optional: Show success feedback
+        // Show success feedback
         // Alert.alert('Photo Captured!', 'Snap saved!');
         
         // Navigate to a preview screen or save the photo
@@ -79,6 +85,8 @@ const CameraPage = () => {
 
   // Navigation handlers
   const handleNavigation = (screen, tab) => {
+    // Add haptic feedback for navigation
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     navigation.navigate(screen);
     setActiveTab(tab);
   };
