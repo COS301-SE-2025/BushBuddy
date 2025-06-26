@@ -1,8 +1,8 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; // NB remember to install @react-navigation/native and @react-navigation/native-stack
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const CameraPage = () => {
   const navigation = useNavigation();
@@ -28,28 +28,23 @@ const CameraPage = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  // Function to take a picture
   const takePicture = async () => {
-    if (cameraRef.current) {
-      try {
-        const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.8,
-          base64: false,
-          exif: true,
-        });
-        
-        // Here you can handle the captured photo
-        console.log('Photo captured:', photo.uri);
-        Alert.alert('Photo Captured!', `Photo saved to: ${photo.uri}`);
-        
-        // You could navigate to a preview screen or save the photo
-        // navigation.navigate('PhotoPreview', { photoUri: photo.uri });
-        
-      } catch (error) {
-        console.error('Error taking picture:', error);
-        Alert.alert('Error', 'Failed to take picture');
-      }
+  if (cameraRef.current) {
+    try {
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 0.8,
+        base64: false,
+        exif: true,
+      });
+      
+      console.log('Photo captured:', photo.uri);
+      
+    } catch (error) {
+      console.error('Error taking picture:', error);
     }
-  };
+  }
+};
 
   // Navigation handlers
   const handleNavigation = (screen, tab) => {
