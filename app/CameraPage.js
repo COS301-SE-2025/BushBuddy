@@ -12,6 +12,7 @@ const CameraPage = () => {
   const [activeTab, setActiveTab] = useState('camera');
   const [lastPhoto, setLastPhoto] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
+  const [flashMode, setFlashMode] = useState('auto'); // New state for flash mode
   const cameraRef = useRef(null);
   const flashAnimation = useRef(new Animated.Value(0)).current;
 
@@ -33,6 +34,36 @@ const CameraPage = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
+
+  // Function to toggle flash mode
+  const toggleFlashMode = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setFlashMode(current => {
+      switch (current) {
+        case 'auto':
+          return 'on';
+        case 'on':
+          return 'off';
+        case 'off':
+          return 'auto';
+        default:
+          return 'auto';
+      }
+    });
+  };
+
+  // Function to get flash icon based on mode(being fancy)
+  const getFlashIcon = () => {
+    switch (flashMode) {
+      case 'on':
+        return 'flash-on';
+      case 'off':
+        return 'flash-off';
+      case 'auto':
+      default:
+        return 'flash-auto';
+    }
+  };
 
   const takePicture = async () => {
     if (cameraRef.current && !isCapturing) {
@@ -60,12 +91,13 @@ const CameraPage = () => {
           quality: 0.8,
           base64: false,
           exif: true,
+          flash: flashMode, // Use the current flash mode
         });
         
         // Save the last photo for thumbnail preview
         setLastPhoto(photo.uri);
         
-        // Here you can handle the captured photo
+        // Handle the captured photo later on
         console.log('Photo captured:', photo.uri);
         
         // Show success feedback
@@ -101,7 +133,12 @@ const CameraPage = () => {
       </View>
 
       {/* Camera View */}
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+      <CameraView 
+        style={styles.camera} 
+        facing={facing} 
+        ref={cameraRef}
+        flash={flashMode}
+      >
         <View style={styles.cameraOverlay}>
           {/* Flash Overlay(cool like snapchat) */}
           <Animated.View 
@@ -116,6 +153,17 @@ const CameraPage = () => {
 
           {/* Top Controls */}
           <View style={styles.topControls}>
+            {/* Flash Mode Button */}
+            <TouchableOpacity 
+              style={[styles.flashButton, { marginRight: 10 }]} 
+              onPress={toggleFlashMode}
+            >
+              <MaterialIcons name={getFlashIcon()} size={24} color="white" />
+              <Text style={styles.flashModeText}>
+                {flashMode.charAt(0).toUpperCase() + flashMode.slice(1)}
+              </Text>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
               <MaterialIcons name="flip-camera-ios" size={28} color="white" />
             </TouchableOpacity>
@@ -236,6 +284,8 @@ const styles = StyleSheet.create({
     top: 20,
     right: 20,
     zIndex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   flipButton: {
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -243,6 +293,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  flashButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  flashModeText: {
+    color: 'white',
+    fontSize: 10,
+    marginTop: 2,
+    fontWeight: '500',
   },
   cameraControls: {
     position: 'absolute',
