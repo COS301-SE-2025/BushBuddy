@@ -48,6 +48,10 @@ both visual and audio detection.
 
 [User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
 
+[Coding Standards - v1](https://drive.google.com/file/d/12enrjoGXYy_JLajD-r4YTvM261CNjG1t/view?usp=drive_link)
+
+[Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
+
 ## Demos
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
