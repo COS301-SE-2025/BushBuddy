@@ -41,7 +41,7 @@ both visual and audio detection.
 </details>
 
 ## Documentation 
-### Functional Requirements Documentation
+
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
 [SRS Document - v1](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
