@@ -9,12 +9,11 @@ import {
   Image,
   Modal,
   SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+  ScrollView, StyleSheet, Text,
+  TouchableOpacity, View
 } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { Callout } from 'react-native-maps';
 // Saving this for future Jean...app.json
 /*"plugins": [
   [
@@ -221,17 +220,111 @@ const MapScreen = ({ route }) => {
           )}
         </View>
 
+{/* Map section */}
+         <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+            latitude: -25.89092,
+            longitude: 28.2709,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+            }}
+            >
+            <Marker
+              coordinate={{ latitude: -25.89592, longitude: 28.2789 }}
+              title="Impala"
+            >
+              <Callout tooltip>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.title}>Impala</Text>
+                  <Image
+                    source={require('../assets/Impala.webp')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.description}>Ruan spotted a small herd of Impala here.</Text>
+                </View>
+              </Callout>
+            </Marker>
+
+            <Marker
+              coordinate={{ latitude: -25.89992, longitude: 28.2669 }}
+              title="Kudu"
+            >
+              <Callout tooltip>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.title}>Kudu</Text>
+                  <Image
+                    source={require('../assets/LesserKudu.webp')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.description}>Jean spotted a lone Kudu bull.</Text>
+                </View>
+              </Callout>
+            </Marker>
+
+            <Marker
+              coordinate={{ latitude: -25.89, longitude: 28.2709 }}
+              title="Meerkat"
+            >
+              <Callout tooltip>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.title}>Meerkat</Text>
+                  <Image
+                    source={require('../assets/Meerkat.webp')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.description}>Raffie saw a Meerkat here.</Text>
+                </View>
+              </Callout>
+            </Marker>
+
+            <Marker
+              coordinate={{ latitude: -25.9092, longitude: 28.2809 }}
+              title="Spotted Hyena"
+            >
+              <Callout tooltip>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.title}>Hyena</Text>
+                  <Image
+                    source={require('../assets/SpottedHyena.webp')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.description}>Ruben saw a Hyena here.</Text>
+                </View>
+              </Callout>
+            </Marker>
+
+            <Marker
+              coordinate={{ latitude: -25.8942, longitude: 28.2909 }}
+              title="Vervet Monkey"
+            >
+              <Callout tooltip>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.title}>Vervet Monkey</Text>
+                  <Image
+                    source={require('../assets/VervetMonkey.webp')}
+                    style={styles.image}
+                  />
+                  <Text style={styles.description}>Vervet Monkies crashed Tom's picnic</Text>
+                </View>
+              </Callout>
+            </Marker>
+
+          </MapView>
+        </View>
+
         {/* Map Container with Image */}
-        <View style={styles.mapContainer}>
+        {/* <View style={styles.mapContainer}> */}
           {/* Map Demo Image */}
-          <Image
+          {/* <Image
             source={require('../assets/Map-Demo.webp')}// For now just use this static image
             style={styles.mapImage}
             resizeMode="cover"
-          />
+          /> */}
 
           {/* Map Markers Overlay */}
-          {mapMarkers.map((marker) => (
+          {/* {mapMarkers.map((marker) => (
             <TouchableOpacity
               key={marker.id}
               style={[
@@ -259,7 +352,7 @@ const MapScreen = ({ route }) => {
               )}
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */}
 
         {/* Animal Detail Panel */}
         {selectedAnimal && (
@@ -392,9 +485,31 @@ const MapScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  map: { flex: 1 },
   container: {
     flex: 1,
     backgroundColor: '#1e3b1d',
+  },
+  calloutContainer: {
+    width: 200,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  title: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  image: {
+    width: 180,
+    height: 100,
+    borderRadius: 8,
+    marginBottom: 5,
+  },
+  description: {
+    fontSize: 12,
+    textAlign: 'center',
   },
   gradientContainer: {
     flex: 1,
