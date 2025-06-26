@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   StyleSheet,
   Text,
@@ -16,6 +17,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,6 +28,7 @@ export default function AuthScreen() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showModal, setShowModal] = useState(true);
   
   const navigation = useNavigation();
 
@@ -178,6 +181,22 @@ export default function AuthScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
+
+      <Modal
+        visible={showModal}
+          animationType="fade"
+          transparent={false}
+        >
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Welcome to Bush Buddy</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setShowModal(false)}
+          >
+            <Text style={styles.modalButtonText}>Log In / Register</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       
       <StatusBar style="light" />
     </View>
@@ -317,4 +336,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  modalContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#1c1c1c',
+  padding: 20,
+},
+
+modalTitle: {
+  fontSize: 28,
+  color: '#fff',
+  marginBottom: 30,
+  textAlign: 'center',
+},
+
+modalButton: {
+  backgroundColor: '#4CAF50',
+  paddingVertical: 12,
+  paddingHorizontal: 30,
+  borderRadius: 25,
+},
+
+modalButtonText: {
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+
 });
