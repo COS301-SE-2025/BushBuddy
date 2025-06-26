@@ -3,6 +3,7 @@ jest.mock('../../src/services/authService', () => ({
 	authService: {
 		registerUser: jest.fn(),
 		loginUser: jest.fn(),
+		logoutUser: jest.fn(),
 	},
 }));
 
@@ -55,6 +56,26 @@ describe('AuthController', () => {
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(400);
 			expect(res.json).toHaveBeenCalledWith({ error: 'Registration failed' });
+		});
+
+		test('should return an error if returned user is null', async () => {
+			const req = {
+				body: {
+					username: 'testuser',
+					email: 'test@user.com',
+					password: 'password',
+				},
+			};
+
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			};
+			authService.registerUser.mockResolvedValueOnce(null);
+			await authController.registerUser(req, res);
+			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
+			expect(res.status).toHaveBeenCalledWith(400);
+			expect(res.json).toHaveBeenCalledWith({ error: 'User registration failed' });
 		});
 	});
 
@@ -117,6 +138,46 @@ describe('AuthController', () => {
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(401);
 			expect(res.json).toHaveBeenCalledWith({ error: 'Invalid username or password' });
+		});
+	});
+
+	describe('logoutUser', () => {
+		test('should log out a user successfully', async () => {
+			const req = {
+				body: {
+					userId: '1',
+				},
+			};
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			};
+			authService.logoutUser.mockResolvedValueOnce({ message: 'User logged out successfully' });
+
+			await authController.logoutUser(req, res);
+
+			expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
+			expect(res.status).toHaveBeenCalledWith(200);
+			expect(res.json).toHaveBeenCalledWith({ message: 'User logged out successfully' });
+		});
+
+		test('should return an error if logout fails', async () => {
+			const req = {
+				body: {
+					userId: '1',
+				},
+			};
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			};
+			authService.logoutUser.mockRejectedValueOnce(new Error('Logout failed'));
+
+			await authController.logoutUser(req, res);
+
+			expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
+			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledWith({ error: 'Logout failed' });
 		});
 	});
 });

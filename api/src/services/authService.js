@@ -41,7 +41,25 @@ async function loginUser({ username, password }) {
 	}
 }
 
+async function logoutUser(userId) {
+	if (!userId) {
+		throw new Error('User ID is required');
+	}
+	try {
+		// clear token here
+		// temporary logic
+		const user = await authRepository.getUserById(userId);
+		if (!user) {
+			throw new Error('User not found');
+		}
+		return { message: 'User logged out successfully' };
+	} catch (error) {
+		throw new Error(`Error logging out user: ${error.message}`);
+	}
+}
+
 export const authService = {
 	registerUser,
 	loginUser,
+	logoutUser,
 };

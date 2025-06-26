@@ -4,6 +4,7 @@ jest.mock('../../src/repositories/authRepository.js', () => ({
 		createUser: jest.fn(),
 		userExists: jest.fn(),
 		getUserByUsername: jest.fn(),
+		getUserById: jest.fn(),
 	},
 }));
 jest.mock('bcrypt', () => ({
@@ -109,11 +110,11 @@ describe('AuthService', () => {
 
 		test('should throw an error if required fields are missing', async () => {
 			await expect(
-				authService.registerUser({
+				authService.loginUser({
 					username: '',
 					password: '',
 				})
-			).rejects.toThrow('Username, password, and email are required');
+			).rejects.toThrow('Username and password are required');
 
 			expect(authRepository.userExists).not.toHaveBeenCalled();
 		});
@@ -159,6 +160,36 @@ describe('AuthService', () => {
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('testuser');
 			expect(bcrypt.compare).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('logoutUser', () => {
+		test('should log out a user successfully', async () => {
+			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com' };
+			authRepository.getUserById.mockResolvedValueOnce(mockUser);
+			const result = await authService.logoutUser(1);
+
+			expect(result).toEqual({ message: 'User logged out successfully' });
+		});
+
+		test('should throw an error if user ID is missing', async () => {
+			await expect(authService.logoutUser()).rejects.toThrow('User ID is required');
+		});
+
+		test('should throw an error if logout fails', async () => {
+			authRepository.getUserById.mockRejectedValueOnce(new Error('User not found'));
+
+			await expect(authService.logoutUser(999)).rejects.toThrow('Error logging out user: User not found');
+
+			expect(authRepository.getUserById).toHaveBeenCalledWith(999);
+		});
+
+		test('should throw an error if user does not exist', async () => {
+			authRepository.getUserById.mockResolvedValueOnce(null);
+
+			await expect(authService.logoutUser(999)).rejects.toThrow('User not found');
+
+			expect(authRepository.getUserById).toHaveBeenCalledWith(999);
 		});
 	});
 });

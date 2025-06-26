@@ -1,4 +1,4 @@
-import { authService } from '../services/authService';
+import { authService } from '../services/authService.js';
 
 async function registerUser(req, res) {
 	try {
@@ -26,7 +26,18 @@ async function loginUser(req, res) {
 	}
 }
 
+async function logoutUser(req, res) {
+	try {
+		const { userId } = req.body;
+		await authService.logoutUser(userId);
+		res.status(200).json({ message: 'User logged out successfully' });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
 export const authController = {
 	registerUser,
 	loginUser,
+	logoutUser,
 };

@@ -19,6 +19,13 @@ app.use((req, res, next) => {
 });
 
 // routes go here
-app.use('/auth', proxy('http://localhost:4001'));
+app.use(
+	'/auth',
+	proxy('http://localhost:4001', {
+		proxyReqPathResolver: (req) => {
+			return req.originalUrl.replace('/auth', '');
+		},
+	})
+);
 
 export default app;
