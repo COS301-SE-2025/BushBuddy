@@ -4,7 +4,7 @@
     "type": "module",        
     "scripts": {
       "start": "node src/index.js",
-      "test": "jest --runInBand"
+      "test": "jest"
     },
     "dependencies": {
       "bcrypt": "^6.0.0",

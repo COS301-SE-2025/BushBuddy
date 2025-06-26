@@ -1,10 +1,14 @@
 import express from 'express';
 import { authController } from '../controllers/authController';
 
-const router = express.Router();
+const authApp = express();
 
 // routes to controllers go here
-router.post('/register', authController.registerUser);
-router.post('/login', authController.loginUser);
+authApp.post('/register', authController.registerUser);
+authApp.post('/login', authController.loginUser);
 
-export default router;
+const PORT = process.env.AUTH_SERVICE_PORT || 4001;
+
+authApp.listen(PORT, () => {
+	console.log(`Auth service is running on port ${PORT}`);
+});
