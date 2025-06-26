@@ -9,12 +9,10 @@ import {
   Image,
   Modal,
   SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+  ScrollView, StyleSheet, Text,
+  TouchableOpacity, View
 } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 // Saving this for future Jean...app.json
 /*"plugins": [
   [
@@ -221,17 +219,40 @@ const MapScreen = ({ route }) => {
           )}
         </View>
 
+{/* Map section */}
+         <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+            latitude: -25.7479,
+            longitude: 28.2293,
+            latitudeDelta: 5,
+            longitudeDelta: 5,
+            }}
+            >
+            <Marker
+              coordinate={{ latitude: -25.7479, longitude: 28.2293 }}
+              title="Pretoria"
+              description="A marker in Pretoria"
+            />
+            <Marker
+              coordinate={{ latitude: -26.2041, longitude: 28.0473 }}
+              title="Johannesburg"
+            />
+          </MapView>
+        </View>
+
         {/* Map Container with Image */}
-        <View style={styles.mapContainer}>
+        {/* <View style={styles.mapContainer}> */}
           {/* Map Demo Image */}
-          <Image
+          {/* <Image
             source={require('../assets/Map-Demo.webp')}// For now just use this static image
             style={styles.mapImage}
             resizeMode="cover"
-          />
+          /> */}
 
           {/* Map Markers Overlay */}
-          {mapMarkers.map((marker) => (
+          {/* {mapMarkers.map((marker) => (
             <TouchableOpacity
               key={marker.id}
               style={[
@@ -259,7 +280,7 @@ const MapScreen = ({ route }) => {
               )}
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */}
 
         {/* Animal Detail Panel */}
         {selectedAnimal && (
@@ -392,6 +413,7 @@ const MapScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  map: { flex: 1 },
   container: {
     flex: 1,
     backgroundColor: '#1e3b1d',
