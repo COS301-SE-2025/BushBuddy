@@ -129,7 +129,7 @@ const CameraPage = () => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.titleContainer}>
-          <Text style={styles.headerTitle}>Beast Scanner</Text>
+          <Text style={styles.headerTitle}>Buddy Scanner</Text>
         </View>
       </View>
 
@@ -275,7 +275,31 @@ const CameraPage = () => {
                   <Text style={styles.actionText}>Share</Text>
                 </TouchableOpacity>
 
-
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    // Add delete functionality here
+                    Alert.alert(
+                      'Delete Photo',
+                      'Are you sure you want to delete this photo?',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        { 
+                          text: 'Delete', 
+                          style: 'destructive',
+                          onPress: () => {
+                            setLastPhoto(null);
+                            setShowPhotoModal(false);
+                          }
+                        }
+                      ]
+                    );
+                  }}
+                >
+                  <MaterialIcons name="delete" size={24} color="white" />
+                  <Text style={styles.actionText}>Delete</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
@@ -483,8 +507,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 100,
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 40,
+    justifyContent: 'space-around',
     width: width * 0.8,
   },
   actionButton: {
