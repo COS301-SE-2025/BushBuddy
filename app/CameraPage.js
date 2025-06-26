@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'; // NB remember to inst
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Haptics from 'expo-haptics'; //for haptic feedback
 import { useRef, useState } from 'react';
-import { Alert, Animated, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Button, Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const CameraPage = () => {
   const navigation = useNavigation();
@@ -12,7 +12,8 @@ const CameraPage = () => {
   const [activeTab, setActiveTab] = useState('camera');
   const [lastPhoto, setLastPhoto] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
-  const [flashMode, setFlashMode] = useState('auto'); // New state for flash mode
+  const [flashMode, setFlashMode] = useState('auto'); // Flash mode state
+  const [showPhotoModal, setShowPhotoModal] = useState(false); // Photo modal state
   const cameraRef = useRef(null);
   const flashAnimation = useRef(new Animated.Value(0)).current;
 
@@ -175,7 +176,12 @@ const CameraPage = () => {
               {/* Last Photo Thumbnail will add more detail later on*/}
               <TouchableOpacity 
                 style={styles.thumbnailContainer}
-                onPress={() => lastPhoto && Alert.alert('Last Photo', 'View your last snap!')}
+                onPress={() => {
+                  if (lastPhoto) {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    setShowPhotoModal(true);
+                  }
+                }}
               >
                 {lastPhoto ? (
                   <Image source={{ uri: lastPhoto }} style={styles.thumbnail} />
@@ -207,6 +213,74 @@ const CameraPage = () => {
           </View>
         </View>
       </CameraView>
+
+      {/* Photo Preview Modal */}
+      <Modal
+        visible={showPhotoModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowPhotoModal(false)}
+      >
+        <View style={styles.modalContainer}>
+          <TouchableOpacity 
+            style={styles.modalBackdrop}
+            activeOpacity={1}
+            onPress={() => setShowPhotoModal(false)}
+          >
+            <View style={styles.photoContainer}>
+              {lastPhoto && (
+                <Image 
+                  source={{ uri: lastPhoto }} 
+                  style={styles.fullScreenPhoto}
+                  resizeMode="contain"
+                />
+              )}
+              
+              {/* Close button */}
+              <TouchableOpacity 
+                style={styles.closeButton}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setShowPhotoModal(false);
+                }}
+              >
+                <MaterialIcons name="close" size={30} color="white" />
+              </TouchableOpacity>
+
+              {/* Action buttons */}
+              <View style={styles.photoActions}>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    // Add save functionality here
+                    Alert.alert('Save', 'Photo would be saved to gallery');
+                    setShowPhotoModal(false);
+                  }}
+                >
+                  <MaterialIcons name="save-alt" size={24} color="white" />
+                  <Text style={styles.actionText}>Save</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    // Add share functionality here
+                    Alert.alert('Share', 'Photo would be shared');
+                    setShowPhotoModal(false);
+                  }}
+                >
+                  <MaterialIcons name="share" size={24} color="white" />
+                  <Text style={styles.actionText}>Share</Text>
+                </TouchableOpacity>
+
+
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
@@ -252,6 +326,8 @@ const CameraPage = () => {
     </View>
   );
 };
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -372,6 +448,57 @@ const styles = StyleSheet.create({
   captureButtonInnerPressed: {
     backgroundColor: '#f0f0f0',
     transform: [{ scale: 0.9 }],
+  },
+  
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.95)',
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photoContainer: {
+    width: width,
+    height: height,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fullScreenPhoto: {
+    width: width,
+    height: height * 0.8,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    padding: 8,
+    zIndex: 1,
+  },
+  photoActions: {
+    position: 'absolute',
+    bottom: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 40,
+    width: width * 0.8,
+  },
+  actionButton: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 25,
+    padding: 15,
+    minWidth: 70,
+  },
+  actionText: {
+    color: 'white',
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: '500',
   },
   header: {
     flexDirection: 'row',
