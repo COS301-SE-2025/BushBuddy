@@ -1,15 +1,18 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // NB remember to install @react-navigation/native and @react-navigation/native-stack
+import { useNavigation } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const CameraPage = () => {
   const navigation = useNavigation();
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [activeTab, setActiveTab] = useState('camera');
+  const [lastPhoto, setLastPhoto] = useState(null);
+  const [isCapturing, setIsCapturing] = useState(false);
   const cameraRef = useRef(null);
+  const flashAnimation = useRef(new Animated.Value(0)).current;
 
   if (!permission) {
     return <View />;
@@ -28,23 +31,51 @@ const CameraPage = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-  // Function to take a picture
   const takePicture = async () => {
-  if (cameraRef.current) {
-    try {
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
-        base64: false,
-        exif: true,
-      });
-      
-      console.log('Photo captured:', photo.uri);
-      
-    } catch (error) {
-      console.error('Error taking picture:', error);
+    if (cameraRef.current && !isCapturing) {
+      try {
+        setIsCapturing(true);
+        
+        // Snapchat-style flash animation
+        Animated.sequence([
+          Animated.timing(flashAnimation, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: false,
+          }),
+          Animated.timing(flashAnimation, {
+            toValue: 0,
+            duration: 150,
+            useNativeDriver: false,
+          }),
+        ]).start();
+
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.8,
+          base64: false,
+          exif: true,
+        });
+        
+        // Save the last photo for thumbnail preview
+        setLastPhoto(photo.uri);
+        
+        // Here you can handle the captured photo
+        console.log('Photo captured:', photo.uri);
+        
+        // Optional: Show success feedback
+        // Alert.alert('Photo Captured!', 'Snap saved!');
+        
+        // Navigate to a preview screen or save the photo
+        // navigation.navigate('PhotoPreview', { photoUri: photo.uri });
+        
+      } catch (error) {
+        console.error('Error taking picture:', error);
+        Alert.alert('Error', 'Failed to take picture');
+      } finally {
+        setIsCapturing(false);
+      }
     }
-  }
-};
+  };
 
   // Navigation handlers
   const handleNavigation = (screen, tab) => {
@@ -64,6 +95,17 @@ const CameraPage = () => {
       {/* Camera View */}
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.cameraOverlay}>
+          {/* Flash Overlay(cool like snapchat) */}
+          <Animated.View 
+            style={[
+              styles.flashOverlay,
+              {
+                opacity: flashAnimation,
+              }
+            ]} 
+            pointerEvents="none"
+          />
+
           {/* Top Controls */}
           <View style={styles.topControls}>
             <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
@@ -74,9 +116,37 @@ const CameraPage = () => {
           {/* Bottom Controls */}
           <View style={styles.cameraControls}>
             <View style={styles.captureContainer}>
-              <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-                <View style={styles.captureButtonInner} />
+              {/* Last Photo Thumbnail will add more detail later on*/}
+              <TouchableOpacity 
+                style={styles.thumbnailContainer}
+                onPress={() => lastPhoto && Alert.alert('Last Photo', 'View your last snap!')}
+              >
+                {lastPhoto ? (
+                  <Image source={{ uri: lastPhoto }} style={styles.thumbnail} />
+                ) : (
+                  <View style={styles.emptyThumbnail}>
+                    <MaterialIcons name="photo" size={20} color="#666" />
+                  </View>
+                )}
               </TouchableOpacity>
+
+              {/* Capture Button */}
+              <TouchableOpacity 
+                style={[
+                  styles.captureButton,
+                  isCapturing && styles.captureButtonPressed
+                ]} 
+                onPress={takePicture}
+                disabled={isCapturing}
+              >
+                <View style={[
+                  styles.captureButtonInner,
+                  isCapturing && styles.captureButtonInnerPressed
+                ]} />
+              </TouchableOpacity>
+
+              {/* Placeholder for right side balance */}
+              <View style={styles.thumbnailContainer} />
             </View>
           </View>
         </View>
@@ -144,6 +214,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
+  flashOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'white',
+    zIndex: 10,
+  },
   topControls: {
     position: 'absolute',
     top: 20,
@@ -165,7 +244,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   captureContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 30,
+  },
+  thumbnailContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+  emptyThumbnail: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
   captureButton: {
     width: 80,
@@ -187,6 +291,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: 'white',
+    transition: 'all 0.1s ease',
+  },
+  captureButtonPressed: {
+    transform: [{ scale: 0.95 }],
+  },
+  captureButtonInnerPressed: {
+    backgroundColor: '#f0f0f0',
+    transform: [{ scale: 0.9 }],
   },
   header: {
     flexDirection: 'row',
