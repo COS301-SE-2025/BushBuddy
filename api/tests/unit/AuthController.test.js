@@ -1,4 +1,6 @@
-jest.mock('../../src/services/authService', () => ({
+import { jest } from '@jest/globals';
+
+jest.unstable_mockModule('../../src/services/authService', () => ({
 	__esModule: true,
 	authService: {
 		registerUser: jest.fn(),
@@ -7,8 +9,8 @@ jest.mock('../../src/services/authService', () => ({
 	},
 }));
 
-import { authController } from '../../src/controllers/authController';
-import { authService } from '../../src/services/authService';
+const { authController } = await import('../../src/controllers/authController');
+const { authService } = await import('../../src/services/authService');
 
 describe('AuthController', () => {
 	beforeEach(() => {

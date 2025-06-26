@@ -1,20 +1,20 @@
 import { describe, expect, jest, test } from '@jest/globals';
 
-jest.mock('../../src/db/index.js', () => ({
+jest.unstable_mockModule('../../src/db/index.js', () => ({
 	__esModule: true,
 	default: {
 		query: jest.fn(),
 	},
 }));
 
-jest.mock('nanoid', () => ({
+jest.unstable_mockModule('nanoid', () => ({
 	__esModule: true,
 	nanoid: jest.fn(() => 'fixed-test-id'),
 }));
 
-import { nanoid } from 'nanoid';
-import db from '../../src/db/index.js';
-import { authRepository } from '../../src/repositories/authRepository.js';
+const { nanoid } = await import('nanoid');
+const db = (await import('../../src/db/index.js')).default;
+const { authRepository } = await import('../../src/repositories/authRepository.js');
 
 describe('Testing AuthRespository', () => {
 	beforeEach(() => {

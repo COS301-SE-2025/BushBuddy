@@ -28,4 +28,9 @@ app.use(
 	})
 );
 
+// default route for handling 404 errors
+app.use((req, res) => {
+	res.status(404).json({ error: 'Not Found' });
+});
+
 export default app;

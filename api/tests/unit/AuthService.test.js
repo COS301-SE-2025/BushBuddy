@@ -1,4 +1,6 @@
-jest.mock('../../src/repositories/authRepository.js', () => ({
+import { jest } from '@jest/globals';
+
+jest.unstable_mockModule('../../src/repositories/authRepository.js', () => ({
 	__esModule: true,
 	authRepository: {
 		createUser: jest.fn(),
@@ -7,15 +9,15 @@ jest.mock('../../src/repositories/authRepository.js', () => ({
 		getUserById: jest.fn(),
 	},
 }));
-jest.mock('bcrypt', () => ({
+jest.unstable_mockModule('bcrypt', () => ({
 	__esModule: true,
 	hash: jest.fn(),
 	compare: jest.fn(),
 }));
 
-import * as bcrypt from 'bcrypt';
-import { authRepository } from '../../src/repositories/authRepository.js';
-import { authService } from '../../src/services/authService.js';
+const bcrypt = await import('bcrypt');
+const { authService } = await import('../../src/services/authService.js');
+const { authRepository } = await import('../../src/repositories/authRepository.js');
 
 describe('AuthService', () => {
 	beforeEach(() => {
@@ -94,7 +96,7 @@ describe('AuthService', () => {
 
 	describe('loginUser', () => {
 		test('should log in a user successfully', async () => {
-			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password: 'hashedpassword' };
+			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password_hash: 'hashedpassword' };
 			authRepository.getUserByUsername.mockResolvedValueOnce(mockUser);
 			bcrypt.compare.mockResolvedValueOnce(true);
 
@@ -133,7 +135,7 @@ describe('AuthService', () => {
 		});
 
 		test('should throw an error if password is invalid', async () => {
-			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password: 'hashedpassword' };
+			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password_hash: 'hashedpassword' };
 			authRepository.getUserByUsername.mockResolvedValueOnce(mockUser);
 			bcrypt.compare.mockResolvedValueOnce(false);
 
