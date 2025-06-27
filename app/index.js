@@ -9,13 +9,17 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
+  Linking,
+  Modal,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,6 +30,7 @@ export default function AuthScreen() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showModal, setShowModal] = useState(true);
   
   const navigation = useNavigation();
 
@@ -178,6 +183,51 @@ export default function AuthScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
+
+      <Modal
+        visible={showModal}
+          animationType="fade"
+          transparent={false}
+        >
+          
+        <View style={styles.modalContainer}>
+          <ScrollView>
+          <Text style={styles.modalTitle}>Welcome to Bush Buddy!</Text>
+
+          <Image style={styles.modalImage} source={require("../assets/BushBuddy.webp")}></Image>
+
+          <Text style={styles.modalTitle}>What is BushBuddy?</Text>
+          <Text style={styles.modalText}>BushBuddy is an AI-powered African Wildlife Detection System</Text>
+
+          <Text style={styles.modalTitle}>Vision</Text>
+          <Text style={styles.modalText}>Our vision is an intuitive application for users to reliably identify African wild animals using an AI-powered image detection system</Text>
+
+          <Text style={styles.modalTitle}>Mission</Text>
+          <Text style={styles.modalText}>Our mission is for our platform to promote awareness, education and appreciation for South African wildlife. We seek to cultivate a community of users who are inspired to explore local nature reserves and contribute to conservation efforts</Text>
+
+
+          <Text style={styles.modalTitle}>Contact Us</Text>
+          <Text style={styles.modalLink} onPress={() => Linking.openURL('mailto:g24capstone@gmail.com')}>
+            g24capstone@gmail.com
+          </Text>
+
+          <Text style={styles.modalTitle}>View our GitHub!</Text>
+          <Text style={styles.modalLink} onPress={() => Linking.openURL('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection')}>
+            AI-Powered-African-Wildlife-Detection
+          </Text>
+
+            </ScrollView>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setShowModal(false)}
+          >
+            <Text style={styles.modalButtonText}>Log In / Register</Text>
+          </TouchableOpacity>
+          
+        </View>
+        
+
+      </Modal>
       
       <StatusBar style="light" />
     </View>
@@ -317,4 +367,51 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  modalContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#395936',
+  padding: 20,
+},
+
+modalTitle: {
+  fontSize: 28,
+  color: '#fff',
+  marginBottom: 5,
+  textAlign: 'center',
+  marginTop: 40
+},
+
+modalButton: {
+  backgroundColor: '#ff6b00',
+  paddingVertical: 12,
+  paddingHorizontal: 30,
+  borderRadius: 25,
+  marginBottom: 20,
+  marginTop: 20
+},
+
+modalButtonText: {
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+
+modalText: {
+  fontSize: 18,
+  color: '#fff',
+  marginBottom: 5,
+},
+modalImage: {
+  margin: "auto"
+},
+modalLink: {
+  fontSize: 18,
+  color: '#0000ff',
+  marginBottom: 5,
+  textDecorationLine: 'underline',
+  textAlign: 'center',
+},
+
 });
