@@ -2,13 +2,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useState, } from 'react';
 import {
   Alert,
   Dimensions,
   FlatList,
-  Image,
-  Modal,
+  Image, Linking, Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -34,6 +33,20 @@ const MainScreen = ({ route }) => {
   const [bestiaryFilter, setBestiaryFilter] = useState('All');
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [showAnimalModal, setShowAnimalModal] = useState(false);
+  const [helpVisible, setHelpVisible] = useState(false);
+
+  const openWebLink = async (url) => {
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      console.log(`Don't know how to open this URL: ${url}`);
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+  };
 
   // Navigate to MapScreen
   const handleMapNavigation = () => {
@@ -127,7 +140,7 @@ const bestiaryData = [
     scientificName: 'Panthera leo',
     status: 'Vulnerable',
     category: 'Predator',
-    image: require('../assets/Lion.jpg'),
+    image: require('../assets/Lion.webp'),
     description: 'Apex predator and king of the African savanna, living in social groups called prides.',
     facts: [
       'Only cat species that lives in social groups',
@@ -146,7 +159,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus strepsiceros',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/GreaterKudu.jpg'),
+    image: require('../assets/GreaterKudu.webp'),
     description: 'Large antelope with distinctive spiral horns and white body stripes.',
     facts: [
       'Males have magnificent spiral horns up to 1.8m long',
@@ -165,7 +178,7 @@ const bestiaryData = [
     scientificName: 'Diceros bicornis',
     status: 'Critically Endangered',
     category: 'Large Mammal',
-    image: require('../assets/BlackRhino.jpg'),
+    image: require('../assets/BlackRhino.webp'),
     description: 'Critically endangered rhino species with a pointed lip for browsing.',
     facts: [
       'Also grey in color despite the name',
@@ -184,7 +197,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus angasii',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Nyala.jpg'),
+    image: require('../assets/Nyala.webp'),
     description: 'Medium-sized antelope with striking sexual dimorphism between males and females.',
     facts: [
       'Males are much larger and darker than females',
@@ -203,7 +216,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus scriptus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BushBuck.jpg'),
+    image: require('../assets/BushBuck.webp'),
     description: 'Small to medium antelope known for its secretive nature and distinctive white markings.',
     facts: [
       'Solitary and highly territorial animals',
@@ -222,7 +235,7 @@ const bestiaryData = [
     scientificName: 'Panthera pardus',
     status: 'Near Threatened',
     category: 'Predator',
-    image: require('../assets/Leopard.jpg'),
+    image: require('../assets/Leopard.webp'),
     description: 'Solitary and adaptable big cat known for its strength and climbing ability.',
     facts: [
       'Can carry prey twice their body weight up trees',
@@ -241,7 +254,7 @@ const bestiaryData = [
     scientificName: 'Hippotragus niger',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/SableAntelope.jpg'),
+    image: require('../assets/SableAntelope.webp'),
     description: 'Magnificent antelope with long, curved horns and striking black and white coloration.',
     facts: [
       'Both sexes have impressive curved horns',
@@ -260,7 +273,7 @@ const bestiaryData = [
     scientificName: 'Taurotragus oryx',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Eland.jpg'),
+    image: require('../assets/Eland.webp'),
     description: 'The largest antelope in Africa, known for its impressive size and graceful movements.',
     facts: [
       'Can jump 8 feet high from a standing position',
@@ -281,7 +294,7 @@ const bestiaryData = [
     scientificName: 'Giraffa camelopardalis',
     status: 'Vulnerable',
     category: 'Large Mammal',
-    image: require('../assets/Giraffe.jpg'),
+    image: require('../assets/Giraffe.webp'),
     description: 'World\'s tallest mammal with distinctive long neck and unique spot patterns.',
     facts: [
       'Can reach heights of up to 18 feet',
@@ -300,7 +313,7 @@ const bestiaryData = [
     scientificName: 'Syncerus caffer',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Bufalo.jpg'),
+    image: require('../assets/Bufalo.webp'),
     description: 'African buffalo or Cape buffalo, one of the Big Five African game animals.',
     facts: [
       'Live in herds of 50-500 individuals',
@@ -319,7 +332,7 @@ const bestiaryData = [
     scientificName: 'Ceratotherium simum',
     status: 'Near Threatened',
     category: 'Large Mammal',
-    image: require('../assets/WhiteRhino.jpg'),
+    image: require('../assets/WhiteRhino.webp'),
     description: 'Second largest land mammal with distinctive square-shaped lip for grazing.',
     facts: [
       'Actually grey in color, not white',
@@ -338,7 +351,7 @@ const bestiaryData = [
     scientificName: 'Tragelaphus imberbis',
     status: 'Near Threatened',
     category: 'Antelope',
-    image: require('../assets/LesserKudu.jpg'),
+    image: require('../assets/LesserKudu.webp'),
     description: 'Smaller cousin of the Greater Kudu with more prominent white stripes.',
     facts: [
       'More secretive and elusive than Greater Kudu',
@@ -357,7 +370,7 @@ const bestiaryData = [
     scientificName: 'Hippopotamus amphibius',
     status: 'Vulnerable',
     category: 'Large Mammal',
-    image: require('../assets/Hippo.jpg'),
+    image: require('../assets/Hippo.webp'),
     description: 'Large semi-aquatic mammal known as one of Africa\'s most dangerous animals.',
     facts: [
       'Spend up to 16 hours a day in water',
@@ -376,7 +389,7 @@ const bestiaryData = [
     scientificName: 'Equus quagga',
     status: 'Near Threatened',
     category: 'Large Mammal',
-    image: require('../assets/Zebra.jpg'),
+    image: require('../assets/Zebra.webp'),
     description: 'Most common zebra species with distinctive black and white stripes.',
     facts: [
       'Each zebra has a unique stripe pattern',
@@ -395,7 +408,7 @@ const bestiaryData = [
     scientificName: 'Phacochoerus africanus',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Warthog.jpg'),
+    image: require('../assets/Warthog.webp'),
     description: 'Wild pig species known for their distinctive facial "warts" and tusks.',
     facts: [
       'Facial "warts" are actually protective fat deposits',
@@ -414,7 +427,7 @@ const bestiaryData = [
     scientificName: 'Potamochoerus larvatus',
     status: 'Least Concern',
     category: 'Large Mammal',
-    image: require('../assets/Bushpig.jpg'),
+    image: require('../assets/Bushpig.webp'),
     description: 'Forest-dwelling pig with reddish-brown coat and distinctive white facial markings.',
     facts: [
       'More colorful than warthogs with reddish coat',
@@ -435,7 +448,7 @@ const bestiaryData = [
     scientificName: 'Aepyceros melampus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Impala.jpg'),
+    image: require('../assets/Impala.webp'),
     description: 'Medium-sized antelope known for its incredible jumping ability and graceful movements.',
     facts: [
       'Can leap up to 10 feet high and 30 feet in length',
@@ -454,7 +467,7 @@ const bestiaryData = [
     scientificName: 'Kobus ellipsiprymnus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/WaterBuck.jpg'),
+    image: require('../assets/WaterBuck.webp'),
     description: 'Large antelope always found near water sources with distinctive white ring marking.',
     facts: [
       'Never found more than 1km from water',
@@ -473,7 +486,7 @@ const bestiaryData = [
     scientificName: 'Acinonyx jubatus',
     status: 'Vulnerable',
     category: 'Predator',
-    image: require('../assets/Cheetah.jpg'),
+    image: require('../assets/Cheetah.webp'),
     description: 'World\'s fastest land animal, built for speed with distinctive black tear marks.',
     facts: [
       'Can reach speeds of 110 km/h in short bursts',
@@ -492,7 +505,7 @@ const bestiaryData = [
     scientificName: 'Crocuta crocuta',
     status: 'Least Concern',
     category: 'Predator',
-    image: require('../assets/SpottedHyena.jpg'),
+    image: require('../assets/SpottedHyena.webp'),
     description: 'Powerful scavenger and hunter with incredibly strong jaws and complex social structure.',
     facts: [
       'Strongest bite force among African carnivores',
@@ -511,7 +524,7 @@ const bestiaryData = [
     scientificName: 'Parahyaena brunnea',
     status: 'Near Threatened',
     category: 'Predator',
-    image: require('../assets/BrownHyena.jpg'),
+    image: require('../assets/BrownHyena.webp'),
     description: 'Solitary scavenger with long, shaggy brown coat adapted to arid environments.',
     facts: [
       'More solitary than spotted hyenas',
@@ -530,7 +543,7 @@ const bestiaryData = [
     scientificName: 'Lycaon pictus',
     status: 'Endangered',
     category: 'Predator',
-    image: require('../assets/AfricanWildDog.jpg'),
+    image: require('../assets/AfricanWildDog.webp'),
     description: 'Highly social and efficient pack hunters with distinctive mottled coat patterns.',
     facts: [
       'Most successful hunters in Africa with 80% success rate',
@@ -551,7 +564,7 @@ const bestiaryData = [
     scientificName: 'Papio ursinus',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/ChacmaBaboon.jpg'),
+    image: require('../assets/ChacmaBaboon.webp'),
     description: 'Largest baboon species with complex social structure and high intelligence.',
     facts: [
       'Live in troops of 20-150 individuals',
@@ -570,7 +583,7 @@ const bestiaryData = [
     scientificName: 'Chlorocebus pygerythrus',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/VervetMonkey.jpg'),
+    image: require('../assets/VervetMonkey.webp'),
     description: 'Small, highly social monkey known for their distinct alarm calls and blue coloration.',
     facts: [
       'Have specific alarm calls for different predators',
@@ -589,7 +602,7 @@ const bestiaryData = [
     scientificName: 'Suricata suricatta',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Meerkat.jpg'),
+    image: require('../assets/Meerkat.webp'),
     description: 'Small mongoose known for their upright posture and complex social sentinel system.',
     facts: [
       'Live in groups called mobs or gangs',
@@ -608,7 +621,7 @@ const bestiaryData = [
     scientificName: 'Procavia capensis',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/RockHyrax.jpg'),
+    image: require('../assets/RockHyrax.webp'),
     description: 'Small mammal most closely related to elephants, living in rocky outcrops.',
     facts: [
       'Closest living relatives are elephants and manatees',
@@ -627,7 +640,7 @@ const bestiaryData = [
     scientificName: 'Felis lybica',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/AfricanWildCat.jpg'),
+    image: require('../assets/AfricanWildCat.webp'),
     description: 'Wild ancestor of domestic cats, adapted to various African environments.',
     facts: [
       'Direct ancestor of domestic house cats',
@@ -646,7 +659,7 @@ const bestiaryData = [
     scientificName: 'Caracal caracal',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Caracal.jpg'),
+    image: require('../assets/Caracal.webp'),
     description: 'Medium-sized wild cat with distinctive tufted ears and incredible jumping ability.',
     facts: [
       'Can leap 12 feet high to catch birds in flight',
@@ -665,7 +678,7 @@ const bestiaryData = [
     scientificName: 'Leptailurus serval',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Serval.jpg'),
+    image: require('../assets/Serval.webp'),
     description: 'Long-legged wild cat with large ears, adapted for hunting in tall grasslands.',
     facts: [
       'Has the longest legs relative to body size of any cat',
@@ -684,7 +697,7 @@ const bestiaryData = [
     scientificName: 'Mellivora capensis',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/HoneyBadger.jpg'),
+    image: require('../assets/HoneyBadger.webp'),
     description: 'Fearless and tenacious carnivore known for its aggressive nature and thick skin.',
     facts: [
       'Extremely thick skin protects from bee stings and snake bites',
@@ -703,7 +716,7 @@ const bestiaryData = [
     scientificName: 'Orycteropus afer',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Aardvark.jpg'),
+    image: require('../assets/Aardvark.webp'),
     description: 'Unique nocturnal mammal specialized for eating ants and termites.',
     facts: [
       'Can dig through termite mounds with powerful claws',
@@ -722,7 +735,7 @@ const bestiaryData = [
     scientificName: 'Smutsia temminckii',
     status: 'Vulnerable',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Pangolin.jpg'),
+    image: require('../assets/Pangolin.webp'),
     description: 'Unique scaled mammal that rolls into a ball when threatened.',
     facts: [
       'Only mammal covered in scales made of keratin',
@@ -743,7 +756,7 @@ const bestiaryData = [
     scientificName: 'Connochaetes taurinus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BlueWildebeest.jpg'),
+    image: require('../assets/BlueWildebeest.webp'),
     description: 'Large antelope famous for the Great Migration across East Africa.',
     facts: [
       'Participate in the largest land animal migration',
@@ -762,7 +775,7 @@ const bestiaryData = [
     scientificName: 'Connochaetes gnou',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/BlackWildebeest.jpg'),
+    image: require('../assets/BlackWildebeest.webp'),
     description: 'Smaller wildebeest species with distinctive white tail and forward-curved horns.',
     facts: [
       'Smaller than blue wildebeest with distinctive white tail',
@@ -781,7 +794,7 @@ const bestiaryData = [
     scientificName: 'Alcelaphus buselaphus',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/RedHartebeest.jpg'),
+    image: require('../assets/RedHartebeest.webp'),
     description: 'Fast antelope with distinctive heart-shaped horns and reddish-brown coat.',
     facts: [
       'Can run at speeds up to 70 km/h',
@@ -800,7 +813,7 @@ const bestiaryData = [
     scientificName: 'Damaliscus pygargus phillipsi',
     status: 'Least Concern',
     category: 'Antelope',
-    image: require('../assets/Blesbok.jpg'),
+    image: require('../assets/Blesbok.webp'),
     description: 'Medium-sized antelope with distinctive white facial blaze and reddish-brown coat.',
     facts: [
       'Distinctive white blaze on face and white rump patch',
@@ -821,7 +834,7 @@ const bestiaryData = [
     scientificName: 'Damaliscus pygargus pygargus',
     status: 'Vulnerable',
     category: 'Antelope',
-    image: require('../assets/Bontebok.jpg'),
+    image: require('../assets/Bontebok.webp'),
     description: 'Rare antelope subspecies with chocolate brown coat and distinctive white markings.',
     facts: [
       'Rarest antelope species in Africa',
@@ -840,7 +853,7 @@ const bestiaryData = [
     scientificName: 'Raphicerus campestris',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Steenbok.jpg'),
+    image: require('../assets/Steenbok.webp'),
     description: 'Small antelope with large ears and reddish-golden coat.',
     facts: [
       'One of the smallest African antelopes',
@@ -859,7 +872,7 @@ const bestiaryData = [
     scientificName: 'Sylvicapra grimmia',
     status: 'Least Concern',
     category: 'Small and Medium Mammal',
-    image: require('../assets/Duiker.jpg'),
+    image: require('../assets/Duiker.webp'),
     description: 'Small forest antelope known for diving into thick cover when threatened.',
     facts: [
       'Name means "diver" in Afrikaans',
@@ -906,8 +919,6 @@ const bestiaryData = [
     </TouchableOpacity>
   );
 
-
-
 const renderBestiaryItem = ({ item }) => (
   <TouchableOpacity 
     style={styles.bestiaryCard}
@@ -942,7 +953,7 @@ const AnimalDetailModal = () => {
     >
       <View style={styles.modalContainer}>
         <LinearGradient
-          colors={['#4c8c4a', '#1e3b1d']}
+          colors={['#F7FAF8', '#F7FAF8']}
           style={styles.modalGradient}
         >
           {/* Modal Header */}
@@ -951,7 +962,7 @@ const AnimalDetailModal = () => {
               style={styles.modalCloseButton}
               onPress={closeAnimalModal}
             >
-              <MaterialIcons name="close" size={28} color="white" />
+              <MaterialIcons name="close" size={28} color="black" />
             </TouchableOpacity>
             <View style={styles.modalStatusContainer}>
               <View style={[styles.modalStatusDot, { backgroundColor: getStatusColor(selectedAnimal.status) }]} />
@@ -1022,6 +1033,95 @@ const AnimalDetailModal = () => {
   );
 };
 
+// Help Modal Component
+const HelpModal = () => (
+  <Modal
+    visible={helpVisible}
+    animationType="fade"
+    transparent={true}
+    onRequestClose={() => setHelpVisible(false)}
+
+  >
+    <View style={{
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      <ScrollView style={styles.modalHelpContainer} showsVerticalScrollIndicator={false}>
+        <View style={{
+          backgroundColor: 'white',
+          borderRadius: 16,
+          padding: 24,
+          width: '90%',
+          alignItems: 'center'
+        }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Help Menu
+          </Text>
+          {/* <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            This Help Menu provides quick access to the user manual, FAQs and README, and a quick break down of how to use the app.
+          </Text> */}
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Home
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            On the home page, you can view all animals in our database, filter and search for specific ones, browse wildlife sightings via the top search bar, 
+            create new sightings, view your history, see nearby sightings on a map, and adjust settings using quick action icons.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Map
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            The Map tab at the bottom shows all wildlife sightings on a map. You can zoom in/out and tap markers to view sighting details..
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Camera
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            In the Camera view, you can take and upload photos of animals you've seen. AI helps identify the animal, and your sighting is added to the database 
+            for others to see in their feed.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Feed
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            In the camera view you can take snap shots of the animals you have seen and upload them to the app. This will allow you to identify the animal in the 
+            photo through AI and aswell as add your sighting to the database for other users to see in their feed.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Profile
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            The Profile tab allows you to view and edit your profile information, including username, email, and password. You can also manage your sightings history.
+          </Text>
+
+          <TouchableOpacity
+            style={{ marginTop: 18, padding: 8, borderRadius: 8, backgroundColor: '#395936' }}
+            onPress={() => setHelpVisible(false)}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
+          </TouchableOpacity>
+
+          <View style={{ width: '100%' }}>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki/User-Manual')}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>User Manual</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>FAQs</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/blob/main/README.md')}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>README</Text>
+            </TouchableOpacity>
+          </View>
+          
+          
+        </View>
+      </ScrollView>
+    </View>
+  </Modal>
+);
+
 const categoryMap = {
   'Antelopes': 'Antelope',
   'Large Mammals': 'Large Mammal',
@@ -1081,13 +1181,13 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
         <View style={styles.header}>
           <Image 
-            source={require('../assets/BushBuddy.png')} 
+            source={require('../assets/BushBuddy.webp')} 
             style={styles.logo} 
             resizeMode="contain"
           />
@@ -1096,7 +1196,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           </View>
           <TouchableOpacity style={styles.profileButton}>
             <Image 
-              source={require('../assets/Jean-Steyn-ProfilePic.jpg')}
+              source={require('../assets/Jean-Steyn-ProfilePic.webp')}
               style={styles.profileImage}
             />
           </TouchableOpacity>
@@ -1107,6 +1207,13 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           <Text style={styles.welcomeText}>Welcome,</Text>
           <Text style={styles.usernameText}>{username}</Text>
         </View>
+        {/* Help Button - Top Left */}
+          <TouchableOpacity
+            style={styles.helpButton}
+            onPress={() => setHelpVisible(true)}
+          >
+            <MaterialIcons name="help-outline" size={28} color="#fff" />
+          </TouchableOpacity>
 
         {/* Search Bar */}
         <View style={styles.searchContainer}>
@@ -1327,6 +1434,8 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
 
       {/* Animal Detail Modal */}
       <AnimalDetailModal />
+      {/* Help Modal */}
+      <HelpModal />
     </SafeAreaView>
   );
 };
@@ -1334,7 +1443,7 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1e3b1d',
+    backgroundColor: '#F7FAF8',
   },
   gradientContainer: {
     flex: 1,
@@ -1346,10 +1455,21 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
+    backgroundColor: '#395936',
+    height: 100
+  },
+  helpButton: {
+    position: 'absolute',
+    left: 355,
+    top: 110,
+    zIndex: 10,
+    backgroundColor: 'rgba(57,89,54,0.8)',
+    borderRadius: 20,
+    padding: 6,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
   },
   titleContainer: {
     flex: 1,
@@ -1378,15 +1498,17 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   welcomeSection: {
+    marginBottom: 10,
+    marginTop: 10,
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
   welcomeText: {
-    color: 'rgba(255,255,255,0.7)',
+    color: '#263924',
     fontSize: 14,
   },
   usernameText: {
-    color: 'white',
+    color: '#263924',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -1397,9 +1519,10 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 25,
     padding: 10,
+    opacity: 0.9
   },
   searchIcon: {
     marginRight: 10,
@@ -1417,15 +1540,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   sectionTitle: {
-    color: 'white',
+    color: '#263924',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
   },
   quickActionsCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 15,
     padding: 20,
+    opacity: 0.9
   },
   quickActionsContainer: {
     flexDirection: 'row',
@@ -1456,10 +1580,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   achievementsButton: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
+    opacity: 0.9
   },
   achievementsText: {
     color: 'white',
@@ -1474,12 +1599,13 @@ const styles = StyleSheet.create({
   bestiarySearchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
     flex: 1,
     marginRight: 10,
+    opacity: 0.9
   },
   bestiarySearchInput: {
     color: 'white',
@@ -1490,13 +1616,14 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    opacity: 0.9
   },
   filterLabel: {
-    color: 'white',
+    color: '#263924',
     fontSize: 14,
     marginRight: 4,
   },
@@ -1504,17 +1631,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   filterPill: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
+    opacity: 0.9
   },
   activeFilterPill: {
     backgroundColor: '#ff6b00',
   },
   filterPillText: {
-    color: 'rgba(255,255,255,0.7)',
+    color: 'white',
     fontSize: 14,
   },
   activeFilterPillText: {
@@ -1528,11 +1656,12 @@ const styles = StyleSheet.create({
   },
   bestiaryGridItem: {
     width: '48%',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 12,
     padding: 10,
     marginBottom: 12,
     alignItems: 'center',
+    opacity: 0.9
   },
   bestiaryGridImage: {
     width: '100%',
@@ -1601,10 +1730,11 @@ const styles = StyleSheet.create({
   entryCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
     marginBottom: 10,
+    opacity: 0.9
   },
   entryIconContainer: {
     width: 40,
@@ -1633,9 +1763,10 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   summaryCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
+    opacity: 0.9
   },
   summaryRow: {
     flexDirection: 'row',
@@ -1666,9 +1797,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   statusCard: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 10,
     padding: 15,
+    opacity: 0.9
   },
   statusRow: {
     flexDirection: 'row',
@@ -1683,7 +1815,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#395936',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,
@@ -1723,7 +1855,7 @@ const styles = StyleSheet.create({
   // Modal Styles
   modalContainer: {
     flex: 1,
-    backgroundColor: '#1e3b1d',
+    backgroundColor: '#263924',
   },
   modalGradient: {
     flex: 1,
@@ -1752,6 +1884,12 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
   },
+  modalHelpContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    left: 20,
+    top: 50
+  },
   modalImageContainer: {
     paddingHorizontal: 20,
     marginBottom: 20,
@@ -1766,13 +1904,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalAnimalName: {
-    color: 'white',
+    color: '#385335',
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 4,
   },
   modalScientificName: {
-    color: '#4CAF50',
+    color: '#161616',
     fontSize: 16,
     fontStyle: 'italic',
     marginBottom: 12,
@@ -1784,7 +1922,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalStatusText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: '500',
   },
@@ -1792,13 +1930,13 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   modalSectionTitle: {
-    color: '#4CAF50',
+    color: '#385335',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
   },
   modalDescription: {
-    color: 'rgba(255,255,255,0.9)',
+    color: 'black',
     fontSize: 16,
     lineHeight: 24,
   },
@@ -1812,7 +1950,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   factText: {
-    color: 'rgba(255,255,255,0.9)',
+    color: '#161616',
     fontSize: 16,
     flex: 1,
     lineHeight: 22,
@@ -1830,7 +1968,7 @@ const styles = StyleSheet.create({
     width: 80,
   },
   detailValue: {
-    color: 'rgba(255,255,255,0.9)',
+    color: 'black',
     fontSize: 16,
     flex: 1,
   },
