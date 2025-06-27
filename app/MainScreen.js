@@ -1062,7 +1062,7 @@ const HelpModal = () => (
             Help Menu
           </Text>
           <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
-            This Help Menu provides quick access to user manual and FAQs, and a quick break down of how to use the app.
+            This Help Menu provides quick access to the user manual, FAQs and README, and a quick break down of how to use the app.
           </Text>
           <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
             Home
@@ -1103,6 +1103,9 @@ const HelpModal = () => (
             </TouchableOpacity>
             <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {}}>
               <Text style={{ color: '#2196F3', fontSize: 16 }}>FAQs</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/blob/main/README.md')}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>README</Text>
             </TouchableOpacity>
           </View>
           
