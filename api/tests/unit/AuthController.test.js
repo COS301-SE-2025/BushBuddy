@@ -29,6 +29,7 @@ describe('AuthController', () => {
 			const res = {
 				status: jest.fn().mockReturnThis(),
 				json: jest.fn(),
+				cookie: jest.fn(),
 			};
 			authService.registerUser.mockResolvedValueOnce(req.body);
 
@@ -36,7 +37,13 @@ describe('AuthController', () => {
 
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(201);
-			expect(res.json).toHaveBeenCalledWith(req.body);
+			expect(res.json).toHaveBeenCalledWith({ message: 'User registered successfully' });
+			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
+				httpOnly: true,
+				sameSite: 'lax',
+				secure: process.env.NODE_ENV === 'production',
+				maxAge: 24 * 60 * 60 * 1000, // 24 hours
+			});
 		});
 
 		test('should return an error if registration fails', async () => {
@@ -92,6 +99,7 @@ describe('AuthController', () => {
 			const res = {
 				status: jest.fn().mockReturnThis(),
 				json: jest.fn(),
+				cookie: jest.fn(),
 			};
 			authService.loginUser.mockResolvedValueOnce({ id: '1', username: 'testuser', email: 'test@user.com' });
 
@@ -99,7 +107,13 @@ describe('AuthController', () => {
 
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(200);
-			expect(res.json).toHaveBeenCalledWith({ id: '1', username: 'testuser', email: 'test@user.com' });
+			expect(res.json).toHaveBeenCalledWith({ message: 'User logged in successfully' });
+			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
+				httpOnly: true,
+				sameSite: 'lax',
+				secure: process.env.NODE_ENV === 'production',
+				maxAge: 24 * 60 * 60 * 1000, // 24 hours
+			});
 		});
 
 		test('should return an error if login fails', async () => {
@@ -149,16 +163,21 @@ describe('AuthController', () => {
 				body: {
 					userId: '1',
 				},
+				cookies: {
+					token: 'mockedToken',
+				},
 			};
 			const res = {
 				status: jest.fn().mockReturnThis(),
 				json: jest.fn(),
+				clearCookie: jest.fn(),
 			};
-			authService.logoutUser.mockResolvedValueOnce({ message: 'User logged out successfully' });
+			// authService.logoutUser.mockResolvedValueOnce({ message: 'User logged out successfully' });
 
 			await authController.logoutUser(req, res);
 
-			expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
+			// expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
+			expect(res.clearCookie).toHaveBeenCalledWith('token');
 			expect(res.status).toHaveBeenCalledWith(200);
 			expect(res.json).toHaveBeenCalledWith({ message: 'User logged out successfully' });
 		});
@@ -172,12 +191,15 @@ describe('AuthController', () => {
 			const res = {
 				status: jest.fn().mockReturnThis(),
 				json: jest.fn(),
+				clearCookie: jest.fn().mockImplementationOnce(() => {
+					throw new Error('Logout failed');
+				}),
 			};
-			authService.logoutUser.mockRejectedValueOnce(new Error('Logout failed'));
+			// authService.logoutUser.mockRejectedValueOnce(new Error('Logout failed'));
 
 			await authController.logoutUser(req, res);
 
-			expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
+			// expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
 			expect(res.status).toHaveBeenCalledWith(500);
 			expect(res.json).toHaveBeenCalledWith({ error: 'Logout failed' });
 		});

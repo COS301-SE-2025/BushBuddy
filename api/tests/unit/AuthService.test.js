@@ -1,4 +1,6 @@
-import { jest } from '@jest/globals';
+import { expect, jest } from '@jest/globals';
+import dotenv from 'dotenv';
+dotenv.config();
 
 jest.unstable_mockModule('../../src/repositories/authRepository.js', () => ({
 	__esModule: true,
@@ -15,6 +17,14 @@ jest.unstable_mockModule('bcrypt', () => ({
 	compare: jest.fn(),
 }));
 
+jest.unstable_mockModule('jsonwebtoken', () => ({
+	__esModule: true,
+	default: {
+		sign: jest.fn(),
+	},
+}));
+
+const jwt = (await import('jsonwebtoken')).default;
 const bcrypt = await import('bcrypt');
 const { authService } = await import('../../src/services/authService.js');
 const { authRepository } = await import('../../src/repositories/authRepository.js');
@@ -26,10 +36,11 @@ describe('AuthService', () => {
 
 	describe('registerUser', () => {
 		test('should register a new user successfully', async () => {
-			const mockUser = { username: 'testuser', email: 'test@user.com', password: 'hashedpassword' };
+			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password: 'hashedpassword' };
 			authRepository.userExists.mockResolvedValueOnce(false);
 			authRepository.createUser.mockResolvedValueOnce(mockUser);
 			bcrypt.hash.mockResolvedValueOnce('hashedpassword');
+			jwt.sign.mockReturnValueOnce('mockedToken');
 
 			const result = await authService.registerUser({
 				username: 'testuser',
@@ -38,13 +49,16 @@ describe('AuthService', () => {
 			});
 
 			expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
+			expect(jwt.sign).toHaveBeenCalledWith({ id: expect.any(Number), username: 'testuser' }, expect.any(String), {
+				expiresIn: '24h',
+			});
 			expect(authRepository.userExists).toHaveBeenCalledWith('testuser');
 			expect(authRepository.createUser).toHaveBeenCalledWith({
 				username: 'testuser',
 				email: 'test@user.com',
 				password: 'hashedpassword', // Ensure hashed password is used
 			});
-			expect(result).toEqual(mockUser);
+			expect(result).toEqual('mockedToken');
 		});
 
 		test('should throw an error if username already exists', async () => {
@@ -59,6 +73,9 @@ describe('AuthService', () => {
 			).rejects.toThrow('Username already exists');
 
 			expect(authRepository.userExists).toHaveBeenCalledWith('testuser');
+			expect(jwt.sign).not.toHaveBeenCalled();
+			expect(authRepository.createUser).not.toHaveBeenCalled();
+			expect(bcrypt.hash).not.toHaveBeenCalled();
 		});
 
 		test('should throw an error if required fields are missing', async () => {
@@ -71,6 +88,9 @@ describe('AuthService', () => {
 			).rejects.toThrow('Username, password, and email are required');
 
 			expect(authRepository.userExists).not.toHaveBeenCalled();
+			expect(jwt.sign).not.toHaveBeenCalled();
+			expect(authRepository.createUser).not.toHaveBeenCalled();
+			expect(bcrypt.hash).not.toHaveBeenCalled();
 		});
 
 		test('should throw an error if user creation fails', async () => {
@@ -91,6 +111,9 @@ describe('AuthService', () => {
 				email: 'test@user.com',
 				password: 'hashedpassword',
 			});
+			expect(authRepository.userExists).toHaveBeenCalledWith('testuser');
+			expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
+			expect(jwt.sign).not.toHaveBeenCalled();
 		});
 	});
 
@@ -99,6 +122,7 @@ describe('AuthService', () => {
 			const mockUser = { id: 1, username: 'testuser', email: 'test@user.com', password_hash: 'hashedpassword' };
 			authRepository.getUserByUsername.mockResolvedValueOnce(mockUser);
 			bcrypt.compare.mockResolvedValueOnce(true);
+			jwt.sign.mockReturnValueOnce('mockedToken');
 
 			const result = await authService.loginUser({
 				username: 'testuser',
@@ -107,7 +131,10 @@ describe('AuthService', () => {
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('testuser');
 			expect(bcrypt.compare).toHaveBeenCalledWith('password', 'hashedpassword');
-			expect(result).toEqual({ id: 1, username: 'testuser', email: 'test@user.com' });
+			expect(jwt.sign).toHaveBeenCalledWith({ id: mockUser.id, username: 'testuser' }, expect.any(String), {
+				expiresIn: '24h',
+			});
+			expect(result).toEqual('mockedToken');
 		});
 
 		test('should throw an error if required fields are missing', async () => {

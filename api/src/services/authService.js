@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { authRepository } from '../repositories/authRepository.js';
 
 async function registerUser({ username, password, email }) {
@@ -15,7 +16,12 @@ async function registerUser({ username, password, email }) {
 			...userData,
 			password: hashedPassword,
 		});
-		return user;
+
+		const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+			expiresIn: '24h',
+		});
+
+		return token;
 	} catch (error) {
 		throw new Error(`Error registering user: ${error.message}`);
 	}
@@ -31,13 +37,15 @@ async function loginUser({ username, password }) {
 		if (!user) {
 			throw new Error('Invalid username or password');
 		}
-		console.log('user', user);
 		const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-		console.log('isPasswordValid', isPasswordValid);
 		if (!isPasswordValid) {
 			throw new Error('Invalid username or password');
 		}
-		return { id: user.id, username: username, email: user.email };
+
+		const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+			expiresIn: '24h',
+		});
+		return token;
 	} catch (error) {
 		throw new Error(`Error logging in user: ${error.message}`);
 	}

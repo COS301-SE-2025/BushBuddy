@@ -39,10 +39,11 @@ describe('Full Auth Flow', () => {
 				password: 'securepass',
 			});
 
-			// console.log('Registration response:', res.body);
+			// console.log('Registration response:', res);
 
 			expect(res.statusCode).toBe(201);
-			expect(res.body).toHaveProperty('username', 'testuser');
+			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
+			expect(res.body).toHaveProperty('message', 'User registered successfully');
 		} catch (error) {
 			// console.error('Error during registration test:', error);
 			throw new Error(`Registration test failed: ${error.message}`);
@@ -62,10 +63,11 @@ describe('Full Auth Flow', () => {
 				password: 'securepass',
 			});
 
-			console.log('Login response:', res.body);
+			// console.log('Login response:', res.headers['set-cookie'][0]);
 
 			expect(res.statusCode).toBe(200);
-			expect(res.body.username).toEqual('testuser2');
+			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
+			expect(res.body).toHaveProperty('message', 'User logged in successfully');
 		} catch (error) {
 			// console.error('Error during login test:', error);
 			throw new Error(`Login test failed: ${error.message}`);
