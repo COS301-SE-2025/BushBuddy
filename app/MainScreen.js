@@ -2,14 +2,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { useState,  } from 'react';
-import { Linking } from 'react-native';
+import { useState, } from 'react';
 import {
   Alert,
   Dimensions,
   FlatList,
-  Image,
-  Modal,
+  Image, Linking, Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -1058,12 +1056,12 @@ const HelpModal = () => (
           width: '90%',
           alignItems: 'center'
         }}>
-          <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
             Help Menu
           </Text>
-          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+          {/* <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
             This Help Menu provides quick access to the user manual, FAQs and README, and a quick break down of how to use the app.
-          </Text>
+          </Text> */}
           <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
             Home
           </Text>
@@ -1097,6 +1095,14 @@ const HelpModal = () => (
           <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
             The Profile tab allows you to view and edit your profile information, including username, email, and password. You can also manage your sightings history.
           </Text>
+
+          <TouchableOpacity
+            style={{ marginTop: 18, padding: 8, borderRadius: 8, backgroundColor: '#395936' }}
+            onPress={() => setHelpVisible(false)}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
+          </TouchableOpacity>
+
           <View style={{ width: '100%' }}>
             <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki/User-Manual')}}>
               <Text style={{ color: '#2196F3', fontSize: 16 }}>User Manual</Text>
@@ -1109,12 +1115,7 @@ const HelpModal = () => (
             </TouchableOpacity>
           </View>
           
-          <TouchableOpacity
-            style={{ marginTop: 18, padding: 8, borderRadius: 8, backgroundColor: '#395936' }}
-            onPress={() => setHelpVisible(false)}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
-          </TouchableOpacity>
+          
         </View>
       </ScrollView>
     </View>
