@@ -46,7 +46,7 @@ both visual and audio detection.
 
 [SRS Document - v2](https://drive.google.com/file/d/1TYf6k7-EyThm4crbMr_7NvyNV4Fznedt/view?usp=drive_link)
 
-[Architectural Requirements](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
+[Architectural Requirements - v1](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
 
 [User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
 
