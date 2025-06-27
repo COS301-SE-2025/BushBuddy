@@ -40,13 +40,18 @@ both visual and audio detection.
 
 </details>
 
-## Demo Videos
-[ReturnZero Demo 1](https://drive.google.com/drive/folders/1EvwzuNH4CUKUsEindl_5iOGv0ToUCYQo?usp=sharing)
+## Demos
+### Demo 1
+[Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
+
+[Demo 1 Presentation](https://www.canva.com/design/DAGolPXXyvY/6SCDsRvBD6g2kgGMPxQ1ZA/edit?utm_content=DAGolPXXyvY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 
 ## Documentation 
 ### Functional Requirements Documentation
-[SRS Document](https://docs.google.com/document/d/1eJ-vx4wUhmz_olI72GIk3GrhcHGdppb9SucASzeYsE4/edit?usp=sharing)
+[Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
+
+[SRS Document](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
 
 
 ## GitHub Project Board

@@ -24,7 +24,7 @@ const AuthScreen = ({ navigation }) => {
           style={styles.formContainer}
         >
           <Image
-            source={require('../assets/EpiUseLogo.png')}
+            source={require('../assets/BushBuddy.webp')}
             style={styles.logo}
             testID = "logo" 
           />
