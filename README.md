@@ -5,7 +5,10 @@ AI-Powered African Wildlife Detection System
 
 <img src="/res/img/BushBuddy.png" alt="BushBuddy Logo" width="600">
 
-[![codecov](https://img.shields.io/badge/codecov-n%2Fa-lightgrey)](https://codecov.io/github/COS301-SE-2024/WorkWise-Central)
+[![Lint](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/actions/workflows/python_lint.yml/badge.svg)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/actions/workflows/python_lint.yml)
+[![GitHub last commit](https://img.shields.io/github/last-commit/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/commits)
+[![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/issues?q=is%3Aissue+is%3Aclosed)
 ---
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
