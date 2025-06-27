@@ -44,7 +44,9 @@ both visual and audio detection.
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
-[SRS Document - v1](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
+[SRS Document - v2](https://drive.google.com/file/d/1TYf6k7-EyThm4crbMr_7NvyNV4Fznedt/view?usp=drive_link)
+
+[Architectural Requirements](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
 
 [User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
 
@@ -53,13 +55,16 @@ both visual and audio detection.
 [Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
 
 ## Demos
+### Demo 2
+
+
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
 
 [Demo 1 Presentation](https://www.canva.com/design/DAGolPXXyvY/6SCDsRvBD6g2kgGMPxQ1ZA/edit?utm_content=DAGolPXXyvY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+#### Demo 1-specific documentation (Outdated)
 [SRS Document - v1](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
-
 
 ## GitHub Project Board
 [ReturnZero's Project Board](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/projects?query=is%3Aopen)
