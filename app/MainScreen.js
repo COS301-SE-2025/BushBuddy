@@ -2,13 +2,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useState, } from 'react';
 import {
   Alert,
   Dimensions,
   FlatList,
-  Image,
-  Modal,
+  Image, Linking, Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -34,6 +33,20 @@ const MainScreen = ({ route }) => {
   const [bestiaryFilter, setBestiaryFilter] = useState('All');
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [showAnimalModal, setShowAnimalModal] = useState(false);
+  const [helpVisible, setHelpVisible] = useState(false);
+
+  const openWebLink = async (url) => {
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      console.log(`Don't know how to open this URL: ${url}`);
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+  };
 
   // Navigate to MapScreen
   const handleMapNavigation = () => {
@@ -906,8 +919,6 @@ const bestiaryData = [
     </TouchableOpacity>
   );
 
-
-
 const renderBestiaryItem = ({ item }) => (
   <TouchableOpacity 
     style={styles.bestiaryCard}
@@ -1022,6 +1033,95 @@ const AnimalDetailModal = () => {
   );
 };
 
+// Help Modal Component
+const HelpModal = () => (
+  <Modal
+    visible={helpVisible}
+    animationType="fade"
+    transparent={true}
+    onRequestClose={() => setHelpVisible(false)}
+
+  >
+    <View style={{
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      <ScrollView style={styles.modalHelpContainer} showsVerticalScrollIndicator={false}>
+        <View style={{
+          backgroundColor: 'white',
+          borderRadius: 16,
+          padding: 24,
+          width: '90%',
+          alignItems: 'center'
+        }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Help Menu
+          </Text>
+          {/* <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            This Help Menu provides quick access to the user manual, FAQs and README, and a quick break down of how to use the app.
+          </Text> */}
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Home
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            On the home page, you can view all animals in our database, filter and search for specific ones, browse wildlife sightings via the top search bar, 
+            create new sightings, view your history, see nearby sightings on a map, and adjust settings using quick action icons.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Map
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            The Map tab at the bottom shows all wildlife sightings on a map. You can zoom in/out and tap markers to view sighting details..
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Camera
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            In the Camera view, you can take and upload photos of animals you've seen. AI helps identify the animal, and your sighting is added to the database 
+            for others to see in their feed.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Feed
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            In the camera view you can take snap shots of the animals you have seen and upload them to the app. This will allow you to identify the animal in the 
+            photo through AI and aswell as add your sighting to the database for other users to see in their feed.
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, color: '#263924' }}>
+            Profile
+          </Text>
+          <Text style={{ fontSize: 14, color: '#263924', marginBottom: 10, textAlign: 'center' }}>
+            The Profile tab allows you to view and edit your profile information, including username, email, and password. You can also manage your sightings history.
+          </Text>
+
+          <TouchableOpacity
+            style={{ marginTop: 18, padding: 8, borderRadius: 8, backgroundColor: '#395936' }}
+            onPress={() => setHelpVisible(false)}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
+          </TouchableOpacity>
+
+          <View style={{ width: '100%' }}>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki/User-Manual')}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>User Manual</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>FAQs</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => {openWebLink('https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/blob/main/README.md')}}>
+              <Text style={{ color: '#2196F3', fontSize: 16 }}>README</Text>
+            </TouchableOpacity>
+          </View>
+          
+          
+        </View>
+      </ScrollView>
+    </View>
+  </Modal>
+);
+
 const categoryMap = {
   'Antelopes': 'Antelope',
   'Large Mammals': 'Large Mammal',
@@ -1107,6 +1207,13 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
           <Text style={styles.welcomeText}>Welcome,</Text>
           <Text style={styles.usernameText}>{username}</Text>
         </View>
+        {/* Help Button - Top Left */}
+          <TouchableOpacity
+            style={styles.helpButton}
+            onPress={() => setHelpVisible(true)}
+          >
+            <MaterialIcons name="help-outline" size={28} color="#fff" />
+          </TouchableOpacity>
 
         {/* Search Bar */}
         <View style={styles.searchContainer}>
@@ -1327,6 +1434,8 @@ const bestiaryCategories = ['All', 'Antelopes', 'Large Mammals', 'Predators', 'S
 
       {/* Animal Detail Modal */}
       <AnimalDetailModal />
+      {/* Help Modal */}
+      <HelpModal />
     </SafeAreaView>
   );
 };
@@ -1348,6 +1457,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#395936',
     height: 100
+  },
+  helpButton: {
+    position: 'absolute',
+    left: 355,
+    top: 110,
+    zIndex: 10,
+    backgroundColor: 'rgba(57,89,54,0.8)',
+    borderRadius: 20,
+    padding: 6,
   },
   logo: {
     width: 60,
@@ -1765,6 +1883,12 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     flex: 1,
+  },
+  modalHelpContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    left: 20,
+    top: 50
   },
   modalImageContainer: {
     paddingHorizontal: 20,
