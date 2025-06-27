@@ -12,8 +12,7 @@ import {
   ScrollView, StyleSheet, Text,
   TouchableOpacity, View
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { Callout } from 'react-native-maps';
+import MapView, { Callout, Marker } from 'react-native-maps';
 // Saving this for future Jean...app.json
 /*"plugins": [
   [
@@ -23,12 +22,12 @@ import { Callout } from 'react-native-maps';
     }
   ]
 ]*/
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window'); // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const MapScreen = ({ route }) => {
   const navigation = useNavigation();
   const params = route?.params || {};
-  const username = params.username || 'User';
+  const username = params.username || 'User'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const [activeTab, setActiveTab] = useState('map');
   const [selectedScale, setSelectedScale] = useState('10km');
@@ -45,7 +44,7 @@ const MapScreen = ({ route }) => {
 
   // Sample map markers data
   // Will replace later
-  const mapMarkers = [
+  const mapMarkers = [ // eslint-disable-line @typescript-eslint/no-unused-vars
     {
       id: '1',
       type: 'elephant_group',
@@ -129,7 +128,7 @@ const MapScreen = ({ route }) => {
   }, [showDetails]);
 
   // Focus on marker
-  const focusMarker = (marker) => {
+  const focusMarker = (marker) => { // eslint-disable-line @typescript-eslint/no-unused-vars
     setSelectedAnimal(marker);
     setShowDetails(true);
   };

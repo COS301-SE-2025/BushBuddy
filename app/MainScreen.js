@@ -908,7 +908,7 @@ const bestiaryData = [
 
 
 
-const renderBestiaryItem = ({ item }) => (
+const renderBestiaryItem = ({ item }) => ( // eslint-disable-line @typescript-eslint/no-unused-vars
   <TouchableOpacity 
     style={styles.bestiaryCard}
     onPress={() => handleAnimalPress(item)}

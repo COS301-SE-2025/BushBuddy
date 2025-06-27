@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window'); // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export default function AuthScreen() {
   const [username, setUsername] = useState('');

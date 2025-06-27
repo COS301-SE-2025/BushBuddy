@@ -27,7 +27,7 @@ const ProfileScreen = ({ route }) => {
   
   // Safely access route params with default values
   const params = route?.params || {};
-  const username = params.username || 'User';
+  const username = params.username || 'User'; // eslint-disable-line @typescript-eslint/no-unused-vars
   
   const [activeTab, setActiveTab] = useState('profile');
   const [darkMode, setDarkMode] = useState(true);
@@ -336,7 +336,7 @@ const ProfileScreen = ({ route }) => {
   };
 
   // Handle camera action
-  const handleCameraAction = () => {
+  const handleCameraAction = () => { // eslint-disable-line @typescript-eslint/no-unused-vars
     Alert.alert(
       'Camera Access',
       'Would open camera for wildlife detection',

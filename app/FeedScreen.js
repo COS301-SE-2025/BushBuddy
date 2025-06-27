@@ -19,7 +19,7 @@ import {
 const FeedScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('Friends');
+  const [selectedFilter, setSelectedFilter] = useState('Friends'); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
 
@@ -88,7 +88,7 @@ const FeedScreen = () => {
   ];
 
   // Filter options
-  const filterOptions = ['Friends', 'Following', 'Nearby', 'Popular'];
+  const filterOptions = ['Friends', 'Following', 'Nearby', 'Popular']; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   // Animal type icons for the top filter bar
   const animalFilters = [
