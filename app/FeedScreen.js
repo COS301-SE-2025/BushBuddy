@@ -30,11 +30,11 @@ const FeedScreen = () => {
       type: 'elephant',
       title: 'Elephant Bull Spotted',
       user: 'Ruan',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Kruger National Park',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/Elephant.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Elephant.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'I spotted this large Elephant bull near Bateleur road this morning while on a game drive',
       likes: 24,
       comments: 8,
@@ -45,11 +45,11 @@ const FeedScreen = () => {
       type: 'lion',
       title: 'Pride of Lions',
       user: 'Ruben',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Mabula Nature Reserve',
       timestamp: '20/05/2025 17:45',
-      image: require('../assets/Pride-Lions-Demo.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Pride-Lions-Demo.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Amazing pride of lions spotted resting under acacia trees. The cubs were playing while the adults kept watch.',
       likes: 18,
       comments: 5,
@@ -60,11 +60,11 @@ const FeedScreen = () => {
       type: 'rhino',
       title: 'White Rhinos Spotted',
       user: 'Raffie',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Dinokeng',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/rhino-group.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/rhino-group.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Two magnificent white rhinos grazing peacefully in the early morning light. Such incredible creatures!',
       likes: 31,
       comments: 12,
@@ -75,11 +75,11 @@ const FeedScreen = () => {
       type: 'antelope',
       title: 'Eland Spotted',
       user: 'Tom',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.jpg'), // Placeholder holder fix later Jean
+      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
       location: 'Rietvlei Nature Reserve',
       timestamp: '21/05/2025 8:45',
-      image: require('../assets/Eland.jpg'),
-      mapImage: require('../assets/Map-Demo.jpg'), // Map view demo image.The same image is used for all entries because of the demo
+      image: require('../assets/Eland.webp'),
+      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
       description: 'Beautiful herd of eland antelope spotted during sunset. They were so graceful moving across the grassland.',
       likes: 15,
       comments: 3,
@@ -335,7 +335,7 @@ const FeedScreen = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#4c8c4a', '#1e3b1d']}
+        colors={['#F7FAF8', '#F7FAF8']}
         style={styles.gradientContainer}
       >
         {/* Header */}
@@ -346,7 +346,7 @@ const FeedScreen = () => {
           >Feed</Text>
           <TouchableOpacity style={styles.profileButton}>
             <Image 
-              source={require('../assets/Jean-Steyn-ProfilePic.jpg')} 
+              source={require('../assets/Jean-Steyn-ProfilePic.webp')} 
               style={styles.profileImage}
             />
           </TouchableOpacity>
@@ -490,6 +490,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 15,
     paddingHorizontal: 20,
+    backgroundColor: "#395936",
+    height: 100,
   },
   headerTitle: {
     fontSize: 24,
@@ -524,10 +526,12 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 25,
     padding: 12,
     gap: 10,
+    marginTop: 10,
+    opacity: 0.9
   },
   searchInput: {
     flex: 1,
@@ -544,11 +548,12 @@ const styles = StyleSheet.create({
   dropdownFilter: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 8,
     gap: 5,
+    opacity: 0.9
   },
   dropdownText: {
     color: 'white',
@@ -563,9 +568,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.9
   },
   animalFilterContainer: {
     paddingHorizontal: 15,
@@ -575,28 +581,29 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: '#395936',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 5,
+    opacity: 0.9
   },
   feedContainer: {
     paddingBottom: 20,
   },
   feedCard: {
-    backgroundColor: 'white',
+    backgroundColor: '#EFF5EF',
     marginHorizontal: 15,
     marginBottom: 20,
     borderRadius: 15,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: 1,
       height: 2,
     },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   userHeader: {
     flexDirection: 'row',
@@ -697,7 +704,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#395936',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     paddingVertical: 10,
