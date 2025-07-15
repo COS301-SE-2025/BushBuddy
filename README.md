@@ -5,7 +5,10 @@ AI-Powered African Wildlife Detection System
 
 <img src="/res/img/BushBuddy.png" alt="BushBuddy Logo" width="600">
 
-[![codecov](https://img.shields.io/badge/codecov-n%2Fa-lightgrey)](https://codecov.io/github/COS301-SE-2024/WorkWise-Central)
+[![Lint](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/actions/workflows/python_lint.yml/badge.svg)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/actions/workflows/python_lint.yml)
+[![GitHub last commit](https://img.shields.io/github/last-commit/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/commits)
+[![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/COS301-SE-2025/AI-Powered-African-Wildlife-Detection)](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/issues?q=is%3Aissue+is%3Aclosed)
 ---
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
@@ -40,19 +43,35 @@ both visual and audio detection.
 
 </details>
 
+## Documentation 
+
+[Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
+
+[SRS Document - v2](https://drive.google.com/file/d/1TYf6k7-EyThm4crbMr_7NvyNV4Fznedt/view?usp=drive_link)
+
+[Architectural Requirements - v1](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
+
+[User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
+
+[Coding Standards - v1](https://drive.google.com/file/d/12enrjoGXYy_JLajD-r4YTvM261CNjG1t/view?usp=drive_link)
+
+[Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
+
 ## Demos
+### Demo 2
+
+[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
+
+[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
+
+
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
 
 [Demo 1 Presentation](https://www.canva.com/design/DAGolPXXyvY/6SCDsRvBD6g2kgGMPxQ1ZA/edit?utm_content=DAGolPXXyvY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-
-## Documentation 
-### Functional Requirements Documentation
-[Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
-
-[SRS Document](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
-
+#### Demo 1-specific documentation (Outdated)
+[SRS Document - v1](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
 
 ## GitHub Project Board
 [ReturnZero's Project Board](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/projects?query=is%3Aopen)
