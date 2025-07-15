@@ -1,74 +1,41 @@
 {
-  "name": "bushbuddy",
-  "main": "expo-router/entry",
-  "version": "1.0.0",
-  "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "expo lint",
-    "test": "jest"
+  "name": "bush-buddy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.58.1",
+    "react-router-dom": "^7.6.2",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
     ]
   },
-  "dependencies": {
-    "@expo/vector-icons": "^14.1.0",
-    "@react-navigation/bottom-tabs": "^7.3.10",
-    "@react-navigation/elements": "^2.3.8",
-    "@react-navigation/native": "^7.1.9",
-    "@react-navigation/native-stack": "^7.3.13",
-    "@react-navigation/stack": "^7.3.2",
-    "bcrypt": "^6.0.0",
-    "dotenv": "^16.5.0",
-    "expo": "~53.0.9",
-    "expo-av": "~15.1.4",
-    "expo-blur": "~14.1.4",
-    "expo-camera": "~16.1.6",
-    "expo-constants": "~17.1.6",
-    "expo-font": "~13.3.1",
-    "expo-haptics": "~14.1.4",
-    "expo-image": "~2.1.7",
-    "expo-linear-gradient": "~14.1.4",
-    "expo-linking": "~7.1.5",
-    "expo-location": "~18.1.5",
-    "expo-media-library": "~17.1.6",
-    "expo-router": "~5.0.6",
-    "expo-splash-screen": "^0.30.9",
-    "expo-status-bar": "~2.2.3",
-    "expo-symbols": "^0.4.5",
-    "expo-system-ui": "~5.0.7",
-    "expo-web-browser": "~14.1.6",
-    "jest": "~29.7.0",
-    "jest-expo": "~53.0.5",
-    "nanoid": "^5.1.5",
-    "pg": "^8.16.2",
-    "leaflet": "^1.9.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-leaflet": "^5.0.0",
-    "react-native": "^0.79.4",
-    "react-native-gesture-handler": "~2.24.0",
-    "react-native-maps": "1.20.1",
-    "react-native-reanimated": "~3.17.4",
-    "react-native-safe-area-context": "^5.4.0",
-    "react-native-screens": "~4.10.0",
-    "react-native-web": "~0.20.0",
-    "react-native-webview": "13.13.5",
-    "uuid": "^11.1.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@testing-library/react-native": "^13.2.0",
-    "@types/react": "~19.0.10",
-    "eslint": "^9.25.0",
-    "eslint-config-expo": "~9.2.0",
-    "typescript": "~5.8.3"
-  },
-  "private": true
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
