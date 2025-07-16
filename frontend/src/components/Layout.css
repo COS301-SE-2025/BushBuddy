@@ -14,9 +14,10 @@
 
 .main-content {
     flex: 1;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
     background-color: #FFFFF0;
+    padding: 0.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .footer {
