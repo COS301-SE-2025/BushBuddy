@@ -33,27 +33,24 @@ function Layout() {
         <Navbar className="footer">
           <Button className="nav-button" onClick={() => navigate('/main')}>
             <FaHome size={30} />
-            <span>Home</span>
           </Button>
 
           <Button className="nav-button" onClick={() => navigate('/map')}>
             <FaMapMarkedAlt size={30} />
-            <span>Map</span>
           </Button>
 
-          <Button className="nav-button" onClick={() => navigate('/capture')}>
+          <div className="nav-button"></div>
+
+          <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
             <FaCamera size={30} />
-            <span>Cam</span>
           </Button>
 
           <Button className="nav-button" onClick={() => navigate('/feed')}>
             <FaRegNewspaper size={30} />
-            <span>Feed</span>
           </Button>
 
           <Button className="nav-button" onClick={() => navigate('/profile')}>
-            <FaUser size={30} />
-            <span>Me</span>
+            <FaUser size={25} />
           </Button>
         </Navbar>
       </div>

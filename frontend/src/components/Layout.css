@@ -16,6 +16,7 @@
     flex: 1;
     padding-top: 4rem;
     padding-bottom: 4rem;
+    background-color: #FFFFF0;
 }
 
 .footer {
@@ -41,4 +42,26 @@
 .nav-button svg {
     margin-bottom: 0.2rem;
     color: white;
+}
+
+.nav-button-scanner {
+    position: absolute;
+    top: 48rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    border-radius: 50%;
+    padding: 0.75rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: #ff6b00;
+}
+
+.nav-button-scanner svg {
+    margin-bottom: -0.2rem;
+    color: white;
+}
+
+h1 {
+    color: #274217;
 }
