@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='Path to YOLO model file', required=True)
 parser.add_argument('--source', help='Image source: file, folder, video, or usb camera', required=True)
 parser.add_argument('--thresh', help='Minimum confidence threshold', default=0.5)
+parser.add_argument('--resolution', help='Resolution in WxH format', default=None)
 
 args = parser.parse_args()
 
@@ -17,6 +18,7 @@ args = parser.parse_args()
 model_path = args.model
 img_source = args.source
 min_thresh = float(args.thresh)
+user_res = args.resolution
 
 # Check if model file exists
 if not os.path.exists(model_path):
@@ -61,12 +63,31 @@ else:
     print(f'Input {img_source} is invalid.')
     sys.exit(0)
 
+# Parse resolution
+resize = False
+if user_res:
+    resize = True
+    resW, resH = int(user_res.split('x')[0]), int(user_res.split('x')[1])
+    
+    # Set camera resolution if using camera
+    if source_type == 'usb':
+        cap.set(3, resW)
+        cap.set(4, resH)
+
+# FPS tracking variables
+frame_rate_buffer = []
+fps_avg_len = 30
+
 # Process different source types
 if source_type in ['image', 'folder']:
     for img_filename in imgs_list:
         frame = cv2.imread(img_filename)
         if frame is None:
             continue
+        
+        # Resize frame if needed
+        if resize:
+            frame = cv2.resize(frame, (resW, resH))
         
         # Run inference
         results = model(frame, verbose=False)
@@ -96,11 +117,17 @@ if source_type in ['image', 'folder']:
 
 elif source_type in ['video', 'usb']:
     while True:
+        t_start = time.perf_counter()
+        
         ret, frame = cap.read()
         if not ret:
             if source_type == 'usb':
                 print('Unable to read frames from camera.')
             break
+        
+        # Resize frame if needed
+        if resize:
+            frame = cv2.resize(frame, (resW, resH))
         
         # Run inference
         results = model(frame, verbose=False)
@@ -122,6 +149,17 @@ elif source_type in ['video', 'usb']:
                 
                 label = f'{classname}: {int(conf*100)}%'
                 cv2.putText(frame, label, (xmin, ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        
+        # Calculate FPS
+        t_stop = time.perf_counter()
+        frame_rate_calc = 1 / (t_stop - t_start)
+        frame_rate_buffer.append(frame_rate_calc)
+        
+        if len(frame_rate_buffer) > fps_avg_len:
+            frame_rate_buffer.pop(0)
+        
+        avg_fps = np.mean(frame_rate_buffer)
+        cv2.putText(frame, f'FPS: {avg_fps:.2f}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
         
         cv2.imshow('YOLO detection results', frame)
         key = cv2.waitKey(5)
