@@ -8,7 +8,7 @@ from ultralytics import YOLO # Import the YOLO model from ultralytics package(as
 # Define and parse user input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='Path to YOLO model file', required=True)
-parser.add_argument('--source', help='Image source: file, folder, or video', required=True)
+parser.add_argument('--source', help='Image source: file, folder, video, or usb camera', required=True)
 parser.add_argument('--thresh', help='Minimum confidence threshold', default=0.5)
 
 args = parser.parse_args()
@@ -27,8 +27,8 @@ if not os.path.exists(model_path):
 model = YOLO(model_path, task='detect')
 labels = model.names
 
-# Simple color scheme for bounding boxes
-bbox_colors = [(0,255,0), (255,0,0), (0,0,255), (255,255,0), (255,0,255)]
+# Better color scheme for bounding boxes
+bbox_colors = [(164,120,87), (68,148,228), (93,97,209), (178,182,133), (88,159,106)]
 
 # Parse input source type
 img_ext_list = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.bmp','.BMP']
@@ -36,7 +36,6 @@ vid_ext_list = ['.avi','.mov','.mp4','.mkv','.wmv']
 
 if os.path.isdir(img_source):
     source_type = 'folder'
-    # Get all image files in folder
     imgs_list = []
     filelist = glob.glob(img_source + '/*')
     for file in filelist:
@@ -54,11 +53,15 @@ elif os.path.isfile(img_source):
     else:
         print(f'File extension {ext} is not supported.')
         sys.exit(0)
+elif 'usb' in img_source:
+    source_type = 'usb'
+    usb_idx = int(img_source[3:])
+    cap = cv2.VideoCapture(usb_idx)
 else:
     print(f'Input {img_source} is invalid.')
     sys.exit(0)
 
-# Process images or video
+# Process different source types
 if source_type in ['image', 'folder']:
     for img_filename in imgs_list:
         frame = cv2.imread(img_filename)
@@ -91,10 +94,12 @@ if source_type in ['image', 'folder']:
         if key == ord('q'):
             break
 
-elif source_type == 'video':
+elif source_type in ['video', 'usb']:
     while True:
         ret, frame = cap.read()
         if not ret:
+            if source_type == 'usb':
+                print('Unable to read frames from camera.')
             break
         
         # Run inference
