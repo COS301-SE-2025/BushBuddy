@@ -11,6 +11,7 @@ parser.add_argument('--model', help='Path to YOLO model file', required=True)
 parser.add_argument('--source', help='Image source: file, folder, video, or usb camera', required=True)
 parser.add_argument('--thresh', help='Minimum confidence threshold', default=0.5)
 parser.add_argument('--resolution', help='Resolution in WxH format', default=None)
+parser.add_argument('--record', help='Record video output', action='store_true')
 
 args = parser.parse_args()
 
@@ -19,6 +20,7 @@ model_path = args.model
 img_source = args.source
 min_thresh = float(args.thresh)
 user_res = args.resolution
+record = args.record
 
 # Check if model file exists
 if not os.path.exists(model_path):
@@ -75,15 +77,35 @@ if user_res:
         cap.set(3, resW)
         cap.set(4, resH)
 
+# Set up recording if requested
+if record:
+    if source_type not in ['video', 'usb']:
+        print('Recording only works for video and camera sources.')
+        sys.exit(0)
+    if not user_res:
+        print('Please specify resolution to record video.')
+        sys.exit(0)
+    
+    record_name = 'demo1.avi'
+    record_fps = 30
+    recorder = cv2.VideoWriter(record_name, cv2.VideoWriter_fourcc(*'MJPG'), record_fps, (resW, resH))
+
 # FPS tracking variables
 frame_rate_buffer = []
-fps_avg_len = 50
+fps_avg_len = 100
+img_count = 0
 
 # Process different source types
 if source_type in ['image', 'folder']:
-    for img_filename in imgs_list:
+    while True:
+        if img_count >= len(imgs_list):
+            print('All images have been processed.')
+            break
+            
+        img_filename = imgs_list[img_count]
         frame = cv2.imread(img_filename)
         if frame is None:
+            img_count += 1
             continue
         
         # Resize frame if needed
@@ -123,8 +145,15 @@ if source_type in ['image', 'folder']:
         
         cv2.imshow('YOLO detection results', frame)
         key = cv2.waitKey(0)
-        if key == ord('q'):
+        
+        if key == ord('q') or key == ord('Q'):
             break
+        elif key == ord('s') or key == ord('S'):
+            cv2.waitKey()  # Pause
+        elif key == ord('p') or key == ord('P'):
+            cv2.imwrite('capture.png', frame)  # Save screenshot
+        else:
+            img_count += 1
 
 elif source_type in ['video', 'usb']:
     while True:
@@ -181,10 +210,22 @@ elif source_type in ['video', 'usb']:
         cv2.putText(frame, f'Number of objects: {object_count}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
         
         cv2.imshow('YOLO detection results', frame)
+        
+        if record:
+            recorder.write(frame)
+        
         key = cv2.waitKey(5)
-        if key == ord('q'):
+        if key == ord('q') or key == ord('Q'):
             break
+        elif key == ord('s') or key == ord('S'):
+            cv2.waitKey()  # Pause
+        elif key == ord('p') or key == ord('P'):
+            cv2.imwrite('capture.png', frame)  # Save screenshot
     
     cap.release()
 
+# Cleanup
+if record:
+    recorder.release()
 cv2.destroyAllWindows()
+print("Program ended successfully.")
