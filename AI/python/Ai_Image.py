@@ -29,8 +29,9 @@ if not os.path.exists(model_path):
 model = YOLO(model_path, task='detect')
 labels = model.names
 
-# Better color scheme for bounding boxes
-bbox_colors = [(164,120,87), (68,148,228), (93,97,209), (178,182,133), (88,159,106)]
+# Better color scheme for bounding boxes (Tableau 10)
+bbox_colors = [(164,120,87), (68,148,228), (93,97,209), (178,182,133), (88,159,106), 
+              (96,202,231), (159,124,168), (169,162,241), (98,118,150), (172,176,184)]
 
 # Parse input source type
 img_ext_list = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.bmp','.BMP']
@@ -76,7 +77,7 @@ if user_res:
 
 # FPS tracking variables
 frame_rate_buffer = []
-fps_avg_len = 30
+fps_avg_len = 50
 
 # Process different source types
 if source_type in ['image', 'folder']:
@@ -93,6 +94,8 @@ if source_type in ['image', 'folder']:
         results = model(frame, verbose=False)
         detections = results[0].boxes
         
+        object_count = 0
+        
         # Draw bounding boxes
         for i in range(len(detections)):
             xyxy_tensor = detections[i].xyxy.cpu()
@@ -108,7 +111,15 @@ if source_type in ['image', 'folder']:
                 cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
                 
                 label = f'{classname}: {int(conf*100)}%'
-                cv2.putText(frame, label, (xmin, ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+                label_ymin = max(ymin, labelSize[1] + 10)
+                cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), color, cv2.FILLED)
+                cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+                
+                object_count += 1
+        
+        # Display object count
+        cv2.putText(frame, f'Number of objects: {object_count}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
         
         cv2.imshow('YOLO detection results', frame)
         key = cv2.waitKey(0)
@@ -133,6 +144,8 @@ elif source_type in ['video', 'usb']:
         results = model(frame, verbose=False)
         detections = results[0].boxes
         
+        object_count = 0
+        
         # Draw bounding boxes
         for i in range(len(detections)):
             xyxy_tensor = detections[i].xyxy.cpu()
@@ -148,7 +161,12 @@ elif source_type in ['video', 'usb']:
                 cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
                 
                 label = f'{classname}: {int(conf*100)}%'
-                cv2.putText(frame, label, (xmin, ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+                label_ymin = max(ymin, labelSize[1] + 10)
+                cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), color, cv2.FILLED)
+                cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+                
+                object_count += 1
         
         # Calculate FPS
         t_stop = time.perf_counter()
@@ -159,7 +177,8 @@ elif source_type in ['video', 'usb']:
             frame_rate_buffer.pop(0)
         
         avg_fps = np.mean(frame_rate_buffer)
-        cv2.putText(frame, f'FPS: {avg_fps:.2f}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
+        cv2.putText(frame, f'FPS: {avg_fps:.2f}', (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
+        cv2.putText(frame, f'Number of objects: {object_count}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
         
         cv2.imshow('YOLO detection results', frame)
         key = cv2.waitKey(5)
