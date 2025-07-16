@@ -1,0 +1,6 @@
+This is just for me so that I don't forget everything needed:
+
+In the Anaconda prompt run: conda activate yolo-env1
+Then :cd C:\2025\AI_ImageModel_1st_Attempt\my_model 
+For video(In same file) : python yolo_detect.py --model my_model.pt --source Animals_test2.mov
+For camera : python yolo_detect.py --model my_model.pt --source usb0
