@@ -1,7 +1,9 @@
 import os
 import sys
 import argparse
-from ultralytics import YOLO # Import the YOLO class from ultralytics package(need to install ultralytics package)
+import cv2
+import numpy as np
+from ultralytics import YOLO # Import the YOLO model from ultralytics package(assuming it is installed)
 
 # Define and parse user input arguments
 parser = argparse.ArgumentParser()
@@ -25,6 +27,9 @@ if not os.path.exists(model_path):
 model = YOLO(model_path, task='detect')
 labels = model.names
 
+# Simple color scheme for bounding boxes
+bbox_colors = [(0,255,0), (255,0,0), (0,0,255), (255,255,0), (255,0,255)]
+
 # Check if source is a single image file
 if os.path.isfile(img_source):
     frame = cv2.imread(img_source)
@@ -36,7 +41,25 @@ if os.path.isfile(img_source):
     results = model(frame, verbose=False)
     detections = results[0].boxes
     
-    print(f"Found {len(detections)} detections")
+    # Draw bounding boxes
+    for i in range(len(detections)):
+        # Get bounding box coordinates
+        xyxy_tensor = detections[i].xyxy.cpu()
+        xyxy = xyxy_tensor.numpy().squeeze()
+        xmin, ymin, xmax, ymax = xyxy.astype(int)
+        
+        # Get class and confidence
+        classidx = int(detections[i].cls.item())
+        classname = labels[classidx]
+        conf = detections[i].conf.item()
+        
+        # Draw if confidence is high enough
+        if conf > min_thresh:
+            color = bbox_colors[classidx % len(bbox_colors)]
+            cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
+            
+            label = f'{classname}: {int(conf*100)}%'
+            cv2.putText(frame, label, (xmin, ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     
     # Display the image
     cv2.imshow('YOLO detection results', frame)
