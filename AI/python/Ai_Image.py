@@ -3,229 +3,238 @@ import sys
 import argparse
 import cv2
 import numpy as np
+import time
+import glob
 from ultralytics import YOLO # Import the YOLO model from ultralytics package(assuming it is installed)
 
-# Define and parse user input arguments
+# Define and parse user input arguments(template)
+
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', help='Path to YOLO model file', required=True)
-parser.add_argument('--source', help='Image source: file, folder, video, or usb camera', required=True)
-parser.add_argument('--thresh', help='Minimum confidence threshold', default=0.5)
-parser.add_argument('--resolution', help='Resolution in WxH format', default=None)
-parser.add_argument('--record', help='Record video output', action='store_true')
+parser.add_argument('--model', help='Path to YOLO model file (example: "runs/detect/train/weights/best.pt")',
+                    required=True)
+parser.add_argument('--source', help='Image source, can be image file ("test.jpg"), \
+                    image folder ("test_dir"), video file ("testvid.mp4"), or index of USB camera ("usb0")', 
+                    required=True)
+parser.add_argument('--thresh', help='Minimum confidence threshold for displaying detected objects (example: "0.4")',
+                    default=0.5)
+parser.add_argument('--resolution', help='Resolution in WxH to display inference results at (example: "640x480"), \
+                    otherwise, match source resolution',
+                    default=None)
+parser.add_argument('--record', help='Record results from video or webcam and save it as "demo1.avi". Must specify --resolution argument to record.',
+                    action='store_true')
 
 args = parser.parse_args()
+
 
 # Parse user inputs
 model_path = args.model
 img_source = args.source
-min_thresh = float(args.thresh)
+min_thresh = args.thresh
 user_res = args.resolution
 record = args.record
 
-# Check if model file exists
-if not os.path.exists(model_path):
-    print('ERROR: Model path is invalid or model was not found.')
+# Check if model file exists and is valid
+if (not os.path.exists(model_path)):
+    print('ERROR: Model path is invalid or model was not found. Make sure the model filename was entered correctly.')
     sys.exit(0)
 
-# Load the model
+# Load the model into memory and get labemap
 model = YOLO(model_path, task='detect')
 labels = model.names
 
-# Better color scheme for bounding boxes (Tableau 10)
-bbox_colors = [(164,120,87), (68,148,228), (93,97,209), (178,182,133), (88,159,106), 
-              (96,202,231), (159,124,168), (169,162,241), (98,118,150), (172,176,184)]
-
-# Parse input source type
+# Parse input to determine if image source is a file, folder, video, or USB camera
 img_ext_list = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.bmp','.BMP']
 vid_ext_list = ['.avi','.mov','.mp4','.mkv','.wmv']
+# Add audio later
 
 if os.path.isdir(img_source):
     source_type = 'folder'
-    imgs_list = []
-    filelist = glob.glob(img_source + '/*')
-    for file in filelist:
-        _, file_ext = os.path.splitext(file)
-        if file_ext in img_ext_list:
-            imgs_list.append(file)
 elif os.path.isfile(img_source):
     _, ext = os.path.splitext(img_source)
     if ext in img_ext_list:
         source_type = 'image'
-        imgs_list = [img_source]
     elif ext in vid_ext_list:
         source_type = 'video'
-        cap = cv2.VideoCapture(img_source)
     else:
         print(f'File extension {ext} is not supported.')
         sys.exit(0)
 elif 'usb' in img_source:
     source_type = 'usb'
     usb_idx = int(img_source[3:])
-    cap = cv2.VideoCapture(usb_idx)
 else:
-    print(f'Input {img_source} is invalid.')
+    print(f'Input {img_source} is invalid. Please try again.')
     sys.exit(0)
 
-# Parse resolution
+# Parse user-specified display resolution
 resize = False
 if user_res:
     resize = True
     resW, resH = int(user_res.split('x')[0]), int(user_res.split('x')[1])
-    
-    # Set camera resolution if using camera
-    if source_type == 'usb':
-        cap.set(3, resW)
-        cap.set(4, resH)
 
-# Set up recording if requested
+# Check if recording is valid and set up recording
 if record:
-    if source_type not in ['video', 'usb']:
-        print('Recording only works for video and camera sources.')
+    if source_type not in ['video','usb']:
+        print('Recording only works for video and camera sources. Please try again.')
         sys.exit(0)
     if not user_res:
-        print('Please specify resolution to record video.')
+        print('Please specify resolution to record video at.') # Not needed on my computer check on someone else's computer
         sys.exit(0)
     
-    record_name = 'demo1.avi'
+    # Set up recording
+    record_name = 'demo1.avi' # For demos
     record_fps = 30
-    recorder = cv2.VideoWriter(record_name, cv2.VideoWriter_fourcc(*'MJPG'), record_fps, (resW, resH))
+    recorder = cv2.VideoWriter(record_name, cv2.VideoWriter_fourcc(*'MJPG'), record_fps, (resW,resH))
 
-# FPS tracking variables
+# Load or initialize image source
+if source_type == 'image':
+    imgs_list = [img_source]
+elif source_type == 'folder':
+    imgs_list = []
+    filelist = glob.glob(img_source + '/*')
+    for file in filelist:
+        _, file_ext = os.path.splitext(file)
+        if file_ext in img_ext_list:
+            imgs_list.append(file)
+elif source_type == 'video' or source_type == 'usb':
+
+    if source_type == 'video': cap_arg = img_source
+    elif source_type == 'usb': cap_arg = usb_idx
+    cap = cv2.VideoCapture(cap_arg)
+
+    # Set camera or video resolution if specified by user (Not used by me)
+    if user_res:
+        ret = cap.set(3, resW)
+        ret = cap.set(4, resH)
+
+# Set bounding box colors (using the Tableu 10 color scheme)
+bbox_colors = [(164,120,87), (68,148,228), (93,97,209), (178,182,133), (88,159,106), 
+              (96,202,231), (159,124,168), (169,162,241), (98,118,150), (172,176,184)]
+
+# Initialize control and status variables
+avg_frame_rate = 0
 frame_rate_buffer = []
-fps_avg_len = 100
+fps_avg_len = 200
 img_count = 0
 
-# Process different source types
-if source_type in ['image', 'folder']:
-    while True:
+# Begin inference loop
+while True:
+
+    t_start = time.perf_counter()
+
+    # Load frame from image source
+    if source_type == 'image' or source_type == 'folder': # If source is image or image folder, load the image using its filename
         if img_count >= len(imgs_list):
-            print('All images have been processed.')
-            break
-            
+            print('All images have been processed. Exiting program.')
+            sys.exit(0)
         img_filename = imgs_list[img_count]
         frame = cv2.imread(img_filename)
-        if frame is None:
-            img_count += 1
-            continue
-        
-        # Resize frame if needed
-        if resize:
-            frame = cv2.resize(frame, (resW, resH))
-        
-        # Run inference
-        results = model(frame, verbose=False)
-        detections = results[0].boxes
-        
-        object_count = 0
-        
-        # Draw bounding boxes
-        for i in range(len(detections)):
-            xyxy_tensor = detections[i].xyxy.cpu()
-            xyxy = xyxy_tensor.numpy().squeeze()
-            xmin, ymin, xmax, ymax = xyxy.astype(int)
-            
-            classidx = int(detections[i].cls.item())
-            classname = labels[classidx]
-            conf = detections[i].conf.item()
-            
-            if conf > min_thresh:
-                color = bbox_colors[classidx % len(bbox_colors)]
-                cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
-                
-                label = f'{classname}: {int(conf*100)}%'
-                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                label_ymin = max(ymin, labelSize[1] + 10)
-                cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), color, cv2.FILLED)
-                cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-                
-                object_count += 1
-        
-        # Display object count
-        cv2.putText(frame, f'Number of objects: {object_count}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
-        
-        cv2.imshow('YOLO detection results', frame)
-        key = cv2.waitKey(0)
-        
-        if key == ord('q') or key == ord('Q'):
-            break
-        elif key == ord('s') or key == ord('S'):
-            cv2.waitKey()  # Pause
-        elif key == ord('p') or key == ord('P'):
-            cv2.imwrite('capture.png', frame)  # Save screenshot
-        else:
-            img_count += 1
-
-elif source_type in ['video', 'usb']:
-    while True:
-        t_start = time.perf_counter()
-        
+        img_count = img_count + 1
+    
+    elif source_type == 'video': # If source is a video, load next frame from video file
         ret, frame = cap.read()
         if not ret:
-            if source_type == 'usb':
-                print('Unable to read frames from camera.')
+            print('Reached end of the video file. Exiting program.')
             break
-        
-        # Resize frame if needed
-        if resize:
-            frame = cv2.resize(frame, (resW, resH))
-        
-        # Run inference
-        results = model(frame, verbose=False)
-        detections = results[0].boxes
-        
-        object_count = 0
-        
-        # Draw bounding boxes
-        for i in range(len(detections)):
-            xyxy_tensor = detections[i].xyxy.cpu()
-            xyxy = xyxy_tensor.numpy().squeeze()
-            xmin, ymin, xmax, ymax = xyxy.astype(int)
-            
-            classidx = int(detections[i].cls.item())
-            classname = labels[classidx]
-            conf = detections[i].conf.item()
-            
-            if conf > min_thresh:
-                color = bbox_colors[classidx % len(bbox_colors)]
-                cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
-                
-                label = f'{classname}: {int(conf*100)}%'
-                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                label_ymin = max(ymin, labelSize[1] + 10)
-                cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), color, cv2.FILLED)
-                cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-                
-                object_count += 1
-        
-        # Calculate FPS
-        t_stop = time.perf_counter()
-        frame_rate_calc = 1 / (t_stop - t_start)
-        frame_rate_buffer.append(frame_rate_calc)
-        
-        if len(frame_rate_buffer) > fps_avg_len:
-            frame_rate_buffer.pop(0)
-        
-        avg_fps = np.mean(frame_rate_buffer)
-        cv2.putText(frame, f'FPS: {avg_fps:.2f}', (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
-        cv2.putText(frame, f'Number of objects: {object_count}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
-        
-        cv2.imshow('YOLO detection results', frame)
-        
-        if record:
-            recorder.write(frame)
-        
-        key = cv2.waitKey(5)
-        if key == ord('q') or key == ord('Q'):
-            break
-        elif key == ord('s') or key == ord('S'):
-            cv2.waitKey()  # Pause
-        elif key == ord('p') or key == ord('P'):
-            cv2.imwrite('capture.png', frame)  # Save screenshot
+    # To see what cameras are available, just commenting it out because my webcam is not working
+    # import cv2
+    # for i in range(10):
+    #     cap = cv2.VideoCapture(i)
+    #     if cap.isOpened():
+    #         print(f"Camera {i} is available")
+    #         cap.release()
+    #     else:
+    #         print(f"Camera {i} is not available")
     
-    cap.release()
+    elif source_type == 'usb': # If source is a USB camera, grab frame from camera (For with webcams)
+        ret, frame = cap.read()
+        if (frame is None) or (not ret):
+            print('Unable to read frames from the camera. This indicates the camera is disconnected or not working. Exiting program.')
+            break
 
-# Cleanup
-if record:
-    recorder.release()
+    # Resize frame to desired display resolution
+    if resize == True:
+        frame = cv2.resize(frame,(resW,resH))
+
+    # Run inference on frame
+    results = model(frame, verbose=False)
+
+    # Extract results
+    detections = results[0].boxes
+
+    # Initialize variable for basic object counting example
+    object_count = 0
+
+    # Go through each detection and get bbox coords, confidence, and class
+    for i in range(len(detections)):
+
+        # Get bounding box coordinates
+        # Ultralytics returns results in Tensor format, which have to be converted to a regular Python array
+        xyxy_tensor = detections[i].xyxy.cpu() # Detections in Tensor format in CPU memory
+        xyxy = xyxy_tensor.numpy().squeeze() # Convert tensors to Numpy array
+        xmin, ymin, xmax, ymax = xyxy.astype(int) # Extract individual coordinates and convert to int
+
+        # Get bounding box class ID and name
+        classidx = int(detections[i].cls.item())
+        classname = labels[classidx]
+
+        # Get bounding box confidence
+        conf = detections[i].conf.item()
+
+        # Draw box if confidence threshold is high enough
+        if conf > 0.5:
+
+            color = bbox_colors[classidx % 10]
+            cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2)
+
+            label = f'{classname}: {int(conf*100)}%'
+            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1) # Get font size
+            label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
+            cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), color, cv2.FILLED) # Draw white box to put label text in
+            cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1) # Draw label text
+
+            # Basic example: count the number of objects in the image
+            object_count = object_count + 1
+
+    # Calculate and draw framerate (if using video or USB source)
+    if source_type == 'video' or source_type == 'usb':
+        cv2.putText(frame, f'FPS: {avg_frame_rate:0.2f}', (10,20), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2) # Draw framerate
+    
+    # Display detection results (For demo purposes)
+    cv2.putText(frame, f'Number of objects: {object_count}', (10,40), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,255,255), 2) # Draw total number of detected objects
+    cv2.imshow('YOLO detection results',frame) # Display image
+    if record: recorder.write(frame)
+
+    # If inferencing on individual images, wait for user keypress before moving to next image. Otherwise, wait 5ms before moving to next frame.
+    if source_type == 'image' or source_type == 'folder':
+        key = cv2.waitKey()
+    elif source_type == 'video' or source_type == 'usb':
+        key = cv2.waitKey(5)
+    # All these are for the demo powerpoint
+    if key == ord('q') or key == ord('Q'): # Press 'q' to quit
+        break
+    elif key == ord('s') or key == ord('S'): # Press 's' to pause inference
+        cv2.waitKey()
+    elif key == ord('p') or key == ord('P'): # Press 'p' to save a picture of results on this frame
+        cv2.imwrite('capture.png',frame)
+    
+    # Calculate FPS for this frame
+    t_stop = time.perf_counter()
+    frame_rate_calc = float(1/(t_stop - t_start))
+
+    # Append FPS result to frame_rate_buffer (for finding average FPS over multiple frames)
+    if len(frame_rate_buffer) >= fps_avg_len:
+        temp = frame_rate_buffer.pop(0)
+        frame_rate_buffer.append(frame_rate_calc)
+    else:
+        frame_rate_buffer.append(frame_rate_calc)
+
+    # Calculate average FPS for past frames
+    avg_frame_rate = np.mean(frame_rate_buffer)
+
+
+# Clean up
+print(f'Average pipeline FPS: {avg_frame_rate:.2f}')
+if source_type == 'video' or source_type == 'usb':
+    cap.release()
+if record: recorder.release()
 cv2.destroyAllWindows()
-print("Program ended successfully.")
