@@ -1,3 +1,9 @@
 .map-page {
-    background-color: aquamarine;
+  height: 75vh;
+  border-radius: 50%;
+}
+
+.map-container {
+    border-radius: 1rem;
+    overflow: hidden;
 }
