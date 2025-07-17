@@ -3,13 +3,29 @@ import os
 
 url = "https://api.inaturalist.org/v1/observations"
 
+MAX_IMAGES_PER_SPECIES = 20
+
+
+
+
+"""
+Want the following returned
+- Mammals
+- RSA mammals
+- 20 images per mammal
+- possibly 100 images of combined species images
+- Sounds
+"""
+
 params = {
     "taxon_id": 40151, # Mammal ID
     "place_id": 113055, # RSA ID
-    "per_page": 20,
+    "per_page": 50,
     "page": 1,
     "order_by": "observed_on",
-    "photos": "true"
+    "photos": "true",
+    #"sounds": "true",
+    "quality_grade": "research"
 }
 
 
