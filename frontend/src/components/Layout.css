@@ -46,8 +46,8 @@
 }
 
 .nav-button-scanner {
-    position: absolute;
-    top: 48rem;
+    position: fixed;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     border: none;

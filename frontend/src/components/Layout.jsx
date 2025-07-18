@@ -39,9 +39,9 @@ function Layout() {
             <FaMapMarkedAlt size={30} />
           </Button>
 
-          {/* <div className="nav-button"></div> */}
+          <div style={{ width:"50px" }}></div>
 
-          <Button className="nav-button" onClick={() => navigate('/capture')}>
+          <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
             <FaCamera size={30} />
           </Button>
 
