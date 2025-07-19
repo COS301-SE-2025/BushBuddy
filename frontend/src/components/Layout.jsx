@@ -22,7 +22,7 @@ function Layout() {
   return (
     <>
       <div className="layout-wrapper">
-        <Navbar fixed="top" className="header">
+        <Navbar fixed="top" className="header" sticky='top'>
           <Navbar.Brand>{getHeaderText()}</Navbar.Brand>
         </Navbar>
 
@@ -30,7 +30,7 @@ function Layout() {
           <Outlet />
         </Container>
 
-        <Navbar className="footer">
+        <Navbar className="footer" sticky="bottom">
           <Button className="nav-button" onClick={() => navigate('/main')}>
             <FaHome size={30} />
           </Button>
