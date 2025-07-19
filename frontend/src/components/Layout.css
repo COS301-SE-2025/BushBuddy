@@ -19,7 +19,7 @@
     padding: 0.5rem;
     position: relative;
     overflow-x: hidden;
-    padding-bottom: 5rem; /* ✅ Add padding to prevent content being hidden behind footer */
+    padding-bottom: 5rem;
     box-sizing: border-box;
 }
 
@@ -32,10 +32,11 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%; /* ✅ Ensure it spans full width */
-    max-width: 100vw; /* ✅ Prevent overflow on mobile */
+    width: 100%;
+    max-width: 100vw;
     box-sizing: border-box;
     z-index: 9;
+    height: 60px;
 }
 
 .nav-button {
@@ -50,7 +51,7 @@
     border: none;
     background: none;
     font-size: 0.75rem;
-    max-width: 20vw; /* ✅ Prevent too-wide buttons on small screens */
+    max-width: 20vw;
     box-sizing: border-box;
 }
 
@@ -74,12 +75,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-button-scanner svg {
     margin-bottom: -0.1rem;
     color: white;
+}
+
+.active-nav-scanner {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    border-radius: 50%;
+    padding: 0.75rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: #4c8c4a;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.active-nav {
+    color: #ff6b00;
+    border-top: 3px solid #ff6b00;
+}
+
+.active-nav svg {
+    color: #ff6b00;
 }
 
 h1 {

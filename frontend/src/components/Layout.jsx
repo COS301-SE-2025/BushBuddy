@@ -7,6 +7,7 @@ import { FaHome, FaMapMarkedAlt, FaCamera, FaRegNewspaper, FaUser } from 'react-
 function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const currentPath = location.pathname;
 
   const getHeaderText = () => {
     switch (location.pathname) {
@@ -31,28 +32,44 @@ function Layout() {
         </Container>
 
         <Navbar className="footer" sticky="bottom">
-          <Button className="nav-button" onClick={() => navigate('/main')}>
+          <Button
+            className={`nav-button ${currentPath === '/main' ? 'active-nav' : ''}`}
+            onClick={() => navigate('/main')}
+          >
             <FaHome size={30} />
           </Button>
 
-          <Button className="nav-button" onClick={() => navigate('/map')}>
+          <Button
+            className={`nav-button ${currentPath === '/map' ? 'active-nav' : ''}`}
+            onClick={() => navigate('/map')}
+          >
             <FaMapMarkedAlt size={30} />
           </Button>
 
-          <div style={{ width:"50px" }}></div>
+          <div style={{ width: '50px' }}></div>
 
-          <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
+          <Button
+            className={`nav-button-scanner ${currentPath === '/capture' ? 'active-nav-scanner' : ''}`}
+            onClick={() => navigate('/capture')}
+          >
             <FaCamera size={30} />
           </Button>
 
-          <Button className="nav-button" onClick={() => navigate('/feed')}>
+          <Button
+            className={`nav-button ${currentPath === '/feed' ? 'active-nav' : ''}`}
+            onClick={() => navigate('/feed')}
+          >
             <FaRegNewspaper size={30} />
           </Button>
 
-          <Button className="nav-button" onClick={() => navigate('/profile')}>
+          <Button
+            className={`nav-button ${currentPath === '/profile' ? 'active-nav' : ''}`}
+            onClick={() => navigate('/profile')}
+          >
             <FaUser size={25} />
           </Button>
         </Navbar>
+
       </div>
     </>
   );
