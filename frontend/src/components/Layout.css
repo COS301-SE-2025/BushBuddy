@@ -5,25 +5,81 @@
 }
 
 .header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45px;
     background-color: #4c8c4a;
     color: white;
     padding: 1rem;
     text-align: left;
     font-size: 32px;
+    z-index: 100;
+}
+
+.header-icon {
+    width: 60px;
+    height: 50px;
+    margin-left: 1%;
+}
+
+.header-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 1.7rem;
+}
+
+.header-settings-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.header-profile-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 1%;
+}
+
+.header-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1%;
 }
 
 .main-content {
     flex: 1;
     background-color: #FFFFF0;
-    padding: 0.5rem;
+    padding: 80px 0 75px 0;
     position: relative;
     overflow: hidden;
 }
 
 .footer {
     background-color: #4c8c4a;
-    padding: 0.5rem;
-    display: flex;
+  padding: 0.5rem;
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 55px; /* Set your footer height */
+  z-index: 100;
 }
 
 .nav-button {
