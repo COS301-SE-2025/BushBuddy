@@ -1,52 +1,42 @@
 [
   {
-    "image": "images/Grey_Common_Duiker_298750430_0.jpg",
-    "label": "Grey_Common_Duiker",
-    "taxon_id": 298750430
+    "image": "images/Grey_Common_Duiker_0.jpg",
+    "label": "Grey_Common_Duiker"
   },
   {
-    "image": "images/Blesbok_298652925_0.jpg",
-    "label": "Blesbok",
-    "taxon_id": 298652925
+    "image": "images/Blesbok_0.jpg",
+    "label": "Blesbok"
   },
   {
-    "image": "images/African_Civet_298759792_0.jpg",
-    "label": "African_Civet",
-    "taxon_id": 298759792
+    "image": "images/African_Civet_0.jpg",
+    "label": "African_Civet"
   },
   {
-    "image": "images/White_Rhinoceros_298860882_0.jpg",
-    "label": "White_Rhinoceros",
-    "taxon_id": 298860882
+    "image": "images/White_Rhinoceros_0.jpg",
+    "label": "White_Rhinoceros"
   },
   {
-    "image": "images/African_Savanna_Elephant_298684290_0.jpg",
-    "label": "African_Savanna_Elephant",
-    "taxon_id": 298684290
+    "image": "images/African_Savanna_Elephant_0.jpg",
+    "label": "African_Savanna_Elephant"
   },
   {
-    "image": "images/Blue_Wildebeest_298652917_0.jpg",
-    "label": "Blue_Wildebeest",
-    "taxon_id": 298652917
+    "image": "images/Blue_Wildebeest_0.jpg",
+    "label": "Blue_Wildebeest"
   },
   {
-    "image": "images/Common_Warthog_298679945_0.jpg",
-    "label": "Common_Warthog",
-    "taxon_id": 298679945
+    "image": "images/Common_Warthog_0.jpg",
+    "label": "Common_Warthog"
   },
   {
-    "image": "images/African_Savanna_Elephant_298694205_0.jpg",
-    "label": "African_Savanna_Elephant",
-    "taxon_id": 298694205
+    "image": "images/African_Savanna_Elephant_1.jpg",
+    "label": "African_Savanna_Elephant"
   },
   {
-    "image": "images/Southern_Giraffe_298707461_0.jpg",
-    "label": "Southern_Giraffe",
-    "taxon_id": 298707461
+    "image": "images/Southern_African_Giraffe_0.jpg",
+    "label": "Southern_African_Giraffe"
   },
   {
-    "image": "images/African_Leopard_298723870_0.jpg",
-    "label": "African_Leopard",
-    "taxon_id": 298723870
+    "image": "images/African_Leopard_0.jpg",
+    "label": "African_Leopard"
   }
 ]

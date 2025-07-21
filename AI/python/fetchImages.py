@@ -48,7 +48,6 @@ for obs in results:
     # Required attributes
     taxon = obs.get("taxon", {})
     name = taxon.get("preferred_common_name", "Unknown").replace(' ', '_')
-    taxon_id = obs.get("id", "Unknown")
     photos = obs.get("photos", [])
 
 
@@ -69,7 +68,10 @@ for obs in results:
             
             try:
                 image_data = requests.get(wanted_url).content
-                filename = f"images/{name}_{taxon_id}_{i}.jpg"
+
+                # Counts the number of photos gathered per species for naming purposes
+                image_index = species_counter.get(name, 0)
+                filename = f"images/{name}_{image_index}.jpg"
                 with open(filename, "wb") as f:
                     f.write(image_data)
 
@@ -77,8 +79,7 @@ for obs in results:
 
                 annotations.append({
                     "image": filename,
-                    "label": name,
-                    "taxon_id": taxon_id
+                    "label": name
                 })
 
             except Exception as e:
