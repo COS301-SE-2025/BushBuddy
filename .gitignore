@@ -5,3 +5,9 @@ node_modules
 
 expo-env.d.ts
 # @end expo-cli
+
+.env
+.vscode
+
+# coverage files
+# coverage/

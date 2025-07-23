@@ -60,6 +60,10 @@ both visual and audio detection.
 ## Demos
 ### Demo 2
 
+[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
+
+[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
+
 
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
