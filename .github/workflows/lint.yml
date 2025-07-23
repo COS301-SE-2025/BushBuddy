@@ -3,10 +3,13 @@ name: Linting and Testing CI
 on:
   push:
     branches:
-      - '**'  # Run on all branches
+      - dev-AI
+      - dev
   pull_request:
     branches:
-      - '**'  # Run on all branches
+      - main
+      - dev-AI
+      - dev
 
 jobs:
   lint-python:
