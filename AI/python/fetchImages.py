@@ -13,9 +13,6 @@ annotations = []
 
 """
 Want the following returned
-- Mammals
-- RSA mammals
-- 20 images per mammal
 - possibly 100 images of combined species images
 - Sounds
 """
@@ -23,8 +20,8 @@ Want the following returned
 params = {
     "taxon_id": 40151, # Mammal ID
     "place_id": 113055, # RSA ID
-    "per_page": 10,
-    "page": 1,
+    "per_page": 50,
+    "page": 50,
     "order_by": "observed_on",
     "photos": "true",
     #"sounds": "true",
@@ -63,7 +60,7 @@ for obs in results:
 
         photo_url = photo.get("url")
         if photo_url:
-            wantedPhotoDimensionType = "original"
+            wantedPhotoDimensionType = "medium"
             wanted_url = photo_url.replace("square", wantedPhotoDimensionType)
             
             try:
