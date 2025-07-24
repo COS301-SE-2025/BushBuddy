@@ -1,0 +1,40 @@
+.activity-stats-card {
+  background-color: #4b6949ff;
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin: 2% auto;
+  width: 85%;
+  max-width: 800px;
+}
+
+.activity-stats-title {
+  margin: auto;
+  text-align: left;
+}
+
+.activity-stats-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 12px;
+}
+
+.activity-stats-item {
+  text-align: center;
+}
+
+.activity-stats-value {
+  font-size: 22px;
+  color: #ff6b00;
+}
+
+.activity-stats-label {
+  font-size: 14px;
+}
+
+.activity-stats-divider {
+  width: 1px;
+  height: 45px;
+  background-color: rgba(255,255,255,0.2);
+  margin: 0 20px;
+}

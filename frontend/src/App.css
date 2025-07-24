@@ -45,4 +45,7 @@ App {
   margin: 20px auto;
 }
 
-
+body.dark-mode {
+  background: #222;
+  color: #eee;
+}
