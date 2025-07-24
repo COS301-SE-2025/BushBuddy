@@ -1,8 +1,8 @@
 .layout-wrapper {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .header {
@@ -11,16 +11,16 @@
     padding: 1rem;
     text-align: left;
     font-size: 32px;
+    z-index: 1000;
 }
 
 .main-content {
     flex: 1;
     background-color: #FFFFF0;
+    overflow-y: auto;
     padding: 0.5rem;
-    position: relative;
-    overflow-x: hidden;
-    padding-bottom: 5rem;
     box-sizing: border-box;
+    padding-bottom: 80px;
 }
 
 .footer {
@@ -35,7 +35,7 @@
     width: 100%;
     max-width: 100vw;
     box-sizing: border-box;
-    z-index: 9;
+    z-index: 999;
     height: 60px;
 }
 
@@ -71,7 +71,7 @@
     width: 4rem;
     height: 4rem;
     background-color: #ff6b00;
-    z-index: 10;
+    z-index: 1001;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,7 +94,7 @@
     width: 4rem;
     height: 4rem;
     background-color: #4c8c4a;
-    z-index: 10;
+    z-index: 1001;
     display: flex;
     justify-content: center;
     align-items: center;
