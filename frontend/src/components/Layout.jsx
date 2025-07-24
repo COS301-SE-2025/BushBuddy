@@ -13,6 +13,7 @@ function Layout() {
   const [showSettings, setShowSettings] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+
   const getHeaderText = () => {
     switch (path) {
       case '/home': 
@@ -102,7 +103,6 @@ return (
         onToggleDarkMode={() => setDarkMode(dm => !dm)}
       />
     </div>
-
   );
 }
 
