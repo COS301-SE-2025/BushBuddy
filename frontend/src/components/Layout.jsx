@@ -13,6 +13,7 @@ function Layout() {
   const [showSettings, setShowSettings] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+
   const getHeaderText = () => {
     switch (path) {
       case '/home': 
@@ -71,24 +72,28 @@ return (
       </Container>
 
       <Navbar className="footer">
-        <Button className="nav-button" onClick={() => navigate('/main')}>
-          <FaHome size={30} />
+        <Button className={`nav-button-home ${path === '/main' ? 'active' : ''}`} onClick={() => navigate('/main')}>
+          <FaHome size={'1.5rem'} />
+          <span className="nav-label">Home</span>
         </Button>
 
-        <Button className="nav-button" onClick={() => navigate('/map')}>
-          <FaMapMarkedAlt size={30} />
+        <Button className={`nav-button-map ${path === '/map' ? 'active' : ''}`} onClick={() => navigate('/map')}>
+          <FaMapMarkedAlt size={'1.5rem'} />
+          <span className="nav-label">Map</span>
         </Button>
 
-        <Button className="nav-button" onClick={() => navigate('/capture')}>
-          <FaCamera size={30} />
+        <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
+          <FaCamera size={'1.5rem'} />
         </Button>
 
-        <Button className="nav-button" onClick={() => navigate('/feed')}>
-          <FaRegNewspaper size={30} />
+        <Button className={`nav-button-feed ${path === '/feed' ? 'active' : ''}`} onClick={() => navigate('/feed')}>
+          <FaRegNewspaper size={'1.5rem'} />
+          <span className="nav-label">Feed</span>
         </Button>
 
-        <Button className="nav-button" onClick={() => navigate('/profile')}>
-          <FaUser size={25} />
+        <Button className={`nav-button-profile ${path === '/profile' ? 'active' : ''}`} onClick={() => navigate('/profile')}>
+          <FaUser size={'1.3rem'} />
+          <span className="nav-label-profile">Profile</span>
         </Button>
       </Navbar>
       <SettingsModal
@@ -98,7 +103,6 @@ return (
         onToggleDarkMode={() => setDarkMode(dm => !dm)}
       />
     </div>
-
   );
 }
 
