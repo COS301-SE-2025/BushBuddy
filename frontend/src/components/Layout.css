@@ -12,7 +12,7 @@
     left: 0;
     right: 0;
     height: 45px;
-    background-color: #4c8c4a;
+    background-color: #4b6949ff;
     color: white;
     padding: 1rem;
     text-align: left;
@@ -36,7 +36,7 @@
 
 .header-settings-icon {
     position: absolute;
-    right: 12px;
+    right: 1.5%;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -46,13 +46,14 @@
 
 .header-profile-icon {
     position: absolute;
-    right: 12px;
+    right: 1.5%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateX(-10%) translateY(-50%);
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin-right: 1%;
+    border: 2px solid rgb(106, 138, 104);
+    border-radius: 50%;
 }
 
 .header-profile-img {
@@ -75,7 +76,8 @@
 }
 
 .footer {
-    background-color: #4c8c4a;
+
+    background-color: #4b6949ff;
     padding: 0.5rem;
     display: flex;
     position: fixed;
