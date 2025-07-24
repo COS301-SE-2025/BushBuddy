@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
-import { 
-  IoMdPaw,
-  IoMdWarning,
-  IoMdAirplane
-} from "react-icons/io";
+import { IoMdPaw, IoMdWarning } from "react-icons/io";
 import { GiElephant, GiDeerTrack } from "react-icons/gi";
-import { FaLeaf, FaShieldAlt } from "react-icons/fa";
+import { FaShieldAlt } from "react-icons/fa";
+import { PiBirdFill } from "react-icons/pi";
 import './FeedFilters.css';
 
 const FeedFilters = () => {
@@ -21,7 +18,7 @@ const FeedFilters = () => {
     { type: 'lion', icon: <IoMdWarning size={25} />, color: '#FF9800' },
     { type: 'rhino', icon: <FaShieldAlt size={25} />, color: '#2196F3' },
     { type: 'antelope', icon: <GiDeerTrack size={27} />, color: '#cb35e6ff' },
-    { type: 'bird', icon: <IoMdAirplane size={25} />, color: '#00BCD4' }
+    { type: 'bird', icon: <PiBirdFill size={25} />, color: '#00BCD4' }
   ];
 
   return (
