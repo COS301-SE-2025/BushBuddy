@@ -1,8 +1,8 @@
-import { bestiaryService } from '../services/bestiaryService.js';
+import { discoveryService } from './discoveryService.js';
 
 async function getAllAnimals(req, res) {
 	try {
-		const animals = await bestiaryService.getAllAnimals();
+		const animals = await discoveryService.getAllAnimals();
 
 		return res.status(200).json({
 			success: true,
@@ -20,6 +20,6 @@ async function getAllAnimals(req, res) {
 	}
 }
 
-export const bestiaryController = {
+export const discoveryController = {
 	getAllAnimals,
 };

@@ -2,7 +2,7 @@ import { describe } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/app.js';
 import db from '../../src/db/index.js';
-import bestiaryApp from '../../src/routes/bestiaryRoute.js';
+import bestiaryApp from '../../src/DiscoveryServer/discoveryRoute.js';
 
 let gatewayServer;
 let bestiaryServer;

@@ -1,6 +1,8 @@
 import { jest } from '@jest/globals';
 
-jest.unstable_mockModule('../../src/services/authService', () => ({
+const AUTH_URL = '../../src/AuthenticationServer/';
+
+jest.unstable_mockModule(`${AUTH_URL}authService.js`, () => ({
 	__esModule: true,
 	authService: {
 		registerUser: jest.fn(),
@@ -9,8 +11,8 @@ jest.unstable_mockModule('../../src/services/authService', () => ({
 	},
 }));
 
-const { authController } = await import('../../src/controllers/authController');
-const { authService } = await import('../../src/services/authService');
+const { authController } = await import(`${AUTH_URL}authController.js`);
+const { authService } = await import(`${AUTH_URL}authService.js`);
 
 describe('AuthController', () => {
 	beforeEach(() => {
