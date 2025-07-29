@@ -16,7 +16,7 @@ async function registerUser(req, res) {
 		res.status(201).json({ message: 'User registered successfully' });
 	} catch (error) {
 		// console.error('Error in registerUser:', error);
-		res.status(400).json({ error: error.message });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 
@@ -36,7 +36,7 @@ async function loginUser(req, res) {
 		res.status(200).json({ message: 'User logged in successfully' });
 	} catch (error) {
 		// console.error('Error in loginUser:', error);
-		res.status(401).json({ error: error.message });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 
@@ -47,7 +47,7 @@ async function logoutUser(req, res) {
 		res.clearCookie('token');
 		res.status(200).json({ message: 'User logged out successfully' });
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 
