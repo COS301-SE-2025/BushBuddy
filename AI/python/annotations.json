@@ -1,42 +1,18 @@
 [
   {
-    "image": "images/Grey_Common_Duiker_0.jpg",
-    "label": "Grey_Common_Duiker"
+    "image": "images/Springbok_0.jpg",
+    "label": "Springbok"
   },
   {
-    "image": "images/Blesbok_0.jpg",
-    "label": "Blesbok"
+    "image": "images/Gemsbok_0.jpg",
+    "label": "Gemsbok"
   },
   {
-    "image": "images/African_Civet_0.jpg",
-    "label": "African_Civet"
+    "image": "images/Gemsbok_1.jpg",
+    "label": "Gemsbok"
   },
   {
-    "image": "images/White_Rhinoceros_0.jpg",
-    "label": "White_Rhinoceros"
-  },
-  {
-    "image": "images/African_Savanna_Elephant_0.jpg",
-    "label": "African_Savanna_Elephant"
-  },
-  {
-    "image": "images/Blue_Wildebeest_0.jpg",
-    "label": "Blue_Wildebeest"
-  },
-  {
-    "image": "images/Common_Warthog_0.jpg",
-    "label": "Common_Warthog"
-  },
-  {
-    "image": "images/African_Savanna_Elephant_1.jpg",
-    "label": "African_Savanna_Elephant"
-  },
-  {
-    "image": "images/Southern_African_Giraffe_0.jpg",
-    "label": "Southern_African_Giraffe"
-  },
-  {
-    "image": "images/African_Leopard_0.jpg",
-    "label": "African_Leopard"
+    "image": "images/Cape_Fox_0.jpg",
+    "label": "Cape_Fox"
   }
 ]
