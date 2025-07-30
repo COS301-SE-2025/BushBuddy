@@ -5,6 +5,10 @@ const app = express();
 
 app.use(express.json());
 
+const AUTH_PORT = process.env.AUTH_PORT || 4001;
+const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
+const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
+
 const publicRoutes = ['/auth/register', '/auth/login'];
 
 app.use((req, res, next) => {
@@ -21,7 +25,7 @@ app.use((req, res, next) => {
 // routes go here
 app.use(
 	'/auth',
-	proxy('http://localhost:4001', {
+	proxy(`http://localhost:${AUTH_PORT}`, {
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/auth', '');
 		},
@@ -29,8 +33,15 @@ app.use(
 );
 
 app.use(
-	'/bestiary',
-	proxy('http://localhost:4002', {
+	'/discover',
+	proxy(`http://localhost:${DISCOVER_PORT}`, {
+		proxyReqPathResolver: (req) => req.url,
+	})
+);
+
+app.use(
+	'/sightings',
+	proxy(`http://localhost:${SIGHTINGS_PORT}`, {
 		proxyReqPathResolver: (req) => req.url,
 	})
 );

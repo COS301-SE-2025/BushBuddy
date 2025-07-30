@@ -14,7 +14,7 @@ jest.unstable_mockModule('nanoid', () => ({
 
 const { nanoid } = await import('nanoid');
 const db = (await import('../../src/db/index.js')).default;
-const { authRepository } = await import('../../src/repositories/authRepository.js');
+const { authRepository } = await import('../../src/AuthenticationServer/authRepository.js');
 
 describe('Testing AuthRespository', () => {
 	beforeEach(() => {

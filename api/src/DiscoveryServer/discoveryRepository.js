@@ -1,14 +1,4 @@
-import { describe, expect, jest, test } from '@jest/globals';
-
-jest.unstable_mockModule('../../src/db/index.js', () => ({
-	__esModule: true,
-	default: {
-		query: jest.fn(),
-	},
-}));
-
-const db = (await import('../../src/db/index.js')).default;
-const { bestiaryRepository } = await import('../../src/repositories/bestiaryRepository.js');
+import db from '../db/index.js';
 
 const mockAnimals = [
 	{
@@ -141,31 +131,21 @@ const mockAnimals = [
 	},
 ];
 
-describe('Testing BestiaryRepository', () => {
-	test('getAllAnimals should return all animals from the database', async () => {
-		db.query.mockResolvedValueOnce({ rows: mockAnimals });
+async function getAllAnimals() {
+	try {
+		const query = 'SELECT * FROM animals ORDER BY name ASC';
+		const result = await db.query(query);
+		return result.rows;
+	} catch (error) {
+		console.error('Database query error in getAllAnimals:', error);
 
-		const result = await bestiaryRepository.getAllAnimals();
+		// Fallback to mock data if database fails (for development)
+		console.warn('Falling back to mock data due to database error');
 
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual(mockAnimals);
-	});
+		return mockAnimals;
+	}
+}
 
-	test('getAllAnimals should return an empty array if no animals exist', async () => {
-		db.query.mockResolvedValueOnce({ rows: [] });
-
-		const result = await bestiaryRepository.getAllAnimals();
-
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual([]);
-	});
-
-	test('getAllAnimals should return mock data if database query fails', async () => {
-		db.query.mockRejectedValueOnce(new Error('Database query failed'));
-
-		const result = await bestiaryRepository.getAllAnimals();
-
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual(mockAnimals);
-	});
-});
+export const discoveryRepository = {
+	getAllAnimals,
+};

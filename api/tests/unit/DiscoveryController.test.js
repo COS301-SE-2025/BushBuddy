@@ -1,16 +1,18 @@
 import { beforeEach, describe, jest, test } from '@jest/globals';
 
-jest.unstable_mockModule('../../src/services/bestiaryService.js', () => ({
+const DISCOVERY_URL = '../../src/DiscoveryServer/';
+
+jest.unstable_mockModule(`${DISCOVERY_URL}discoveryService.js`, () => ({
 	__esModule: true,
-	bestiaryService: {
+	discoveryService: {
 		getAllAnimals: jest.fn(),
 	},
 }));
 
-const { bestiaryService } = await import('../../src/services/bestiaryService.js');
-const { bestiaryController } = await import('../../src/controllers/bestiaryController.js');
+const { discoveryService } = await import(`${DISCOVERY_URL}discoveryService.js`);
+const { discoveryController } = await import(`${DISCOVERY_URL}discoveryController.js`);
 
-describe('BestiaryController', () => {
+describe('discoveryController', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -22,7 +24,7 @@ describe('BestiaryController', () => {
 			{ id: 3, name: 'Giraffe' },
 		];
 
-		bestiaryService.getAllAnimals.mockResolvedValue(mockAnimals.sort((a, b) => a.name.localeCompare(b.name)));
+		discoveryService.getAllAnimals.mockResolvedValue(mockAnimals.sort((a, b) => a.name.localeCompare(b.name)));
 
 		const req = {};
 		const res = {
@@ -30,11 +32,11 @@ describe('BestiaryController', () => {
 			json: jest.fn(),
 		};
 
-		await bestiaryController.getAllAnimals(req, res);
+		await discoveryController.getAllAnimals(req, res);
 
 		// console.log(res.json.mock.calls[0][0]);
 
-		expect(bestiaryService.getAllAnimals).toHaveBeenCalled();
+		expect(discoveryService.getAllAnimals).toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(200);
 		expect(res.json).toHaveBeenCalledWith({
 			success: true,
@@ -49,7 +51,7 @@ describe('BestiaryController', () => {
 	});
 
 	test('getAllAnimals should handle empty array', async () => {
-		bestiaryService.getAllAnimals.mockResolvedValue([]);
+		discoveryService.getAllAnimals.mockResolvedValue([]);
 
 		const req = {};
 		const res = {
@@ -57,9 +59,9 @@ describe('BestiaryController', () => {
 			json: jest.fn(),
 		};
 
-		await bestiaryController.getAllAnimals(req, res);
+		await discoveryController.getAllAnimals(req, res);
 
-		expect(bestiaryService.getAllAnimals).toHaveBeenCalled();
+		expect(discoveryService.getAllAnimals).toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(200);
 		expect(res.json).toHaveBeenCalledWith({
 			success: true,
@@ -70,7 +72,7 @@ describe('BestiaryController', () => {
 	});
 
 	test('getAllAnimals should handle errors', async () => {
-		bestiaryService.getAllAnimals.mockRejectedValue(new Error('Database error'));
+		discoveryService.getAllAnimals.mockRejectedValue(new Error('Database error'));
 
 		const req = {};
 		const res = {
@@ -78,9 +80,9 @@ describe('BestiaryController', () => {
 			json: jest.fn(),
 		};
 
-		await bestiaryController.getAllAnimals(req, res);
+		await discoveryController.getAllAnimals(req, res);
 
-		expect(bestiaryService.getAllAnimals).toHaveBeenCalled();
+		expect(discoveryService.getAllAnimals).toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(500);
 		expect(res.json).toHaveBeenCalledWith({
 			success: false,
