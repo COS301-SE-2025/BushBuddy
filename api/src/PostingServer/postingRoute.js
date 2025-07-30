@@ -1,5 +1,5 @@
 import express from 'express';
-import { postingController } from './postingController';
+import { postingController } from './postingController.js';
 
 const postingApp = express();
 postingApp.use(express.json());

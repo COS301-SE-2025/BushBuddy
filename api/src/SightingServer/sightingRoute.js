@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { sightingController } from './sightingController';
+import { sightingController } from './sightingController.js';
 
 const sightingsApp = express();
 sightingsApp.use(express.json);

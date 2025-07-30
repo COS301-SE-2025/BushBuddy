@@ -2,6 +2,7 @@ import app from './app.js';
 import authApp from './AuthenticationServer/authRoute.js';
 import discoveryApp from './DiscoveryServer/discoveryRoute.js';
 import sightingsApp from './SightingServer/sightingRoute.js';
+import postingApp from './PostingServer/postingRoute.js';
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 authApp.listen(AUTH_PORT, () => {
@@ -16,6 +17,11 @@ discoveryApp.listen(DISCOVERY_PORT, () => {
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 sightingsApp.listen(SIGHTINGS_PORT, () => {
 	console.log(`Sightings service is running on port ${SIGHTINGS_PORT}`);
+});
+
+const POST_PORT = process.env.POST_PORT || 4004;
+postingApp.listen(POST_PORT, () => {
+	console.log(`Post service is running on port ${POST_PORT}`);
 });
 
 const PORT = process.env.PORT || 3000;
