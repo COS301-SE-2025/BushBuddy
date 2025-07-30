@@ -6,7 +6,7 @@ const sightingsApp = express();
 sightingsApp.use(express.json);
 
 // upload endpoint
-sightingsApp.put('/', sightingController.createSighting);
+sightingsApp.post('/', sightingController.createSighting);
 // fetch endpoint
 sightingsApp.get('/', sightingController.viewSighting);
 //history endpoint
