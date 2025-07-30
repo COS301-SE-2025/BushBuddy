@@ -7,6 +7,7 @@ app.use(express.json());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
+const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 
 const publicRoutes = ['/auth/register', '/auth/login'];
 
@@ -34,6 +35,13 @@ app.use(
 app.use(
 	'/discover',
 	proxy(`http://localhost:${DISCOVER_PORT}`, {
+		proxyReqPathResolver: (req) => req.url,
+	})
+);
+
+app.use(
+	'/sightings',
+	proxy(`http://localhost:${SIGHTINGS_PORT}`, {
 		proxyReqPathResolver: (req) => req.url,
 	})
 );
