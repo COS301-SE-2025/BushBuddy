@@ -30,25 +30,25 @@ with open("filteredAnnotations.json", "r") as f:
     id_mammal_list = json.load(f)
 
 for category in id_mammal_list:
-    species_name = category.get("name", "Unknown")
+    species_name = category.get("common_name", "Unknown")
     
-    url = f"https://api.inaturalist.org/v1/observations/"
+    url = f"https://api.inaturalist.org/v1/observations/species_counts"
 
     params = {
-        "place_id": 113055, # RSA ID
-        "endemic": "true",
+        "place_id": 6986, # id of south africa
         "iconic_taxa": "Mammalia",
-        "taxon_name": species_name,
+        "taxon_name": species_name, #"Loxodonta africana",
+        "project_id": "31428", #project id of biodiversity of south africa 
         "per_page": 1,
         "page": 1,
         "order_by": "observed_on",
         "photos": "true",
-        #"sounds": "true",
-        "quality_grade": "research"
+        "quality_grade": "research",
+        "verifiable": "true"
     }
     response = requests.get(url, params=params)
     print("Status code:", response.status_code)
-    print("Response:", response.text)
+    #print("Response:", response.text)
 
     data = response.json()
     results = data.get("results", [])
@@ -60,7 +60,8 @@ for category in id_mammal_list:
         # Required attributes
         taxon = obs.get("taxon", {})
         name = taxon.get("preferred_common_name", "Unknown").replace(' ', '_')
-        photos = obs.get("photos", [])
+        #photos = obs.get("photos", [])
+        photos = obs.get("default_photo", [])
 
 
         if species_counter.get(name, 0) >= MAX_IMAGES_PER_SPECIES:
@@ -75,8 +76,7 @@ for category in id_mammal_list:
 
             photo_url = photo.get("url")
             if photo_url:
-                wantedPhotoDimensionType = "medium"
-                wanted_url = photo_url.replace("square", wantedPhotoDimensionType)
+                wanted_url = photo_url.replace("square", "medium")
                 
                 try:
                     image_data = requests.get(wanted_url).content
