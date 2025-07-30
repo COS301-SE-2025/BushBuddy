@@ -4,7 +4,8 @@ import { discoveryController } from './discoveryController.js';
 const discoveryApp = express();
 discoveryApp.use(express.json());
 
-// GET /api/bestiary - Get all animals
-discoveryApp.get('/all', discoveryController.getAllAnimals);
+discoveryApp.get('/bestiary', discoveryController.getAllAnimals);
+
+discoveryApp.get('/sightings', discoveryController.getMapSightings);
 
 export default discoveryApp;
