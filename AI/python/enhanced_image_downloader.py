@@ -1,3 +1,4 @@
+# iNaturalist Data Extraction Script for African Wildlife
 import os
 import json
 import shutil
@@ -27,7 +28,51 @@ class INaturalistDataExtractor:
             'Caracal', 'Serval', 'Honey Badger', 'Aardvark', 'Pangolin'
         ]
         
-       
+        # Alternative names that might appear in iNaturalist
+        self.species_aliases = {
+            'Impala': ['Aepyceros melampus'],
+            'Greater Kudu': ['Tragelaphus strepsiceros'],
+            'Lesser Kudu': ['Tragelaphus imberbis'],
+            'Nyala': ['Tragelaphus angasii'],
+            'Bushbuck': ['Tragelaphus scriptus', 'Tragelaphus sylvaticus'],
+            'Waterbuck': ['Kobus ellipsiprymnus'],
+            'Sable Antelope': ['Hippotragus niger'],
+            'Eland': ['Taurotragus oryx', 'Common Eland'],
+            'Blue Wildebeest': ['Connochaetes taurinus'],
+            'Black Wildebeest': ['Connochaetes gnou'],
+            'Red Hartebeest': ['Alcelaphus buselaphus'],
+            'Blesbok': ['Damaliscus pygargus phillipsi'],
+            'Bontebok': ['Damaliscus pygargus'],
+            'Duiker': ['Sylvicapra grimmia', 'Common Duiker'],
+            'Steenbok': ['Raphicerus campestris'],
+            
+            'Giraffe': ['Giraffa camelopardalis', 'Giraffa giraffa'],
+            'African Buffalo': ['Syncerus caffer', 'Cape Buffalo'],
+            'White Rhinoceros': ['Ceratotherium simum'],
+            'Black Rhinoceros': ['Diceros bicornis'],
+            'Hippopotamus': ['Hippopotamus amphibius'],
+            'Plains Zebra': ['Equus quagga', 'Common Zebra'],
+            'Common Warthog': ['Phacochoerus africanus'],
+            'Bushpig': ['Potamochoerus larvatus'],
+            
+            'Lion': ['Panthera leo'],
+            'Leopard': ['Panthera pardus'],
+            'Cheetah': ['Acinonyx jubatus'],
+            'Spotted Hyena': ['Crocuta crocuta'],
+            'Brown Hyena': ['Hyaena brunnea'],
+            'African Wild Dog': ['Lycaon pictus', 'African Painted Dog'],
+            
+            'Chacma Baboon': ['Papio ursinus'],
+            'Vervet Monkey': ['Chlorocebus pygerythrus'],
+            'Meerkat': ['Suricata suricatta'],
+            'Rock Hyrax': ['Procavia capensis'],
+            'African Wild Cat': ['Felis lybica'],
+            'Caracal': ['Caracal caracal'],
+            'Serval': ['Leptailurus serval'],
+            'Honey Badger': ['Mellivora capensis'],
+            'Aardvark': ['Orycteropus afer'],
+            'Pangolin': ['Smutsia temminckii', 'Ground Pangolin']
+        }
     
     def download_inat_annotations(self, download_dir='inat_data'):
         """Download iNaturalist 2021 annotations"""
@@ -241,6 +286,40 @@ class INaturalistDataExtractor:
         
         return species_images
 
+# Alternative: Use existing curated datasets
+def download_african_wildlife_from_other_sources():
+    """
+    Alternative approach: Download from other sources like Kaggle or create a custom dataset
+    """
+    
+    sources = {
+        'kaggle_datasets': [
+            'african-wildlife-dataset',
+            'animals-10',
+            'animal-image-dataset-90-different-animals'
+        ],
+        'custom_search': [
+            'Google Images API',
+            'Flickr API', 
+            'iStock/Shutterstock (with license)',
+            'Wikipedia Commons'
+        ]
+    }
+    
+    print("Alternative data sources for African Wildlife:")
+    print("\n1. Kaggle Datasets:")
+    for dataset in sources['kaggle_datasets']:
+        print(f"   - {dataset}")
+    
+    print("\n2. Custom Image Collection:")
+    for source in sources['custom_search']:
+        print(f"   - {source}")
+    
+    print("\n3. Pre-trained Model Fine-tuning:")
+    print("   - Use a pre-trained animal classifier")
+    print("   - Fine-tune on your specific 37 species")
+    print("   - Requires fewer images (100-500 per species)")
+
 # Quick start script for immediate training
 def create_sample_dataset_structure(output_dir='african_wildlife_sample'):
     """Create a sample dataset structure for immediate testing"""
@@ -309,6 +388,10 @@ def main():
         print("1. Collect images for each species")
         print("2. Organize them in the created folder structure")
         print("3. Run the training script")
+        
+    elif choice == '3':
+        # Show alternatives
+        download_african_wildlife_from_other_sources()
         
     else:
         print("Invalid choice!")
