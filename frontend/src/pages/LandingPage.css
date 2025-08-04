@@ -1,0 +1,19 @@
+html, body {
+    background-color: beige;
+}
+
+.landing-page {
+    text-align: center;
+}
+
+.button {
+  background-color: #ff6b00;
+  padding: 12px 30px;
+  border-radius: 25px;
+  margin-top: 1rem;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
