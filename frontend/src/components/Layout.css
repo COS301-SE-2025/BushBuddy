@@ -74,8 +74,22 @@
     box-sizing: border-box;
 }
 
-.footer {
+.help-section {
+    position: fixed;
+    bottom: 4.5rem;
+    right: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: #ff6b00;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+    z-index: 100;
+}
 
+.footer {
     background-color: #4b6949ff;
     padding: 0.5rem;
     display: flex;
@@ -83,7 +97,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 55px; /* Set your footer height */
+    height: 3rem;
     z-index: 100;
 }
 
