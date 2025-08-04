@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import './LandingPage.css'
+import InstallPrompt from '../components/InstallPrompt';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -15,8 +16,13 @@ const LandingPage = () => {
         <h2>Track, Discover, Share</h2>
       </Container>
 
+      <Container className="actions-container">
+        <Button onClick={() => navigate("/login")} className="button">Log in/Register</Button>
+        <InstallPrompt />
+      </Container>
 
-      <Button onClick={() => navigate("/login")} className="button">Log in/Register</Button>
+      
+
     </Container>
   );
 };
