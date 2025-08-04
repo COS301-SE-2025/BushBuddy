@@ -2,7 +2,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, test } from '@jest/g
 import request from 'supertest';
 import app from '../../src/app.js';
 import db from '../../src/db/index.js';
-import authApp from '../../src/routes/authRoute.js';
+import authApp from '../../src/AuthenticationServer/authRoute.js';
 
 let gatewayServer;
 let authServer;
