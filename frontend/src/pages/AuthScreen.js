@@ -60,6 +60,8 @@ const AuthScreen = () => {
             {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
             <input type="submit" value="Login" className="auth-button"/>
+
+            <label><b>Disclaimer:</b> This is a deployed version of the dev branch and is only meant to be used for testing</label>
           </form>
         </div>
       </div>

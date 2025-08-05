@@ -7,7 +7,7 @@
 
 .auth-background {
   height: 100%;
-  background: #4c8c4a;
+  background: #FFFFF0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,6 +17,9 @@
   width: 80%;
   max-width: 400px;
   text-align: center;
+  background: #4c8c4a;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 .auth-logo {
