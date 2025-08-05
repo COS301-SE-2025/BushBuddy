@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { authRepository } from '../repositories/authRepository.js';
+import { authRepository } from './authRepository.js';
 
 async function registerUser({ username, password, email }) {
 	const userData = { username, password, email };

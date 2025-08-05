@@ -31,12 +31,6 @@ const CapturePage = () => {
           mirrored={false}
           screenshotQuality={1}
           forceScreenshotSourceSize
-          style={{
-            width: '100%',
-            height: 'auto',
-            borderRadius: '12px',
-            objectFit: 'cover',
-          }}
         />
         <div className="capture-button-wrapper">
           <button className="capture-button" onClick={captureImage}>

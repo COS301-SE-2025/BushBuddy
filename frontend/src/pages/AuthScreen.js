@@ -87,6 +87,7 @@ const AuthScreen = () => {
           </form>
 
         <p className="register-link">Need an account? <a href="/register">Register</a></p>
+        <label><b>Disclaimer:</b> This is a deployed version of the dev branch and is only meant to be used for testing</label>
       </div>
     </div>
   );
