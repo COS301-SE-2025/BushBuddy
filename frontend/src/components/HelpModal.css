@@ -73,4 +73,10 @@
   cursor: pointer;
   line-height: 1;
   padding: 0;
+  transition: 0.3s;
+}
+
+.help-link:hover{
+  color: #000000;
+  transition: 0.3s;
 }
