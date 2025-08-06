@@ -5,13 +5,18 @@
 }
 
 .install-button {
-    background-color: #ff6b00;
+    background-color: white;
     padding: 12px 30px;
     border-radius: 25px;
     margin-top: 1rem;
-    color: white;
+    color: black;
     font-size: 18px;
     font-weight: bold;
     border: none;
     cursor: pointer;
+}
+
+p {
+    text-align: center;
+    color: white;
 }

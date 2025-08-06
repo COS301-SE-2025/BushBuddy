@@ -6,7 +6,8 @@ import MapPage from './pages/MapPage';
 import CapturePage from './pages/CapturePage';
 import FeedScreen from './pages/FeedPage';
 import ProfilePage from './pages/ProfilePage';
-import LandingPage from './pages/LandingPage'
+import LandingPage from './pages/LandingPage';
+import AboutPage from './pages/AboutPage'
 import Layout from './components/Layout';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
         <Route path="/login" element={<AuthScreen />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>

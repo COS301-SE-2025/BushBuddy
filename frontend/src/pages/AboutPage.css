@@ -1,0 +1,36 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.back-button {
+    border: none;
+    background-color: #ff6b00;
+    font-size: 24px;
+    width: 5rem;
+    color: white;
+    height: 2.5rem;
+    border-radius: 25px;
+}
+
+.about-page {
+    width: 100vw;
+    height: 100%;
+    background-color: beige;
+}
+
+.about-content {
+    padding:10px;
+}
+
+.about-link {
+    color:blue;
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+.about-text {
+    text-align: left;
+    color: black;
+    font-size: 20px;
+}
