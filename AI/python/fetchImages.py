@@ -25,21 +25,24 @@ for i in base_dirs:
 
 
 # Read JSONs filtered annotations
+#file = "filteredAnnotations.json"
+file = "filteredAnnotations_v2.json"
 
-with open("filteredAnnotations.json", "r") as f:
+with open(file, "r") as f:
     id_mammal_list = json.load(f)
 
 for category in id_mammal_list:
-    species_name = category.get("common_name", "Unknown")
+    species_name = category.get("name", "Unknown")
+    common_name = category.get("common_name", "Unknown")
     
-    url = f"https://api.inaturalist.org/v1/observations/species_counts"
+    url = f"https://api.inaturalist.org/v1/observations"
 
     params = {
         "place_id": 6986, # id of south africa
         "iconic_taxa": "Mammalia",
         "taxon_name": species_name, #"Loxodonta africana",
         "project_id": "31428", #project id of biodiversity of south africa 
-        "per_page": 1,
+        "per_page": MAX_IMAGES_PER_SPECIES,
         "page": 1,
         "order_by": "observed_on",
         "photos": "true",
@@ -48,20 +51,20 @@ for category in id_mammal_list:
     }
     response = requests.get(url, params=params)
     print("Status code:", response.status_code)
-    #print("Response:", response.text)
+    print("Response:", response.text)
 
     data = response.json()
     results = data.get("results", [])
 
 
 
-
+def animalRetriever(directory, results):
     for obs in results:
         # Required attributes
         taxon = obs.get("taxon", {})
-        name = taxon.get("preferred_common_name", "Unknown").replace(' ', '_')
-        #photos = obs.get("photos", [])
-        photos = obs.get("default_photo", [])
+        name = taxon.get("preferred_common_name", "Unknown").replace(' ', '_').replace("/", "_")
+        photos = obs.get("photos", [])
+        #photos = obs.get("default_photo", [])
 
 
         if species_counter.get(name, 0) >= MAX_IMAGES_PER_SPECIES:
@@ -83,7 +86,7 @@ for category in id_mammal_list:
 
                     # Counts the number of photos gathered per species for naming purposes
                     image_index = species_counter.get(name, 0)
-                    filename = f"images/{name}_{image_index}.jpg"
+                    filename = f"images/path/{name}/{name}_{image_index}.jpg"
                     with open(filename, "wb") as f:
                         f.write(image_data)
 

@@ -1,6 +1,8 @@
 import requests
 import json
 
+# Still in the works
+
 mammal_ids = []
 page = 1
 
