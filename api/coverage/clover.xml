@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1753779014241" clover="3.2.0">
-  <project timestamp="1753779014242" name="All files">
-    <metrics statements="139" coveredstatements="137" conditionals="37" coveredconditionals="34" methods="40" coveredmethods="39" elements="216" coveredelements="210" complexity="0" loc="139" ncloc="139" packages="4" files="10" classes="10"/>
+<coverage generated="1754585490983" clover="3.2.0">
+  <project timestamp="1754585490983" name="All files">
+    <metrics statements="199" coveredstatements="179" conditionals="47" coveredconditionals="45" methods="49" coveredmethods="43" elements="295" coveredelements="267" complexity="0" loc="199" ncloc="199" packages="4" files="11" classes="11"/>
     <package name="src">
-      <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
-      <file name="app.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\app.js">
-        <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+      <metrics statements="22" coveredstatements="20" conditionals="10" coveredconditionals="10" methods="6" coveredmethods="4"/>
+      <file name="app.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\app.js">
+        <metrics statements="22" coveredstatements="20" conditionals="10" coveredconditionals="10" methods="6" coveredmethods="4"/>
         <line num="4" count="2" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="12" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="3" type="stmt"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="31" count="2" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
+        <line num="8" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="18" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.AuthenticationServer">
       <metrics statements="84" coveredstatements="84" conditionals="29" coveredconditionals="29" methods="27" coveredmethods="27"/>
-      <file name="authController.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authController.js">
+      <file name="authController.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authController.js">
         <metrics statements="22" coveredstatements="22" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
         <line num="4" count="5" type="stmt"/>
         <line num="5" count="5" type="stmt"/>
@@ -49,7 +57,7 @@
         <line num="50" count="1" type="stmt"/>
         <line num="54" count="2" type="stmt"/>
       </file>
-      <file name="authRepository.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authRepository.js">
+      <file name="authRepository.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authRepository.js">
         <metrics statements="25" coveredstatements="25" conditionals="6" coveredconditionals="6" methods="21" coveredmethods="21"/>
         <line num="5" count="4" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
@@ -77,7 +85,7 @@
         <line num="89" count="1" type="stmt"/>
         <line num="93" count="2" type="stmt"/>
       </file>
-      <file name="authRoute.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authRoute.js">
+      <file name="authRoute.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authRoute.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -85,7 +93,7 @@
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
       </file>
-      <file name="authService.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authService.js">
+      <file name="authService.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\AuthenticationServer\authService.js">
         <metrics statements="32" coveredstatements="32" conditionals="19" coveredconditionals="19" methods="3" coveredmethods="3"/>
         <line num="6" count="6" type="stmt"/>
         <line num="7" count="6" type="cond" truecount="5" falsecount="0"/>
@@ -122,48 +130,103 @@
       </file>
     </package>
     <package name="src.DiscoveryServer">
-      <metrics statements="25" coveredstatements="25" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
-      <file name="discoveryController.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryController.js">
-        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <metrics statements="60" coveredstatements="57" conditionals="4" coveredconditionals="4" methods="8" coveredmethods="7"/>
+      <file name="discoveryController.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryController.js">
+        <metrics statements="18" coveredstatements="15" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="2"/>
         <line num="4" count="4" type="stmt"/>
         <line num="5" count="4" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
       </file>
-      <file name="discoveryRepository.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryRepository.js">
-        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="135" count="4" type="stmt"/>
-        <line num="136" count="4" type="stmt"/>
+      <file name="discoveryRepository.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryRepository.js">
+        <metrics statements="24" coveredstatements="24" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="5" count="2" type="stmt"/>
         <line num="137" count="4" type="stmt"/>
-        <line num="138" count="3" type="stmt"/>
-        <line num="140" count="1" type="stmt"/>
-        <line num="143" count="1" type="stmt"/>
+        <line num="138" count="4" type="stmt"/>
+        <line num="139" count="4" type="stmt"/>
+        <line num="140" count="3" type="stmt"/>
+        <line num="142" count="1" type="stmt"/>
         <line num="145" count="1" type="stmt"/>
-        <line num="149" count="2" type="stmt"/>
+        <line num="147" count="1" type="stmt"/>
+        <line num="158" count="3" type="stmt"/>
+        <line num="159" count="3" type="stmt"/>
+        <line num="160" count="3" type="stmt"/>
+        <line num="162" count="2" type="stmt"/>
+        <line num="164" count="2" type="stmt"/>
+        <line num="167" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="169" count="1" type="stmt"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="172" count="1" type="stmt"/>
+        <line num="174" count="1" type="stmt"/>
+        <line num="175" count="1" type="stmt"/>
+        <line num="177" count="1" type="stmt"/>
+        <line num="179" count="2" type="stmt"/>
+        <line num="181" count="1" type="stmt"/>
+        <line num="182" count="1" type="stmt"/>
+        <line num="186" count="2" type="stmt"/>
       </file>
-      <file name="discoveryRoute.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryRoute.js">
-        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="4" count="1" type="stmt"/>
+      <file name="discoveryRoute.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryRoute.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
       </file>
-      <file name="discoveryService.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryService.js">
-        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <file name="discoveryService.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryService.js">
+        <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="4" count="4" type="stmt"/>
         <line num="5" count="4" type="stmt"/>
         <line num="11" count="41" type="stmt"/>
         <line num="13" count="3" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.db">
-      <metrics statements="16" coveredstatements="14" conditionals="4" coveredconditionals="2" methods="5" coveredmethods="4"/>
-      <file name="index.js" path="C:\Users\schul\OneDrive\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\db\index.js">
+      <metrics statements="33" coveredstatements="18" conditionals="4" coveredconditionals="2" methods="8" coveredmethods="5"/>
+      <file name="imageStorage.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\db\imageStorage.js">
+        <metrics statements="17" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+      </file>
+      <file name="index.js" path="C:\Users\tomsc\Documents\GitHub\AI-Powered-African-Wildlife-Detection\api\src\db\index.js">
         <metrics statements="16" coveredstatements="14" conditionals="4" coveredconditionals="2" methods="5" coveredmethods="4"/>
         <line num="3" count="2" type="stmt"/>
         <line num="7" count="2" type="cond" truecount="1" falsecount="1"/>

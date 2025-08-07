@@ -1,4 +1,4 @@
-import { beforeEach, describe, jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest } from '@jest/globals';
 
 const DISCOVERY_URL = '../../src/DiscoveryServer/';
 
@@ -6,6 +6,7 @@ jest.unstable_mockModule(`${DISCOVERY_URL}discoveryRepository.js`, () => ({
 	__esModule: true,
 	discoveryRepository: {
 		getAllAnimals: jest.fn(),
+		addNewBestiaryEntry: jest.fn(),
 	},
 }));
 
@@ -17,39 +18,58 @@ describe('discoveryService', () => {
 		jest.clearAllMocks();
 	});
 
-	test('getAllAnimals should return sorted animals', async () => {
-		const mockAnimals = [
-			{ id: 2, name: 'African Lion' },
-			{ id: 1, name: 'African Elephant' },
-			{ id: 3, name: 'Giraffe' },
-		];
+	describe('Bestiary functions', () => {
+		test('getAllAnimals should return sorted animals', async () => {
+			const mockAnimals = [
+				{ id: 2, name: 'African Lion' },
+				{ id: 1, name: 'African Elephant' },
+				{ id: 3, name: 'Giraffe' },
+			];
 
-		discoveryRepository.getAllAnimals.mockResolvedValue(mockAnimals);
+			discoveryRepository.getAllAnimals.mockResolvedValue(mockAnimals);
 
-		const result = await discoveryService.getAllAnimals();
+			const result = await discoveryService.getAllAnimals();
 
-		expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
-		expect(result).toEqual([
-			{ id: 1, name: 'African Elephant' },
-			{ id: 2, name: 'African Lion' },
-			{ id: 3, name: 'Giraffe' },
-		]);
-	});
+			expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
+			expect(result).toEqual([
+				{ id: 1, name: 'African Elephant' },
+				{ id: 2, name: 'African Lion' },
+				{ id: 3, name: 'Giraffe' },
+			]);
+		});
 
-	test('getAllAnimals should handle empty array', async () => {
-		discoveryRepository.getAllAnimals.mockResolvedValue([]);
+		test('getAllAnimals should handle empty array', async () => {
+			discoveryRepository.getAllAnimals.mockResolvedValue([]);
 
-		const result = await discoveryService.getAllAnimals();
+			const result = await discoveryService.getAllAnimals();
 
-		expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
-		expect(result).toEqual([]);
-	});
+			expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
+			expect(result).toEqual([]);
+		});
 
-	test('getAllAnimals should throw an error if repository fails', async () => {
-		const errorMessage = 'Database error';
-		discoveryRepository.getAllAnimals.mockRejectedValue(new Error(errorMessage));
+		test('getAllAnimals should throw an error if repository fails', async () => {
+			const errorMessage = 'Database error';
+			discoveryRepository.getAllAnimals.mockRejectedValue(new Error(errorMessage));
 
-		await expect(discoveryService.getAllAnimals()).rejects.toThrow('Failed to retrieve animals from service layer');
-		expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
+			await expect(discoveryService.getAllAnimals()).rejects.toThrow('Failed to retrieve animals from service layer');
+			expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
+		});
+
+		test('addNewAnimal should return the image key on success', async () => {
+			discoveryRepository.addNewBestiaryEntry.mockResolvedValue('mock-key');
+
+			const result = await discoveryService.addNewAnimal('mock-details', 'mock-image');
+
+			expect(result).toEqual('mock-key');
+		});
+
+		test('addNewAnimal should throw an error if upload fails', async () => {
+			discoveryRepository.addNewBestiaryEntry.mockRejectedValue(new Error('Mock Error'));
+
+			await expect(discoveryService.addNewAnimal('mock-details', 'mock-image')).rejects.toThrow(
+				'Failed to add new animal to bestiary'
+			);
+			expect(discoveryRepository.addNewBestiaryEntry).toHaveBeenCalled();
+		});
 	});
 });

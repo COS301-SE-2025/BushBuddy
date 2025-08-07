@@ -1,4 +1,6 @@
 import db from '../db/index.js';
+import { nanoid } from 'nanoid';
+import s3 from '../db/imageStorage.js';
 
 const mockAnimals = [
 	{
@@ -146,6 +148,42 @@ async function getAllAnimals() {
 	}
 }
 
+/* 
+Used to add new animals to the database for the bestiary
+Uploads animal image to cloudflare first and then inserts animal
+details with image key into the database.
+If the animal already exists in the database then only the image key is updated
+*/
+async function addNewBestiaryEntry(details, image) {
+	try {
+		const key = nanoid(12);
+		const url = await s3.storeImage(key, image);
+
+		const { name, type, description } = details;
+
+		const existing = await db.query('SELECT (id) FROM animals WHERE name=$1;', [name]);
+
+		let result;
+		if (existing.rowCount === 0) {
+			const query =
+				'INSERT INTO animals (name, type, description, image_url) VALUES ($1, $2, $3, $4) RETURNING (image_url);';
+			const params = [name, type, description, url];
+
+			result = await db.query(query, params);
+		} else {
+			const query = 'INSERT INTO animals (image_url) VALUES ($1) WHERE name=$2 RETURNING (image_url);';
+			const params = [url, name];
+
+			result = await db.query(query, params);
+		}
+		return result.rows[0];
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Error adding new animal: ${error.message}`);
+	}
+}
+
 export const discoveryRepository = {
 	getAllAnimals,
+	addNewBestiaryEntry,
 };

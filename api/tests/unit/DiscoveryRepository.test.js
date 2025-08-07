@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 jest.unstable_mockModule('../../src/db/index.js', () => ({
 	__esModule: true,
@@ -7,7 +7,16 @@ jest.unstable_mockModule('../../src/db/index.js', () => ({
 	},
 }));
 
+jest.unstable_mockModule('../../src/db/imageStorage.js', () => ({
+	__esModule: true,
+	default: {
+		storeImage: jest.fn(),
+		fetchImage: jest.fn(),
+	},
+}));
+
 const db = (await import('../../src/db/index.js')).default;
+const s3 = (await import('../../src/db/imageStorage.js')).default;
 const { discoveryRepository } = await import('../../src/DiscoveryServer/discoveryRepository.js');
 
 const mockAnimals = [
@@ -142,30 +151,75 @@ const mockAnimals = [
 ];
 
 describe('Testing discoveryRepository', () => {
-	test('getAllAnimals should return all animals from the database', async () => {
-		db.query.mockResolvedValueOnce({ rows: mockAnimals });
-
-		const result = await discoveryRepository.getAllAnimals();
-
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual(mockAnimals);
+	beforeEach(() => {
+		db.query.mockClear();
 	});
 
-	test('getAllAnimals should return an empty array if no animals exist', async () => {
-		db.query.mockResolvedValueOnce({ rows: [] });
+	describe('Testing bestiary functions', () => {
+		test('getAllAnimals should return all animals from the database', async () => {
+			db.query.mockResolvedValueOnce({ rows: mockAnimals });
 
-		const result = await discoveryRepository.getAllAnimals();
+			const result = await discoveryRepository.getAllAnimals();
 
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual([]);
-	});
+			expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
+			expect(result).toEqual(mockAnimals);
+		});
 
-	test('getAllAnimals should return mock data if database query fails', async () => {
-		db.query.mockRejectedValueOnce(new Error('Database query failed'));
+		test('getAllAnimals should return an empty array if no animals exist', async () => {
+			db.query.mockResolvedValueOnce({ rows: [] });
 
-		const result = await discoveryRepository.getAllAnimals();
+			const result = await discoveryRepository.getAllAnimals();
 
-		expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
-		expect(result).toEqual(mockAnimals);
+			expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
+			expect(result).toEqual([]);
+		});
+
+		test('getAllAnimals should return mock data if database query fails', async () => {
+			db.query.mockRejectedValueOnce(new Error('Database query failed'));
+
+			const result = await discoveryRepository.getAllAnimals();
+
+			expect(db.query).toHaveBeenCalledWith('SELECT * FROM animals ORDER BY name ASC');
+			expect(result).toEqual(mockAnimals);
+		});
+
+		test('addNewBestiaryEntry should return image key for new animal', async () => {
+			s3.storeImage.mockResolvedValueOnce('testkey');
+			db.query.mockResolvedValueOnce({ rowCount: 0 }).mockResolvedValueOnce({ rows: ['testkey'] });
+
+			const result = await discoveryRepository.addNewBestiaryEntry(
+				{ name: 'test', type: 'test', description: 'test' },
+				'test-img'
+			);
+
+			// console.dir(db.query.mock.calls, { depth: null });
+			expect(db.query.mock.calls[0][0]).toMatch(/SELECT/i);
+			expect(db.query.mock.calls[1][0]).toMatch(/INSERT/i);
+			expect(result).toEqual('testkey');
+		});
+
+		test('addNewBestiaryEntry should return image key for existing animal', async () => {
+			s3.storeImage.mockResolvedValueOnce('testkey');
+			db.query.mockResolvedValueOnce({ rowCount: 1 }).mockResolvedValueOnce({ rows: ['testkey'] });
+
+			const result = await discoveryRepository.addNewBestiaryEntry(
+				{ name: 'test', type: 'test', description: 'test' },
+				'test-img'
+			);
+
+			// console.dir(db.query.mock.calls, { depth: null });
+			expect(db.query.mock.calls[0][0]).toMatch(/SELECT/i);
+			expect(db.query.mock.calls[1][0]).toMatch(/INSERT/i);
+			expect(result).toEqual('testkey');
+		});
+
+		test('addNewBestiaryEntry should return an error if something goes wrong uploading the image', async () => {
+			s3.storeImage.mockRejectedValueOnce(new Error('R2 Storage Error'));
+			db.query.mockRejectedValueOnce(new Error('Database Error'));
+
+			await expect(discoveryRepository.addNewBestiaryEntry('mock details', 'mock image')).rejects.toThrow(
+				'Error adding new animal: R2 Storage Error'
+			);
+		});
 	});
 });

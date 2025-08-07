@@ -17,6 +17,18 @@ async function getAllAnimals() {
 	}
 }
 
+async function addNewAnimal(details, image) {
+	try {
+		const result = await discoveryRepository.addNewBestiaryEntry(details, image);
+
+		return result;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Failed to add new animal to bestiary');
+	}
+}
+
 export const discoveryService = {
 	getAllAnimals,
+	addNewAnimal,
 };
