@@ -1,0 +1,22 @@
+.install-container {
+    padding: 20px;
+    text-align: 'center';
+    background: none;
+}
+
+.install-button {
+    background-color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    margin-top: 1rem;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
+    color: white;
+}
