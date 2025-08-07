@@ -4,23 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import './LandingPage.css'
 import InstallPrompt from '../components/InstallPrompt';
 import logo from "../assets/BushBuddy_Green.png"
+import VideoBackground from "../components/VideoBackground";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="landing-page">
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="video-background"
-      >
-        <source src={require(`../assets/nature-background.mp4`)} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <VideoBackground />
 
       {/* Content Container */}
       <Container fluid className="content-overlay">

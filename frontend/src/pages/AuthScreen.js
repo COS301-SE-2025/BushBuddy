@@ -5,6 +5,7 @@ import './AuthScreen.css';
 import Logo from '../assets/EpiUseLogo.png';
 import BushBuddy from '../assets/BushBuddy.webp';
 import { FaUser, FaLock } from 'react-icons/fa';
+import VideoBackground from '../components/VideoBackground';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
@@ -33,16 +34,7 @@ const AuthScreen = () => {
 
   return (
     <div className="auth-container">
-      <video 
-        autoPlay 
-        loop 
-        muted 
-        playsInline 
-        className="video-background"
-      >
-        <source src={require(`../assets/nature-background.mp4`)} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <VideoBackground />
       <div className="auth-form">
 
           <div className="auth-header">
