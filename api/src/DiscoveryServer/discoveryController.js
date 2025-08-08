@@ -20,8 +20,11 @@ async function getAllAnimals(req, res) {
 
 async function insertNewAnimal(req, res) {
 	try {
+		if (!req.file) {
+			return res.status(400).json({ success: false, message: 'No image uploaded' });
+		}
 		const image = req.file.buffer;
-		const details = { name: req.body.name, type: req.body.type, description: req.body.description };
+		const details = { name: req.body.name, type: req.body.type || 'n/a', description: req.body.description || 'none' };
 
 		const result = await discoveryService.addNewAnimal(details, image);
 		if (!result) {

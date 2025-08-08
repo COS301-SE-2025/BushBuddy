@@ -3,13 +3,12 @@ import { discoveryController } from './discoveryController.js';
 import multer from 'multer';
 
 const discoveryApp = express();
-discoveryApp.use(express.json());
-const uplaod = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage() });
 
-discoveryApp.get('/bestiary', discoveryController.getAllAnimals);
+discoveryApp.get('/bestiary', express.json(), discoveryController.getAllAnimals);
 
-discoveryApp.post('/bestiary', uplaod.single('file'), discoveryController.insertNewAnimal);
+discoveryApp.post('/bestiary', upload.single('file'), discoveryController.insertNewAnimal);
 
-discoveryApp.get('/sightings', discoveryController.getMapSightings);
+discoveryApp.get('/sightings', express.json(), discoveryController.getMapSightings);
 
 export default discoveryApp;

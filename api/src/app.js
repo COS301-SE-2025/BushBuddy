@@ -3,8 +3,6 @@ import proxy from 'express-http-proxy';
 
 const app = express();
 
-app.use(express.json());
-
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
@@ -37,6 +35,7 @@ app.use(
 app.use(
 	'/discover',
 	proxy(`http://localhost:${DISCOVER_PORT}`, {
+		limit: '20mb',
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/discover', '');
 		},

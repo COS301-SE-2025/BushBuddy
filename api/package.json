@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "start": "node src/server.js",
+        "start": "node --watch src/server.js",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose --runInBand --coverage --detectOpenHandles",
         "dev": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\"",
         "dev:gateway": "node src/server.js",

@@ -209,7 +209,7 @@ describe('Testing discoveryRepository', () => {
 
 			// console.dir(db.query.mock.calls, { depth: null });
 			expect(db.query.mock.calls[0][0]).toMatch(/SELECT/i);
-			expect(db.query.mock.calls[1][0]).toMatch(/INSERT/i);
+			expect(db.query.mock.calls[1][0]).toMatch(/UPDATE/i);
 			expect(result).toEqual('testkey');
 		});
 

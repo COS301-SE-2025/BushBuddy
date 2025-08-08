@@ -148,6 +148,16 @@ async function getAllAnimals() {
 	}
 }
 
+async function fetchAnimalImage(key) {
+	try {
+		const url = await s3.fetchImage(key);
+		return url;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Error fetching animal image');
+	}
+}
+
 /* 
 Used to add new animals to the database for the bestiary
 Uploads animal image to cloudflare first and then inserts animal
@@ -171,7 +181,7 @@ async function addNewBestiaryEntry(details, image) {
 
 			result = await db.query(query, params);
 		} else {
-			const query = 'INSERT INTO animals (image_url) VALUES ($1) WHERE name=$2 RETURNING (image_url);';
+			const query = 'UPDATE animals SET image_url=$1 WHERE name=$2 RETURNING (image_url);';
 			const params = [url, name];
 
 			result = await db.query(query, params);
@@ -186,4 +196,5 @@ async function addNewBestiaryEntry(details, image) {
 export const discoveryRepository = {
 	getAllAnimals,
 	addNewBestiaryEntry,
+	fetchAnimalImage,
 };
