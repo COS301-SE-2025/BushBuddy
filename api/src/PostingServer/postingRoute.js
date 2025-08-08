@@ -7,12 +7,12 @@ postingApp.use(express.json());
 //new post endpoint
 postingApp.post('/', postingController.createPost);
 //view post endpoint
-postingApp.get('/:id', postingController.fetchPost);
+postingApp.get('/:postId', postingController.fetchPost);
 //fetch all posts endpoint
 postingApp.get('/all', postingController.fetchAllPosts);
 //like post endpoint
-postingApp.patch('/:id/like', postingController.likePost);
+postingApp.patch('/:postId/like', postingController.likePost);
 //add comment endpoint
-postingApp.post('/:id/comment', postingController.addComment);
+postingApp.post('/:postId/comment', postingController.addComment);
 
 export default postingApp;
