@@ -1,25 +1,59 @@
+import {postingService} from './postingService.js'
+
+//should we add a attr in db for location itself?
 async function createPost(req, res) {
 	try {
-		res.status(501).json({
+		if (!req.file) {
+			return res.status(400).json({ success: false, message: 'No image uploaded' });
+		}
+
+		const image = req.file.buffer;
+		const details = { userid: req.body.userId, description: req.body.description, shareLocation: req.body.sharLocation}
+
+		result = await postingService.createPost(image, details);
+
+		if(!result){
+			return res.status(400).json({ 
+				success: false, 
+				message: 'Failed to create post' 
+			});
+		}
+
+		return res.status(201).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Post created successfully',
+			data: result,
 		});
 	} catch (error) {
 		console.error('Error creating new post: ', error);
 		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
-		});
+		}); 
 	}
 }
 
 async function fetchPost(req, res) {
 	try {
-		res.status(501).json({
+		if(!req.params.postId)
+		{
+			return res.status(400).json({ success: false, message: 'Post ID is required' });
+		}
+		else if(!req.body.uss)
+
+		result = await postingService.fetchPost(req.params.id);
+
+		if(!result){
+			return res.status(400).json({ 
+				success: false, 
+				message: 'Failed to fetch post' 
+			});
+		}
+
+		return res.status(201).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Post created successfully',
+			data: result,
 		});
 	} catch (error) {
 		console.error('Error fetching post: ', error);
@@ -30,13 +64,24 @@ async function fetchPost(req, res) {
 	}
 }
 
+//add params for filtering and sorting?
 async function fetchAllPosts(req, res) {
 	try {
-		res.status(501).json({
-			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+		const result = await postingService.fetchAllPosts();
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Falied to fetch posts'
+			});
+		}
+
+		return res.status(200).json({
+			succes:true,
+			message: 'Posts fetched successfully',
+			data: result
 		});
+		
 	} catch (error) {
 		console.error('Error fetching all posts: ', error);
 		res.status(500).json({
@@ -48,11 +93,35 @@ async function fetchAllPosts(req, res) {
 
 async function likePost(req, res) {
 	try {
-		res.status(501).json({
+		if(!req.params.postId)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'Post ID is required'
+			});
+		}
+		else if(!req.bosy.userId)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'User ID is required'
+			});
+		}
+
+		result = await postingService.likePost(req.params.postId, req.body.userId);
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to add like to post'
+			});
+		}
+
+		return res.satus(200).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Post like successfully updated'
 		});
+
 	} catch (error) {
 		console.error('Error updating post likes: ', error);
 		res.status(500).json({
@@ -62,13 +131,52 @@ async function likePost(req, res) {
 	}
 }
 
+//add logic to see if they are friends?
 async function addComment(req, res) {
 	try {
-		res.status(501).json({
+		if(!req.params.postId)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'Post ID is required'
+			});
+		}
+		else if(!req.bosy.userId)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'User ID is required'
+			});
+		}
+		else if(!req.body.comment)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'Comment is required'
+			});
+		}
+
+		const data = {
+			userId: req.body.userId,
+			postId: req.params.postId,
+			commnet: req.body.comment,
+		}
+
+		result = await postingService.commentPost(data);
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: "failed to add comment to post"
+			});
+		}
+
+		return res.status(201).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Comment added to post successfully',
+			data: result
 		});
+
 	} catch (error) {
 		console.error('Error commenting on post: ', error);
 		res.status(500).json({
