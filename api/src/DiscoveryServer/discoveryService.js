@@ -8,7 +8,12 @@ async function getAllAnimals() {
 		// For example: filtering, sorting, data transformation, etc.
 
 		// Sort animals alphabetically by name (fallback sorting in case DB doesn't sort)
-		const sortedAnimals = animals.sort((a, b) => a.name.localeCompare(b.name));
+		let sortedAnimals = animals.sort((a, b) => a.name.localeCompare(b.name));
+
+		// console.log(sortedAnimals);
+		for (const animal of sortedAnimals) {
+			animal.image_url = await discoveryRepository.fetchAnimalImage(animal.image_url);
+		}
 
 		return sortedAnimals;
 	} catch (error) {
@@ -17,6 +22,18 @@ async function getAllAnimals() {
 	}
 }
 
+async function addNewAnimal(details, image) {
+	try {
+		const result = await discoveryRepository.addNewBestiaryEntry(details, image);
+
+		return result;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Failed to add new animal to bestiary');
+	}
+}
+
 export const discoveryService = {
 	getAllAnimals,
+	addNewAnimal,
 };

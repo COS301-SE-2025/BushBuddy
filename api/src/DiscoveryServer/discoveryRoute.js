@@ -1,11 +1,14 @@
 import express from 'express';
 import { discoveryController } from './discoveryController.js';
+import multer from 'multer';
 
 const discoveryApp = express();
-discoveryApp.use(express.json());
+const upload = multer({ storage: multer.memoryStorage() });
 
-discoveryApp.get('/bestiary', discoveryController.getAllAnimals);
+discoveryApp.get('/bestiary', express.json(), discoveryController.getAllAnimals);
 
-discoveryApp.get('/sightings', discoveryController.getMapSightings);
+discoveryApp.post('/bestiary', upload.single('file'), discoveryController.insertNewAnimal);
+
+discoveryApp.get('/sightings', express.json(), discoveryController.getMapSightings);
 
 export default discoveryApp;

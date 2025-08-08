@@ -28,7 +28,7 @@ afterAll(async () => {
 
 describe('Bestiary Integration Tests', () => {
 	test('GET /bestiary/all should return sorted animals', async () => {
-		const res = await request(app).get('/bestiary/all');
+		const res = await request(app).get('/discover/bestiary');
 		// console.log('Response from /bestiary/all:', res.body);
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toHaveProperty('success', true);

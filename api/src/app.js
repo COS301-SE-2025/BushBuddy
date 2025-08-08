@@ -3,8 +3,6 @@ import proxy from 'express-http-proxy';
 
 const app = express();
 
-app.use(express.json());
-
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
@@ -13,13 +11,14 @@ const POST_PORT = process.env.POST_PORT || 4003;
 const publicRoutes = ['/auth/register', '/auth/login'];
 
 app.use((req, res, next) => {
+	console.log(`Request received: ${req.method} ${req.url}`);
 	// Check if the request is for a public route
 	if (publicRoutes.includes(req.path)) {
 		return next(); // Skip authentication for public routes
 	}
 
 	// user authentication through JWT etc. can be done here
-	console.log(`Request received: ${req.method} ${req.url}`);
+
 	next();
 });
 
@@ -36,6 +35,7 @@ app.use(
 app.use(
 	'/discover',
 	proxy(`http://localhost:${DISCOVER_PORT}`, {
+		limit: '20mb',
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/discover', '');
 		},
