@@ -4,9 +4,9 @@ import json
 
 # Import Variables
 # Sets number of images that will be downloaded total for each image directory per species
-MAX_TRAINING_SPECIES = 1
-MAX_VALIDATION_SPECIES = 1 
-MAX_TEST_SPECIES = 1
+MAX_TRAINING_SPECIES = 20
+MAX_VALIDATION_SPECIES = 5 
+MAX_TEST_SPECIES = 10
 
 MAX_IMAGES_PER_SPECIES = MAX_TRAINING_SPECIES + MAX_TEST_SPECIES + MAX_VALIDATION_SPECIES
 
@@ -17,7 +17,8 @@ annotations = []
 
 # Read JSONs filtered annotations
 #file = "filteredAnnotations.json"
-file = "filteredAnnotations_v2.json"
+#file = "filteredAnnotations_v2.json"
+file = "projectMammals.json"
 
 # Creates Necessary Directories
 base_dirs = ["images/train", "images/validation", "images/test"]
@@ -61,13 +62,13 @@ def storeAnimalDetails(directory_path, obs, common_name):
                     f.write(image_data)
 
                 species_counter[common_name] = species_counter.get(common_name, 0) + 1
-
+#------------------------- Annotations------------------------------------------
                 annotations.append({
                     "image": filename,
                     "label": common_name,
-                    "iconic_taxa" : supercategory
+                    "iconic_taxa" : "Mammalia"
                 })
-
+#------------------------- Annotations------------------------------------------
             except Exception as e:
                 print(f"Failed to download {wanted_url}: {e}")
 
@@ -77,21 +78,22 @@ def storeAnimalDetails(directory_path, obs, common_name):
 with open(file, "r") as f:
     id_mammal_list = json.load(f)
 
-count = 0
+#count = 0
 for category in id_mammal_list:
-    count += 1
-    print(count)
-    species_name = category.get("name", "Unknown")
+    #count += 1
+    #print(count)
+    species_name = category.get("scientific_name", "Unknown")
+    #species_name = category.get("name", "Unknown")
     common_name = category.get("common_name", "Unknown")
-    supercategory = category.get("supercategory", "Unknown")
+    #supercategory = category.get("supercategory", "Unknown")
     
     url = f"https://api.inaturalist.org/v1/observations"
 
     params = {
-        "place_id": 6986, # id of south africa
+        #"place_id": 6986, # id of south africa
         "iconic_taxa": "Mammalia",
         "taxon_name": species_name, #"Loxodonta africana",
-        "project_id": "31428", #project id of biodiversity of south africa 
+        #"project_id": "31428", #project id of biodiversity of south africa 
         "per_page": MAX_IMAGES_PER_SPECIES,
         "page": 1,
         "order_by": "observed_on",

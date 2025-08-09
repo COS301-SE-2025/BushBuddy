@@ -1,6 +1,6 @@
 import json
 
-input_file = output_file = "val.json"
+input_file = output_file = "projectMammals.json"
 
 
 with open(input_file, 'r') as inFile:
