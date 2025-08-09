@@ -1,21 +1,21 @@
 import json
 
 
-file = "val.json"
+FILE = "val.json"
 
-with open(file, "r") as f:
+with open(FILE, "r") as f:
     data = json.load(f)
 
 
 categories = data.get("categories", [])
 
-#print(categories)
+# print(categories)
 
 required_list = []
 
 # retrieve only specified animals
 for category in categories:
-    if(category.get("class") == "Mammalia"):
+    if category.get("class") == "Mammalia":
         required_list.append(category)
 
 
