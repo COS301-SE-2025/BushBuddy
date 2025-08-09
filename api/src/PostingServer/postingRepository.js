@@ -5,72 +5,133 @@ import s3 from '../db/imageStorage.js';
 async function createPost(image, details) {
     try {
 		const key = nanoid(12);
-		const url = await s3.storeImage(key, image);
+		const image_url = await s3.storeImage(key, image);
 
-		const { name, description, shareLocation } = details;
+		const { 
+			user_id, 
+			identification_id, 
+			description, 
+			share_location 
+		} = details;
 
 		const query =
-			'INSERT INTO posts (name, description, shareLocation, image_url) VALUES ($1, $2, $3, $4) RETURNING (postId);';
-		const params = [name, description, shareLocation, url];
+			`INSERT INTO posts (
+				user_id, 
+				identification_id, 
+				image_url, 
+				description, 
+				share_location
+				) VALUES ($1, $2, $3, $4, $5) RETURNING (postId);`;
+		const params = [
+			user_id, 
+			identification_id, 
+			image_url, 
+			description, 
+			share_location
+		];
 
         result = await db.query(query, params);
         
-		return result
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error adding new post: ${error.message}`);
 	}
 }
 
-//fetch all or fetch only what we need?
-async function fetchPost(id) {
+async function fetchPost(post_id) {
     try {
-		const query = 'SELECT * FROM posts WHERE id = $1;';
-		const params = [id];
+		const query = `SELECT * FROM posts WHERE id = ${post_id};`;
+        const post = await db.query(query);
+		const comments = await fetchComments(post_id);
 
-        result = await db.query(query, params);
+		const result = {
+			post,
+			comments
+		}
 
-		return result
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching post: ${error.message}`);
 	}
 }
 
-async function fetchAllPosts() {
+async function fetchAllUserPosts(user_id) {
     try {
-		const query = 'SELECT * FROM posts ORDER BY created_at ASC;';
+		const query = `SELECT * FROM posts WHERE post_id = ${user_id} ORDER BY created_at DECS;`;
 
         result = await db.query(query);
 
-		return result
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
 	}
 }
 
-//likes and comments table??
-async function likePost() {
+async function fetchAllPosts() {
     try {
-		const query = '';
+		const query = 
+			`SELECT *
+			FROM posts
+			ORDER BY created_by DESC, created_at DESC
+			LIMIT 50;`;
 
         result = await db.query(query);
 
-		return result
+		return result;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Error fetching all posts: ${error.message}`);
+	}
+}
+
+async function likePost(post_id, user_id) {
+    try {
+		const query = 'INSERT INTO likes (user_id, post_id) VALUES ($1, $2);';
+		const params = [user_id, post_id];
+
+        const result = await db.query(query, params);
+
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error adding like to post: ${error.message}`);
 	}
 }
 
-async function addComment(data) {
+async function addComment(details) {
     try {
-		const query = '';
+		const { 
+			user_id,
+			post_id,
+			comment_text
+		} = details;
 
-        result = await db.query(query);
+		const query = 'INSERT INTO comments (user_id, post_id, comment_text) VALUES ($1, $2, $3);';
+		const params = [
+			user_id,
+			post_id,
+			comment_text
+		]
 
-		return result
+        const result = await db.query(query,params);
+
+		return result;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Error adding comment to post: ${error.message}`);
+	}
+}
+
+async function fetchComments(post_id) {
+    try {
+		const query = `SELECT * FROM comments WHERE post_id = ${post_id} ORDER BY created_at DECS;`;
+
+        const result = await db.query(query);
+
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error adding like to post: ${error.message}`);
@@ -90,6 +151,7 @@ async function fetchPostImage(key) {
 export const postingService = {
     createPost,
     fetchPost,
+    fetchAllUserPosts,
     fetchAllPosts,
     likePost,
     addComment,
