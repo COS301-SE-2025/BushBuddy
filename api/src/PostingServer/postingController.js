@@ -1,6 +1,5 @@
 import {postingService} from './postingService.js'
 
-//should we add a attr in db for location itself?
 async function createPost(req, res) {
 	try {
 		if (!req.file) {
@@ -8,7 +7,13 @@ async function createPost(req, res) {
 		}
 
 		const image = req.file.buffer;
-		const details = { userid: req.body.userId, description: req.body.description, shareLocation: req.body.sharLocation}
+		const details = { 
+			user_id: req.body.user_id, 
+			identification_id: req.body.identification_id,
+			image_url: req.body.image_url,
+			description: req.body.description, 
+			share_location: req.body.sharLocation, 
+		}
 
 		result = await postingService.createPost(image, details);
 
@@ -39,9 +44,8 @@ async function fetchPost(req, res) {
 		{
 			return res.status(400).json({ success: false, message: 'Post ID is required' });
 		}
-		else if(!req.body.uss)
 
-		result = await postingService.fetchPost(req.params.id);
+		const result = await postingService.fetchPost(req.params.postId);
 
 		if(!result){
 			return res.status(400).json({ 
@@ -52,8 +56,11 @@ async function fetchPost(req, res) {
 
 		return res.status(201).json({
 			success: true,
-			message: 'Post created successfully',
-			data: result,
+			message: 'Post fetched successfully',
+			data: {
+				result,
+				postComments
+			}
 		});
 	} catch (error) {
 		console.error('Error fetching post: ', error);
@@ -64,7 +71,32 @@ async function fetchPost(req, res) {
 	}
 }
 
-//add params for filtering and sorting?
+async function fetchAllUserPosts(req, res) {
+	try {
+		const result = await postingService.fetchAllUserPosts(req.body.user_id);
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Falied to fetch users posts'
+			});
+		}
+
+		return res.status(200).json({
+			succes:true,
+			message: 'User posts fetched successfully',
+			data: result
+		});
+		
+	} catch (error) {
+		console.error('Error fetching all user posts: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 async function fetchAllPosts(req, res) {
 	try {
 		const result = await postingService.fetchAllPosts();
@@ -100,15 +132,8 @@ async function likePost(req, res) {
 				message: 'Post ID is required'
 			});
 		}
-		else if(!req.bosy.userId)
-		{
-			return res.status(400).json({
-				success: false,
-				message: 'User ID is required'
-			});
-		}
 
-		result = await postingService.likePost(req.params.postId, req.body.userId);
+		result = await postingService.likePost(req.params.postId, req.body.user_id);
 
 		if(!result){
 			return res.status(400).json({
@@ -131,7 +156,6 @@ async function likePost(req, res) {
 	}
 }
 
-//add logic to see if they are friends?
 async function addComment(req, res) {
 	try {
 		if(!req.params.postId)
@@ -141,25 +165,11 @@ async function addComment(req, res) {
 				message: 'Post ID is required'
 			});
 		}
-		else if(!req.bosy.userId)
-		{
-			return res.status(400).json({
-				success: false,
-				message: 'User ID is required'
-			});
-		}
-		else if(!req.body.comment)
-		{
-			return res.status(400).json({
-				success: false,
-				message: 'Comment is required'
-			});
-		}
 
 		const data = {
-			userId: req.body.userId,
-			postId: req.params.postId,
-			commnet: req.body.comment,
+			user_id: req.body.user_id,
+			post_id: req.params.postId,
+			comment: req.body.comment,
 		}
 
 		result = await postingService.commentPost(data);
@@ -167,7 +177,7 @@ async function addComment(req, res) {
 		if(!result){
 			return res.status(400).json({
 				success: false,
-				message: "failed to add comment to post"
+				message: "Failed to add comment to post"
 			});
 		}
 
@@ -189,6 +199,7 @@ async function addComment(req, res) {
 export const postingController = {
 	createPost,
 	fetchPost,
+	fetchAllUserPosts,
 	fetchAllPosts,
 	likePost,
 	addComment,
