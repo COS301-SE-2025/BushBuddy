@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import './AuthScreen.css';
 import Logo from '../assets/EpiUseLogo.png';
+import BushBuddy from '../assets/BushBuddy.webp';
+import { FaUser, FaLock } from 'react-icons/fa';
+import VideoBackground from '../components/VideoBackground';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
@@ -31,37 +34,51 @@ const AuthScreen = () => {
 
   return (
     <div className="auth-container">
+      <VideoBackground />
+      <div className="auth-form">
 
-      <div className="auth-background">
+          <div className="auth-header">
+            <img src={Logo} alt="Epi-Use Logo" className="epi-use-logo" />
+            <h1 className="auth-title-text">
+              Login
+            </h1>
+            <img src={BushBuddy} alt="BushBuddy" className="bb-logo"/>
+          </div>
 
-        {/* <img
-            src={Logo}
-            alt="Epi-Use Logo"
-            className="auth-logo"
-        /> */}
-
-        <div className="auth-form">
-            <h1 color="white">BushBuddy</h1>
-            
-            <h2>Login</h2>
-            <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                <input
+          <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+            <div className="input-icon-wrapper">
+              <input
                 type="email"
                 {...register("email", { required: true })}
-                placeholder="Email"
-            />
+                placeholder="Username"
+              />
+              <span className="input-icon"><FaUser></FaUser></span>
+            </div>
             {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
 
-            <input
+            <div className="input-icon-wrapper">
+              <input
                 type="password"
                 {...register("password", { required: true })}
                 placeholder="Password"
-            />
+              />
+              <span className="input-icon"><FaLock></FaLock></span>
+            </div>
             {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
+            
+            <div className="options-row">
+              <label className="remember-me">
+                <input type="checkbox" />
+                Remember me
+              </label>
 
-            <input type="submit" value="Login" className="auth-button"/>
+              <a href="/forgot-password">Forgot password?</a>
+            </div>
+
+            <button type="submit" className="auth-button">Login</button>
           </form>
-        </div>
+
+        <p className="register-link">Need an account? <a href="/register">Register</a></p>
       </div>
     </div>
   );

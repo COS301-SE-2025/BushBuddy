@@ -2,7 +2,9 @@ import { expect, jest } from '@jest/globals';
 import dotenv from 'dotenv';
 dotenv.config();
 
-jest.unstable_mockModule('../../src/repositories/authRepository.js', () => ({
+const AUTH_URL = '../../src/AuthenticationServer/';
+
+jest.unstable_mockModule(`${AUTH_URL}authRepository.js`, () => ({
 	__esModule: true,
 	authRepository: {
 		createUser: jest.fn(),
@@ -26,8 +28,8 @@ jest.unstable_mockModule('jsonwebtoken', () => ({
 
 const jwt = (await import('jsonwebtoken')).default;
 const bcrypt = await import('bcrypt');
-const { authService } = await import('../../src/services/authService.js');
-const { authRepository } = await import('../../src/repositories/authRepository.js');
+const { authService } = await import(`${AUTH_URL}authService.js`);
+const { authRepository } = await import(`${AUTH_URL}authRepository.js`);
 
 describe('AuthService', () => {
 	beforeEach(() => {
