@@ -8,6 +8,8 @@ postingApp.use(express.json());
 postingApp.post('/', postingController.createPost);
 //view post endpoint
 postingApp.get('/:postId', postingController.fetchPost);
+//fetch all user posts endpoint
+postingApp.get('/userPosts', postingController.fetchAllUserPosts);
 //fetch all posts endpoint
 postingApp.get('/all', postingController.fetchAllPosts);
 //like post endpoint
