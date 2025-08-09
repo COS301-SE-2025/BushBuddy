@@ -2,7 +2,7 @@ import { postingRepository } from './postingRepository.js';
 
 async function createPost(image, details) {
     try{
-        const result = await postintRepositiory.createPost(image,details);
+        const result = await postingRepository.createPost(image,details);
         
         return result;
 
@@ -12,9 +12,9 @@ async function createPost(image, details) {
     }
 }
 
-async function fetchPost(id) {
+async function fetchPost(post_id) {
     try{
-        const post = await postingRepository.fetchPost(id);
+        const post = await postingRepository.fetchPost(post_id);
         post.image_url = await postingRepository.fetchPostImage(post.image_url);
 
         return post;
@@ -24,12 +24,10 @@ async function fetchPost(id) {
     }
 }
 
-//add params for filtering and sorting?
-async function fetchAllPosts() {
+async function fetchAllUserPosts(user_id) {
     try {
-        const allPosts = await postingRepository.fetchAllposts();
+        const allPosts = await postingRepository.fetchAllUserPosts(user_id);
 
-        //sorted automatically by date
 		let sortedPosts = animals.sort((a, b) => b.created_at.localeCompare(a.created_at));
 
         for(const post of sortedPosts){
@@ -43,9 +41,26 @@ async function fetchAllPosts() {
     }
 }
 
-async function likePost(postId, userId){
+async function fetchAllPosts() {
     try {
-        const result = await postingRepository.likePost(postId, userId);
+        const allPosts = await postingRepository.fetchAllPosts();
+
+		let sortedPosts = animals.sort((a, b) => b.created_at.localeCompare(a.created_at));
+
+        for(const post of sortedPosts){
+            postingService.image_url = await postingRepository.fetchPostImage(post.image_url);
+        }
+
+        return allPosts;
+    } catch (error) {
+        console.error("Error in postingService.fetchAllPosts:", error);
+        throw new error('Failed to fetch all posts');
+    }
+}
+
+async function likePost(post_id, user_id){
+    try {
+        const result = await postingRepository.likePost(post_id, user_id);
 
         return result;
     } catch (error){
@@ -68,6 +83,7 @@ async function addComment(data) {
 export const postingService = {
     createPost,
     fetchPost,
+    fetchAllUserPosts,
     fetchAllPosts,
     likePost,
     addComment,
