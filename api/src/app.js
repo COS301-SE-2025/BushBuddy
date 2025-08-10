@@ -1,5 +1,7 @@
 import express from 'express';
 import proxy from 'express-http-proxy';
+import swaggerCombine from 'swagger-combine';
+import swaggerUI from 'swagger-ui-express';
 
 const app = express();
 
@@ -8,7 +10,7 @@ const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 const POST_PORT = process.env.POST_PORT || 4003;
 
-const publicRoutes = ['/auth/register', '/auth/login'];
+const publicRoutes = ['/auth/register', '/auth/login', '/docs'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -45,6 +47,7 @@ app.use(
 app.use(
 	'/sightings',
 	proxy(`http://localhost:${SIGHTINGS_PORT}`, {
+		limit: '20mb',
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/sightings', '');
 		},
@@ -54,11 +57,23 @@ app.use(
 app.use(
 	'/posts',
 	proxy(`http://localhost:${POST_PORT}`, {
+		limit: '20mb',
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/posts', '');
 		},
 	})
 );
+
+app.use('/docs', swaggerUI.serve);
+
+app.get('/docs', async (req, res, next) => {
+	try {
+		const combinedDoc = await swaggerCombine('./src/swagger-combine.json');
+		swaggerUI.setup(combinedDoc)(req, res, next);
+	} catch (error) {
+		next(error);
+	}
+});
 
 // default route for handling 404 errors
 app.use((req, res) => {
