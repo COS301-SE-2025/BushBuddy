@@ -10,13 +10,8 @@ async function createSighting(req, res) {
 		}
 		// uploaded image, stored as a JS Buffer object (binary data)
 		const image = req.file.buffer;
+		const result = sightingService.createSighting(user_id, image, { longitude, latitude });
 
-		// add AI integration here using image buffer
-		// return identified animal and confidence percentage as an object, e.g. {animal: "Elephant", confidence: 97.5}
-		// if multiple different animals are identified return an array of objects, e.g. [{animal: "Impala", confidence: 85}, {animal: "Warthog", confidence: 90}]
-		const identifications = []; // <- store result here
-
-		const result = sightingService.createSighting(user_id, identifications, image, { longitude, latitude });
 		if (!result) {
 			return res.status(400).json({ success: false, message: 'Failed to create sighting with given data' });
 		}

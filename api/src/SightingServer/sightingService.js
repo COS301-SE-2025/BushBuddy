@@ -1,22 +1,22 @@
 import { sightingRepository } from './sightingRepository';
 
-async function createSighting(user_id, identifications, file, geolocation) {
+async function createSighting(user_id, file, geolocation) {
+	// add AI integration here using [file] parameter
+	// file is stored as a JS Buffer object (binary data)
+	// save result in identifications array as an object(s), e.g. [{animal: "Impala", confidence: 85}, {animal: "Warthog", confidence: 90}] or [{animal: "Elephant", confidence: 97.5}]
+	const identifications = [];
+
 	try {
 		// in future check whether file is image or audio
 		const image_url = await sightingRepository.uploadSightingFile(file);
 		const sightings = [];
-		if (Array.isArray(identifications)) {
-			for (const identification of identifications) {
-				sightings.push(
-					await sightingRepository.saveNewSighting(user_id, identification, image_url, 'image', geolocation)
-				);
-			}
-		} else {
-			// call repo function on single identification
+
+		for (const identification of identifications) {
 			sightings.push(
-				await sightingRepository.saveNewSighting(user_id, identifications, image_url, 'image', geolocation)
+				await sightingRepository.saveNewSighting(user_id, identification, image_url, 'image', geolocation)
 			);
 		}
+
 		const image = await sightingRepository.fetchSightingImage(image_url);
 		return { animals: sightings, image: image };
 	} catch (error) {
