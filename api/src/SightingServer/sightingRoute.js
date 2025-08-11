@@ -1,15 +1,16 @@
 import express from 'express';
+import multer from 'multer';
 
 import { sightingController } from './sightingController.js';
 
 const sightingsApp = express();
-sightingsApp.use(express.json());
+const upload = multer({ storage: multer.memoryStorage() });
 
 // upload endpoint
-sightingsApp.post('/', sightingController.createSighting);
+sightingsApp.post('/', upload.single('file'), sightingController.createSighting);
 // fetch endpoint
-sightingsApp.get('/:id', sightingController.viewSighting);
+sightingsApp.get('/:id', express.json(), sightingController.viewSighting);
 //history endpoint
-sightingsApp.get('/history', sightingController.viewHistory);
+sightingsApp.get('/history', express.json(), sightingController.viewHistory);
 
 export default sightingsApp;
