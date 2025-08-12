@@ -1,0 +1,73 @@
+import express from 'express';
+import fetch from 'node-fetch';
+import { pathToFileURL, fileURLToPath } from 'url';
+import path from 'path';
+
+// Get the directory name of the current module.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Resolve the path to the sightingRoutes module
+const sightingRoutesPath = path.join(__dirname, '..', '..', 'src', 'SightingServer', 'sightingRoutes.js');
+const sightingRoutesURL = pathToFileURL(sightingRoutesPath).href;
+const sightingRoutesModule = await import(sightingRoutesURL);
+const sightingRoutes = sightingRoutesModule.default;
+
+const app = express();
+const port = 4000;
+let server;
+
+// This is the sighting ID we will test with.
+// It comes from your createSighting test output.
+const testSightingId = 318;
+const baseUrl = `http://localhost:${port}/api`;
+
+async function testViewSightingController() {
+    console.log("Starting test for viewSighting controller...");
+    
+    // Set up a temporary Express server for the test
+    app.use(express.json());
+    app.use('/api', sightingRoutes);
+
+    try {
+        await new Promise((resolve) => {
+            server = app.listen(port, () => {
+                console.log(`Test server listening on port ${port}`);
+                resolve();
+            });
+        });
+
+        // GET request to the viewSighting endpoint
+        console.log(`Fetching sighting with ID: ${testSightingId}`);
+        const response = await fetch(`${baseUrl}/sightings/${testSightingId}`);
+
+        // Check if the response was successful
+        if (response.ok) {
+            const data = await response.json();
+            console.log("\nTest successful! Here is the result:");
+            console.log(JSON.stringify(data, null, 2));
+
+            // Add more assertions here to verify the data.
+            if (data.success && data.data.id == testSightingId) {
+                console.log("Response data matches the requested ID. Test passed!");
+            } else {
+                console.error("Response data is unexpected. Test failed.");
+            }
+        } else {
+            console.error(`\nTest failed! Server responded with status: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Error details:', errorText);
+        }
+    } catch (error) {
+        console.error("\nAn error occurred during the test:");
+        console.error(error);
+    } finally {
+        if (server) {
+            server.close(() => {
+                console.log("Test server shut down.");
+            });
+        }
+    }
+}
+
+// Execute the test function
+testViewSightingController();
