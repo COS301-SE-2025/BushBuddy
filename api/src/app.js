@@ -1,5 +1,6 @@
 import express from 'express';
 import proxy from 'express-http-proxy';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 
@@ -18,6 +19,15 @@ app.use((req, res, next) => {
 	}
 
 	// user authentication through JWT etc. can be done here
+	const token = req.cookies.token;
+	if (!token) return res.status(404).json({ success: false, message: 'You must be logged in to perform this action' });
+
+	try {
+		const decodedUser = jwt.decode(token, process.env.JWT_SECRET);
+		req.user = decodedUser;
+	} catch (error) {
+		return res.status(404).json({ success: false, message: 'You must be logged in to perform this action' });
+	}
 
 	next();
 });
