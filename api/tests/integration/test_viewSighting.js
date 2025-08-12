@@ -71,3 +71,31 @@ async function testViewSightingController() {
 
 // Execute the test function
 testViewSightingController();
+
+
+/*node src/server.js */
+/*PS C:\2025\CapstoneCoding\AI-Powered-African-Wildlife-Detection\api> Invoke-WebRequest -Method Get "http://localhost:4003/318"
+
+                                                                                                                                                       
+StatusCode        : 200                                                                                                                                
+StatusDescription : OK                                                                                                                                 
+Content           : {"success":true,"message":"Sighting retrieved successfully","data":{"id":318,"user_id":null,"animal_id":14,"confidence":"73.00","c 
+                    onfirmed":false,"protected":false,"method":"image","real_time":false,"...
+RawContent        : HTTP/1.1 200 OK
+                    Connection: keep-alive
+                    Keep-Alive: timeout=5
+                    Content-Length: 321
+                    Content-Type: application/json; charset=utf-8
+                    Date: Tue, 12 Aug 2025 21:36:22 GMT
+                    ETag: W/"141-MJ4EGdlwelI+ukEx2F...
+Forms             : {}
+Headers           : {[Connection, keep-alive], [Keep-Alive, timeout=5], [Content-Length, 321], [Content-Type, application/json; charset=utf-8]...}     
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 321
+
+
+
+PS C:\2025\CapstoneCoding\AI-Powered-African-Wildlife-Detection\api> */
