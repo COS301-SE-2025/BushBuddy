@@ -13,22 +13,26 @@ const AuthScreen = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     navigate('/main');  // remove this when login works
 
-    const userData = JSON.parse(localStorage.getItem(data.email));
+    const userData = JSON.parse(localStorage.getItem(data.userName));
     if (userData) {
       if (userData.password === data.password) {
         console.log(userData.name + " You Are Successfully Logged In");
+
+        // axios
+        //   .post("http://localhost:3000/auth/login/", {data.userName, data.password});
+
         navigate('/main');
       } else {
-        console.log("Email or Password is not matching with our record");
+        console.log("Username or Password is not matching with our record");
       }
     } else {
-      console.log("Email or Password is not matching with our record");
+      console.log("Username or Password is not matching with our record");
     }
   };
 
@@ -48,8 +52,8 @@ const AuthScreen = () => {
           <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="input-icon-wrapper">
               <input
-                type="email"
-                {...register("email", { required: true })}
+                type="text"
+                {...register("userName", { required: true })}
                 placeholder="Username"
               />
               <span className="input-icon"><FaUser></FaUser></span>
