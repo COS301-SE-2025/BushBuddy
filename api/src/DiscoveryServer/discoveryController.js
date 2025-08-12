@@ -49,11 +49,7 @@ async function insertNewAnimal(req, res) {
 
 async function getMapSightings(req, res) {
 	try {
-		return res.status(501).json({
-			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
-		});
+		const user_id = req.user.id;
 	} catch (error) {
 		return res.status(500).json({
 			success: false,

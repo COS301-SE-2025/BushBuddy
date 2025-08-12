@@ -193,6 +193,14 @@ async function addNewBestiaryEntry(details, image) {
 	}
 }
 
+async function fetchDiscoveries(user_id) {
+	try {
+		const query = `
+		SELECT animals.name, users.username, 
+		`;
+	} catch (error) {}
+}
+
 export const discoveryRepository = {
 	getAllAnimals,
 	addNewBestiaryEntry,
