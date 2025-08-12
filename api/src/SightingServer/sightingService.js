@@ -4,7 +4,6 @@ import Jimp from 'jimp';
 import path from 'path';
 import process from 'process';
 
-// Path to the ONNX model file has been corrected to use an absolute path,
 // built from the current working directory, to avoid path resolution errors.
 const rootDir = process.cwd();
 const modelPath = path.join(rootDir, 'weights', 'my_model.onnx');
@@ -69,22 +68,18 @@ async function runModelInference(file) {
         // Define the tensor input to match the model's expected input shape and type
         const inputTensor = new ort.Tensor('float32', preprocessedData, [1, 3, 640, 640]);
         const feeds = { 'images': inputTensor }; // The key 'images' must match the model's input name.
-        // NOTE: Your model's input name is likely 'images', not 'input'.
 
         // Run the model
         const results = await session.run(feeds);
-
-        // This is the key part that has been updated based on your model's output structure.
-        // YOLO models typically output a tensor with shape [1, number_of_classes + 4, number_of_detections].
+       
         // The output name is usually 'output'.
-        const outputTensor = results['output0']; // NOTE: The output name might be 'output' or 'output0' depending on the model version.
+        const outputTensor = results['output0']; // The output name might be 'output' or 'output0' depending on the model version.
         const outputData = outputTensor.data;
 
         const identifications = [];
-        const confidenceThreshold = 0.5; // You can adjust this value as needed.
+        const confidenceThreshold = 0.5; // Adjust this value as needed (For the bushbuck etc)
         
-        // This array has been updated with your actual class labels.
-        // The order of these names must correspond to your model's class IDs.
+        // The order of these names must correspond to our model's class IDs.
         const animalClasses = [
             'Aardvark',
             'Blue Wildebeest',
@@ -172,8 +167,8 @@ async function createSighting(user_id, file, geolocation) {
         if (identifications.length === 0) {
             // Handle case where no animals were identified
             console.warn("No animals identified in the image.");
-            // You might want to save a sighting with a 'Unknown' or 'No detection' label.
-            // For now, it will simply not save any sightings.
+            // Might want to save a sighting with a 'Unknown' or 'No detection' label?
+            // For now, it will not save any sightings.
             return { animals: [], image: await sightingRepository.fetchSightingImage(image_url) };
         }
 

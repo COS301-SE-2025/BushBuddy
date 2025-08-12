@@ -32,9 +32,8 @@ async function saveNewSighting(user_id, identification, image_url, method, geolo
     `;
     const queryValues = [
         user_id,
-        // In a real application, you'd map the animal name to a real animal_id from a lookup table.
-        // For now, we'll use a placeholder.
-        14, // Placeholder for 'Zebra' from your training data
+        // For now, use a placeholder.
+        14, // Placeholder for 'Zebra' from training data
         identification.confidence,
         false, // confirmed
         false, // protected
