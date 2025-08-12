@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import './AuthScreen.css';
@@ -7,80 +7,77 @@ import BushBuddy from '../assets/BushBuddy.webp';
 import { FaUser, FaLock } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
 
+import { handleLogin } from '../controllers/UsersController';
+
 const AuthScreen = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors },
-  } = useForm();
+  async function onSubmit(e) {
+    e.preventDefault();
+    const result = await handleLogin(username, password);
 
-  const onSubmit = (data) => {
-    navigate('/main');  // remove this when login works
-
-    const userData = JSON.parse(localStorage.getItem(data.userName));
-    if (userData) {
-      if (userData.password === data.password) {
-        console.log(userData.name + " You Are Successfully Logged In");
-
-        // axios
-        //   .post("http://localhost:3000/auth/login/", {data.userName, data.password});
-
-        navigate('/main');
-      } else {
-        console.log("Username or Password is not matching with our record");
-      }
+    if(result.success) {
+      navigate("/main");
     } else {
-      console.log("Username or Password is not matching with our record");
+      setError(result.message);
     }
-  };
+
+  }
 
   return (
     <div className="auth-container">
       <VideoBackground />
       <div className="auth-form">
 
-          <div className="auth-header">
-            <img src={Logo} alt="Epi-Use Logo" className="epi-use-logo" />
-            <h1 className="auth-title-text">
-              Login
-            </h1>
-            <img src={BushBuddy} alt="BushBuddy" className="bb-logo"/>
+        <div className="auth-header">
+          <img src={Logo} alt="Epi-Use Logo" className="epi-use-logo" />
+          <h1 className="auth-title-text">
+            Login
+          </h1>
+          <img src={BushBuddy} alt="BushBuddy" className="bb-logo" />
+        </div>
+
+        <form className="login-form" onSubmit={onSubmit}>
+          <div className="input-icon-wrapper">
+            <input
+              type="text"
+              // {...register("userName", { required: true })}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              value={username}
+            />
+            <span className="input-icon"><FaUser></FaUser></span>
+          </div>
+          {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
+
+          <div className="input-icon-wrapper">
+            <input
+              type="password"
+              // {...register("password", { required: true })}
+              value={password}
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span className="input-icon"><FaLock></FaLock></span>
+          </div>
+          {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
+
+          <div className="options-row">
+            <label className="remember-me">
+              <input type="checkbox" />
+              Remember me
+            </label>
+
+            <a href="/forgot-password">Forgot password?</a>
           </div>
 
-          <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-            <div className="input-icon-wrapper">
-              <input
-                type="text"
-                {...register("userName", { required: true })}
-                placeholder="Username"
-              />
-              <span className="input-icon"><FaUser></FaUser></span>
-            </div>
-            {/* {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>} */}
+          {error && <p className="text-red-500 text-sm mb-3" color='red'>{error}</p>}
 
-            <div className="input-icon-wrapper">
-              <input
-                type="password"
-                {...register("password", { required: true })}
-                placeholder="Password"
-              />
-              <span className="input-icon"><FaLock></FaLock></span>
-            </div>
-            {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
-            
-            <div className="options-row">
-              <label className="remember-me">
-                <input type="checkbox" />
-                Remember me
-              </label>
-
-              <a href="/forgot-password">Forgot password?</a>
-            </div>
-
-            <button type="submit" className="auth-button">Login</button>
-          </form>
+          <button type="submit" className="auth-button">Login</button>
+        </form>
 
         <p className="register-link">Need an account? <a href="/register">Register</a></p>
       </div>

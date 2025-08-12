@@ -1,7 +1,16 @@
 import express from 'express';
 import proxy from 'express-http-proxy';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3001', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -17,6 +26,8 @@ app.use((req, res, next) => {
 	if (publicRoutes.includes(req.path)) {
 		return next(); // Skip authentication for public routes
 	}
+
+	res.header("Access-Control-Allow-Origin", "*");
 
 	// user authentication through JWT etc. can be done here
 	console.log(`Request received: ${req.method} ${req.url}`);
