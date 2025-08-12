@@ -22,7 +22,7 @@ async function saveNewSighting(user_id, identification, image_url, file_type, ge
 
 		const result = await db.query(query, params);
 
-		return result;
+		return result.rows[0];
 	} catch (error) {
 		console.error(error);
 		throw new Error('Error adding sighting to DB');
@@ -52,11 +52,11 @@ async function getAnimalByName(animalName) {
 			LIMIT 1
 		`;
 		const result = await db.query(query, [animalName]);
-		
+
 		if (result.rows.length > 0) {
 			return result.rows[0];
 		}
-		
+
 		return null;
 	} catch (error) {
 		console.error('Error fetching animal by name:', error);
