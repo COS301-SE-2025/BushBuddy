@@ -1,5 +1,3 @@
-// src/SightingServer/sightingController.js
-
 import { sightingService } from './sightingService.js';
 
 /**
@@ -67,12 +65,25 @@ async function viewSighting(req, res) {
     }
 }
 
+/**
+ * Handles the retrieval of all sightings for the current authenticated user.
+ */
 async function viewHistory(req, res) {
     try {
-        return res.status(501).json({
+        // Get the user ID from the authenticated request
+        const user_id = req.user.id;
+
+        if (!user_id) {
+            return res.status(401).json({ success: false, message: 'User not authenticated' });
+        }
+
+        // Call the service to get the history for the user
+        const history = await sightingService.getSightingHistoryByUserId(user_id);
+
+        return res.status(200).json({
             success: true,
-            message: 'Feature not yet implemented',
-            data: [],
+            message: 'Sighting history retrieved successfully',
+            data: history,
         });
     } catch (error) {
         console.error('Error handling sighting history: ', error);
