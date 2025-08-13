@@ -1,4 +1,5 @@
 import * as ort from "onnxruntime-web";
+import { useBootstrapMinBreakpoint } from "react-bootstrap/esm/ThemeProvider";
 
 const MODEL_KEY = "local-model";
 const MODEL_URL = process.env.PUBLIC_URL +  "/models/model_v0.2.onnx";
@@ -36,4 +37,22 @@ export async function loadModel() {
 
     console.log("Model loaded into memory");
     return session;
+}
+
+// Model will be stored in IndexedDB. Current Option. Maybe add Cache API Option later for possible faster load times
+async function storeModel(arrayBuffer){
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("ModelStorage", 1);
+        request.onupgradeneeded = () => {
+            request.result.createObjectStore("models");
+        };
+        request.onsuccess = () => {
+            const db = request.result;
+            const tx = db.transaction("models", "readwrite");
+            tx.objectStore("models").put(arrayBuffer, MODEL_KEY);
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        };
+        request.onerror = () => reject(request.error);
+    });
 }
