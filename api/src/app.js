@@ -4,10 +4,29 @@ import cors from 'cors';
 
 const app = express();
 
+const allowedOrigins = [
+	'https://bushbuddy-dev.onrender.com/',
+	'https://bush-buddy.onrender.com/',
+	'http://localhost',
+	'http://127.0.0.1',
+];
+
 app.use(cors({
-  origin: 'http://localhost:3001', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+	origin: (origin, callback) => {
+		if (!origin) return callback(null, true);
+
+		if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) {
+			return callback(null, true);
+		}
+
+		if (allowedOrigins.includes(origin)) {
+			return callback(null, true);
+		}
+		
+		return callback(new Error('Not allowed by CORS'));
+	},
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.options('*', cors());

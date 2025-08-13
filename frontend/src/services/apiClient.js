@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:3000",  // just for local testing
+    baseURL: "https://bushbuddy-api-dev.onrender.com/",
     headers: {
         "Content-Type": "application/json",
     },
