@@ -10,17 +10,48 @@ import LandingPage from './pages/LandingPage';
 import AboutPage from './pages/AboutPage';
 import RegisterPage from './pages/RegisterPage';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout /> }>
-          <Route path="/main" element={<MainScreen />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/capture" element={<CapturePage />} />
-          <Route path="/feed" element={<FeedScreen />} />
-          <Route path="/profile" element={<ProfilePage />} />
+        <Route element={<Layout />}>
+          <Route
+            path="/main"
+            element={
+              <ProtectedRoute> <MainScreen /> </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/map"
+            element={
+              <ProtectedRoute> <MapPage /> </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/capture"
+            element={
+              <ProtectedRoute> <CapturePage /> </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRoute> <FeedScreen /> </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute> <ProfilePage /> </ProtectedRoute>
+            }
+          />
+
         </Route>
         <Route path="/login" element={<AuthScreen />} />
         <Route path="/about" element={<AboutPage />} />
