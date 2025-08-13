@@ -71,13 +71,14 @@ async function runModelInference(file) {
 
         // Run the model
         const results = await session.run(feeds);
-       
+
+        // YOLO models typically output a tensor with shape [1, number_of_classes + 4, number_of_detections].
         // The output name is usually 'output'.
-        const outputTensor = results['output0']; // The output name might be 'output' or 'output0' depending on the model version.
+        const outputTensor = results['output0']; // NOTE: The output name might be 'output' or 'output0' depending on the model version.
         const outputData = outputTensor.data;
 
         const identifications = [];
-        const confidenceThreshold = 0.5; // Adjust this value as needed (For the bushbuck etc)
+        const confidenceThreshold = 0.5; // Adjust this value as needed(For the bushbuck etc)
         
         // The order of these names must correspond to our model's class IDs.
         const animalClasses = [
@@ -154,21 +155,24 @@ async function runModelInference(file) {
     }
 }
 
+/**
+ * Creates a new sighting by running model inference and saving the result.
+ * @param {string} user_id - The ID of the user creating the sighting.
+ * @param {Buffer} file - The image data as a Buffer.
+ * @param {object} geolocation - The geolocation data of the sighting.
+ * @returns {Promise<object>} An object containing the identified animals and the image URL.
+ */
 async function createSighting(user_id, file, geolocation) {
     // === AI integration starts here ===
     const identifications = await runModelInference(file);
     // === AI integration ends here ===
 
     try {
-        // in future check whether file is image or audio
         const image_url = await sightingRepository.uploadSightingFile(file);
         const sightings = [];
 
         if (identifications.length === 0) {
-            // Handle case where no animals were identified
             console.warn("No animals identified in the image.");
-            // Might want to save a sighting with a 'Unknown' or 'No detection' label?
-            // For now, it will not save any sightings.
             return { animals: [], image: await sightingRepository.fetchSightingImage(image_url) };
         }
 
@@ -187,21 +191,35 @@ async function createSighting(user_id, file, geolocation) {
 }
 
 /**
- * Retrieves all sightings for a given user from the database.
- * @param {string} user_id - The ID of the user.
- * @returns {Promise<Array>} - A promise that resolves to an array of sightings.
+ * Retrieves a sighting by its unique ID from the repository.
+ * @param {string} sightingId - The ID of the sighting to retrieve.
+ * @returns {Promise<object>} The sighting object.
  */
-async function getSightingHistoryByUserId(user_id) {
+async function getSightingById(sightingId) {
     try {
-        const history = await sightingRepository.getSightingHistoryByUserId(user_id);
-        return history;
+        return await sightingRepository.getSightingById(sightingId);
     } catch (error) {
-        console.error("Error fetching sighting history:", error);
-        throw new Error('Failed to retrieve sighting history');
+        console.error("Error fetching sighting by ID:", error);
+        throw new Error("Failed to retrieve sighting by ID");
+    }
+}
+
+/**
+ * Retrieves the sighting history for a specific user ID.
+ * @param {string} userId - The ID of the user whose history to fetch.
+ * @returns {Promise<Array<object>>} An array of sighting objects.
+ */
+async function getSightingHistoryByUserId(userId) {
+    try {
+        return await sightingRepository.getSightingHistoryByUserId(userId);
+    } catch (error) {
+        console.error("Error fetching sighting history by user ID:", error);
+        throw new Error("Failed to retrieve sighting history");
     }
 }
 
 export const sightingService = {
     createSighting,
+    getSightingById,
     getSightingHistoryByUserId,
 };
