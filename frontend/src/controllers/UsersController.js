@@ -1,5 +1,5 @@
-import { loginUser } from "../services/userService";
-import { LoginRequest } from "../models/UserModel";
+import { loginUser, registerUser } from "../services/userService";
+import { LoginRequest, RegisterRequest } from "../models/UserModel";
 
 export async function handleLogin(username, password) {
     try {
@@ -9,10 +9,26 @@ export async function handleLogin(username, password) {
         localStorage.setItem("token", user.token);
 
         return { success: true, user };
-    } catch (error) {
+    } catch(error) {
         return {
             success: false,
             message: error.response?.data?.message || "Login Failed",
+        };
+    }
+}
+
+export async function handleRegister(username, email, password) {
+    try {
+        const registerRequest = new RegisterRequest({ username, email, password});
+        const user = await registerUser(registerRequest);
+
+        localStorage.setItem("token", user.token);
+
+        return { success:true, user };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Register User Failed",
         };
     }
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import './AuthScreen.css';
 import Logo from '../assets/EpiUseLogo.png';
@@ -17,6 +16,9 @@ const AuthScreen = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
+
+    console.log(username);
+
     const result = await handleLogin(username, password);
 
     if(result.success) {
@@ -44,10 +46,10 @@ const AuthScreen = () => {
           <div className="input-icon-wrapper">
             <input
               type="text"
-              // {...register("userName", { required: true })}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
               value={username}
+              required
             />
             <span className="input-icon"><FaUser></FaUser></span>
           </div>
@@ -56,23 +58,24 @@ const AuthScreen = () => {
           <div className="input-icon-wrapper">
             <input
               type="password"
-              // {...register("password", { required: true })}
               value={password}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             <span className="input-icon"><FaLock></FaLock></span>
           </div>
           {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
-          <div className="options-row">
+{/* Uncomment this when functionality is implemented */}
+          {/* <div className="options-row">
             <label className="remember-me">
               <input type="checkbox" />
               Remember me
             </label>
 
             <a href="/forgot-password">Forgot password?</a>
-          </div>
+          </div> */}
 
           {error && <p className="text-red-500 text-sm mb-3" color='red'>{error}</p>}
 

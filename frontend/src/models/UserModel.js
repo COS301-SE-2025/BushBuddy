@@ -10,3 +10,11 @@ export class LoginRequest {
         this.password = password;
     }
 }
+
+export class RegisterRequest {
+    constructor({ username, email, password }) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+}
