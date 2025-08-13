@@ -11,6 +11,7 @@ import AboutPage from './pages/AboutPage';
 import RegisterPage from './pages/RegisterPage';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import NotFoundPage from './pages/error_pages/404_Page';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/login" element={<AuthScreen />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
