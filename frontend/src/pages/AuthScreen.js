@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AuthScreen.css';
 import Logo from '../assets/EpiUseLogo.png';
 import BushBuddy from '../assets/BushBuddy.webp';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
 
 import { handleLogin } from '../controllers/UsersController';
@@ -12,16 +12,18 @@ const AuthScreen = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+
+  const handleToggle = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   async function onSubmit(e) {
     e.preventDefault();
-
-    console.log(username);
-
     const result = await handleLogin(username, password);
 
-    if(result.success) {
+    if (result.success) {
       navigate("/main");
     } else {
       setError(result.message);
@@ -57,17 +59,24 @@ const AuthScreen = () => {
 
           <div className="input-icon-wrapper">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span className="input-icon"><FaLock></FaLock></span>
+            <span
+              className='input-icon'
+              onClick={handleToggle}
+              role="button"
+              tabIndex={0}
+            >
+              {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={25} />}
+            </span>
           </div>
           {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
-{/* Uncomment this when functionality is implemented */}
+          {/* Uncomment this when functionality is implemented */}
           {/* <div className="options-row">
             <label className="remember-me">
               <input type="checkbox" />
