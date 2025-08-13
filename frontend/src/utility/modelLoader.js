@@ -24,3 +24,16 @@ export async function downloadModel() {
     await storeModel(arrayBuffer);
     console.log("Model downloaded locally and stored");
 }
+
+export async function loadModel() {
+    const storedModel = await getStoredModel();
+    if(!storedModel) throw new Error("No model found in storage");
+
+    console.log("Loading model from storage");
+    const session = await ort.InferenceSession.create(storedModel, {
+        executionProviders: ["wasm"],
+    });
+
+    console.log("Model loaded into memory");
+    return session;
+}
