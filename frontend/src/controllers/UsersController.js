@@ -6,8 +6,6 @@ export async function handleLogin(username, password) {
         const loginRequest = new LoginRequest({ username, password });
         const user = await loginUser(loginRequest);
 
-        localStorage.setItem("token", user.token);
-
         return { success: true, user };
     } catch(error) {
         return {
@@ -21,8 +19,6 @@ export async function handleRegister(username, email, password) {
     try {
         const registerRequest = new RegisterRequest({ username, email, password});
         const user = await registerUser(registerRequest);
-
-        localStorage.setItem("token", user.token);
 
         return { success:true, user };
     } catch(error) {

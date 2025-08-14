@@ -1,15 +1,13 @@
 import express from 'express';
 import proxy from 'express-http-proxy';
 import cors from 'cors';
+import dotenv from 'dotenv'
 
 const app = express();
 
-const allowedOrigins = [
-	'https://bushbuddy-dev.onrender.com/',
-	'https://bush-buddy.onrender.com/',
-	'http://localhost',
-	'http://127.0.0.1',
-];
+dotenv.config();
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS;
 
 app.use(cors({
 	origin: (origin, callback) => {
@@ -26,7 +24,8 @@ app.use(cors({
 		return callback(new Error('Not allowed by CORS'));
 	},
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-	allowedHeaders: ['Content-Type', 'Authorization']
+	allowedHeaders: ['Content-Type', 'Authorization'],
+	credentials: true
 }));
 
 app.options('*', cors());
