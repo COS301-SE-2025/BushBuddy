@@ -61,6 +61,11 @@ const CapturePage = () => {
 
   }, [session]);
 
+  const preprocessVideoFrame = (video) => {
+    // TODO : Convert HTML video frame into ONNX tensor
+    return null;
+  }
+
 
   const captureImage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
