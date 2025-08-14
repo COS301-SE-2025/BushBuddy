@@ -1,7 +1,34 @@
 import express from 'express';
 import proxy from 'express-http-proxy';
+import cors from 'cors';
+import dotenv from 'dotenv'
 
 const app = express();
+
+dotenv.config();
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS;
+
+app.use(cors({
+	origin: (origin, callback) => {
+		if (!origin) return callback(null, true);
+
+		if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) {
+			return callback(null, true);
+		}
+
+		if (allowedOrigins.includes(origin)) {
+			return callback(null, true);
+		}
+		
+		return callback(new Error('Not allowed by CORS'));
+	},
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization'],
+	credentials: true
+}));
+
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -17,6 +44,8 @@ app.use((req, res, next) => {
 	if (publicRoutes.includes(req.path)) {
 		return next(); // Skip authentication for public routes
 	}
+
+	res.header("Access-Control-Allow-Origin", "*");
 
 	// user authentication through JWT etc. can be done here
 	console.log(`Request received: ${req.method} ${req.url}`);
