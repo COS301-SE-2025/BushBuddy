@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthScreen from './pages/AuthScreen';
 import MainScreen from './pages/MainScreen';
