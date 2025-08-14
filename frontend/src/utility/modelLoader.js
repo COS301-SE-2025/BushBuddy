@@ -56,3 +56,21 @@ async function storeModel(arrayBuffer){
         request.onerror = () => reject(request.error);
     });
 }
+
+async function getStoredModel() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("ModelStorage", 1);
+        request.onupgradeneeded = () => {
+            request.result.createObjectStore("models");
+        };
+        request.onsuccess = () => {
+            const db = request.result;
+            const tx = db.transaction("models", "readonly");
+            const getRequest = tx.objectStore("models").get(MODEL_KEY);
+            getRequest.onsuccess = () => resolve(getRequest.result);
+            getRequest.onerror = () => reject(getRequest.error);
+        };
+        request.onerror = () => reject(request.error);
+    });
+}
+
