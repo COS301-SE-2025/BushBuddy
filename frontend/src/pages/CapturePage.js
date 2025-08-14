@@ -1,16 +1,37 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
+import { loadModel } from '../utility/modelStorageOperations';
 import './CapturePage.css';
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [session, setSession] = useState(null);
+  const [loadingModel, setLoadingModel] = useState(true);
 
   const videoConstraints = {
     width: { ideal: 1280 },
     height: { ideal: 720 },
     facingMode: { ideal: "environment" },
   };
+
+  // Loads model once page mounts. Might change to loading models once app starts if delay is too bad
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const modelSession = await loadModel();
+        setSession(modelSession);
+        console.log("Detection Model Ready...");
+      } catch (err){
+        console.error("Error loading model:", err);
+      } finally {
+        setLoadingModel(false);
+      }
+    };
+    init();
+  });
+
 
   const captureImage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
