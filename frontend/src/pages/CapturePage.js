@@ -66,6 +66,12 @@ const CapturePage = () => {
     return null;
   }
 
+  const drawBoundingBoxes = (results, video) => {
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+    // TODO: Loop through detection results and draw rectangles + labels
+  }
 
   const captureImage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
