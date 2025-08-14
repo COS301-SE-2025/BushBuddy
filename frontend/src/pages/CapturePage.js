@@ -32,6 +32,35 @@ const CapturePage = () => {
     init();
   });
 
+  // Run live detection loop
+  useEffect(() =>{
+    if(!session) return;
+
+    let animationFrameID;
+    const detectFrame = async () => {
+      if ( webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4) {
+        const video = webcamRef.current.video;
+        
+        // Convert vid frame to tensor
+        const tensor = preprocessVideoFrame(video);
+
+        // Run detection
+        const results = await session.run({ images: tensor});
+
+        // Draw bounding box(s) 
+        drawBoundingBoxes(results, video);
+
+        tensor.dispose?.();
+      }
+
+      animationFrameID = requestAnimationFrame(detectFrame);
+    };
+
+    detectFrame();
+    return () => cancelAnimationFrame(animationFrameID);
+
+  }, [session]);
+
 
   const captureImage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
