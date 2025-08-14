@@ -1,5 +1,4 @@
 import * as ort from "onnxruntime-web";
-import { useBootstrapMinBreakpoint } from "react-bootstrap/esm/ThemeProvider";
 
 const MODEL_KEY = "local-model";
 const MODEL_URL = process.env.PUBLIC_URL +  "/models/model_v0.2.onnx";

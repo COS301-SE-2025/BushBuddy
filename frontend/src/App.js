@@ -9,8 +9,15 @@ import ProfilePage from './pages/ProfilePage';
 import LandingPage from './pages/LandingPage';
 import AboutPage from './pages/AboutPage'
 import Layout from './components/Layout';
+import React, {useEffect} from 'react';
+import { downloadModel } from './utility/modelStorageOperations';
 
 function App() {
+  useEffect(() => {
+    downloadModel().catch(err => {
+      console.error("Failed to download model on launch:", err);
+    });
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
