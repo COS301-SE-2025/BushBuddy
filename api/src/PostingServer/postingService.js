@@ -1,8 +1,8 @@
 import { postingRepository } from './postingRepository.js';
 
-async function createPost(image, details) {
+async function createPost(imageBuffer , details) {
     try{
-        const result = await postingRepository.createPost(image,details);
+        const result = await postingRepository.createPost(imageBuffer ,details);
         
         return result;
 
@@ -14,10 +14,11 @@ async function createPost(image, details) {
 
 async function fetchPost(post_id) {
     try{
-        const post = await postingRepository.fetchPost(post_id);
-        post.image_url = await postingRepository.fetchPostImage(post.image_url);
+        const result = await postingRepository.fetchPost(post_id);
+        result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
+        result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
 
-        return post;
+        return result;
     } catch (error){
         console.error("Error in postingService.fetchPost:", error);
         throw new Error('Failed to fetch post');
@@ -28,10 +29,8 @@ async function fetchAllUserPosts(user_id) {
     try {
         const allPosts = await postingRepository.fetchAllUserPosts(user_id);
 
-		let sortedPosts = animals.sort((a, b) => b.created_at.localeCompare(a.created_at));
-
-        for(const post of sortedPosts){
-            postingService.image_url = await postingRepository.fetchPostImage(post.image_url);
+        for(const post of allPosts){
+            post.image_url = await postingRepository.fetchPostImage(post.image_url);
         }
 
         return allPosts;
@@ -45,10 +44,8 @@ async function fetchAllPosts() {
     try {
         const allPosts = await postingRepository.fetchAllPosts();
 
-		let sortedPosts = animals.sort((a, b) => b.created_at.localeCompare(a.created_at));
-
-        for(const post of sortedPosts){
-            postingService.image_url = await postingRepository.fetchPostImage(post.image_url);
+        for(const post of allPosts){
+            post.image_url = await postingRepository.fetchPostImage(post.image_url);
         }
 
         return allPosts;

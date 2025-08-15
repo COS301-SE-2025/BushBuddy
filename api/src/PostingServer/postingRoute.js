@@ -6,14 +6,14 @@ postingApp.use(express.json());
 
 //new post endpoint
 postingApp.post('/', postingController.createPost);
+//fetch all posts endpoint
+postingApp.get('/all', postingController.fetchAllPosts);
 //view post endpoint
 postingApp.get('/:postId', postingController.fetchPost);
 //fetch all user posts endpoint
 postingApp.get('/userPosts', postingController.fetchAllUserPosts);
-//fetch all posts endpoint
-postingApp.get('/all', postingController.fetchAllPosts);
 //like post endpoint
-postingApp.patch('/:postId/like', postingController.likePost);
+postingApp.post('/:postId/like', postingController.likePost);
 //add comment endpoint
 postingApp.post('/:postId/comment', postingController.addComment);
 

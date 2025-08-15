@@ -6,16 +6,18 @@ async function createPost(req, res) {
 			return res.status(400).json({ success: false, message: 'No image uploaded' });
 		}
 
-		const image = req.file.buffer;
+		//add in cookie to userId auth
+
+		const imageBuffer = req.file.buffer;
 		const details = { 
 			user_id: req.body.user_id, 
 			identification_id: req.body.identification_id,
 			image_url: req.body.image_url,
 			description: req.body.description, 
-			share_location: req.body.sharLocation, 
+			share_location: req.body.shareLocation, 
 		}
 
-		result = await postingService.createPost(image, details);
+        const result = await postingService.createPost(imageBuffer, details);
 
 		if(!result){
 			return res.status(400).json({ 
@@ -42,10 +44,12 @@ async function fetchPost(req, res) {
 	try {
 		if(!req.params.postId)
 		{
-			return res.status(400).json({ success: false, message: 'Post ID is required' });
+			return res.status(400).json({ success: false, message: 'Post ID is required' })
 		}
 
-		const result = await postingService.fetchPost(req.params.postId);
+		const postId = parseInt(req.params.postId, 10);
+
+		const result = await postingService.fetchPost(postId);
 
 		if(!result){
 			return res.status(400).json({ 
@@ -57,10 +61,7 @@ async function fetchPost(req, res) {
 		return res.status(201).json({
 			success: true,
 			message: 'Post fetched successfully',
-			data: {
-				result,
-				postComments
-			}
+			data: result
 		});
 	} catch (error) {
 		console.error('Error fetching post: ', error);
@@ -73,12 +74,15 @@ async function fetchPost(req, res) {
 
 async function fetchAllUserPosts(req, res) {
 	try {
+		
+		//add in cookie to userId auth
+
 		const result = await postingService.fetchAllUserPosts(req.body.user_id);
 
 		if(!result){
 			return res.status(400).json({
 				success: false,
-				message: 'Falied to fetch users posts'
+				message: 'Failed to fetch users posts'
 			});
 		}
 
@@ -104,12 +108,12 @@ async function fetchAllPosts(req, res) {
 		if(!result){
 			return res.status(400).json({
 				success: false,
-				message: 'Falied to fetch posts'
+				message: 'Failed to fetch posts'
 			});
 		}
 
 		return res.status(200).json({
-			succes:true,
+			success:true,
 			message: 'Posts fetched successfully',
 			data: result
 		});
@@ -133,7 +137,9 @@ async function likePost(req, res) {
 			});
 		}
 
-		result = await postingService.likePost(req.params.postId, req.body.user_id);
+		//add in cookie to userId auth
+
+		const result = await postingService.likePost(req.params.postId, req.body.user_id);
 
 		if(!result){
 			return res.status(400).json({
@@ -142,9 +148,9 @@ async function likePost(req, res) {
 			});
 		}
 
-		return res.satus(200).json({
+		return res.status(200).json({
 			success: true,
-			message: 'Post like successfully updated'
+			message: 'Post liked successfully'
 		});
 
 	} catch (error) {
@@ -172,7 +178,7 @@ async function addComment(req, res) {
 			comment: req.body.comment,
 		}
 
-		result = await postingService.commentPost(data);
+		const result = await postingService.commentPost(data);
 
 		if(!result){
 			return res.status(400).json({

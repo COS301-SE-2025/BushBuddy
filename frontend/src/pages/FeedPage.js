@@ -5,6 +5,8 @@ import SearchBar from '../components/SearchBar.jsx';
 import FeedFilters from '../components/FeedFilters.jsx';
 import FeedCard from '../components/FeedCard.jsx';
 
+import { fetchAllPosts } from '../controllers/PostsController';
+
 const FeedPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,6 +23,16 @@ const FeedPage = () => {
 
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
+
+  const feedPosts = async () => {
+    try{
+      const posts = await fetchAllPosts();
+      return posts;
+    }
+    catch(error) {
+      console.error("Error fetching posts:", error);
+    }
+  }
 
   const feedEntries = [
     { 
