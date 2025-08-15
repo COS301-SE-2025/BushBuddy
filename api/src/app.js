@@ -46,7 +46,7 @@ const publicRoutes = ['/auth/register', '/auth/login'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
-	console.log('Testing CI/CD');
+	// console.log('Testing CI/CD');
 	// Check if the request is for a public route
 	if (publicRoutes.includes(req.path)) {
 		return next(); // Skip authentication for public routes
