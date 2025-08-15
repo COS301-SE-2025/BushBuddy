@@ -3,6 +3,7 @@ import proxy from 'express-http-proxy';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -33,7 +34,8 @@ app.use(
 
 app.options('*', cors());
 
-app.use(express.json());
+// app.use(express.json());
+app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
@@ -44,7 +46,7 @@ const publicRoutes = ['/auth/register', '/auth/login'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
-	console.log('Testing CI/CD');
+	// console.log('Testing CI/CD');
 	// Check if the request is for a public route
 	if (publicRoutes.includes(req.path)) {
 		return next(); // Skip authentication for public routes
@@ -107,6 +109,11 @@ app.use(
 // default route for handling 404 errors
 app.use((req, res) => {
 	res.status(404).json({ error: 'Not Found' });
+});
+
+app.use((err, req, res, next) => {
+	console.error('Global error handler:', err);
+	res.status(500).json({ error: 'Internal Server Error' });
 });
 
 export default app;

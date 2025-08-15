@@ -3,6 +3,9 @@ import request from 'supertest';
 import app from '../../src/app.js';
 import db from '../../src/db/index.js';
 import authApp from '../../src/AuthenticationServer/authRoute.js';
+import jwt from 'jsonwebtoken';
+
+const token = jwt.sign({ id: 1, username: 'Test User', admin: false }, process.env.JWT_SECRET);
 
 let gatewayServer;
 let authServer;
@@ -45,7 +48,7 @@ describe('Full Auth Flow', () => {
 			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
 			expect(res.body).toHaveProperty('message', 'User registered successfully');
 		} catch (error) {
-			// console.error('Error during registration test:', error);
+			console.error('Error during registration test:', error);
 			throw new Error(`Registration test failed: ${error.message}`);
 		}
 	});
@@ -69,21 +72,21 @@ describe('Full Auth Flow', () => {
 			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
 			expect(res.body).toHaveProperty('message', 'User logged in successfully');
 		} catch (error) {
-			// console.error('Error during login test:', error);
+			console.error('Error during login test:', error);
 			throw new Error(`Login test failed: ${error.message}`);
 		}
 	});
 
 	test('POST using unimplemented endpoint should return 404', async () => {
 		try {
-			const res = await request(app).post('/unimplemented-endpoint').send({
+			const res = await request(app).post('/unimplemented-endpoint').set('Cookie', `token=${token}`).send({
 				data: 'test',
 			});
 
 			expect(res.statusCode).toBe(404);
 			expect(res.body).toHaveProperty('error', 'Not Found');
 		} catch (error) {
-			// console.error('Error during unimplemented endpoint test:', error);
+			console.error('Error during unimplemented endpoint test:', error);
 			throw new Error(`Unimplemented endpoint test failed: ${error.message}`);
 		}
 	});
