@@ -16,6 +16,10 @@ jobs:
     defaults:
       run:
         working-directory: api
+    env:
+      ENVIRONMENT : 'dev'
+      DATABASE_URL_DEV : ${{secrets.DATABASE_URL_DEV}}
+      JWT_SECRET : ${{secrets.JWT_SECRET}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
