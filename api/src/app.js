@@ -52,14 +52,14 @@ app.use((req, res, next) => {
 		return next(); // Skip authentication for public routes
 	}
 
-	res.header('Access-Control-Allow-Origin', '*');
+	// res.header('Access-Control-Allow-Origin', '*');
 
 	// user authentication through JWT etc. can be done here
 	const token = req.cookies.token;
 	if (!token) return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
 
 	try {
-		const decodedUser = jwt.decode(token, process.env.JWT_SECRET);
+		const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
 		req.user = decodedUser;
 	} catch (error) {
 		return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
@@ -75,6 +75,12 @@ app.use(
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/auth', '');
 		},
+		proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+            if (srcReq.user) {
+                proxyReqOpts.headers['x-user-data'] = JSON.stringify(srcReq.user);
+            }
+            return proxyReqOpts;
+        },
 	})
 );
 

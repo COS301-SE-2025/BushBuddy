@@ -53,7 +53,9 @@ async function logoutUser(req, res) {
 
 async function checkLoginStatus(req, res) {
 	try {
-		const user = req.user;
+		const userHeader = req.headers['x-user-data'];
+        const user = userHeader ? JSON.parse(userHeader) : null;
+
 		if (!user) {
 			return res.status(401).json({ success: false, message: 'User not logged in' });
 		}
@@ -68,5 +70,5 @@ export const authController = {
 	registerUser,
 	loginUser,
 	logoutUser,
-	checkLoginStatus,
+	checkLoginStatus
 };
