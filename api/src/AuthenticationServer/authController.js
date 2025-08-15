@@ -13,7 +13,7 @@ async function registerUser(req, res) {
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
-		res.status(201).json({ success: true, message: 'User registered successfully' });
+		res.status(201).json({ success: true, message: 'User registered successfully', data: { username } });
 	} catch (error) {
 		// console.error('Error in registerUser:', error);
 		res.status(500).json({ success: false, message: 'Registration failed' });
@@ -33,7 +33,7 @@ async function loginUser(req, res) {
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
-		res.status(200).json({ success: true, message: 'User logged in successfully' });
+		res.status(200).json({ success: true, message: 'User logged in successfully', data: { username } });
 	} catch (error) {
 		// console.error('Error in loginUser:', error);
 		res.status(500).json({ success: false, message: 'Login failed' });
@@ -51,8 +51,22 @@ async function logoutUser(req, res) {
 	}
 }
 
+async function checkLoginStatus(req, res) {
+	try {
+		const user = req.user;
+		if (!user) {
+			return res.status(401).json({ success: false, message: 'User not logged in' });
+		}
+
+		return res.status(200).json({ success: true, message: 'User authenticated', data: user.username });
+	} catch (error) {
+		return res.status(500).json({ success: false, message: 'Internal server error' });
+	}
+}
+
 export const authController = {
 	registerUser,
 	loginUser,
 	logoutUser,
+	checkLoginStatus,
 };

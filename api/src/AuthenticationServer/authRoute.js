@@ -8,5 +8,6 @@ authApp.use(express.json());
 authApp.post('/register', authController.registerUser);
 authApp.post('/login', authController.loginUser);
 authApp.post('/logout', authController.logoutUser);
+authApp.get('/status', authController.checkLoginStatus);
 
 export default authApp;
