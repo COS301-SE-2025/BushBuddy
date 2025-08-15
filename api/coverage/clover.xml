@@ -163,7 +163,23 @@
         <line num="140" count="1" type="stmt"/>
         <line num="143" count="1" type="stmt"/>
         <line num="145" count="1" type="stmt"/>
-        <line num="149" count="2" type="stmt"/>
+        <line num="147" count="1" type="stmt"/>
+        <line num="158" count="3" type="stmt"/>
+        <line num="159" count="3" type="stmt"/>
+        <line num="160" count="3" type="stmt"/>
+        <line num="162" count="2" type="stmt"/>
+        <line num="164" count="2" type="stmt"/>
+        <line num="167" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="169" count="1" type="stmt"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="172" count="1" type="stmt"/>
+        <line num="174" count="1" type="stmt"/>
+        <line num="175" count="1" type="stmt"/>
+        <line num="177" count="1" type="stmt"/>
+        <line num="179" count="2" type="stmt"/>
+        <line num="181" count="1" type="stmt"/>
+        <line num="182" count="1" type="stmt"/>
+        <line num="186" count="2" type="stmt"/>
       </file>
       <file name="discoveryRoute.js" path="C:\Users\ruane\OneDrive\Documents\ReturnZero\AI-Powered-African-Wildlife-Detection\api\src\DiscoveryServer\discoveryRoute.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -180,7 +196,12 @@
         <line num="13" count="2" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.db">
