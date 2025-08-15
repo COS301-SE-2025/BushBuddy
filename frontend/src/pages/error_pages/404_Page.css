@@ -1,0 +1,13 @@
+.not-found-page {
+    padding: 10px;
+    background-color: beige;
+    height: 100vh;
+}
+
+.not-found-content {
+    padding: 10px;
+}
+
+.image-notice {
+    color: darkgreen;
+}

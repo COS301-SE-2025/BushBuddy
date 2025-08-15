@@ -1,4 +1,3 @@
 [MASTER]
-disable=missing-docstring,too-many-arguments,too-many-locals,import-error
-max-line-length=100
+disable=missing-docstring,too-many-arguments,too-many-locals,import-error,unspecified-encoding,line-too-long,unused-variable,redefined-outer-name
 extension-pkg-whitelist=torch,ultralytics

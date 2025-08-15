@@ -1,10 +1,6 @@
 name: Linting and Testing CI
 
 on:
-  push:
-    branches:
-      - dev-AI
-      - dev
   pull_request:
     branches:
       - main
