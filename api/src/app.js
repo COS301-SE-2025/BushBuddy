@@ -40,7 +40,7 @@ app.use(cookieParser());
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
 const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
-const POST_PORT = process.env.POST_PORT || 4003;
+const POST_PORT = process.env.POST_PORT || 4004;
 
 const publicRoutes = ['/auth/register/', '/auth/login/', '/auth/status/'];
 
