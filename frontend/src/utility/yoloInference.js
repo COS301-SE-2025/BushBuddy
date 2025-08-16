@@ -63,9 +63,36 @@ const postprocessYOLO = (output, labels, confidenceThreshold = 0.5, iouThreshold
     }
 
     // apply nms
-    return nonMaxSuppresion(detections, iouThreshold);
+    return nonMaxSuppression(detections, iouThreshold);
 }
 
+const nonMaxSuppression = (boxes, iouThreshold = 0.45) => {
+  boxes.sort((a, b) => b.confidence - a.confidence);
+  const keep = [];
+
+  while (boxes.length) {
+    const current = boxes.shift();
+    keep.push(current);
+
+    boxes = boxes.filter((b) => {
+      const xx1 = Math.max(current.x1, b.x1);
+      const yy1 = Math.max(current.y1, b.y1);
+      const xx2 = Math.min(current.x2, b.x2);
+      const yy2 = Math.min(current.y2, b.y2);
+
+      const w = Math.max(0, xx2 - xx1);
+      const h = Math.max(0, yy2 - yy1);
+      const inter = w * h;
+      const areaB = (b.x2 - b.x1) * (b.y2 - b.y1);
+      const areaA = (current.x2 - current.x1) * (current.y2 - current.y1);
+
+      const iou = inter / (areaA + areaB - inter);
+      return iou < iouThreshold;
+    });
+  }
+
+  return keep;
+};
 
 const drawBoundingBoxes = (results, video) => {
     const ctx = canvasRef.current.getContext("2d");
