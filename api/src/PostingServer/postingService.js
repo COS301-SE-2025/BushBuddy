@@ -26,9 +26,7 @@ async function fetchAllPosts() {
             post.user_id = await postingRepository.fetchUserName(post.user_id);
 
             //edit date format
-            const date = new Date(post.created_at);
-            console.log(date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }));
-            post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
+            post.created_at = formatTimestamp(post.created_at);
         }
 
         return allPosts;
@@ -45,12 +43,10 @@ async function fetchAllUserPosts(user_id) {
         for(const post of allPosts){
             //fetch image from storage
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
-            post.post.user_id = await postingRepository.fetchUserName(post.user_id);
+            post.user_id = await postingRepository.fetchUserName(post.user_id);
 
             //edit date format
-            const date = new Date(post.created_at);
-            console.log(date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }));
-            post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
+            post.created_at = formatTimestamp(post.created_at);
         }
 
         return allPosts;
@@ -66,8 +62,11 @@ async function fetchPost(post_id) {
         result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
 
-        const date = new Date(result.post.created_at);
-        result.post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
+        result.post.created_at = formatTimestamp(result.post.created_at);
+
+        for(const comment of result.comments){
+            comment.user_id = await postingRepository.fetchUserName(comment.user_id);
+        }
 
         return result;
     } catch (error){
@@ -96,6 +95,16 @@ async function addComment(data) {
         console.error("Error in postingService.likePost:", error);
         throw new Error('Failed to like post');
     }
+}
+
+function formatTimestamp(timestamp){
+    const date = new Date(timestamp);
+
+    const dayMonth = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear();
+    const newTime = date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+    const output = `${dayMonth} ${newTime}`;
+    return output;
 }
 
 export const postingService = {
