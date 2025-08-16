@@ -76,7 +76,7 @@ async function fetchAllPosts(req, res) {
 
 async function fetchAllUserPosts(req, res) {
 	try {
-		const result = await postingService.fetchAllUserPosts(req.user.user_id);
+		const result = await postingService.fetchAllUserPosts(req.user.id);
 
 		if(!result){
 			return res.status(400).json({
@@ -192,10 +192,10 @@ async function addComment(req, res) {
 		const data = {
 			user_id: req.user.id,
 			post_id: req.params.postId,
-			comment: req.body.comment,
+			comment_text: req.body.comment,
 		}
 
-		const result = await postingService.commentPost(data);
+		const result = await postingService.addComment(data);
 
 		if(!result){
 			return res.status(400).json({
@@ -206,8 +206,7 @@ async function addComment(req, res) {
 
 		return res.status(201).json({
 			success: true,
-			message: 'Comment added to post successfully',
-			data: result
+			message: 'Comment added to post successfully'
 		});
 
 	} catch (error) {
