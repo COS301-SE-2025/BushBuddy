@@ -39,6 +39,9 @@
 
 .description {
   margin: 0 0 1% 0;
+  font-size: 0.9em;
+  color: rgb(58, 58, 58);
+  text-align: left;
 }
 
 .engagement {
