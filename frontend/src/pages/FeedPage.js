@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FeedPage.css';
 import SearchBar from '../components/SearchBar.jsx';
 import FeedFilters from '../components/FeedFilters.jsx';
 import FeedCard from '../components/FeedCard.jsx';
 
-import { fetchAllPosts } from '../controllers/PostsController';
+import { PostsController } from '../controllers/PostsController';
 
 const FeedPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [selectedAnimalFilter, setSelectedAnimalFilter] = useState('all');
+  const [posts, setPosts] = useState([]);
+  
   const animalFilters = [
-      { type: 'all', icon: 'pets', color: '#FF6B35' },
-      { type: 'elephant', icon: 'pets', color: '#4CAF50' },
+    { type: 'all', icon: 'pets', color: '#FF6B35' },
+    { type: 'elephant', icon: 'pets', color: '#4CAF50' },
       { type: 'lion', icon: 'warning', color: '#FF9800' },
       { type: 'rhino', icon: 'track-changes', color: '#2196F3' },
       { type: 'antelope', icon: 'nature', color: '#9C27B0' },
       { type: 'bird', icon: 'flight', color: '#00BCD4' }
     ];
-  const [selectedAnimalFilter, setSelectedAnimalFilter] = useState('all');
-
+    
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
-
-  const feedPosts = async () => {
-    try{
-      const posts = await fetchAllPosts();
-      return posts;
-    }
-    catch(error) {
-      console.error("Error fetching posts:", error);
-    }
-  }
-
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await PostsController.handleFetchAllPosts();
+      if (response.success) {
+        console.log(response.posts);
+        setPosts(response.posts.data);
+      } else {
+        console.error(response.message);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
+  
   const feedEntries = [
     { 
       id: '1',
@@ -102,7 +107,7 @@ const FeedPage = () => {
       <SearchBar />
       <FeedFilters />
 
-      {feedEntries.map(entry => (
+      {posts.map(entry => (
         <FeedCard key={entry.id} entry={entry} />
       ))}
     </div>
