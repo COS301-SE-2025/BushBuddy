@@ -94,9 +94,29 @@ const nonMaxSuppression = (boxes, iouThreshold = 0.45) => {
   return keep;
 };
 
-const drawBoundingBoxes = (results, video) => {
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+export const drawBoundingBoxes = (detections, canvas, video) => {
+  const ctx = canvas.getContext("2d");
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
 
-    // TODO: Loop through detection results and draw rectangles + labels
-}
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.font = "16px Arial";
+  ctx.textBaseline = "top";
+
+  detections.forEach((d, i) => {
+    const color = `hsl(${(i * 50) % 360}, 100%, 50%)`;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+
+    const scaleX = vw / 500;
+    const scaleY = vh / 500;
+    const x = d.x1 * scaleX;
+    const y = d.y1 * scaleY;
+    const w = (d.x2 - d.x1) * scaleX;
+    const h = (d.y2 - d.y1) * scaleY;
+
+    ctx.strokeRect(x, y, w, h);
+    ctx.fillText(`${d.label} ${(d.confidence * 100).toFixed(0)}%`, x, y);
+  });
+};
