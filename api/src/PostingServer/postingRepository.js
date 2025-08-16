@@ -32,7 +32,7 @@ async function createPost(imageBuffer, details) {
 
         result = await db.query(query, params);
         
-		return result;
+		return result.rows[0];
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error adding new post: ${error.message}`);
@@ -46,6 +46,20 @@ async function fetchAllPosts() {
         const result = await db.query(query);
 
 		return result.rows;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Error fetching all posts: ${error.message}`);
+	}
+}
+
+async function fetchAllUserPosts(user_id) {
+    try {
+		console.log("User :", user_id);
+		const query = `SELECT * FROM posts WHERE user_id = ${user_id} ORDER BY created_at DECS;`;
+
+        result = await db.query(query);
+
+		return result;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
@@ -67,19 +81,6 @@ async function fetchPost(post_id) {
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching post: ${error.message}`);
-	}
-}
-
-async function fetchAllUserPosts(user_id) {
-    try {
-		const query = `SELECT * FROM posts WHERE post_id = ${user_id} ORDER BY created_at DECS;`;
-
-        result = await db.query(query);
-
-		return result;
-	} catch (error) {
-		console.error(error);
-		throw new Error(`Error fetching all posts: ${error.message}`);
 	}
 }
 

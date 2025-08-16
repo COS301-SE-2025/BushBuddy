@@ -4,6 +4,10 @@ async function createPost(imageBuffer , details) {
     try{
         const result = await postingRepository.createPost(imageBuffer ,details);
         
+        if (!result) {
+            throw new Error();
+        }
+
         return result;
 
     }catch (error){
@@ -17,7 +21,36 @@ async function fetchAllPosts() {
         const allPosts = await postingRepository.fetchAllPosts();
 
         for(const post of allPosts){
+            //fetch image from storage
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
+            post.user_id = await postingRepository.fetchUserName(post.user_id);
+
+            //edit date format
+            const date = new Date(post.created_at);
+            console.log(date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }));
+            post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
+        }
+
+        return allPosts;
+    } catch (error) {
+        console.error("Error in postingService.fetchAllPosts:", error);
+        throw new error('Failed to fetch all posts');
+    }
+}
+
+async function fetchAllUserPosts(user_id) {
+    try {
+        const allPosts = await postingRepository.fetchAllUserPosts(user_id);
+
+        for(const post of allPosts){
+            //fetch image from storage
+            post.image_url = await postingRepository.fetchPostImage(post.image_url);
+            post.post.user_id = await postingRepository.fetchUserName(post.user_id);
+
+            //edit date format
+            const date = new Date(post.created_at);
+            console.log(date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }));
+            post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
         }
 
         return allPosts;
@@ -33,25 +66,13 @@ async function fetchPost(post_id) {
         result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
 
+        const date = new Date(result.post.created_at);
+        result.post.created_at = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" });
+
         return result;
     } catch (error){
         console.error("Error in postingService.fetchPost:", error);
         throw new Error('Failed to fetch post');
-    }
-}
-
-async function fetchAllUserPosts(user_id) {
-    try {
-        const allPosts = await postingRepository.fetchAllUserPosts(user_id);
-
-        for(const post of allPosts){
-            post.image_url = await postingRepository.fetchPostImage(post.image_url);
-        }
-
-        return allPosts;
-    } catch (error) {
-        console.error("Error in postingService.fetchAllPosts:", error);
-        throw new error('Failed to fetch all posts');
     }
 }
 

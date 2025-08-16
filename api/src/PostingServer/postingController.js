@@ -6,15 +6,16 @@ async function createPost(req, res) {
 			return res.status(400).json({ success: false, message: 'No image uploaded' });
 		}
 
-		//add in cookie to userId auth
+        if (!req.user || !req.user.userId) {
+            return res.status(401).json({ success: false, message: 'Unauthorized: User not authenticated' });
+        }
 
 		const imageBuffer = req.file.buffer;
-		const details = { 
-			user_id: req.body.user_id, 
+		const details = {
+			user_id: req.user.id,
 			identification_id: req.body.identification_id,
-			image_url: req.body.image_url,
-			description: req.body.description, 
-			share_location: req.body.shareLocation, 
+			description: req.body.description,
+			share_location: req.body.shareLocation,
 		}
 
         const result = await postingService.createPost(imageBuffer, details);
@@ -51,6 +52,13 @@ async function fetchAllPosts(req, res) {
 			});
 		}
 
+		if(result.rows==0){
+			return res.status(204).json({ 
+				success: true, 
+				message: 'No post found with specified filters' 
+			});
+		}
+
 		return res.status(200).json({
 			success:true,
 			message: 'Posts fetched successfully',
@@ -59,6 +67,39 @@ async function fetchAllPosts(req, res) {
 		
 	} catch (error) {
 		console.error('Error fetching all posts: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
+async function fetchAllUserPosts(req, res) {
+	try {
+		const result = await postingService.fetchAllUserPosts(req.user.user_id);
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch users posts'
+			});
+		}
+
+		if(result.rows==0){
+			return res.status(204).json({
+				success: true,
+				message: 'User has no posts'
+			});
+		}
+
+		return res.status(200).json({
+			success:true,
+			message: 'User posts fetched successfully',
+			data: result
+		});
+		
+	} catch (error) {
+		console.error('Error fetching all user posts: ', error);
 		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
@@ -84,6 +125,13 @@ async function fetchPost(req, res) {
 			});
 		}
 
+		if(result.rows==0){
+			return res.status(204).json({ 
+				success: true, 
+				message: 'No post found with specified id' 
+			});
+		}
+		
 		return res.status(201).json({
 			success: true,
 			message: 'Post fetched successfully',
@@ -91,35 +139,6 @@ async function fetchPost(req, res) {
 		});
 	} catch (error) {
 		console.error('Error fetching post: ', error);
-		res.status(500).json({
-			success: false,
-			error: 'Internal server error',
-		});
-	}
-}
-
-async function fetchAllUserPosts(req, res) {
-	try {
-		
-		//add in cookie to userId auth
-
-		const result = await postingService.fetchAllUserPosts(req.body.user_id);
-
-		if(!result){
-			return res.status(400).json({
-				success: false,
-				message: 'Failed to fetch users posts'
-			});
-		}
-
-		return res.status(200).json({
-			succes:true,
-			message: 'User posts fetched successfully',
-			data: result
-		});
-		
-	} catch (error) {
-		console.error('Error fetching all user posts: ', error);
 		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
@@ -137,9 +156,7 @@ async function likePost(req, res) {
 			});
 		}
 
-		//add in cookie to userId auth
-
-		const result = await postingService.likePost(req.params.postId, req.body.user_id);
+		const result = await postingService.likePost(req.params.postId, req.user.id);
 
 		if(!result){
 			return res.status(400).json({
@@ -171,11 +188,9 @@ async function addComment(req, res) {
 				message: 'Post ID is required'
 			});
 		}
-
-		//add in cookie to userId auth
 		
 		const data = {
-			user_id: req.body.user_id,
+			user_id: req.user.id,
 			post_id: req.params.postId,
 			comment: req.body.comment,
 		}

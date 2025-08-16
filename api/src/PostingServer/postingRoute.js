@@ -8,10 +8,10 @@ postingApp.use(express.json());
 postingApp.post('/', postingController.createPost);
 //fetch all posts endpoint
 postingApp.get('/all', postingController.fetchAllPosts);
-//view post endpoint
-postingApp.get('/:postId', postingController.fetchPost);
 //fetch all user posts endpoint
 postingApp.get('/userPosts', postingController.fetchAllUserPosts);
+//view post endpoint
+postingApp.get('/:postId', postingController.fetchPost);
 //like post endpoint
 postingApp.post('/:postId/like', postingController.likePost);
 //add comment endpoint
