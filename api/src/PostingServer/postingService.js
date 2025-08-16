@@ -12,6 +12,21 @@ async function createPost(imageBuffer , details) {
     }
 }
 
+async function fetchAllPosts() {
+    try {
+        const allPosts = await postingRepository.fetchAllPosts();
+
+        for(const post of allPosts){
+            post.image_url = await postingRepository.fetchPostImage(post.image_url);
+        }
+
+        return allPosts;
+    } catch (error) {
+        console.error("Error in postingService.fetchAllPosts:", error);
+        throw new error('Failed to fetch all posts');
+    }
+}
+
 async function fetchPost(post_id) {
     try{
         const result = await postingRepository.fetchPost(post_id);
@@ -28,21 +43,6 @@ async function fetchPost(post_id) {
 async function fetchAllUserPosts(user_id) {
     try {
         const allPosts = await postingRepository.fetchAllUserPosts(user_id);
-
-        for(const post of allPosts){
-            post.image_url = await postingRepository.fetchPostImage(post.image_url);
-        }
-
-        return allPosts;
-    } catch (error) {
-        console.error("Error in postingService.fetchAllPosts:", error);
-        throw new error('Failed to fetch all posts');
-    }
-}
-
-async function fetchAllPosts() {
-    try {
-        const allPosts = await postingRepository.fetchAllPosts();
 
         for(const post of allPosts){
             post.image_url = await postingRepository.fetchPostImage(post.image_url);

@@ -40,6 +40,32 @@ async function createPost(req, res) {
 	}
 }
 
+async function fetchAllPosts(req, res) {
+	try {
+		const result = await postingService.fetchAllPosts();
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch posts'
+			});
+		}
+
+		return res.status(200).json({
+			success:true,
+			message: 'Posts fetched successfully',
+			data: result
+		});
+		
+	} catch (error) {
+		console.error('Error fetching all posts: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 async function fetchPost(req, res) {
 	try {
 		if(!req.params.postId)
@@ -101,32 +127,6 @@ async function fetchAllUserPosts(req, res) {
 	}
 }
 
-async function fetchAllPosts(req, res) {
-	try {
-		const result = await postingService.fetchAllPosts();
-
-		if(!result){
-			return res.status(400).json({
-				success: false,
-				message: 'Failed to fetch posts'
-			});
-		}
-
-		return res.status(200).json({
-			success:true,
-			message: 'Posts fetched successfully',
-			data: result
-		});
-		
-	} catch (error) {
-		console.error('Error fetching all posts: ', error);
-		res.status(500).json({
-			success: false,
-			error: 'Internal server error',
-		});
-	}
-}
-
 async function likePost(req, res) {
 	try {
 		if(!req.params.postId)
@@ -172,6 +172,8 @@ async function addComment(req, res) {
 			});
 		}
 
+		//add in cookie to userId auth
+		
 		const data = {
 			user_id: req.body.user_id,
 			post_id: req.params.postId,

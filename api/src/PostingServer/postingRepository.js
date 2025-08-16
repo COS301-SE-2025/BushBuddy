@@ -39,6 +39,19 @@ async function createPost(imageBuffer, details) {
 	}
 }
 
+async function fetchAllPosts() {
+    try {
+		const query = `SELECT * FROM posts ORDER BY created_at DESC LIMIT 50;`;
+
+        const result = await db.query(query);
+
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		throw new Error(`Error fetching all posts: ${error.message}`);
+	}
+}
+
 async function fetchPost(post_id) {
     try {
 		const query = `SELECT * FROM posts WHERE id = $1;`;
@@ -64,19 +77,6 @@ async function fetchAllUserPosts(user_id) {
         result = await db.query(query);
 
 		return result;
-	} catch (error) {
-		console.error(error);
-		throw new Error(`Error fetching all posts: ${error.message}`);
-	}
-}
-
-async function fetchAllPosts() {
-    try {
-		const query = `SELECT * FROM posts ORDER BY created_at DESC LIMIT 50;`;
-
-        const result = await db.query(query);
-
-		return result.rows;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
