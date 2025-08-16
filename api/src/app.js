@@ -34,7 +34,7 @@ app.use(
 
 app.options('*', cors());
 
-// app.use(express.json());
+app.use(express.json());
 app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
@@ -42,7 +42,7 @@ const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 const POST_PORT = process.env.POST_PORT || 4003;
 
-const publicRoutes = ['/auth/register', '/auth/login'];
+const publicRoutes = ['/auth/register/', '/auth/login/', '/auth/status/'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -52,14 +52,14 @@ app.use((req, res, next) => {
 		return next(); // Skip authentication for public routes
 	}
 
-	res.header('Access-Control-Allow-Origin', '*');
+	// res.header('Access-Control-Allow-Origin', '*');
 
 	// user authentication through JWT etc. can be done here
 	const token = req.cookies.token;
 	if (!token) return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
 
 	try {
-		const decodedUser = jwt.decode(token, process.env.JWT_SECRET);
+		const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
 		req.user = decodedUser;
 	} catch (error) {
 		return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
@@ -75,6 +75,12 @@ app.use(
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/auth', '');
 		},
+		proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+            if (srcReq.user) {
+                proxyReqOpts.headers['x-user-data'] = JSON.stringify(srcReq.user);
+            }
+            return proxyReqOpts;
+        },
 	})
 );
 

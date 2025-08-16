@@ -23,6 +23,7 @@ const AuthScreen = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
+
     const result = await handleRegister(username, email, password);
 
     if (result.success) {

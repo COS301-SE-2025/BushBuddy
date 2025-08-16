@@ -6,12 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClockRotateLeft, faMapMarkedAlt, faGear, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FaCamera } from 'react-icons/fa';
 
+import { checkAuthStatus } from "../controllers/UsersController";  // remove this later
+
 const MainScreen = () => {
     const navigate = useNavigate();
     const userName = "Jean Steyn";
 
     return (
         <div className="main-screen">
+
             <Container className='welcome-message'>
                 <h2>Welcome, {userName}</h2>
             </Container>
@@ -54,11 +57,11 @@ const MainScreen = () => {
                 <Container className='bestiary-container'>
                     This section is under construction
                     <Container className='bestiary-filters'>
-                        
+
                     </Container>
 
                     <Container className='bestiary-cards-wrapper'>
-                        
+
                     </Container>
                 </Container>
             </Container>
