@@ -54,12 +54,11 @@ async function fetchAllPosts() {
 
 async function fetchAllUserPosts(user_id) {
     try {
-		console.log("User :", user_id);
-		const query = `SELECT * FROM posts WHERE user_id = ${user_id} ORDER BY created_at DECS;`;
+		const query = `SELECT * FROM posts WHERE user_id = $1 ORDER BY created_at DESC;`;
 
-        result = await db.query(query);
+        const result = await db.query(query, [user_id]);
 
-		return result;
+		return result.rows;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
@@ -97,6 +96,8 @@ async function likePost(post_id, user_id) {
 
 			return result;
 		}
+
+		//update amount of likes in posts?
 		
 		return null;
 	} catch (error) {
@@ -122,7 +123,7 @@ async function addComment(details) {
 
         const result = await db.query(query,params);
 
-		return result;
+		return result.rows;
 	} catch (error) {
 		console.error(error);
 		throw new Error(`Error adding comment to post: ${error.message}`);
@@ -134,6 +135,8 @@ async function fetchComments(post_id) {
 		const query = `SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC;`;
 
         const result = await db.query(query, [post_id]);
+		
+		//update amount of comments in posts?
 
 		return result.rows;
 	} catch (error) {
