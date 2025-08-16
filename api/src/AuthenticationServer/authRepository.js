@@ -7,7 +7,7 @@ async function createUser(userData) {
 
 	return db
 		.query(
-			'INSERT INTO users (id, username, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING (id, username, email)',
+			'INSERT INTO users (id, username, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING (id, username, email, is_admin)',
 			[userId, username, email, password]
 		)
 		.then(() => {
@@ -31,7 +31,7 @@ async function getUserById(userId) {
 
 async function getUserByUsername(username) {
 	return db
-		.query('SELECT id, email, password_hash FROM users WHERE username = $1', [username])
+		.query('SELECT id, email, password_hash, is_admin FROM users WHERE username = $1', [username])
 		.then((result) => {
 			return result.rows[0] || null;
 		})

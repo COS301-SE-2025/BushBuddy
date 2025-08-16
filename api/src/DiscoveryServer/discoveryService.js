@@ -33,7 +33,35 @@ async function addNewAnimal(details, image) {
 	}
 }
 
+async function fetchDiscoveries(user_id) {
+	try {
+		const discoveries = await discoveryRepository.fetchDiscoveries(user_id);
+		if (discoveries.length > 0) {
+			for (const discovery of discoveries) {
+				discovery.image_url = await discoveryRepository.fetchAnimalImage(discovery.image_url);
+			}
+		}
+		return discoveries;
+	} catch (error) {
+		if (error !== 'Error fetching sightings for map') console.error(error);
+		throw new Error('Failed to fetch discoveries');
+	}
+}
+
+async function followAnimal(user_id, animal_id) {
+	try {
+		const success = await followAnimal(user_id, animal_id);
+
+		return success;
+	} catch (error) {
+		if (error !== 'Failed to follow animal') console.error(error);
+		throw new Error('Failed to follow animal');
+	}
+}
+
 export const discoveryService = {
 	getAllAnimals,
 	addNewAnimal,
+	fetchDiscoveries,
+	followAnimal,
 };

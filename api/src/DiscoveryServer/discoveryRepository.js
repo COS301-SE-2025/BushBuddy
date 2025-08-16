@@ -193,8 +193,73 @@ async function addNewBestiaryEntry(details, image) {
 	}
 }
 
+// fetches all public, non-protected discoveries made by other users as well as every non-protected discovery of current user
+// return an array of objects with the following format:
+// 	{
+// 		image_url: 'image key',
+// 		animals: [
+// 			{animal_id: 4, animal_name: 'Zebra'},
+// 			{animal_id: 7, animal_name: 'Giraffe'}
+// 		],
+// 		geolocation_long: 'float value for longitude',
+// 		geolocation_lat: 'float value for latitude',
+// 		user: {
+// 			user_id: 'id of user who made discovery',
+// 			username: 'username of user who made discovery'
+// 		}
+// 	}
+async function fetchDiscoveries(user_id) {
+	try {
+		const query = `
+		SELECT 
+			i.image_url,
+			json_agg(
+				DISTINCT jsonb_build_object(
+					'animal_id', a.id,
+					'animal_name', a.name
+				)
+			) AS animals,
+			i.geolocation_long,
+			i.geolocation_lat,
+			jsonb_build_object(
+				'user_id', u.id,
+				'username', u.username
+			) AS user
+		FROM identifications i
+		JOIN animals a ON i.animal_id = a.id
+		JOIN users u ON i.user_id = u.id
+		WHERE (u.is_private = false OR u.id = $1)
+			AND (i.protected = false)
+		GROUP BY i.image_url, u.id, u.username, i.geolocation_long, i.geolocation_lat
+		ORDER BY MAX(i.created_at) DESC;
+		`;
+
+		const result = await db.query(query, [user_id]);
+
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Error fetching sightings for map');
+	}
+}
+
+async function followAnimal(user_id, animal_id) {
+	try {
+		const query = 'INSERT INTO followed_animals (user_id, animal_id) VALUES ($1, $2)';
+
+		const result = await db.query(query, [user_id, animal_id]);
+
+		return result.rowCount > 0;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Failed to follow animal');
+	}
+}
+
 export const discoveryRepository = {
 	getAllAnimals,
 	addNewBestiaryEntry,
 	fetchAnimalImage,
+	fetchDiscoveries,
+	followAnimal,
 };

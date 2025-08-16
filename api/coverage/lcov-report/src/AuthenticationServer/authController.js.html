@@ -1,68 +1,63 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+	<head>
+		<title>Code coverage report for src/AuthenticationServer/authController.js</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../../prettify.css" />
+		<link rel="stylesheet" href="../../base.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style type="text/css">
+			.coverage-summary .sorter {
+				background-image: url(../../sort-arrow-sprite.png);
+			}
+		</style>
+	</head>
 
-<head>
-    <title>Code coverage report for src/AuthenticationServer/authController.js</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type='text/css'>
-        .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
-        }
-    </style>
-</head>
-    
-<body>
-<div class='wrapper'>
-    <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/AuthenticationServer</a> authController.js</h1>
-        <div class='clearfix'>
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Statements</span>
-                <span class='fraction'>22/22</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Lines</span>
-                <span class='fraction'>22/22</span>
-            </div>
-        
-            
-        </div>
-        <p class="quiet">
-            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
-        </p>
-        <template id="filterTemplate">
-            <div class="quiet">
-                Filter:
-                <input type="search" id="fileSearch">
-            </div>
-        </template>
-    </div>
-    <div class='status-line high'></div>
-    <pre><table class="coverage">
+	<body>
+		<div class="wrapper">
+			<div class="pad1">
+				<h1>
+					<a href="../../index.html">All files</a> / <a href="index.html">src/AuthenticationServer</a> authController.js
+				</h1>
+				<div class="clearfix">
+					<div class="fl pad1y space-right2">
+						<span class="strong">100% </span>
+						<span class="quiet">Statements</span>
+						<span class="fraction">22/22</span>
+					</div>
+
+					<div class="fl pad1y space-right2">
+						<span class="strong">100% </span>
+						<span class="quiet">Branches</span>
+						<span class="fraction">4/4</span>
+					</div>
+
+					<div class="fl pad1y space-right2">
+						<span class="strong">100% </span>
+						<span class="quiet">Functions</span>
+						<span class="fraction">3/3</span>
+					</div>
+
+					<div class="fl pad1y space-right2">
+						<span class="strong">100% </span>
+						<span class="quiet">Lines</span>
+						<span class="fraction">22/22</span>
+					</div>
+				</div>
+				<p class="quiet">
+					Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the
+					previous block.
+				</p>
+				<template id="filterTemplate">
+					<div class="quiet">
+						Filter:
+						<input type="search" id="fileSearch" />
+					</div>
+				</template>
+			</div>
+			<div class="status-line high"></div>
+			<pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -197,7 +192,7 @@ async function registerUser(req, res) {
 		res.status(201).json({ success: true, message: 'User registered successfully' });
 	} catch (error) {
 		// console.error('Error in registerUser:', error);
-		res.status(500).json({ success: false, message: 'Registration failed' });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 &nbsp;
@@ -217,7 +212,7 @@ async function loginUser(req, res) {
 		res.status(200).json({ success: true, message: 'User logged in successfully' });
 	} catch (error) {
 		// console.error('Error in loginUser:', error);
-		res.status(500).json({ success: false, message: 'Login failed' });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 &nbsp;
@@ -228,7 +223,7 @@ async function logoutUser(req, res) {
 		res.clearCookie('token');
 		res.status(200).json({ success: true, message: 'User logged out successfully' });
 	} catch (error) {
-		res.status(500).json({ success: false, message: 'Logout failed' });
+		res.status(500).json({ error: 'Internal server error' });
 	}
 }
 &nbsp;
@@ -239,21 +234,22 @@ export const authController = {
 };
 &nbsp;</pre></td></tr></table></pre>
 
-                <div class='push'></div><!-- for sticky footer -->
-            </div><!-- /wrapper -->
-            <div class='footer quiet pad2 space-top1 center small'>
-                Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T16:51:30.957Z
-            </div>
-        <script src="../../prettify.js"></script>
-        <script>
-            window.onload = function () {
-                prettyPrint();
-            };
-        </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
-    </body>
+			<div class="push"></div>
+			<!-- for sticky footer -->
+		</div>
+		<!-- /wrapper -->
+		<div class="footer quiet pad2 space-top1 center small">
+			Code coverage generated by
+			<a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+			at 2025-08-14T08:51:36.957Z
+		</div>
+		<script src="../../prettify.js"></script>
+		<script>
+			window.onload = function () {
+				prettyPrint();
+			};
+		</script>
+		<script src="../../sorter.js"></script>
+		<script src="../../block-navigation.js"></script>
+	</body>
 </html>
-    
