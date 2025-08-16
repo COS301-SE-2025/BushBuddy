@@ -34,7 +34,7 @@ app.use(
 
 app.options('*', cors());
 
-app.use(express.json());
+// app.use(express.json());
 app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
@@ -75,12 +75,6 @@ app.use(
 		proxyReqPathResolver: (req) => {
 			return req.originalUrl.replace('/auth', '');
 		},
-		proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-            if (srcReq.user) {
-                proxyReqOpts.headers['x-user-data'] = JSON.stringify(srcReq.user);
-            }
-            return proxyReqOpts;
-        },
 	})
 );
 
