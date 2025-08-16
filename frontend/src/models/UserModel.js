@@ -1,10 +1,9 @@
 export class User {
-    // empty user object because token is no longer stored
-    constructor({ id = null, username = null, email = null, roles = [] } = {}) {
-        this.id = id;
+    constructor({ username }) {
+        // this.id = id;
         this.username = username;
-        this.email = email;
-        this.roles = roles;
+        // this.email = email;
+        // this.roles = roles;
     }
 }
 

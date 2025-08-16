@@ -7,6 +7,7 @@ jest.unstable_mockModule(`${DISCOVERY_URL}discoveryRepository.js`, () => ({
 	discoveryRepository: {
 		getAllAnimals: jest.fn(),
 		addNewBestiaryEntry: jest.fn(),
+		fetchAnimalImage: jest.fn(),
 	},
 }));
 
@@ -27,14 +28,15 @@ describe('discoveryService', () => {
 			];
 
 			discoveryRepository.getAllAnimals.mockResolvedValue(mockAnimals);
+			discoveryRepository.fetchAnimalImage.mockResolvedValue('mock-url');
 
 			const result = await discoveryService.getAllAnimals();
 
 			expect(discoveryRepository.getAllAnimals).toHaveBeenCalled();
 			expect(result).toEqual([
-				{ id: 1, name: 'African Elephant' },
-				{ id: 2, name: 'African Lion' },
-				{ id: 3, name: 'Giraffe' },
+				{ id: 1, name: 'African Elephant', image_url: 'mock-url' },
+				{ id: 2, name: 'African Lion', image_url: 'mock-url' },
+				{ id: 3, name: 'Giraffe', image_url: 'mock-url' },
 			]);
 		});
 

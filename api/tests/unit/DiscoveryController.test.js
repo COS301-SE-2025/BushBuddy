@@ -104,6 +104,9 @@ describe('discoveryController', () => {
 				file: {
 					buffer: 'mock-image',
 				},
+				user: {
+					admin: true,
+				},
 			};
 
 			const res = {
@@ -131,6 +134,9 @@ describe('discoveryController', () => {
 				},
 				file: {
 					buffer: 'mock-image',
+				},
+				user: {
+					admin: true,
 				},
 			};
 
@@ -160,6 +166,9 @@ describe('discoveryController', () => {
 				file: {
 					buffer: 'mock-image',
 				},
+				user: {
+					admin: true,
+				},
 			};
 
 			const res = {
@@ -174,6 +183,38 @@ describe('discoveryController', () => {
 			expect(res.json).toHaveBeenCalledWith({
 				success: false,
 				message: 'Failed to add animal to bestiary',
+			});
+		});
+
+		test('insertNewAnimal should unauthorised access', async () => {
+			discoveryService.addNewAnimal.mockResolvedValue('mock-key');
+
+			const req = {
+				body: {
+					name: 'mock-name',
+					type: 'mock-type',
+					description: 'mock-description',
+				},
+				file: {
+					buffer: 'mock-image',
+				},
+				user: {
+					admin: false,
+				},
+			};
+
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			};
+
+			await discoveryController.insertNewAnimal(req, res);
+
+			expect(discoveryService.addNewAnimal).not.toHaveBeenCalled();
+			expect(res.status).toHaveBeenCalledWith(401);
+			expect(res.json).toHaveBeenCalledWith({
+				success: false,
+				message: 'You are not authorised to perform this action',
 			});
 		});
 	});
