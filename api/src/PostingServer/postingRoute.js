@@ -43,6 +43,16 @@ postingApp.use(cookieParser());
  *     responses:
  *       201:
  *         description: Post created successfully
+ *          content:
+ *           application/json:
+ *             example:
+ *              {
+ *                "success": true,
+ *                "message": "Post created successfully",
+ *                "data": {
+ *                    "id": "10"
+ *                }
+ *             }
  *       400:
  *         description: Failed to create post
  *       401:
