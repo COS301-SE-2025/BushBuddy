@@ -1,13 +1,24 @@
 import {postingService} from './postingService.js'
+import jwt from 'jsonwebtoken';
 
 async function createPost(req, res) {
 	try {
-        if (!req.user || !req.user.userId) {
-            return res.status(401).json({ success: false, message: 'Unauthorized: User not authenticated' });
-        }
+		const token = req.cookies.token;
+		if (!token){
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		try {
+			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = decodedUser;
+		} catch (error) {
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		const user = req.user;
 
 		const details = {
-			user_id: req.user.id,
+			user_id: user.id,
 			identification_id: req.body.identification_id,
 			description: req.body.description,
 			share_location: req.body.shareLocation,
@@ -71,7 +82,21 @@ async function fetchAllPosts(req, res) {
 
 async function fetchAllUserPosts(req, res) {
 	try {
-		const result = await postingService.fetchAllUserPosts(req.user.id);
+		const token = req.cookies.token;
+		if (!token){
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+		
+		try {
+			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = decodedUser;
+		} catch (error) {
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		const user = req.user;
+
+		const result = await postingService.fetchAllUserPosts(user.id);
 
 		if(!result){
 			return res.status(400).json({
@@ -150,8 +175,22 @@ async function likePost(req, res) {
 				message: 'Post ID is required'
 			});
 		}
+		
+		const token = req.cookies.token;
+		if (!token){
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
 
-		const result = await postingService.likePost(req.params.postId, req.user.id);
+		try {
+			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = decodedUser;
+		} catch (error) {
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		const user = req.user;
+
+		const result = await postingService.likePost(req.params.postId, user.id);
 
 		if(!result){
 			return res.status(400).json({
@@ -183,9 +222,23 @@ async function addComment(req, res) {
 				message: 'Post ID is required'
 			});
 		}
-		
+
+		const token = req.cookies.token;
+		if (!token){
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		try {
+			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = decodedUser;
+		} catch (error) {
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
+		const user = req.user;
+
 		const data = {
-			user_id: req.user.id,
+			user_id: user.id,
 			post_id: req.params.postId,
 			comment_text: req.body.comment,
 		}
