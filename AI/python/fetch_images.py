@@ -5,9 +5,9 @@ import requests
 
 # Import Variables
 # Sets number of images that will be downloaded total for each image directory per species
-MAX_TRAINING_SPECIES = 20
-MAX_VALIDATION_SPECIES = 5
-MAX_TEST_SPECIES = 10
+MAX_TRAINING_SPECIES = 1
+MAX_VALIDATION_SPECIES = 0
+MAX_TEST_SPECIES = 0
 
 MAX_IMAGES_PER_SPECIES = (
     MAX_TRAINING_SPECIES + MAX_TEST_SPECIES + MAX_VALIDATION_SPECIES
@@ -66,7 +66,7 @@ def store_animal_data(directory_path, observation, animal_common_name):
                 image_index = species_counter.get(animal_common_name, 0)
                 os.makedirs(f"{directory_path}/{animal_common_name}", exist_ok=True)
                 filename = f"{directory_path}/{animal_common_name}/{name}_{image_index}.jpg"
-                with open(filename, "wb", encoding="utf-8") as f:
+                with open(filename, "wb") as f:
                     f.write(image_data)
 
                 species_counter[animal_common_name] = species_counter.get(animal_common_name, 0) + 1

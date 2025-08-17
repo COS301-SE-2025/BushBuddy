@@ -1,11 +1,11 @@
 import * as ort from "onnxruntime-web";
 
 // Preprocessing logic
-const preprocessVideoFrame = (video) => {
+export const preprocessVideoFrame = (video) => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    const MODEL_WIDTH = 500;
-    const MODEL_HEIGHT = 500;
+    const MODEL_WIDTH = 640;
+    const MODEL_HEIGHT = 640;
 
     canvas.width = MODEL_WIDTH;
     canvas.height = MODEL_HEIGHT;
@@ -33,20 +33,27 @@ const preprocessVideoFrame = (video) => {
     return new ort.Tensor("float32", tensorData, [1, 3, MODEL_HEIGHT, MODEL_WIDTH]);
 };
 
-const postprocessYOLO = (output, labels, confidenceThreshold = 0.5, iouThreshold = 0.45) => {
+export const postprocessYOLO = (output, labels, confidenceThreshold = 0.3, iouThreshold = 0.45) => {
     const preds = output.data;
-    const numDetections = preds.length / 85;
+    const [batch, numChannels, numPreds] = output.dims; // e.g., [1, 41, 8400]
+
+    const numClasses = numChannels - 5; // 4 bbox + 1 objectness + numClasses
     const detections = [];
 
-    for (let i = 0; i < numDetections; i++) {
-        const offset = i * 85;
+    // transpose from [C, N] to [N, C]
+    for (let i = 0; i < numPreds; i++) {
+        const offset = i;
         const x = preds[offset];
-        const y = preds[offset + 1];
-        const w = preds[offset + 2];
-        const h = preds[offset + 3];
-        const objectness = preds[offset + 4];
+        const y = preds[offset + numPreds];
+        const w = preds[offset + 2 * numPreds];
+        const h = preds[offset + 3 * numPreds];
+        const objectness = preds[offset + 4 * numPreds];
 
-        const classProbs = preds.slice(offset + 5, offset + 85);
+        const classProbs = [];
+        for (let c = 0; c < numClasses; c++) {
+            classProbs.push(preds[offset + (5 + c) * numPreds]);
+        }
+
         const classIdx = classProbs.indexOf(Math.max(...classProbs));
         const conf = objectness * classProbs[classIdx];
 
@@ -56,15 +63,14 @@ const postprocessYOLO = (output, labels, confidenceThreshold = 0.5, iouThreshold
                 y1: y - h / 2,
                 x2: x + w / 2,
                 y2: y + h / 2,
-                label: labels[classIdx],
+                label: labels[classIdx] || `Class ${classIdx}`,
                 confidence: conf,
             });
         }
     }
 
-    // apply nms
     return nonMaxSuppression(detections, iouThreshold);
-}
+};
 
 const nonMaxSuppression = (boxes, iouThreshold = 0.45) => {
   boxes.sort((a, b) => b.confidence - a.confidence);
@@ -109,8 +115,8 @@ export const drawBoundingBoxes = (detections, canvas, video) => {
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    const scaleX = vw / 500;
-    const scaleY = vh / 500;
+    const scaleX = vw / 640;
+    const scaleY = vh / 640;
     const x = d.x1 * scaleX;
     const y = d.y1 * scaleY;
     const w = (d.x2 - d.x1) * scaleX;
