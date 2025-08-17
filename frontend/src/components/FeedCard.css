@@ -50,8 +50,28 @@
   font-size: 0.95em;
 }
 
-.likes{
-    margin-right: 15px;
+.likes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.heart {
+  size: 23;
+  margin-right: 0.2rem;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.bubble {
+  size: 20;
+  margin-right: 0.2rem;
 }
 
 .feed-card-footer {
