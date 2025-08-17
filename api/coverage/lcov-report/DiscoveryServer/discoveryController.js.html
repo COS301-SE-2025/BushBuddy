@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.35% </span>
+                <span class="strong">52.94% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/34</span>
+                <span class='fraction'>18/34</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.25% </span>
+                <span class="strong">43.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/16</span>
+                <span class='fraction'>7/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.35% </span>
+                <span class="strong">52.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/34</span>
+                <span class='fraction'>18/34</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -178,31 +178,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,20 +277,20 @@ async function insertNewAnimal(req, res) {
 <span class="cstat-no" title="statement not covered" >			return res.status(400).json({ success: false, message: 'No image uploaded' });</span>
 		}
 		if (!req.user.admin) {
-<span class="cstat-no" title="statement not covered" >			return res.status(401).json({ success: false, message: 'You are not authorised to perform this action' });</span>
+			return res.status(401).json({ success: false, message: 'You are not authorised to perform this action' });
 		}
-		const image = <span class="cstat-no" title="statement not covered" >req.file.buffer;</span>
-		const details = <span class="cstat-no" title="statement not covered" >{ name: req.body.name, type: req.body.type || 'n/a', description: req.body.description || 'none' };</span>
+		const image = req.file.buffer;
+		const details = { name: req.body.name, type: req.body.type || <span class="branch-1 cbranch-no" title="branch not covered" >'n/a',</span> description: req.body.description || <span class="branch-1 cbranch-no" title="branch not covered" >'none' </span>};
 &nbsp;
-		const result = <span class="cstat-no" title="statement not covered" >await discoveryService.addNewAnimal(details, image);</span>
-<span class="cstat-no" title="statement not covered" >		if (!result) {</span>
-<span class="cstat-no" title="statement not covered" >			return res.status(400).json({</span>
+		const result = await discoveryService.addNewAnimal(details, image);
+		if (!result) {
+			return res.status(400).json({
 				success: false,
 				message: 'Unable to add animal to bestiary',
 			});
 		}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >		return res.status(200).json({</span>
+		return res.status(200).json({
 			success: true,
 			message: `${details.name} added to bestiary`,
 		});
@@ -352,7 +352,7 @@ export const discoveryController = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-15T08:26:44.045Z
+                at 2025-08-16T18:18:18.173Z
             </div>
         <script src="../prettify.js"></script>
         <script>

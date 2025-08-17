@@ -30,14 +30,14 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-	await db.query('DELETE FROM users');
+	await db.query("DELETE FROM users WHERE username='autotestuser';");
 });
 
 describe('Full Auth Flow', () => {
 	test('POST /auth/register should create a user', async () => {
 		try {
-			const res = await request(app).post('/auth/register').send({
-				username: 'testuser',
+			const res = await request(app).post('/auth/register/').send({
+				username: 'autotestuser',
 				email: 'test@example.com',
 				password: 'securepass',
 			});
@@ -55,14 +55,14 @@ describe('Full Auth Flow', () => {
 
 	test('POST /auth/login should succeed with valid credentials', async () => {
 		try {
-			await request(app).post('/auth/register').send({
-				username: 'testuser2',
+			await request(app).post('/auth/register/').send({
+				username: 'autotestuser',
 				email: 'test2@example.com',
 				password: 'securepass',
 			});
 
-			const res = await request(app).post('/auth/login').send({
-				username: 'testuser2',
+			const res = await request(app).post('/auth/login/').send({
+				username: 'autotestuser',
 				password: 'securepass',
 			});
 
@@ -75,6 +75,13 @@ describe('Full Auth Flow', () => {
 			console.error('Error during login test:', error);
 			throw new Error(`Login test failed: ${error.message}`);
 		}
+	});
+
+	test('GET /auth/status/ should succeed with valid token', async () => {
+		const res = await request(app).get('/auth/status/').set('Cookie', `token=${token}`).send();
+		console.log(res.body);
+		expect(res.statusCode).toBe(200);
+		expect(res.body).toHaveProperty('data', 'Test User');
 	});
 
 	test('POST using unimplemented endpoint should return 404', async () => {
