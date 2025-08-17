@@ -12,9 +12,7 @@ AI-Powered African Wildlife Detection System
 ---
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![YOLOv5](https://img.shields.io/badge/YOLOv5-FFBB00?style=for-the-badge&logo=python&logoColor=black)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
@@ -84,6 +82,7 @@ both visual and audio detection.
   <summary><b>Team Members</b></summary>
 
 <img src="res\img\ReturnZero_ logo.png" alt="ReturnZero Logo" height="150">
+<p>Left to right: Raphael Rato, Ruben Gadd, Ruan Esterhuizen, Tom Schulz, Jean Steyn</p>
 
 <img src="res\img\team\team_full.jpg" alt="ReturnZero Logo" width="500">
 
@@ -91,11 +90,11 @@ both visual and audio detection.
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
-      <img src="res\img\team\ruan.jpg" width="2000" height="auto">
+      <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
     </td>
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuizen</b></h2>
-      <b style="font-size: 18px; color: #555;">Project Manager, UX Designer</b>
+      <b style="font-size: 18px; color: #555;">Project Manager, Frontend Developer</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I’m a final-year BSc Computer Science student with a keen interest in software engineering and
         web development. I am a full-stack developer who takes a detail-oriented and practical approach
