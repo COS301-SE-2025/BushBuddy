@@ -89,9 +89,9 @@ both visual and audio detection.
 <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;">
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuizen</b></h2>
       <b style="font-size: 18px; color: #555;">Project Manager, Frontend Developer</b>
@@ -118,9 +118,9 @@ both visual and audio detection.
   </tr>
   <!-- Second Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruben Gadd</b></h2>
       <b style="font-size: 18px; color: #555;">System Architect, DevOps, Integration, Services, and Testing Engineer</b>
@@ -147,9 +147,9 @@ both visual and audio detection.
   </tr>
   <!-- Third Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Raphael Rato</b></h2>
       <b style="font-size: 18px; color: #555;">UX/UI Designer, Services, and Data Engineer</b>
@@ -175,9 +175,9 @@ both visual and audio detection.
   </tr>
   <!-- Fourth Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Tom Schulz</b></h2>
       <b style="font-size: 18px; color: #555;">UX Designer, UI, Services, and Testing Engineer</b>
@@ -197,9 +197,9 @@ both visual and audio detection.
   </tr>
   <!-- Fifth Row -->
   <tr>
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Jean Steyn</b></h2>
       <b style="font-size: 18px; color: #555;">DevOps, Integration, and Data Engineer</b>
