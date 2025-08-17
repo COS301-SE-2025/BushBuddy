@@ -5,6 +5,7 @@ import SearchBar from '../components/SearchBar.jsx';
 import FeedFilters from '../components/FeedFilters.jsx';
 import FeedCard from '../components/FeedCard.jsx';
 
+import PostModel from '../models/PostModel'
 import { PostsController } from '../controllers/PostsController';
 
 const FeedPage = () => {
@@ -29,8 +30,7 @@ const FeedPage = () => {
     const fetchPosts = async () => {
       const response = await PostsController.handleFetchAllPosts();
       if (response.success) {
-        console.log(response.posts);
-        setPosts(response.posts.data);
+        setPosts(response.posts);
       } else {
         console.error(response.message);
       }

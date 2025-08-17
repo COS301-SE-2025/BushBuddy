@@ -2,15 +2,10 @@ import {postingService} from './postingService.js'
 
 async function createPost(req, res) {
 	try {
-		if (!req.file) {
-			return res.status(400).json({ success: false, message: 'No image uploaded' });
-		}
-
         if (!req.user || !req.user.userId) {
             return res.status(401).json({ success: false, message: 'Unauthorized: User not authenticated' });
         }
 
-		const imageBuffer = req.file.buffer;
 		const details = {
 			user_id: req.user.id,
 			identification_id: req.body.identification_id,
@@ -18,7 +13,7 @@ async function createPost(req, res) {
 			share_location: req.body.shareLocation,
 		}
 
-        const result = await postingService.createPost(imageBuffer, details);
+        const result = await postingService.createPost(details);
 
 		if(!result){
 			return res.status(400).json({ 

@@ -32,9 +32,9 @@ async function handleFetchAllPosts( ) {
     try {
         //add input params
         const fetchAllPostsRequest = new FetchAllPostsRequest({ });
-        const posts = await PostService.fetchAllPosts();
+        const result = await PostService.fetchAllPosts();
 
-        return { success:true, posts };
+        return { success:true, posts:result };
     } catch(error) {
         return {
             success: false,

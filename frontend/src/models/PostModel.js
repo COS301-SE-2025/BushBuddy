@@ -1,16 +1,23 @@
 export class Post {
     // add what will be returned for fetching posts
-    constructor({ }) {
-        
+    constructor({ id, user_id, image_url, identification_id, description, share_location, is_removed, created_at, likes }) {
+        this.id = id;
+        this.user_id = user_id;
+        this.image_url = image_url;
+        this.identification_id = identification_id;
+        this.description = description;
+        this.share_location = share_location;
+        this.is_removed = is_removed;
+        this.created_at = created_at;
+        this.likes = likes;
     }
 }
 
 export class CreatePostRequest {
-    constructor({ identificationId, description, shareLocation, image }) {
-        this.identificationId = identificationId;
+    constructor({ identification_id, description, share_location }) {
+        this.identification_id = identification_id;
         this.description = description;
-        this.shareLocation = shareLocation;
-        this.image = image;
+        this.share_location = share_location;
     }
 }
 

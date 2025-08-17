@@ -2,17 +2,16 @@ import db from '../db/index.js';
 import { nanoid } from 'nanoid';
 import s3 from '../db/imageStorage.js';
 
-async function createPost(imageBuffer, details) {
+async function createPost(details) {
     try {
-		const key = nanoid(12);
-		const image_url = await s3.storeImage(key, imageBuffer);
-
 		const { 
 			user_id, 
 			identification_id, 
 			description, 
 			share_location 
 		} = details;
+
+		//add logic to fetch image_url using identification_id
 
 		const query =
 			`INSERT INTO posts (

@@ -1,8 +1,8 @@
 import { postingRepository } from './postingRepository.js';
 
-async function createPost(imageBuffer , details) {
+async function createPost(details) {
     try{
-        const result = await postingRepository.createPost(imageBuffer ,details);
+        const result = await postingRepository.createPost(details);
         
         if (!result) {
             throw new Error();
@@ -21,12 +21,9 @@ async function fetchAllPosts() {
         const allPosts = await postingRepository.fetchAllPosts();
 
         for(const post of allPosts){
-            //fetch image from storage
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
             post.user_id = await postingRepository.fetchUserName(post.user_id);
-
-            //edit date format
-            post.created_at = formatTimestamp(post.created_at);
+            post.created_at = await formatTimestamp(post.created_at);
         }
 
         return allPosts;
@@ -41,12 +38,9 @@ async function fetchAllUserPosts(user_id) {
         const allPosts = await postingRepository.fetchAllUserPosts(user_id);
 
         for(const post of allPosts){
-            //fetch image from storage
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
             post.user_id = await postingRepository.fetchUserName(post.user_id);
-
-            //edit date format
-            post.created_at = formatTimestamp(post.created_at);
+            post.created_at = await formatTimestamp(post.created_at);
         }
 
         return allPosts;
@@ -61,8 +55,7 @@ async function fetchPost(post_id) {
         const result = await postingRepository.fetchPost(post_id);
         result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
-
-        result.post.created_at = formatTimestamp(result.post.created_at);
+        result.post.created_at = await formatTimestamp(result.post.created_at);
 
         for(const comment of result.comments){
             comment.user_id = await postingRepository.fetchUserName(comment.user_id);
@@ -97,7 +90,7 @@ async function addComment(data) {
     }
 }
 
-function formatTimestamp(timestamp){
+async function formatTimestamp(timestamp){
     const date = new Date(timestamp);
 
     const dayMonth = date.getDate() + " " + date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear();
