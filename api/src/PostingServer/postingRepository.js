@@ -11,7 +11,14 @@ async function createPost(details) {
 			share_location 
 		} = details;
 
-		//add logic to fetch image_url using identification_id
+		const image_query = `SELECT image_url FROM identifications WHERE id = $1;`;
+
+        const image_result = await db.query(image_query, [identification_id]);
+		const image_url = image_result.rows[0].image_url
+
+		if(!image_url){
+			throw new Error('Image URL not found for identification ID');
+		}
 
 		const query =
 			`INSERT INTO posts (
@@ -20,7 +27,7 @@ async function createPost(details) {
 				image_url, 
 				description, 
 				share_location
-				) VALUES ($1, $2, $3, $4, $5) RETURNING (postId);`;
+				) VALUES ($1, $2, $3, $4, $5) RETURNING (id);`;
 		const params = [
 			user_id, 
 			identification_id, 
@@ -29,7 +36,7 @@ async function createPost(details) {
 			share_location
 		];
 
-        result = await db.query(query, params);
+        const result = await db.query(query, params);
         
 		return result.rows[0];
 	} catch (error) {
