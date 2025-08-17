@@ -1,128 +1,202 @@
 import * as ort from "onnxruntime-web";
+import labelsJson from "./labels.json";
 
-// Preprocessing logic
-export const preprocessVideoFrame = (video) => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const MODEL_WIDTH = 640;
-    const MODEL_HEIGHT = 640;
+/**
+ * Letterbox: resize with unchanged aspect ratio and pad (width, height order)
+ * Mirrors the Python implementation.
+ */
+export function letterboxImage(img, newShape = [640, 640], color = [114, 114, 114]) {
+  // newShape: [width, height]
+  const [newW, newH] = newShape;
+  const canvas = document.createElement("canvas");
+  canvas.width = newW;
+  canvas.height = newH;
+  const ctx = canvas.getContext("2d");
 
-    canvas.width = MODEL_WIDTH;
-    canvas.height = MODEL_HEIGHT;
+  const ratio = Math.min(newW / img.width, newH / img.height);
+  const newUnpadW = Math.round(img.width * ratio);
+  const newUnpadH = Math.round(img.height * ratio);
+  const dw = (newW - newUnpadW) / 2;
+  const dh = (newH - newUnpadH) / 2;
 
-    // draw curr vid frame on hidden canvas
-    ctx.drawImage(video, 0, 0, MODEL_WIDTH, MODEL_HEIGHT);
-    const imageData = ctx.getImageData(0, 0, MODEL_WIDTH, MODEL_HEIGHT);
-    const data = imageData.data;
+  // fill
+  ctx.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+  ctx.fillRect(0, 0, newW, newH);
 
-    // convert to Float32Array CHW and normalize 
-    const tensorData = new Float32Array(1 * 3 * MODEL_HEIGHT * MODEL_WIDTH);
-    for( let y = 0; y < MODEL_HEIGHT; y++) {
-        for(let x = 0; x < MODEL_WIDTH; x++){
-            const i = (y * MODEL_WIDTH + x) * 4;
-            const r = data[i] / 255;
-            const g = data[i + 1] / 255;
-            const b = data[i + 2] / 255;
+  // draw resized image centered with padding
+  ctx.drawImage(img, dw, dh, newUnpadW, newUnpadH);
 
-            tensorData[y * MODEL_WIDTH + x] = r;
-            tensorData[ MODEL_HEIGHT * MODEL_WIDTH + y * MODEL_WIDTH + x] = g;
-            tensorData[2 * MODEL_HEIGHT * MODEL_WIDTH + y * MODEL_WIDTH + x] = b;
-        }
-    }
+  return { canvas, ratio, dw, dh, newUnpadW, newUnpadH };
+}
 
-    return new ort.Tensor("float32", tensorData, [1, 3, MODEL_HEIGHT, MODEL_WIDTH]);
-};
+/** Convert [x,y,w,h] center format -> [x1,y1,x2,y2] */
+function xywh2xyxy(boxes) {
+  return boxes.map(([x, y, w, h]) => [
+    x - w / 2,
+    y - h / 2,
+    x + w / 2,
+    y + h / 2
+  ]);
+}
 
-export const postprocessYOLO = (output, labels, confidenceThreshold = 0.3, iouThreshold = 0.45) => {
-    const preds = output.data;
-    const [batch, numChannels, numPreds] = output.dims; // e.g., [1, 41, 8400]
+/** Simple NMS (same logic as Python) */
+function nmsIndices(boxes, scores, iouThreshold = 0.45) {
+  if (!boxes.length) return [];
+  const areas = boxes.map(b => Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1]));
+  const order = scores
+    .map((s, i) => i)
+    .sort((a, b) => scores[b] - scores[a]);
 
-    const numClasses = numChannels - 5; // 4 bbox + 1 objectness + numClasses
-    const detections = [];
-
-    // transpose from [C, N] to [N, C]
-    for (let i = 0; i < numPreds; i++) {
-        const offset = i;
-        const x = preds[offset];
-        const y = preds[offset + numPreds];
-        const w = preds[offset + 2 * numPreds];
-        const h = preds[offset + 3 * numPreds];
-        const objectness = preds[offset + 4 * numPreds];
-
-        const classProbs = [];
-        for (let c = 0; c < numClasses; c++) {
-            classProbs.push(preds[offset + (5 + c) * numPreds]);
-        }
-
-        const classIdx = classProbs.indexOf(Math.max(...classProbs));
-        const conf = objectness * classProbs[classIdx];
-
-        if (conf > confidenceThreshold) {
-            detections.push({
-                x1: x - w / 2,
-                y1: y - h / 2,
-                x2: x + w / 2,
-                y2: y + h / 2,
-                label: labels[classIdx] || `Class ${classIdx}`,
-                confidence: conf,
-            });
-        }
-    }
-
-    return nonMaxSuppression(detections, iouThreshold);
-};
-
-const nonMaxSuppression = (boxes, iouThreshold = 0.45) => {
-  boxes.sort((a, b) => b.confidence - a.confidence);
   const keep = [];
+  let ord = order.slice();
+  while (ord.length > 0) {
+    const i = ord[0];
+    keep.push(i);
+    const rest = [];
+    for (let k = 1; k < ord.length; k++) {
+      const j = ord[k];
+      const [x1i, y1i, x2i, y2i] = boxes[i];
+      const [x1j, y1j, x2j, y2j] = boxes[j];
 
-  while (boxes.length) {
-    const current = boxes.shift();
-    keep.push(current);
-
-    boxes = boxes.filter((b) => {
-      const xx1 = Math.max(current.x1, b.x1);
-      const yy1 = Math.max(current.y1, b.y1);
-      const xx2 = Math.min(current.x2, b.x2);
-      const yy2 = Math.min(current.y2, b.y2);
+      const xx1 = Math.max(x1i, x1j);
+      const yy1 = Math.max(y1i, y1j);
+      const xx2 = Math.min(x2i, x2j);
+      const yy2 = Math.min(y2i, y2j);
 
       const w = Math.max(0, xx2 - xx1);
       const h = Math.max(0, yy2 - yy1);
       const inter = w * h;
-      const areaB = (b.x2 - b.x1) * (b.y2 - b.y1);
-      const areaA = (current.x2 - current.x1) * (current.y2 - current.y1);
+      const ovr = inter / (areas[i] + areas[j] - inter || 1e-8);
 
-      const iou = inter / (areaA + areaB - inter);
-      return iou < iouThreshold;
-    });
+      if (ovr <= iouThreshold) rest.push(j);
+    }
+    ord = rest;
+  }
+  return keep;
+}
+
+/** Safe label getter (works if labels.json is array or object) */
+function getLabel(labels, idx) {
+  if (Array.isArray(labels)) return labels[idx] ?? String(idx);
+  if (labels[idx] !== undefined) return labels[idx];
+  if (labels[String(idx)] !== undefined) return labels[String(idx)];
+  return String(idx);
+}
+
+/**
+ * runYOLO(session, base64Image)
+ * - session: an onnxruntime-web InferenceSession (created earlier by loadModel)
+ * - imageSrc: data URL (base64) from webcamRef.getScreenshot()
+ *
+ * Returns: { className, confidence, box: [x1,y1,x2,y2] } or null if no detection
+ *
+ * This follows the same pipeline as your working Python script.
+ */
+export async function runYOLO(session, imageSrc, options = {}) {
+  const confThreshold = options.confThreshold ?? 0.25;
+  const iouThreshold = options.iouThreshold ?? 0.45;
+  const targetSize = options.targetSize ?? 640; // default same as Python fallback
+
+  if (!session) throw new Error("ONNX session is required");
+
+  // 1) load image from base64 / data URL
+  const img = new Image();
+  // base64 data URLs don't need crossOrigin, but if you load from a different origin use it.
+  img.src = imageSrc;
+  await new Promise((resolve, reject) => {
+    img.onload = () => resolve();
+    img.onerror = (e) => reject(new Error("Failed to decode image: " + e?.message));
+  });
+
+  // 2) letterbox / pad to target size (width, height)
+  const { canvas, ratio, dw, dh } = letterboxImage(img, [targetSize, targetSize]);
+
+  const ctx = canvas.getContext("2d");
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const { data, width, height } = imageData;
+
+  // 3) to Float32Array CHW normalized (0..1)
+  const hw = width * height;
+  const floatData = new Float32Array(3 * hw);
+  for (let i = 0; i < hw; i++) {
+    floatData[i] = data[i * 4 + 0] / 255.0; // R
+    floatData[i + hw] = data[i * 4 + 1] / 255.0; // G
+    floatData[i + 2 * hw] = data[i * 4 + 2] / 255.0; // B
   }
 
-  return keep;
-};
+  // 4) create tensor and run session
+  const inputName = session.inputNames[0];
+  const tensor = new ort.Tensor("float32", floatData, [1, 3, height, width]);
 
-export const drawBoundingBoxes = (detections, canvas, video) => {
-  const ctx = canvas.getContext("2d");
-  const vw = video.videoWidth;
-  const vh = video.videoHeight;
+  const feeds = {};
+  feeds[inputName] = tensor;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 2;
-  ctx.font = "16px Arial";
-  ctx.textBaseline = "top";
+  const results = await session.run(feeds);
+  const outputName = session.outputNames[0];
+  const outTensor = results[outputName];
+  if (!outTensor) throw new Error("Model output not found");
 
-  detections.forEach((d, i) => {
-    const color = `hsl(${(i * 50) % 360}, 100%, 50%)`;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
+  const outData = outTensor.data; // Float32Array
+  const outDims = outTensor.dims; // [1, N, C] expected
+  if (!outDims || outDims.length < 3) {
+    throw new Error("Unexpected output shape: " + JSON.stringify(outDims));
+  }
+  const numPredictions = outDims[1];
+  const numCols = outDims[2];
 
-    const scaleX = vw / 640;
-    const scaleY = vh / 640;
-    const x = d.x1 * scaleX;
-    const y = d.y1 * scaleY;
-    const w = (d.x2 - d.x1) * scaleX;
-    const h = (d.y2 - d.y1) * scaleY;
+  // Expecting each pred: [x, y, w, h, conf, cls] (6) like your Python model.
+  if (numCols < 5) {
+    throw new Error("Unexpected number of columns per detection: " + numCols);
+  }
 
-    ctx.strokeRect(x, y, w, h);
-    ctx.fillText(`${d.label} ${(d.confidence * 100).toFixed(0)}%`, x, y);
-  });
-};
+  // 5) collect detections above threshold
+  const boxesXYWH = [];
+  const scores = [];
+  const classIds = [];
+
+  for (let i = 0; i < numPredictions; i++) {
+    const offset = i * numCols;
+    const x = outData[offset + 0];
+    const y = outData[offset + 1];
+    const w = outData[offset + 2];
+    const h = outData[offset + 3];
+    const conf = outData[offset + 4];
+    const cls = numCols >= 6 ? outData[offset + 5] : 0;
+
+    if (conf >= confThreshold) {
+      boxesXYWH.push([x, y, w, h]);
+      scores.push(conf);
+      classIds.push(Math.round(cls));
+    }
+  }
+
+  if (!boxesXYWH.length) return null;
+
+  // 6) convert to xyxy and NMS
+  const xyxy = xywh2xyxy(boxesXYWH);
+  const keepIdx = nmsIndices(xyxy, scores, iouThreshold);
+  if (!keepIdx.length) return null;
+
+  // pick top (highest score) among kept (keepIdx is ordered by score due to algorithm)
+  const topIndex = keepIdx[0];
+  const topBox = xyxy[topIndex]; // still in padded/resized coords
+  const topScore = scores[topIndex];
+  const topClassId = classIds[topIndex];
+
+  // 7) rescale box: remove padding and divide by ratio to map back to original image coords
+  // Python did: boxes[:, [0,2]] -= dw ; then boxes /= ratio
+  const [x1p, y1p, x2p, y2p] = topBox;
+  const x1 = (x1p - dw) / ratio;
+  const y1 = (y1p - dh) / ratio;
+  const x2 = (x2p - dw) / ratio;
+  const y2 = (y2p - dh) / ratio;
+
+  // 8) map to label
+  const label = getLabel(labelsJson, topClassId);
+
+  return {
+    className: label,
+    confidence: topScore,
+    box: [Math.round(x1), Math.round(y1), Math.round(x2), Math.round(y2)]
+  };
+}

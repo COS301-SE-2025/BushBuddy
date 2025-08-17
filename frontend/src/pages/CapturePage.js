@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
-import Webcam from 'react-webcam';
-import { Container } from 'react-bootstrap';
-import { loadModel } from '../utility/modelStorageOperations';
-import './CapturePage.css';
-import { preprocessVideoFrame, postprocessYOLO, drawBoundingBoxes } from "../utility/yoloInference";
+import React, { useRef, useState, useEffect } from "react";
+import Webcam from "react-webcam";
+import { Container } from "react-bootstrap";
+import { loadModel } from "../utility/modelStorageOperations";
+import "./CapturePage.css";
+import { runYOLO } from "../utility/yoloInference.js";
 import annotationLabels from "../utility/labels.json";
 
 const CapturePage = () => {
@@ -11,8 +11,7 @@ const CapturePage = () => {
   const canvasRef = useRef(null);
   const [session, setSession] = useState(null);
   const [loadingModel, setLoadingModel] = useState(true);
-  const [paused, setPaused] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const videoConstraints = {
     width: { ideal: 1280 },
@@ -20,12 +19,15 @@ const CapturePage = () => {
     facingMode: { ideal: "environment" },
   };
 
+  // Load model
   useEffect(() => {
     const init = async () => {
       try {
         const modelSession = await loadModel();
         setSession(modelSession);
         console.log("Detection Model Ready...");
+        console.log("Model inputs:", modelSession.inputNames);
+        console.log("Model outputs:", modelSession.outputNames);
       } catch (err) {
         console.error("Error loading model:", err);
       } finally {
@@ -35,55 +37,52 @@ const CapturePage = () => {
     init();
   }, []);
 
-  // Live detection loop
-  useEffect(() => {
-    if (!session) return;
-
-    let animationFrameID;
-
-    const detectFrame = async () => {
-      if (!paused) { // Only run detection if not paused
-        if (
-          webcamRef.current &&
-          webcamRef.current.video &&
-          webcamRef.current.video.readyState === 4
-        ) {
-          const video = webcamRef.current.video;
-
-          const tensor = preprocessVideoFrame(video);
-          const results = await session.run({ images: tensor });
-          const output = results[Object.keys(results)[0]];
-          const detections = postprocessYOLO(output, annotationLabels, 0.5);
-
-          if (canvasRef.current) {
-            drawBoundingBoxes(detections, canvasRef.current, video);
-          }
-        }
-      }
-      animationFrameID = requestAnimationFrame(detectFrame);
-    };
-
-    detectFrame();
-    return () => cancelAnimationFrame(animationFrameID);
-  }, [session, paused]);
-
-  const captureImage = () => {
+  const captureImage = async () => {
     const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      console.log("Captured Image:", imageSrc);
-      setCapturedImage(imageSrc);
-      setPaused(true); // Pause the detection loop
+    if (!imageSrc || !session) return;
+
+    console.log("Captured Image:", imageSrc);
+
+    setIsProcessing(true);
+    try {
+      const result = await runYOLO(session, imageSrc);
+      if (result) {
+        alert(`Detected: ${result.className} (${(result.confidence * 100).toFixed(1)}%)`);
+      } else {
+        alert("No animal detected");
+      }
+    } catch (err) {
+      console.error("YOLO inference error:", err);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  const resumeDetection = () => {
-    setCapturedImage(null);
-    setPaused(false); // Resume detection
-  };
+  if (loadingModel) {
+    return (
+      <Container className="scanner-page">
+        <div
+          className="loading-container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            flexDirection: "column",
+          }}
+        >
+          <div>Loading AI Model...</div>
+          <div style={{ marginTop: "10px", fontSize: "0.8em", opacity: 0.7 }}>
+            This may take a few moments
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container className="scanner-page">
-      <Container className="webcam-wrapper">
+      <Container className="webcam-wrapper" style={{ position: "relative" }}>
         <Webcam
           ref={webcamRef}
           className="webcam"
@@ -103,20 +102,24 @@ const CapturePage = () => {
             left: 0,
             width: "100%",
             height: "100%",
+            pointerEvents: "none",
           }}
         />
         <div className="capture-button-wrapper">
-          {!capturedImage ? (
-            <button className="capture-button" onClick={captureImage}>
-              Capture
-            </button>
-          ) : (
-            <div className="image-preview-actions">
-              <img src={capturedImage} alt="Captured" className="preview-image"/>
-              <button onClick={resumeDetection}>Resume Detection</button>
-              {/* Add any other actions for the captured image here */}
-            </div>
-          )}
+          <button className="capture-button" onClick={captureImage}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={30}
+              height={30}
+              fill={"white"}
+              viewBox="0 0 24 24"
+            >
+              <path d="M10.5 5 11.5 4.33 12.5 5 12.17 3.83 13 3.12 12 3 11.5 2 11 3 10 3.12 10.83 3.83 10.5 5z" />
+              <path d="M20.33 13.67 19.5 12 18.67 13.67 17 13.88 18.39 15.06 17.83 17 19.5 15.89 21.17 17 20.61 15.06 22 13.88 20.33 13.67z" />
+              <path d="M4.83 9 6.5 7.89 8.17 9 7.61 7.05 9 5.88 7.33 5.67 6.5 4 5.67 5.67 4 5.88 5.39 7.05 4.83 9z" />
+              <path d="m18.71,2.29c-.39-.39-1.02-.39-1.41,0L2.29,17.29c-.39.39-.39,1.02,0,1.41l3,3c.2.2.45.29.71.29s.51-.1.71-.29l15-15c.39-.39.39-1.02,0-1.41l-3-3ZM6,19.59l-1.59-1.59,9.09-9.09,1.59,1.59-9.09,9.09Zm10.5-10.5l-1.59-1.59,3.09-3.09,1.59,1.59-3.09,3.09Z" />
+            </svg>
+          </button>
         </div>
       </Container>
     </Container>

@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import cv2
 
 model = YOLO("my_model.pt")
-results = model("test3.jpg", imgsz=500)
+results = model("test2.jpg", imgsz=500)
 result = results[0]
 
 # Draw bounding boxes on the image

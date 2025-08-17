@@ -1,28 +1,50 @@
-import onnxruntime as ort
-import numpy as np
-import cv2
+import json
+from ultralytics import YOLO
 
-# Load your ONNX model
-model_path = "my_model.onnx"
-session = ort.InferenceSession(model_path)
+# Load labels.json
+with open("labels.json", "r") as f:
+    labels = json.load(f)
 
-# Print input/output info
-print("Inputs:", [i.name for i in session.get_inputs()])
-print("Outputs:", [o.name for o in session.get_outputs()])
+# Convert from {"0": "Impala", "1": "Greater Kudu", ...} to list
+id2label = labels
 
-# Example: load an image to run inference
-image_path = "test.jpg"
-img = cv2.imread(image_path)
-img = cv2.resize(img, (640, 640))  # match your model input
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img = img.astype(np.float32) / 255.0
-img = np.transpose(img, (2, 0, 1))  # channels first
-img = np.expand_dims(img, axis=0)  # add batch dimension
+# Load model
+model = YOLO("my_model.onnx")  # or your exported model path
 
-# Run inference
-inputs = {session.get_inputs()[0].name: img}
-outputs = session.run(None, inputs)
+# Run inference on a test image
+results = model("test.jpg")  # replace with your test image
 
-# Print raw output
-print("Model output shape:", [o.shape for o in outputs])
-print("First 20 values of output:", outputs[0].flatten()[:20])
+# Print detected animals
+for result in results:
+    boxes = result.boxes
+    for box in boxes:
+        cls_id = int(box.cls[0])        # class index
+        conf = float(box.conf[0])       # confidence
+        label = id2label[cls_id]        # map to animal name
+        print(f"Detected {label} with confidence {conf:.2f}")
+
+'''from ultralytics import YOLO
+
+# Load your trained YOLOv5/YOLOv8 model
+model = YOLO("my_model.pt")
+
+# Run inference on an image
+results = model.predict("test.jpg", imgsz=640)  # returns processed results
+
+# Export to ONNX (with NMS baked in)
+model.export(format="onnx", opset=17, simplify=True, dynamic=True, nms=True)'''
+
+'''from ultralytics import YOLO
+import json
+'''
+'''# Load your YOLO model
+model = YOLO("my_model.pt")
+
+# Get class names
+labels = [model.names[i] for i in range(len(model.names))]
+
+# Save to labels.json
+with open("labels.json", "w") as f:
+    json.dump(labels, f, indent=2)
+
+print("Saved labels.json with", len(labels), "classes.")'''
