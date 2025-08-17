@@ -1,12 +1,30 @@
 .not-found-page {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 10px;
     background-color: beige;
     height: 100vh;
+    text-align: center;
 }
 
 .not-found-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
+    text-align: center;
 }
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 
 .image-notice {
     color: darkgreen;
