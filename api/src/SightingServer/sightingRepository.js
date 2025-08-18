@@ -1,45 +1,146 @@
 import db from '../db/index.js';
 import { nanoid } from 'nanoid';
-import s3 from '../db/imageStorage.js';
+import {
+    S3Client,
+    PutObjectCommand,
+    GetObjectCommand,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
+
+/**
+ * Saves a new sighting to the database.
+ * @param {string} user_id - The ID of the user.
+ * @param {object} identification - The animal identification details.
+ * @param {string} image_url - The URL of the sighting image.
+ * @param {string} method - The method of sighting ('image' or 'audio').
+ * @param {object} geolocation - The longitude and latitude of the sighting.
+ * @returns {Promise<object>} The newly created sighting object.
+ */
+async function saveNewSighting(user_id, identification, image_url, method, geolocation) {
+    const queryText = `
+        INSERT INTO sightings(user_id, animal_id, confidence, confirmed, protected, method, image_url, geolocation_long, geolocation_lat)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING *;
+    `;
+    const queryValues = [
+        user_id,
+        // For now, use a placeholder.
+        14, // Placeholder for 'Zebra' from training data
+        identification.confidence,
+        false, // confirmed
+        false, // protected
+        method,
+        image_url,
+        geolocation.longitude,
+        geolocation.latitude,
+    ];
+
+    try {
+        const res = await db.query(queryText, queryValues);
+        if (res.rows.length > 0) {
+            return res.rows[0];
+        }
+    } catch (error) {
+        console.error('Error adding sighting to DB:', error);
+        throw new Error('Error adding sighting to DB');
+    }
+}
+
+/**
+ * Retrieves a single sighting by its ID from the database.
+ * @param {string} sightingId - The ID of the sighting.
+ * @returns {Promise<object|null>} The sighting object or null if not found.
+ */
+async function getSightingById(sightingId) {
+    const queryText = 'SELECT * FROM sightings WHERE id = $1;';
+    const queryValues = [sightingId];
+
+    try {
+        const res = await db.query(queryText, queryValues);
+        if (res.rows.length > 0) {
+            return res.rows[0];
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching sighting by ID:', error);
+        throw new Error('Error fetching sighting by ID');
+    }
+}
+
+/**
+ * Uploads an image file to S3 and returns the key.
+ * @param {Buffer} file - The image data as a Buffer.
+ * @returns {Promise<string>} The key of the uploaded object in S3.
+ */
 async function uploadSightingFile(file) {
-	try {
-		const key = nanoid(12);
-		return await s3.storeImage(key, file);
-	} catch (error) {
-		console.error(error);
-		throw new Error('Error uploading file');
-	}
+    const fileKey = nanoid();
+    const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: fileKey,
+        Body: file,
+        ContentType: 'image/jpeg',
+    };
+
+    try {
+        await s3.send(new PutObjectCommand(uploadParams));
+        return fileKey;
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        throw new Error('Error uploading file');
+    }
 }
 
-async function saveNewSighting(user_id, identification, image_url, file_type, geolocation) {
-	try {
-		const { animal_id, confidence, confirmed, prot } = identification;
-		const { longitude, latitude } = geolocation;
-		const query =
-			'INSERT INTO identifications (user_id, animal_id, confidence, confirmed, protected, method, image_url, geolocation_long, geolocation_lat) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;';
-		const params = [user_id, animal_id, confidence, confirmed, prot, file_type, image_url, longitude, latitude];
+/**
+ * Fetches the signed URL for a sighting image from S3.
+ * @param {string} image_url - The S3 key of the image.
+ * @returns {Promise<string>} The signed URL.
+ */
+async function fetchSightingImage(image_url) {
+    const getParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: image_url,
+    };
 
-		const result = await db.query(query, params);
-
-		return result;
-	} catch (error) {
-		console.error(error);
-		throw new Error('Error adding sighting to DB');
-	}
+    try {
+        const command = new GetObjectCommand(getParams);
+        const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        return signedUrl;
+    } catch (error) {
+        console.error('Error fetching file:', error);
+        throw new Error('Error fetching file');
+    }
 }
 
-async function fetchSightingImage(key) {
-	try {
-		return await s3.fetchImage(key);
-	} catch (error) {
-		console.error(error);
-		throw new Error('Error fetching sighting image');
-	}
+/**
+ * Retrieves all sighting history for a specific user from the database.
+ * @param {string} user_id - The ID of the user.
+ * @returns {Promise<Array>} A promise that resolves to an array of sightings.
+ */
+async function getSightingHistoryByUserId(user_id) {
+    const queryText = 'SELECT * FROM sightings WHERE user_id = $1 ORDER BY created_at DESC;';
+    const queryValues = [user_id];
+
+    try {
+        const res = await db.query(queryText, queryValues);
+        return res.rows;
+    } catch (error) {
+        console.error('Error fetching sighting history by user ID:', error);
+        throw new Error('Error fetching sighting history by user ID');
+    }
 }
 
 export const sightingRepository = {
-	uploadSightingFile,
-	saveNewSighting,
-	fetchSightingImage,
+    saveNewSighting,
+    uploadSightingFile,
+    fetchSightingImage,
+    getSightingById,
+    getSightingHistoryByUserId,
 };
