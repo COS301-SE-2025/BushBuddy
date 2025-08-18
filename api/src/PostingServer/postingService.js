@@ -3,10 +3,6 @@ import { postingRepository } from './postingRepository.js';
 async function createPost(details) {
     try{
         const result = await postingRepository.createPost(details);
-        
-        if (!result) {
-            throw new Error();
-        }
 
         return result;
 
@@ -29,7 +25,7 @@ async function fetchAllPosts() {
         return allPosts;
     } catch (error) {
         console.error("Error in postingService.fetchAllPosts:", error);
-        throw new error('Failed to fetch all posts');
+        throw new Error('Failed to fetch all posts');
     }
 }
 
@@ -46,7 +42,7 @@ async function fetchAllUserPosts(user_id) {
         return allPosts;
     } catch (error) {
         console.error("Error in postingService.fetchAllPosts:", error);
-        throw new error('Failed to fetch all posts');
+        throw new Error('Failed to fetch user posts');
     }
 }
 
@@ -86,7 +82,7 @@ async function addComment(data) {
         return result;
     } catch (error){
         console.error("Error in postingService.likePost:", error);
-        throw new Error('Failed to like post');
+        throw new Error('Failed to add comment');
     }
 }
 
