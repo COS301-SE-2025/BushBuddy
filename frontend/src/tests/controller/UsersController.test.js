@@ -1,5 +1,5 @@
-import { handleLogin, handleRegister } from "./UsersController";
-import { loginUser, registerUser } from "../services/userService.js";
+import { handleLogin, handleRegister } from "../../controllers/UsersController.js";
+import { loginUser, registerUser } from "../../services/userService.js";
 
 jest.mock("../services/userService.js", () => ({
   loginUser: jest.fn(),

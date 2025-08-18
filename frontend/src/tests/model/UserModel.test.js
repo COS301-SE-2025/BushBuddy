@@ -1,4 +1,4 @@
-import { User, LoginRequest, RegisterRequest } from "./UserModel";
+import { User, LoginRequest, RegisterRequest } from "../../models/UserModel";
 
 describe("UserModel classes", () => {
   describe("User", () => {
