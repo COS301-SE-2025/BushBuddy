@@ -16,7 +16,7 @@ app.use(
 		origin: (origin, callback) => {
 			if (!origin) return callback(null, true);
 
-			if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) {
+			if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
 				return callback(null, true);
 			}
 
@@ -27,14 +27,15 @@ app.use(
 			return callback(new Error('Not allowed by CORS'));
 		},
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
+		allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
 		credentials: true,
+		exposedHeaders: ['Set-Cookie']
 	})
 );
 
 app.options('*', cors());
 
-// app.use(express.json());
+app.use(express.json());
 app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
@@ -46,6 +47,7 @@ const publicRoutes = ['/auth/register', '/auth/login', '/auth/status'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
+	console.log('Cookies:', req.cookies);
 	// console.log('Testing CI/CD');
 	// Check if the request is for a public route
 	if (publicRoutes.includes(req.path)) {

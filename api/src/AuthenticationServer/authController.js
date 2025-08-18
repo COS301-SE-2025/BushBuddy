@@ -30,7 +30,7 @@ async function loginUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'lax',
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
