@@ -14,7 +14,7 @@ async function createPost(details) {
 		const image_query = `SELECT image_url FROM identifications WHERE id = $1;`;
 
         const image_result = await db.query(image_query, [identification_id]);
-		const image_url = image_result.rows[0].image_url
+		const image_url = image_result.rows[0]?.image_url
 
 		if(!image_url){
 			throw new Error('Image URL not found for identification ID');
@@ -40,7 +40,6 @@ async function createPost(details) {
         
 		return result.rows[0];
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error adding new post: ${error.message}`);
 	}
 }
@@ -53,7 +52,6 @@ async function fetchAllPosts() {
 
 		return result.rows;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
 	}
 }
@@ -66,7 +64,6 @@ async function fetchAllUserPosts(user_id) {
 
 		return result.rows;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error fetching all posts: ${error.message}`);
 	}
 }
@@ -84,7 +81,6 @@ async function fetchPost(post_id) {
 
 		return result;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error fetching post: ${error.message}`);
 	}
 }
@@ -107,7 +103,6 @@ async function likePost(post_id, user_id) {
 		
 		return null;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error adding like to post: ${error.message}`);
 	}
 }
@@ -131,7 +126,6 @@ async function addComment(details) {
 
 		return result.rows;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error adding comment to post: ${error.message}`);
 	}
 }
@@ -146,7 +140,6 @@ async function fetchComments(post_id) {
 
 		return result.rows;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error adding like to post: ${error.message}`);
 	}
 }
@@ -156,7 +149,6 @@ async function fetchPostImage(key) {
 		const url = await s3.fetchImage(key);
 		return url;
 	} catch (error) {
-		console.error(error);
 		throw new Error('Error fetching post image');
 	}
 }
@@ -169,7 +161,6 @@ async function fetchUserName(userId) {
 
 		return result.rows[0].username;
 	} catch (error) {
-		console.error(error);
 		throw new Error(`Error fetching username: ${error.message}`);
 	}
 }
