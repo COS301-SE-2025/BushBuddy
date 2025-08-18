@@ -262,6 +262,173 @@
     border-radius: 50%;
 }
 
+/* Modal Styles */
+.animal-detail-modal .modal-dialog {
+    max-width: 90vw;
+    width: 600px;
+    margin: 1rem auto;
+}
+
+.animal-detail-modal .modal-content {
+    background: none;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-body-custom {
+    padding: 0;
+    background: none;
+}
+
+.modal-gradient {
+    background: linear-gradient(135deg, #4c8c4a 0%, #1e3b1d 100%);
+    color: white;
+    min-height: 70vh;
+    border-radius: 15px;
+}
+
+/* Modal Header */
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+}
+
+.modal-close-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Modal Content */
+.modal-content-custom {
+    padding: 0 20px 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.modal-content-custom::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content-custom::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-content-custom::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.modal-image-container {
+    margin-bottom: 20px;
+}
+
+.modal-image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.modal-info-container {
+    color: white;
+}
+
+.modal-animal-name {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.modal-scientific-name {
+    color: #4CAF50;
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.modal-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.modal-status-text {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.modal-section {
+    margin-bottom: 25px;
+}
+
+.modal-section-title {
+    color: #4CAF50;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.modal-description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.fact-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+}
+
+.fact-bullet {
+    color: #4CAF50;
+    font-size: 16px;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.fact-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.4;
+    flex: 1;
+}
+
 /* Loading state */
 .loading-container {
     text-align: center;
@@ -358,6 +525,48 @@
     .animal-name {
         font-size: 13px;
     }
+
+    /* Mobile Modal Styles */
+    .animal-detail-modal .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100vw - 1rem);
+    }
+
+    .modal-header-custom {
+        padding: 15px;
+    }
+
+    .modal-content-custom {
+        padding: 0 15px 15px;
+        max-height: 70vh;
+    }
+
+    .modal-animal-name {
+        font-size: 24px;
+    }
+
+    .modal-scientific-name {
+        font-size: 14px;
+    }
+
+    .modal-section-title {
+        font-size: 18px;
+    }
+
+    .modal-description,
+    .fact-text,
+    .detail-value {
+        font-size: 14px;
+    }
+
+    .detail-label {
+        font-size: 14px;
+        min-width: 70px;
+    }
+
+    .modal-image {
+        max-height: 200px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -421,6 +630,54 @@
     .results-counter {
         font-size: 11px;
     }
+
+    /* Small Mobile Modal Styles */
+    .animal-detail-modal .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100vw - 0.5rem);
+    }
+
+    .modal-header-custom {
+        padding: 12px;
+    }
+
+    .modal-content-custom {
+        padding: 0 12px 12px;
+        max-height: 75vh;
+    }
+
+    .modal-animal-name {
+        font-size: 22px;
+    }
+
+    .modal-section {
+        margin-bottom: 20px;
+    }
+
+    .modal-section-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .modal-image {
+        max-height: 180px;
+    }
+
+    .detail-row {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .detail-label {
+        min-width: 60px;
+        font-size: 13px;
+    }
+
+    .detail-value,
+    .fact-text,
+    .modal-description {
+        font-size: 13px;
+    }
 }
 
 /* Very small screens */
@@ -445,4 +702,56 @@
         font-size: 8px;
         padding: 1px 4px;
     }
+
+    /* Very Small Modal Styles */
+    .modal-animal-name {
+        font-size: 20px;
+    }
+
+    .modal-scientific-name {
+        font-size: 12px;
+    }
+
+    .modal-section-title {
+        font-size: 15px;
+    }
+
+    .detail-value,
+    .fact-text,
+    .modal-description {
+        font-size: 12px;
+    }
+
+    .detail-label {
+        font-size: 12px;
+        min-width: 55px;
+    }
+
+    .modal-image {
+        max-height: 150px;
+    }
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.detail-row svg {
+    flex-shrink: 0;
+}
+
+.detail-label {
+    color: #4CAF50;
+    font-size: 16px;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.detail-value {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    flex: 1;
 }

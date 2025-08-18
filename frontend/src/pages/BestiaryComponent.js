@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Spinner, Alert, Button, Badge } from 'react-bootstrap';
+import { Container, Card, Spinner, Alert, Button, Badge, Modal } from 'react-bootstrap';
 import './BestiaryComponent.css';
 import { checkAuthStatus } from "../controllers/UsersController";
 
@@ -10,6 +10,8 @@ const BestiaryComponent = () => {
     const [error, setError] = useState(null);
     const [selectedType, setSelectedType] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedAnimal, setSelectedAnimal] = useState(null);
+    const [showAnimalModal, setShowAnimalModal] = useState(false);
 
     // Get unique animal types for filtering
     const getAnimalTypes = () => {
@@ -30,6 +32,18 @@ const BestiaryComponent = () => {
             'Small and Medium Mammal': '#9C27B0'
         };
         return colors[status] || '#757575';
+    };
+
+    // Handle animal selection
+    const handleAnimalPress = (animal) => {
+        setSelectedAnimal(animal);
+        setShowAnimalModal(true);
+    };
+
+    // Close animal modal
+    const closeAnimalModal = () => {
+        setShowAnimalModal(false);
+        setSelectedAnimal(null);
     };
 
     // Fetch animals from API
@@ -135,6 +149,144 @@ const BestiaryComponent = () => {
         setFilteredAnimals(filtered);
     }, [animals, selectedType, searchTerm]);
 
+    // Animal Detail Modal Component
+    const AnimalDetailModal = () => {
+        if (!selectedAnimal) return null;
+
+        return (
+            <Modal
+                show={showAnimalModal}
+                onHide={closeAnimalModal}
+                size="lg"
+                centered
+                className="animal-detail-modal"
+            >
+                <Modal.Body className="modal-body-custom">
+                    <div className="modal-gradient">
+                        {/* Modal Header */}
+                        <div className="modal-header-custom">
+                            <button 
+                                className="modal-close-button"
+                                onClick={closeAnimalModal}
+                            >
+                                <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                </svg>
+                            </button>
+                            <div className="modal-status-container">
+                                <div 
+                                    className="modal-status-dot"
+                                    style={{ backgroundColor: getTypeColor(selectedAnimal.status || selectedAnimal.type) }}
+                                />
+                                <svg width="20" height="20" fill="#4CAF50" viewBox="0 0 16 16">
+                                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div className="modal-content-custom">
+                            {/* Animal Image */}
+                            <div className="modal-image-container">
+                                <img 
+                                    src={selectedAnimal.image_url} 
+                                    alt={selectedAnimal.name}
+                                    className="modal-image"
+                                    onError={(e) => {
+                                        e.target.src = '/placeholder-animal.jpg';
+                                    }}
+                                />
+                            </div>
+
+                            {/* Animal Info */}
+                            <div className="modal-info-container">
+                                <h2 className="modal-animal-name">{selectedAnimal.name}</h2>
+                                <p className="modal-scientific-name">
+                                    {selectedAnimal.scientific_name || selectedAnimal.scientificName || 'Scientific name not available'}
+                                </p>
+                                
+                                <div className="modal-status-row">
+                                    <div 
+                                        className="status-dot"
+                                        style={{ backgroundColor: getTypeColor(selectedAnimal.status || selectedAnimal.type) }}
+                                    />
+                                    <span className="modal-status-text">
+                                        {selectedAnimal.status || selectedAnimal.type || 'Status not available'}
+                                    </span>
+                                </div>
+
+                                {/* Description */}
+                                <div className="modal-section">
+                                    <h3 className="modal-section-title">Description</h3>
+                                    <p className="modal-description">
+                                        {selectedAnimal.description || 'No description available.'}
+                                    </p>
+                                </div>
+
+                                {/* Fun Facts */}
+                                {selectedAnimal.facts && selectedAnimal.facts.length > 0 && (
+                                    <div className="modal-section">
+                                        <h3 className="modal-section-title">Fun Facts</h3>
+                                        {selectedAnimal.facts.map((fact, index) => (
+                                            <div key={index} className="fact-row">
+                                                <span className="fact-bullet">•</span>
+                                                <span className="fact-text">{fact}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Additional Info */}
+                                <div className="modal-section">
+                                    <h3 className="modal-section-title">Details</h3>
+                                    
+                                    {selectedAnimal.habitat && (
+                                        <div className="detail-row">
+                                            <svg width="16" height="16" fill="#4CAF50" viewBox="0 0 16 16">
+                                                <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                                            </svg>
+                                            <span className="detail-label">Habitat:</span>
+                                            <span className="detail-value">{selectedAnimal.habitat}</span>
+                                        </div>
+                                    )}
+                                    
+                                    {selectedAnimal.diet && (
+                                        <div className="detail-row">
+                                            <svg width="16" height="16" fill="#4CAF50" viewBox="0 0 16 16">
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                            </svg>
+                                            <span className="detail-label">Diet:</span>
+                                            <span className="detail-value">{selectedAnimal.diet}</span>
+                                        </div>
+                                    )}
+                                    
+                                    {selectedAnimal.lifespan && (
+                                        <div className="detail-row">
+                                            <svg width="16" height="16" fill="#4CAF50" viewBox="0 0 16 16">
+                                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                            </svg>
+                                            <span className="detail-label">Lifespan:</span>
+                                            <span className="detail-value">{selectedAnimal.lifespan}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="detail-row">
+                                        <svg width="16" height="16" fill="#4CAF50" viewBox="0 0 16 16">
+                                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                        </svg>
+                                        <span className="detail-label">Type:</span>
+                                        <span className="detail-value">{selectedAnimal.type}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        );
+    };
+
     return (
         <Container className="bestiary-component">
             {/* Header Section */}
@@ -226,7 +378,10 @@ const BestiaryComponent = () => {
                     <div className="row">
                         {filteredAnimals.map((animal) => (
                             <div key={animal.id}>
-                                <Card className="bestiary-card h-100">
+                                <Card 
+                                    className="bestiary-card h-100"
+                                    onClick={() => handleAnimalPress(animal)}
+                                >
                                     <div className="card-image-wrapper">
                                         <Card.Img
                                             variant="top"
@@ -258,6 +413,9 @@ const BestiaryComponent = () => {
                     </div>
                 )}
             </div>
+
+            {/* Animal Detail Modal */}
+            <AnimalDetailModal />
         </Container>
     );
 };
