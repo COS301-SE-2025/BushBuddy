@@ -1,0 +1,16 @@
+(base) C:\2025\COS301\LaasteAaste2>python inspect_model_output.py
+Loading YOLO model from: ./my_model.pt
+Loading sample image from: ./data/images/00a2891d-356506083.jpg
+Running model inference...
+
+Model Output Summary:
+Number of detected objects: 1
+
+Detailed Detection Data:
+Detection 1:
+  - Class: Bushbuck (ID: 4)
+  - Confidence: 0.8402
+  - Bounding Box (xyxy): [     87.101      34.155      326.49      289.22]
+--------------------
+
+(base) C:\2025\COS301\LaasteAaste2>
