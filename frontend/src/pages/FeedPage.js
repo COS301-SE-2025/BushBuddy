@@ -135,13 +135,13 @@ const FeedPage = () => {
 
   return (
     <div className="feed-page">
+      <FeedFilters />
       {loading ? (
         <div className="loader-wrapper">
           <div className="loader"></div>
         </div>
       ) : (
         <>
-          <FeedFilters />
           {posts.map((entry) => (
             <FeedCard
               key={entry.id}
