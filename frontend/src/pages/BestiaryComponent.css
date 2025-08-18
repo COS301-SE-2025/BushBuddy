@@ -1,156 +1,448 @@
-/* BestiaryComponent.css */
 .bestiary-component {
     padding: 0;
+    background: linear-gradient(135deg, #4c8c4a 0%, #1e3b1d 100%);
+    min-height: 100vh;
+    color: white;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
 
+/* Header Section */
+.bestiary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bestiary-title {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.achievements-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.achievements-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Search and Filter Controls */
 .bestiary-filters {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 10px;
-    margin-bottom: 2rem;
+    padding: 0 5%;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.bestiary-filters .form-label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.5rem;
+.bestiary-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.bestiary-filters .form-control,
-.bestiary-filters .form-select {
-    border-radius: 8px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+.bestiary-search-container {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 12px;
+    flex: 1;
+    transition: background-color 0.3s ease;
 }
 
-.bestiary-filters .form-control:focus,
-.bestiary-filters .form-select:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.bestiary-search-container:hover {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
+.bestiary-search-container svg {
+    color: white;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.bestiary-search-input {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    flex: 1;
+    outline: none;
+}
+
+.bestiary-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-dropdown-container {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.filter-dropdown-container:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.filter-dropdown-label {
+    color: white;
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.filter-dropdown-container svg {
+    color: white;
+}
+
+/* Filter Pills */
+.filter-pills-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 0 0 10px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.filter-pills-container::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.filter-pill.active {
+    background-color: #ff6b00;
+    color: white;
+    font-weight: bold;
+}
+
+.filter-pill:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.filter-pill.active:hover {
+    background-color: #e55a00;
+}
+
+/* Results Counter */
+.results-counter {
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+/* Bestiary Grid - Mobile Style */
 .bestiary-cards-wrapper {
-    padding: 0;
+    padding: 0 5%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bestiary-cards-wrapper .row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .bestiary-card {
+    background-color: rgba(255, 255, 255, 0.1);
     border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    overflow: hidden;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: white;
 }
 
 .bestiary-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 .card-image-wrapper {
     position: relative;
-    overflow: hidden;
+    margin-bottom: 8px;
 }
 
 .bestiary-card-image {
-    height: 200px;
-    object-fit: cover;
     width: 100%;
-    transition: transform 0.3s ease-in-out;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
 }
 
 .bestiary-card:hover .bestiary-card-image {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .type-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 15px;
+    top: 6px;
+    right: 6px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
     font-weight: 600;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    backdrop-filter: blur(4px);
+    border: none;
 }
 
 .bestiary-card .card-body {
-    padding: 1.25rem;
-    background-color: #fff;
+    padding: 0;
+    background: none;
 }
 
 .animal-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 0.75rem;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
     line-height: 1.2;
 }
 
 .animal-description {
-    font-size: 0.9rem;
-    color: #6c757d;
-    line-height: 1.4;
-    margin-bottom: 0;
+    display: none; /* Hide description in grid view like mobile */
 }
 
-/* Responsive adjustments */
+/* Status dot */
+.status-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Loading state */
+.loading-container {
+    text-align: center;
+    padding: 50px;
+    color: white;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+}
+
+/* Error state */
+.error-container {
+    padding: 20px;
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: white;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.alert-heading {
+    color: #ff6b6b;
+}
+
+.btn-outline-danger {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+    color: white;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 50px 5%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.empty-state h5 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+    .bestiary-header {
+        padding: 15px 4%;
+    }
+    
     .bestiary-filters {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
+        padding: 0 4%;
+    }
+    
+    .bestiary-cards-wrapper {
+        padding: 0 4%;
+    }
+    
+    .bestiary-cards-wrapper .row {
+        max-width: 600px;
+        gap: 12px;
+    }
+    
+    .bestiary-controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .bestiary-search-container {
+        margin-bottom: 0;
     }
     
     .bestiary-card-image {
-        height: 180px;
+        height: 70px;
     }
     
     .animal-name {
-        font-size: 1.1rem;
-    }
-    
-    .animal-description {
-        font-size: 0.85rem;
+        font-size: 13px;
     }
 }
 
 @media (max-width: 576px) {
-    .bestiary-card-image {
-        height: 160px;
+    .bestiary-header {
+        padding: 15px 3%;
+        margin-bottom: 10px;
     }
     
-    .bestiary-card .card-body {
-        padding: 1rem;
+    .bestiary-title {
+        font-size: 16px;
+    }
+    
+    .achievements-button {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    .bestiary-filters {
+        padding: 0 3%;
+        margin-bottom: 10px;
+    }
+    
+    .bestiary-cards-wrapper {
+        padding: 0 3%;
+    }
+    
+    .bestiary-cards-wrapper .row {
+        gap: 10px;
+        max-width: 400px;
+    }
+    
+    .bestiary-card {
+        padding: 8px;
+    }
+    
+    .bestiary-card-image {
+        height: 60px;
+    }
+    
+    .animal-name {
+        font-size: 12px;
+    }
+    
+    .filter-pills-container {
+        gap: 8px;
+    }
+    
+    .filter-pill {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .bestiary-search-input {
+        font-size: 13px;
+    }
+    
+    .filter-dropdown-label {
+        font-size: 13px;
+    }
+    
+    .results-counter {
+        font-size: 11px;
     }
 }
 
-/* Loading and error states */
-.spinner-border {
-    width: 3rem;
-    height: 3rem;
-}
-
-.alert {
-    border-radius: 10px;
-    border: none;
-}
-
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* Empty state */
-.text-center.py-5 h5 {
-    color: #6c757d;
-    font-weight: 600;
-}
-
-.text-center.py-5 .text-muted {
-    font-size: 0.95rem;
-}
-
-/* Filter results counter */
-.bestiary-filters small.text-muted {
-    font-style: italic;
-    font-size: 0.85rem;
+/* Very small screens */
+@media (max-width: 360px) {
+    .bestiary-cards-wrapper .row {
+        gap: 8px;
+    }
+    
+    .bestiary-card {
+        padding: 6px;
+    }
+    
+    .bestiary-card-image {
+        height: 50px;
+    }
+    
+    .animal-name {
+        font-size: 11px;
+    }
+    
+    .type-badge {
+        font-size: 8px;
+        padding: 1px 4px;
+    }
 }

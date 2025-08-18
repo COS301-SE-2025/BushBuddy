@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Row, Col, Spinner, Alert, Form, Badge, Button } from 'react-bootstrap';
+import { Container, Card, Spinner, Alert, Button, Badge } from 'react-bootstrap';
 import './BestiaryComponent.css';
 import { checkAuthStatus } from "../controllers/UsersController";
 
@@ -17,6 +17,21 @@ const BestiaryComponent = () => {
         return ['All', ...types.sort()];
     };
 
+    // Get type/status color for visual indicators
+    const getTypeColor = (status) => {
+        const colors = {
+            'Endangered': '#FF5722',
+            'Near Threatened': '#FF9800', 
+            'Vulnerable': '#FFC107',
+            'Least Concern': '#4CAF50',
+            'Predator': '#ff6b00',
+            'Large Mammal': '#2196F3',
+            'Antelope': '#4CAF50',
+            'Small and Medium Mammal': '#9C27B0'
+        };
+        return colors[status] || '#757575';
+    };
+
     // Fetch animals from API
     useEffect(() => {
         const fetchAnimals = async () => {
@@ -27,7 +42,7 @@ const BestiaryComponent = () => {
                 let headers = {
                     'Content-Type': 'application/json',
                 };
-                // ( Not lus to go and see what auth)
+                // (Not lus to find the auth)
                 // Method 1: Try using your existing checkAuthStatus function
                 try {
                     const authData = await checkAuthStatus();
@@ -120,90 +135,87 @@ const BestiaryComponent = () => {
         setFilteredAnimals(filtered);
     }, [animals, selectedType, searchTerm]);
 
-    // Get type color for badges
-    const getTypeColor = (type) => {
-        const colors = {
-            'Predator': 'danger',
-            'Large Mammal': 'primary',
-            'Antelope': 'success',
-            'Small and Medium Mammal': 'warning'
-        };
-        return colors[type] || 'secondary';
-    };
-
-    if (loading) {
-        return (
-            <Container className="text-center py-5">
-                <Spinner animation="border" role="status" variant="primary" />
-                <div className="mt-2">Loading animals...</div>
-            </Container>
-        );
-    }
-
-    if (error) {
-        return (
-            <Container className="py-3">
-                <Alert variant="danger">
-                    <Alert.Heading>Error Loading Bestiary</Alert.Heading>
-                    <p>{error}</p>
-                    <hr />
-                    <div className="d-flex justify-content-end">
-                        <Button 
-                            variant="outline-danger" 
-                            onClick={() => window.location.reload()}
-                        >
-                            Retry
-                        </Button>
-                    </div>
-                </Alert>
-            </Container>
-        );
-    }
-
     return (
         <Container className="bestiary-component">
-            {/* Filters Section */}
-            <Container className="bestiary-filters mb-4">
-                <Row className="g-3">
-                    <Col md={6}>
-                        <Form.Group>
-                            <Form.Label>Search Animals</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Search by name or description..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group>
-                            <Form.Label>Filter by Type</Form.Label>
-                            <Form.Select
-                                value={selectedType}
-                                onChange={(e) => setSelectedType(e.target.value)}
-                            >
-                                {getAnimalTypes().map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                
-                <div className="mt-2">
-                    <small className="text-muted">
-                        Showing {filteredAnimals.length} of {animals.length} animals
-                    </small>
+            {/* Header Section */}
+            <div className="bestiary-header">
+                <h2 className="bestiary-title">Bestiary</h2>
+                <button className="achievements-button">
+                    Achievements
+                </button>
+            </div>
+
+            {/* Search and Filter Controls */}
+            <div className="bestiary-filters">
+                {/* Search and Filter Row */}
+                <div className="bestiary-controls">
+                    <div className="bestiary-search-container">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        <input
+                            type="text"
+                            className="bestiary-search-input"
+                            placeholder="Search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="filter-dropdown-container">
+                        <span className="filter-dropdown-label">All</span>
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                        </svg>
+                    </div>
                 </div>
-            </Container>
+
+                {/* Filter Pills */}
+                <div className="filter-pills-container">
+                    {getAnimalTypes().map(type => (
+                        <button
+                            key={type}
+                            className={`filter-pill ${selectedType === type ? 'active' : ''}`}
+                            onClick={() => setSelectedType(type)}
+                        >
+                            {type}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Results Counter */}
+                <div className="results-counter">
+                    Showing {filteredAnimals.length} of {animals.length} animals
+                </div>
+            </div>
 
             {/* Animals Grid */}
-            <Container className="bestiary-cards-wrapper">
-                {filteredAnimals.length === 0 ? (
-                    <div className="text-center py-5">
+            <div className="bestiary-cards-wrapper">
+                {loading ? (
+                    <div className="loading-container">
+                        <Spinner animation="border" role="status" variant="light" />
+                        <div className="mt-2">Loading animals...</div>
+                    </div>
+                ) : error ? (
+                    <div className="error-container">
+                        <Alert variant="danger">
+                            <Alert.Heading>Error Loading Bestiary</Alert.Heading>
+                            <p>{error}</p>
+                            <hr />
+                            <div className="d-flex justify-content-end">
+                                <Button 
+                                    variant="outline-danger" 
+                                    onClick={() => window.location.reload()}
+                                >
+                                    Retry
+                                </Button>
+                            </div>
+                        </Alert>
+                    </div>
+                ) : filteredAnimals.length === 0 ? (
+                    <div className="empty-state">
                         <h5>No animals found</h5>
-                        <p className="text-muted">
+                        <p>
                             {searchTerm || selectedType !== 'All' 
                                 ? 'Try adjusting your search or filter criteria.'
                                 : 'No animals available at the moment.'
@@ -211,9 +223,9 @@ const BestiaryComponent = () => {
                         </p>
                     </div>
                 ) : (
-                    <Row className="g-4">
+                    <div className="row">
                         {filteredAnimals.map((animal) => (
-                            <Col key={animal.id} xs={12} sm={6} md={4} lg={3}>
+                            <div key={animal.id}>
                                 <Card className="bestiary-card h-100">
                                     <div className="card-image-wrapper">
                                         <Card.Img
@@ -222,13 +234,10 @@ const BestiaryComponent = () => {
                                             alt={animal.name}
                                             className="bestiary-card-image"
                                             onError={(e) => {
-                                                e.target.src = '/placeholder-animal.jpg'; // Fallback image
+                                                e.target.src = '/placeholder-animal.jpg';
                                             }}
                                         />
-                                        <Badge 
-                                            bg={getTypeColor(animal.type)} 
-                                            className="type-badge"
-                                        >
+                                        <Badge className="type-badge">
                                             {animal.type}
                                         </Badge>
                                     </div>
@@ -236,16 +245,19 @@ const BestiaryComponent = () => {
                                         <Card.Title className="animal-name">
                                             {animal.name}
                                         </Card.Title>
-                                        <Card.Text className="animal-description flex-grow-1">
-                                            {animal.description}
-                                        </Card.Text>
+                                        <div className="status-indicator">
+                                            <div 
+                                                className="status-dot"
+                                                style={{ backgroundColor: getTypeColor(animal.type) }}
+                                            />
+                                        </div>
                                     </Card.Body>
                                 </Card>
-                            </Col>
+                            </div>
                         ))}
-                    </Row>
+                    </div>
                 )}
-            </Container>
+            </div>
         </Container>
     );
 };
