@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 
 const MODEL_KEY = "local-model";
-const MODEL_URL = process.env.PUBLIC_URL +  "/model/my_model_web_model/model.json";
+const MODEL_URL = process.env.PUBLIC_URL +  "/my_model_web_model/model.json";
 
 
 export async function downloadModel() {

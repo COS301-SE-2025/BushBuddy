@@ -1,17 +1,17 @@
-import React, { useRef, useState, useEffect } from "react";
-import Webcam from "react-webcam";
-import { Container } from "react-bootstrap";
-import { loadModel } from "../utility/modelStorageOperations";
-import "./CapturePage.css";
-import { runYOLO } from "../utility/yoloInference.js";
-import annotationLabels from "../utility/labels.json";
+import React, { useRef, useEffect, useState } from 'react';
+import Webcam from 'react-webcam';
+import { Container } from 'react-bootstrap';
+import './CapturePage.css';
+import { loadYOLOModel, runYOLO, drawBoxes } from '../utility/inferenceModel';
+
+const MODEL_URL = '/model/model.json'; // Replace with your IndexedDB/URL path
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const [session, setSession] = useState(null);
-  const [loadingModel, setLoadingModel] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [liveDetectPaused, setLiveDetectPaused] = useState(false);
 
   const videoConstraints = {
     width: { ideal: 1280 },
@@ -19,70 +19,69 @@ const CapturePage = () => {
     facingMode: { ideal: "environment" },
   };
 
-  // Load model
+  // Load the YOLO model on mount
   useEffect(() => {
-    const init = async () => {
-      try {
-        const modelSession = await loadModel();
-        setSession(modelSession);
-        console.log("Detection Model Ready...");
-        console.log("Model inputs:", modelSession.inputNames);
-        console.log("Model outputs:", modelSession.outputNames);
-      } catch (err) {
-        console.error("Error loading model:", err);
-      } finally {
-        setLoadingModel(false);
-      }
+    const initModel = async () => {
+      await loadYOLOModel(MODEL_URL);
+      setModelLoaded(true);
     };
-    init();
+    initModel();
   }, []);
 
-  const captureImage = async () => {
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (!imageSrc || !session) return;
+  // Live detection loop
+  useEffect(() => {
+    let animationFrameId;
 
-    console.log("Captured Image:", imageSrc);
-
-    setIsProcessing(true);
-    try {
-      const result = await runYOLO(session, imageSrc);
-      if (result) {
-        alert(`Detected: ${result.className} (${(result.confidence * 100).toFixed(1)}%)`);
-      } else {
-        alert("No animal detected");
+    const runLiveDetection = async () => {
+      if (!webcamRef.current || !modelLoaded || liveDetectPaused) {
+        animationFrameId = requestAnimationFrame(runLiveDetection);
+        return;
       }
-    } catch (err) {
-      console.error("YOLO inference error:", err);
-    } finally {
-      setIsProcessing(false);
+
+      const video = webcamRef.current.video;
+      const canvas = canvasRef.current;
+      if (video && canvas) {
+        const results = await runYOLO(video);
+        drawBoxes(canvas, results);
+      }
+
+      animationFrameId = requestAnimationFrame(runLiveDetection);
+    };
+
+    runLiveDetection();
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [modelLoaded, liveDetectPaused]);
+
+  const captureImage = async () => {
+    if (!webcamRef.current) return;
+
+    setLiveDetectPaused(true); // Pause live detection
+    setIsCapturing(true);
+
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (imageSrc) {
+      // Convert base64 to Image element for inference
+      const img = new Image();
+      img.src = imageSrc;
+      img.onload = async () => {
+        const results = await runYOLO(img);
+        console.log("Captured Image Results:", results);
+
+        // Optionally: you could show results somewhere in the UI
+
+        setIsCapturing(false);
+        setLiveDetectPaused(false); // Resume live detection
+      };
+    } else {
+      setIsCapturing(false);
+      setLiveDetectPaused(false);
     }
   };
 
-  if (loadingModel) {
-    return (
-      <Container className="scanner-page">
-        <div
-          className="loading-container"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            flexDirection: "column",
-          }}
-        >
-          <div>Loading AI Model...</div>
-          <div style={{ marginTop: "10px", fontSize: "0.8em", opacity: 0.7 }}>
-            This may take a few moments
-          </div>
-        </div>
-      </Container>
-    );
-  }
-
   return (
     <Container className="scanner-page">
-      <Container className="webcam-wrapper" style={{ position: "relative" }}>
+      <Container className="webcam-wrapper">
         <Webcam
           ref={webcamRef}
           className="webcam"
@@ -95,25 +94,15 @@ const CapturePage = () => {
         />
         <canvas
           ref={canvasRef}
-          className="overlay"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-          }}
+          className="webcam"
+          width={1280}
+          height={720}
+          style={{ position: "absolute", top: 0, left: 0 }}
         />
         <div className="capture-button-wrapper">
-          <button className="capture-button" onClick={captureImage}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={30}
-              height={30}
-              fill={"white"}
-              viewBox="0 0 24 24"
-            >
+          <button className="capture-button" onClick={captureImage} disabled={!modelLoaded || isCapturing}>
+            <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30}
+              fill={"white"} viewBox="0 0 24 24">
               <path d="M10.5 5 11.5 4.33 12.5 5 12.17 3.83 13 3.12 12 3 11.5 2 11 3 10 3.12 10.83 3.83 10.5 5z" />
               <path d="M20.33 13.67 19.5 12 18.67 13.67 17 13.88 18.39 15.06 17.83 17 19.5 15.89 21.17 17 20.61 15.06 22 13.88 20.33 13.67z" />
               <path d="M4.83 9 6.5 7.89 8.17 9 7.61 7.05 9 5.88 7.33 5.67 6.5 4 5.67 5.67 4 5.88 5.39 7.05 4.83 9z" />
