@@ -10,7 +10,7 @@ async function registerUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'lax',
+			sameSite: 'None',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
