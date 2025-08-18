@@ -1,0 +1,56 @@
+description: Ultralytics YOLO11s model trained on /content/data.yaml
+author: Ultralytics
+date: '2025-08-18T18:17:16.252425'
+version: 8.3.169
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: Aardvark
+  1: Blue Wildebeest
+  2: Bontebok
+  3: Buffalo
+  4: Bushbuck
+  5: Bushpig
+  6: Caracal
+  7: Chacma Baboon
+  8: Cheetah
+  9: Common Warthog
+  10: Duiker
+  11: Eland
+  12: Elephant
+  13: Gemsbok
+  14: Giraffe
+  15: Hippo
+  16: Honey Badger
+  17: Hyenah
+  18: Impala
+  19: Kudu
+  20: Leopard
+  21: Lion
+  22: Meerkat
+  23: Nyala
+  24: Pangolin
+  25: Red Hartebeest
+  26: Rhino
+  27: Rock Hyrax
+  28: SableAntelope
+  29: Serval
+  30: Steenbok
+  31: Vevet Monkey
+  32: Waterbuck
+  33: Wild Dog
+  34: Wilddog
+  35: Zebra
+  36: springbok
+args:
+  batch: 1
+  half: false
+  int8: false
+  nms: false
+channels: 3
