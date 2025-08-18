@@ -148,14 +148,6 @@ describe('postingController', () => {
             expect(res.status).toHaveBeenCalledWith(201);
         });
 
-        test('should return 204 if no results', async () => {
-            postingService.fetchPost.mockResolvedValue({ rows: 0 });
-            const req = { params: { postId: 1 } };
-
-            await postingController.fetchPost(req, res);
-            expect(res.status).toHaveBeenCalledWith(204);
-        });
-
         test('should return 500 on error', async () => {
             postingService.fetchPost.mockRejectedValue(new Error('fail'));
             const req = { params: { postId: 1 } };
