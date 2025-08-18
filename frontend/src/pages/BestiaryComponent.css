@@ -1,0 +1,156 @@
+/* BestiaryComponent.css */
+.bestiary-component {
+    padding: 0;
+}
+
+.bestiary-filters {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.bestiary-filters .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.bestiary-filters .form-control,
+.bestiary-filters .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.bestiary-filters .form-control:focus,
+.bestiary-filters .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.bestiary-cards-wrapper {
+    padding: 0;
+}
+
+.bestiary-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+.bestiary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.bestiary-card-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.bestiary-card:hover .bestiary-card-image {
+    transform: scale(1.05);
+}
+
+.type-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+    font-weight: 600;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.bestiary-card .card-body {
+    padding: 1.25rem;
+    background-color: #fff;
+}
+
+.animal-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.animal-description {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bestiary-filters {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .bestiary-card-image {
+        height: 180px;
+    }
+    
+    .animal-name {
+        font-size: 1.1rem;
+    }
+    
+    .animal-description {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .bestiary-card-image {
+        height: 160px;
+    }
+    
+    .bestiary-card .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Loading and error states */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Empty state */
+.text-center.py-5 h5 {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.text-center.py-5 .text-muted {
+    font-size: 0.95rem;
+}
+
+/* Filter results counter */
+.bestiary-filters small.text-muted {
+    font-style: italic;
+    font-size: 0.85rem;
+}
