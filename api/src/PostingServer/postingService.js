@@ -49,6 +49,12 @@ async function fetchAllUserPosts(user_id) {
 async function fetchPost(post_id) {
     try{
         const result = await postingRepository.fetchPost(post_id);
+
+        if(!result)
+        {
+            return null;
+        }
+
         result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
         result.post.created_at = await formatTimestamp(result.post.created_at);

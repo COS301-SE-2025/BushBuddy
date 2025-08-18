@@ -144,14 +144,9 @@ async function fetchPost(req, res) {
 				message: 'Failed to fetch post' 
 			});
 		}
-
-		if(result.rows==0){
-			return res.status(204).json({ 
-				success: true, 
-				message: 'No post found with specified id' 
-			});
-		}
 		
+		//add res for no posts found with specified id
+
 		return res.status(201).json({
 			success: true,
 			message: 'Post fetched successfully',

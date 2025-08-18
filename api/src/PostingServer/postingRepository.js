@@ -72,8 +72,10 @@ async function fetchPost(post_id) {
     try {
 		const query = `SELECT * FROM posts WHERE id = $1;`;
         const post = await db.query(query, [post_id]);
-		const comments = await fetchComments(post_id);
 
+		if(post.rowCount==0) return null;
+
+		const comments = await fetchComments(post_id);
 		const result = {
 			post: post.rows[0],
 			comments
