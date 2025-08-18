@@ -20,13 +20,22 @@ const FeedPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await PostsController.handleFetchAllPosts();
-      if (response.success) {
-        setPosts(response.posts);
-      } else {
-        console.error(response.message);
+      try {
+        setLoading(true);
+        const response = await PostsController.handleFetchAllPosts();
+        if (response.success) {
+          setPosts(response.posts);
+        } else {
+          console.error(response.message);
+        }
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -126,17 +135,24 @@ const FeedPage = () => {
 
   return (
     <div className="feed-page">
-      {/*<SearchBar />*/}
-      <FeedFilters />
-      {posts.map((entry) => (
-        <FeedCard
-          key={entry.id}
-          entry={entry}
-          setSelectedPost={setSelectedPost}
-          setPostDetailVisible={setPostDetailVisible}
-        />
-      ))}
-      {postDetailVisible && renderPostDetailModal()}
+      {loading ? (
+        <div className="loader-wrapper">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        <>
+          <FeedFilters />
+          {posts.map((entry) => (
+            <FeedCard
+              key={entry.id}
+              entry={entry}
+              setSelectedPost={setSelectedPost}
+              setPostDetailVisible={setPostDetailVisible}
+            />
+          ))}
+          {postDetailVisible && renderPostDetailModal()}
+        </>
+      )}
     </div>
   );
 };
