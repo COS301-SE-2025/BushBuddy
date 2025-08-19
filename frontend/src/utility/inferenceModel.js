@@ -5,101 +5,103 @@ const labels = [
   "Caracal", "Chacma Baboon", "Cheetah", "Common Warthog", "Duiker", "Eland",
   "Elephant", "Gemsbok", "Giraffe", "Hippo", "Honey Badger", "Hyenah", "Impala",
   "Kudu", "Leopard", "Lion", "Meerkat", "Nyala", "Pangolin", "Red Hartebeest",
-  "Rhino", "Rock Hyrax", "SableAntelope", "Serval", "Steenbok", "Vevet Monkey",
-  "Waterbuck", "Wild Dog", "Zebra", "springbok"
+  "Rhino", "Rock Hyrax", "SableAntelope", "Serval", "Steenbok", "Vervet Monkey",
+  "Waterbuck", "Wild Dog", "Zebra", "Springbok"
 ];
+function letterboxImage(img, targetWidth=640, targetHeight=640) {
+  const [h, w] = [img.height, img.width];
+  const scale = Math.min(targetWidth / w, targetHeight / h);
+  const newWidth = Math.round(w * scale);
+  const newHeight = Math.round(h * scale);
 
+  // Resize while keeping aspect ratio
+  let tensor = tf.browser.fromPixels(img)
+    .resizeBilinear([newHeight, newWidth])
+    .toFloat()
+    .div(tf.scalar(255));
+
+  // Compute padding
+  const padX = targetWidth - newWidth;
+  const padY = targetHeight - newHeight;
+  const padLeft = Math.floor(padX / 2);
+  const padRight = padX - padLeft;
+  const padTop = Math.floor(padY / 2);
+  const padBottom = padY - padTop;
+
+  // Pad with zeros (black)
+  tensor = tensor.pad([[padTop, padBottom], [padLeft, padRight], [0, 0]]);
+
+  // Add batch dimension
+  return tensor.expandDims(0);
+}
 export async function runInference() {
-  const model = await tf.loadGraphModel('/model/model.json');
-  
+  const model = await tf.loadGraphModel("/model/model.json");
+
   return new Promise((resolve, reject) => {
     const image = new Image();
-    image.src = "/test.jpg"; // 👈 always use test.jpg from public directory
+    image.src = "/test.jpg";
+    image.crossOrigin = "anonymous"; // Avoid CORS issues
+
     image.onload = async () => {
       try {
-        // Resize the image to 640x640 and normalize
-        const tensor = tf.browser.fromPixels(image)
-          .resizeBilinear([640, 640])
-          .expandDims(0)
-          .toFloat()
-          .div(tf.scalar(255));
+        const tensor = letterboxImage(image);
 
-        // Run inference
-        console.log("Tensor :" , tensor);
-        const output = await model.executeAsync(tensor); 
-        console.log("Output :" , output);
+        console.log("Original image size:", image.width, image.height);
+        console.log("Tensor shape:", tensor.shape);
 
-        // Postprocess the raw output
-        const results = await postprocessYOLO(output, 0.5, 0.45, 36);
+        const output = await model.executeAsync(tensor);
 
-        console.log("Inference on test.jpg results:", results);
+        // Some models return an array, some return a single tensor
+        const outputTensor = Array.isArray(output) ? output[0] : output;
+
+        const results = await postprocessYOLO(outputTensor, 0.2, 0.45, labels.length);
+        console.log("Final inference results:", results);
         resolve(results);
       } catch (err) {
+        console.error("Error during inference:", err);
         reject(err);
       }
     };
-    image.onerror = reject;
+
+    image.onerror = (err) => reject(err);
   });
 }
 
-async function postprocessYOLO(outputTensor, confThreshold = 0.5, iouThreshold = 0.45) {
+async function postprocessYOLO(outputTensor, confThreshold = 0.5, iouThreshold = 0.45, numClasses = 36) {
   try {
     if (!outputTensor) throw new Error("outputTensor is undefined");
 
-    //console.log("Raw output:", outputTensor);
+    // [1, 41, 8400] → [41, 8400] → [8400, 41]
+    const t = outputTensor.squeeze().transpose([1, 0]);
 
-    // Squeeze batch dimension: [1, 41, 8400] -> [41, 8400]
-    let t = outputTensor.squeeze();
-    //console.log("After squeeze:", t);
+    const [boxXY, boxWH, objectness, classScores] = tf.split(t, [2, 2, 1, numClasses], -1);
 
-    // Transpose to [8400, 41] so each row is one prediction
-    t = t.transpose([1, 0]);
-    //console.log("After transpose:", t);
+    const boxes = xywhToXyxy(tf.concat([boxXY, boxWH], -1));
 
-    // Split into [x,y,w,h], obj, class scores
-    // Your model = 4 + 1 + 36 = 41
-    const [boxXY, boxWH, objectness, classScores] = tf.split(t, [2, 2, 1, 36], -1);
-    //console.log("Split tensors:", { boxXY, boxWH, objectness, classScores });
-
-    // Convert xywh → xyxy
-    const boxXYWH = tf.concat([boxXY, boxWH], -1); // [8400, 4]
-    const boxes = xywhToXyxy(boxXYWH);
-
-    //console.log("Boxes output after xywh → xyxy:" ,boxes);
-
-    // ✅ Apply sigmoid to objectness and class scores
     const obj = tf.sigmoid(objectness);
     const cls = tf.sigmoid(classScores);
 
-    //console.log("After sigmoid: ", {obj, cls});
-    // Multiply obj score * class scores
     const scores = obj.mul(cls);
 
-    // Get max score + class per box
     const { values: maxScoresRaw, indices: classIndices } = tf.topk(scores, 1);
-    const maxScores = maxScoresRaw.squeeze();          // [8400]
-    const classes = classIndices.squeeze();            // [8400]
+    const maxScores = maxScoresRaw.squeeze();
+    const classes = classIndices.squeeze();
 
-    // Mask boxes above confidence threshold
     const confMask = maxScores.greater(tf.scalar(confThreshold));
     const confMaskIndices = await tf.whereAsync(confMask);
 
-    if (confMaskIndices.size === 0) {
+    if (confMaskIndices.shape[0] === 0) {
       console.warn("⚠️ No boxes passed confidence threshold.");
       return { boxes: [], scores: [], classes: [] };
     }
 
     const idx = confMaskIndices.squeeze();
 
-    // Gather filtered boxes, scores, and classes
     const filteredBoxes = boxes.gather(idx);
     const filteredScores = maxScores.gather(idx);
     const filteredClasses = classes.gather(idx);
 
-    const classNames = filteredClasses.arraySync().map(i => labels[i]);
-    console.log("Class names:", classNames);
-
-    // Non-max suppression
+    // TFJS NMS expects boxes in [y1, x1, y2, x2]
     const nmsIndices = await tf.image.nonMaxSuppressionAsync(
       filteredBoxes,
       filteredScores,
@@ -108,13 +110,11 @@ async function postprocessYOLO(outputTensor, confThreshold = 0.5, iouThreshold =
       confThreshold
     );
 
-    // Gather final results
     return {
       boxes: await filteredBoxes.gather(nmsIndices).array(),
       scores: await filteredScores.gather(nmsIndices).array(),
       classes: await filteredClasses.gather(nmsIndices).array()
     };
-
   } catch (err) {
     console.error("❌ Error in postprocessYOLO:", err);
     return { boxes: [], scores: [], classes: [] };
@@ -125,7 +125,8 @@ function xywhToXyxy(boxes) {
   const [x, y, w, h] = tf.split(boxes, 4, -1);
   const x1 = x.sub(w.div(2));
   const y1 = y.sub(h.div(2));
-  const x2 = x1.add(w);
-  const y2 = y1.add(h);
-  return tf.concat([x1, y1, x2, y2], -1);
+  const x2 = x.add(w.div(2));
+  const y2 = y.add(h.div(2));
+  // Reorder to [y1, x1, y2, x2] for TFJS NMS
+  return tf.concat([y1, x1, y2, x2], -1);
 }
