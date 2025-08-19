@@ -1,0 +1,557 @@
+[
+    {
+        "image": "images/train/Impala/Impala_0.jpg",
+        "label": "Impala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Impala/Impala_1.jpg",
+        "label": "Impala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Impala/Common_Impala_2.jpg",
+        "label": "Impala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Greater Kudu/Southern_Greater_Kudu_0.jpg",
+        "label": "Greater Kudu",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Greater Kudu/Greater_Kudu_1.jpg",
+        "label": "Greater Kudu",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Greater Kudu/Southern_Greater_Kudu_2.jpg",
+        "label": "Greater Kudu",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Nyala/Nyala_0.jpg",
+        "label": "Nyala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Nyala/Nyala_1.jpg",
+        "label": "Nyala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Nyala/Nyala_2.jpg",
+        "label": "Nyala",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Bushbuck/Cape_Bushbuck_0.jpg",
+        "label": "Bushbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Bushbuck/Cape_Bushbuck_1.jpg",
+        "label": "Bushbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Bushbuck/Cape_Bushbuck_2.jpg",
+        "label": "Bushbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Waterbuck/Common_Waterbuck_0.jpg",
+        "label": "Waterbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Waterbuck/Common_Waterbuck_1.jpg",
+        "label": "Waterbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Waterbuck/Waterbuck_2.jpg",
+        "label": "Waterbuck",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Sable Antelope/Sable_Antelope_0.jpg",
+        "label": "Sable Antelope",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Sable Antelope/Sable_Antelope_1.jpg",
+        "label": "Sable Antelope",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Sable Antelope/Southern_Sable_Antelope_2.jpg",
+        "label": "Sable Antelope",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Eland/Common_Eland_0.jpg",
+        "label": "Eland",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Eland/Common_Eland_1.jpg",
+        "label": "Eland",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Eland/Common_Eland_2.jpg",
+        "label": "Eland",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Blue Wildebeest/Blue_Wildebeest_0.jpg",
+        "label": "Blue Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Blue Wildebeest/Common_Wildebeest_1.jpg",
+        "label": "Blue Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Blue Wildebeest/Blue_Wildebeest_2.jpg",
+        "label": "Blue Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Black Wildebeest/Black_Wildebeest_0.jpg",
+        "label": "Black Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Black Wildebeest/Black_Wildebeest_1.jpg",
+        "label": "Black Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Black Wildebeest/Black_Wildebeest_2.jpg",
+        "label": "Black Wildebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Red Hartebeest/Red_Hartebeest_0.jpg",
+        "label": "Red Hartebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Red Hartebeest/Red_Hartebeest_1.jpg",
+        "label": "Red Hartebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Red Hartebeest/Red_Hartebeest_2.jpg",
+        "label": "Red Hartebeest",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Blesbok/Bontebok/Blesbok_0.jpg",
+        "label": "Blesbok/Bontebok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Blesbok/Bontebok/Blesbok_1.jpg",
+        "label": "Blesbok/Bontebok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Blesbok/Bontebok/Bontebok_Blesbok_2.jpg",
+        "label": "Blesbok/Bontebok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Duiker/Cape_Duiker_0.jpg",
+        "label": "Duiker",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Duiker/Cape_Duiker_1.jpg",
+        "label": "Duiker",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Duiker/Cape_Duiker_2.jpg",
+        "label": "Duiker",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Steenbok/Southern_Steenbuck_0.jpg",
+        "label": "Steenbok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Steenbok/Southern_Steenbuck_1.jpg",
+        "label": "Steenbok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Steenbok/Southern_Steenbuck_2.jpg",
+        "label": "Steenbok",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Giraffe/Southern_African_Giraffe_0.jpg",
+        "label": "Giraffe",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Giraffe/Southern_African_Giraffe_1.jpg",
+        "label": "Giraffe",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Giraffe/Southern_African_Giraffe_2.jpg",
+        "label": "Giraffe",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/African Buffalo/African_Buffalo_0.jpg",
+        "label": "African Buffalo",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/African Buffalo/Cape_Buffalo_1.jpg",
+        "label": "African Buffalo",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/African Buffalo/Cape_Buffalo_2.jpg",
+        "label": "African Buffalo",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/White Rhinoceros/Southern_White_Rhinoceros_0.jpg",
+        "label": "White Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/White Rhinoceros/Southern_White_Rhinoceros_1.jpg",
+        "label": "White Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/White Rhinoceros/Southern_White_Rhinoceros_2.jpg",
+        "label": "White Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Black Rhinoceros/Black_Rhinoceros_0.jpg",
+        "label": "Black Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Black Rhinoceros/Black_Rhinoceros_1.jpg",
+        "label": "Black Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Black Rhinoceros/Black_Rhinoceros_2.jpg",
+        "label": "Black Rhinoceros",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Hippopotamus/Common_Hippopotamus_0.jpg",
+        "label": "Hippopotamus",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Hippopotamus/Common_Hippopotamus_1.jpg",
+        "label": "Hippopotamus",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Hippopotamus/Common_Hippopotamus_2.jpg",
+        "label": "Hippopotamus",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Plains Zebra/Plains_Zebra_0.jpg",
+        "label": "Plains Zebra",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Plains Zebra/Plains_Zebra_1.jpg",
+        "label": "Plains Zebra",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Plains Zebra/Burchell's_Zebra_2.jpg",
+        "label": "Plains Zebra",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Common Warthog/Common_Warthog_0.jpg",
+        "label": "Common Warthog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Common Warthog/Common_Warthog_1.jpg",
+        "label": "Common Warthog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Common Warthog/Common_Warthog_2.jpg",
+        "label": "Common Warthog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Bushpig/Southern_Bushpig_0.jpg",
+        "label": "Bushpig",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Bushpig/Southern_Bushpig_1.jpg",
+        "label": "Bushpig",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Bushpig/Bushpig_2.jpg",
+        "label": "Bushpig",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Lion/Lion_0.jpg",
+        "label": "Lion",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Lion/Lion_1.jpg",
+        "label": "Lion",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Lion/Lion_2.jpg",
+        "label": "Lion",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Leopard/African_Leopard_0.jpg",
+        "label": "Leopard",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Leopard/African_Leopard_1.jpg",
+        "label": "Leopard",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Leopard/Leopard_2.jpg",
+        "label": "Leopard",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Cheetah/Cheetah_0.jpg",
+        "label": "Cheetah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Cheetah/Southern_and_Eastern_African_Cheetah_1.jpg",
+        "label": "Cheetah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Cheetah/Southern_and_Eastern_African_Cheetah_2.jpg",
+        "label": "Cheetah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Spotted Hyenah/Spotted_Hyena_0.jpg",
+        "label": "Spotted Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Spotted Hyenah/Spotted_Hyena_1.jpg",
+        "label": "Spotted Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Spotted Hyenah/Spotted_Hyena_2.jpg",
+        "label": "Spotted Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Brown Hyenah/Brown_Hyaena_0.jpg",
+        "label": "Brown Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Brown Hyenah/Brown_Hyaena_1.jpg",
+        "label": "Brown Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Brown Hyenah/Brown_Hyaena_2.jpg",
+        "label": "Brown Hyenah",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/African Wild Dog/African_Wild_Dog_0.jpg",
+        "label": "African Wild Dog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/African Wild Dog/Cape_Wild_Dog_1.jpg",
+        "label": "African Wild Dog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/African Wild Dog/Cape_Wild_Dog_2.jpg",
+        "label": "African Wild Dog",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Chacma Baboon/Chacma_Baboon_0.jpg",
+        "label": "Chacma Baboon",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Chacma Baboon/Chacma_Baboon_1.jpg",
+        "label": "Chacma Baboon",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Chacma Baboon/Chacma_Baboon_2.jpg",
+        "label": "Chacma Baboon",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Vervet Monkey/Southern_Vervet_Monkey_0.jpg",
+        "label": "Vervet Monkey",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Vervet Monkey/Southern_Vervet_Monkey_1.jpg",
+        "label": "Vervet Monkey",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Vervet Monkey/Southern_Vervet_Monkey_2.jpg",
+        "label": "Vervet Monkey",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Meerkat/Meerkat_0.jpg",
+        "label": "Meerkat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Meerkat/Southern_African_Meerkat_1.jpg",
+        "label": "Meerkat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Meerkat/Southern_African_Meerkat_2.jpg",
+        "label": "Meerkat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Rock Hyrax/Cape_Rock_Hyrax_0.jpg",
+        "label": "Rock Hyrax",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Rock Hyrax/Cape_Rock_Hyrax_1.jpg",
+        "label": "Rock Hyrax",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Rock Hyrax/Cape_Rock_Hyrax_2.jpg",
+        "label": "Rock Hyrax",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/African Wild Cat/Domestic_Cat_0.jpg",
+        "label": "African Wild Cat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/African Wild Cat/Domestic_Cat_1.jpg",
+        "label": "African Wild Cat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/African Wild Cat/Domestic_Cat_2.jpg",
+        "label": "African Wild Cat",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Caracal/Southern_and_Eastern_African_Caracal_0.jpg",
+        "label": "Caracal",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Caracal/Caracal_1.jpg",
+        "label": "Caracal",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Caracal/Caracal_2.jpg",
+        "label": "Caracal",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Serval/Southern_Serval_0.jpg",
+        "label": "Serval",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Serval/Serval_1.jpg",
+        "label": "Serval",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Serval/Serval_2.jpg",
+        "label": "Serval",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Honey Badger/Ratel_0.jpg",
+        "label": "Honey Badger",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Honey Badger/Ratel_1.jpg",
+        "label": "Honey Badger",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Honey Badger/Ratel_2.jpg",
+        "label": "Honey Badger",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Aardvark/Aardvark_0.jpg",
+        "label": "Aardvark",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Aardvark/Southern_Aardvark_1.jpg",
+        "label": "Aardvark",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Aardvark/Southern_Aardvark_2.jpg",
+        "label": "Aardvark",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/train/Pangolin/Temminck's_Ground_Pangolin_0.jpg",
+        "label": "Pangolin",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/validation/Pangolin/Temminck's_Ground_Pangolin_1.jpg",
+        "label": "Pangolin",
+        "iconic_taxa": "Mammalia"
+    },
+    {
+        "image": "images/test/Pangolin/Temminck's_Ground_Pangolin_2.jpg",
+        "label": "Pangolin",
+        "iconic_taxa": "Mammalia"
+    }
+]
