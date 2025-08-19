@@ -96,7 +96,7 @@ const BestiaryComponent = () => {
                     credentials: 'include', // Include cookies if needed
                 });
                 
-                console.log('Response status:', response.status); // Debug log
+                console.log('Response status:', response.status); // Debug
                 console.log('Response headers:', response.headers); // Debug log
                 
                 if (!response.ok) {
