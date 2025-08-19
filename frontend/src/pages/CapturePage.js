@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
-import { Container, Modal, Button, Form } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import './CapturePage.css';
+
+const animalName = "Rhino";
+const confidence = "92.15";
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
@@ -18,17 +21,23 @@ const CapturePage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       console.log("Captured Image:", imageSrc);
+      setCapturedImage(imageSrc);
       setShowForm(true);
-      //Storing capture image
     }
   };
 
   const handleClose = () => setShowForm(false);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Handle form submission
-    console.log("Form submitted");
+    const formData = new FormData(event.target);
+    
+    console.log("Form submitted with data:", {
+      postName: formData.get('postName'),
+      description: formData.get('description'),
+      geolocation: formData.get('geolocation') === 'on'
+    });
+    
     setShowForm(false);
   };
 
@@ -57,38 +66,78 @@ const CapturePage = () => {
           </button>
         </div>
 
-        <Modal 
-          show={showForm} 
-          onHide={handleClose} 
-          centered 
-          size="sm" 
-          dialogClassName="custom-modal"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Captured Image Info</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {capturedImage && (
-              <img 
-                src={capturedImage} 
-                alt="Captured" 
-                className="img-fluid mb-3" 
-                style={{ borderRadius: "10px", maxHeight: "150px" }} 
-              />
-            )}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter name" required />
-              </Form.Group> 
-              <Form.Group className="mb-3" controlId="formNotes">
-                <Form.Label>Notes</Form.Label>
-                <Form.Control as="textarea" rows={3} placeholder="Add notes" />
-              </Form.Group>
-              <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-          </Modal.Body>
-        </Modal>
+        {/* Custom Overlay */}
+        {showForm && (
+          <div className="form-overlay">
+            <div className="form-container">
+              {/* Close button */}
+              <button className="close-button" onClick={handleClose}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              <h3 className="form-title">Animal Detection Result</h3>
+
+              {/* Visual Fields */}
+              {capturedImage && (
+                <div className="detection-result">
+                  <img 
+                    src={capturedImage} 
+                    alt="Detected Animal" 
+                    className="captured-image"
+                  />
+                  <h4 className="animal-name">{animalName}</h4>
+                  <p className="confidence">Confidence: {confidence}%</p>
+                </div>
+              )}
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="detection-form">
+                <div className="form-group">
+                  <label htmlFor="postName">Post Name</label>
+                  <input 
+                    type="text" 
+                    id="postName"
+                    name="postName"
+                    placeholder="Enter a post title" 
+                    required 
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <textarea 
+                    id="description"
+                    name="description"
+                    rows="3" 
+                    placeholder="Write something..."
+                  ></textarea>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="geolocation">Enable Geolocation</label>
+                  <div className="switch-container">
+                    <label className="switch-label">
+                      <input 
+                        type="checkbox" 
+                        id="geolocation"
+                        name="geolocation"
+                        className="geolocation-switch"
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button type="submit" className="submit-button">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
       </Container>
     </Container>
   );
