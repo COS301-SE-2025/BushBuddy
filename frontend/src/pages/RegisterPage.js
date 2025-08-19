@@ -6,10 +6,13 @@ import BushBuddy from '../assets/BushBuddy.webp';
 import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
 
-import { handleRegister } from '../controllers/UsersController';
+import { checkAuthStatus, handleRegister } from '../controllers/UsersController';
+import { useLoading } from '../contexts/LoadingContext';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
+  const { startLoading, stopLoading } = useLoading();
+
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -23,12 +26,25 @@ const AuthScreen = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
-    const result = await handleRegister(username, email, password);
 
-    if (result.success) {
-      navigate("/main");
-    } else {
-      setError(result.message);
+    startLoading();
+    try {
+
+      const result = await handleRegister(username, email, password);
+
+      if (result.success) {
+        navigate("/main");
+      } else {
+
+        const isLoggedIn = await checkAuthStatus();
+        if (isLoggedIn)
+          navigate("/main");
+
+        setError(result.message);
+      }
+
+    } finally {
+      stopLoading();
     }
   }
 

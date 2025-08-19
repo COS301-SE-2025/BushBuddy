@@ -1,4 +1,5 @@
 import { authService } from './authService.js';
+import jwt from 'jsonwebtoken';
 
 async function registerUser(req, res) {
 	try {
@@ -9,7 +10,7 @@ async function registerUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'lax',
+			sameSite: 'None',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
@@ -29,13 +30,13 @@ async function loginUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'lax',
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
 		res.status(200).json({ success: true, message: 'User logged in successfully', data: { username } });
 	} catch (error) {
-		// console.error('Error in loginUser:', error);
+		console.error('Error in loginUser:', error);
 		res.status(500).json({ success: false, message: 'Login failed' });
 	}
 }
@@ -53,6 +54,19 @@ async function logoutUser(req, res) {
 
 async function checkLoginStatus(req, res) {
 	try {
+		// const userHeader = req.headers['x-user-data'];
+		// const user = userHeader ? JSON.parse(userHeader) : null;
+		const token = req.cookies.token;
+		if (!token)
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+
+		try {
+			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = decodedUser;
+		} catch (error) {
+			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		}
+
 		const user = req.user;
 		if (!user) {
 			return res.status(401).json({ success: false, message: 'User not logged in' });

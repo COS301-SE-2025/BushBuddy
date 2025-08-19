@@ -1,0 +1,41 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'api/**'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - 'api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    env:
+      ENVIRONMENT : 'dev'
+      DATABASE_URL_DEV : ${{secrets.DATABASE_URL_DEV}}
+      JWT_SECRET : ${{secrets.JWT_SECRET}}
+      R2_ACCESS_KEY_ID: ${{secrets.R2_ACCESS_KEY_ID}}
+      R2_SECRET_ACCESS_KEY: ${{secrets.R2_SECRET_ACCESS_KEY}}
+      R2_ACCOUNT_ID: ${{secrets.R2_ACCOUNT_ID}}
+      R2_BUCKET_NAME: ${{secrets.R2_BUCKET_NAME}}
+      ALLOWED_ORIGINS: ${{secrets.ALLOWED_ORIGINS}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test

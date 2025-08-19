@@ -39,7 +39,11 @@ describe('AuthController', () => {
 
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(201);
-			expect(res.json).toHaveBeenCalledWith({ success: true, message: 'User registered successfully' });
+			expect(res.json).toHaveBeenCalledWith({
+				success: true,
+				message: 'User registered successfully',
+				data: { username: 'testuser' },
+			});
 			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
 				httpOnly: true,
 				sameSite: 'lax',
@@ -109,7 +113,11 @@ describe('AuthController', () => {
 
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(200);
-			expect(res.json).toHaveBeenCalledWith({ success: true, message: 'User logged in successfully' });
+			expect(res.json).toHaveBeenCalledWith({
+				success: true,
+				message: 'User logged in successfully',
+				data: { username: 'testuser' },
+			});
 			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
 				httpOnly: true,
 				sameSite: 'lax',

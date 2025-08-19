@@ -1,63 +1,68 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
-	<head>
-		<title>Code coverage report for src/DiscoveryServer/discoveryController.js</title>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" href="../../prettify.css" />
-		<link rel="stylesheet" href="../../base.css" />
-		<link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<style type="text/css">
-			.coverage-summary .sorter {
-				background-image: url(../../sort-arrow-sprite.png);
-			}
-		</style>
-	</head>
 
-	<body>
-		<div class="wrapper">
-			<div class="pad1">
-				<h1>
-					<a href="../../index.html">All files</a> / <a href="index.html">src/DiscoveryServer</a> discoveryController.js
-				</h1>
-				<div class="clearfix">
-					<div class="fl pad1y space-right2">
-						<span class="strong">66.66% </span>
-						<span class="quiet">Statements</span>
-						<span class="fraction">6/9</span>
-					</div>
-
-					<div class="fl pad1y space-right2">
-						<span class="strong">100% </span>
-						<span class="quiet">Branches</span>
-						<span class="fraction">0/0</span>
-					</div>
-
-					<div class="fl pad1y space-right2">
-						<span class="strong">50% </span>
-						<span class="quiet">Functions</span>
-						<span class="fraction">1/2</span>
-					</div>
-
-					<div class="fl pad1y space-right2">
-						<span class="strong">66.66% </span>
-						<span class="quiet">Lines</span>
-						<span class="fraction">6/9</span>
-					</div>
-				</div>
-				<p class="quiet">
-					Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the
-					previous block.
-				</p>
-				<template id="filterTemplate">
-					<div class="quiet">
-						Filter:
-						<input type="search" id="fileSearch" />
-					</div>
-				</template>
-			</div>
-			<div class="status-line medium"></div>
-			<pre><table class="coverage">
+<head>
+    <title>Code coverage report for src/DiscoveryServer/discoveryController.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/DiscoveryServer</a> discoveryController.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">52.94% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>18/34</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">43.75% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>7/16</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">50% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>2/4</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">52.94% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>18/34</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line medium'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -124,29 +129,74 @@
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,14 +213,35 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,8 +273,14 @@ async function getAllAnimals(req, res) {
 &nbsp;
 async function insertNewAnimal(req, res) {
 	try {
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!req.file) {
+<span class="cstat-no" title="statement not covered" >			return res.status(400).json({ success: false, message: 'No image uploaded' });</span>
+		}
+		if (!req.user.admin) {
+			return res.status(401).json({ success: false, message: 'You are not authorised to perform this action' });
+		}
 		const image = req.file.buffer;
-		const details = { name: req.body.name, type: req.body.type, description: req.body.description };
+		const details = { name: req.body.name, type: req.body.type || <span class="branch-1 cbranch-no" title="branch not covered" >'n/a',</span> description: req.body.description || <span class="branch-1 cbranch-no" title="branch not covered" >'none' </span>};
 &nbsp;
 		const result = await discoveryService.addNewAnimal(details, image);
 		if (!result) {
@@ -228,32 +305,37 @@ async function insertNewAnimal(req, res) {
 &nbsp;
 async function <span class="fstat-no" title="function not covered" >getMapSightings(</span>req, res) {
 <span class="cstat-no" title="statement not covered" >	try {</span>
-<span class="cstat-no" title="statement not covered" >		return res.status(501).json({</span>
-			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
-		});
+		const user_id = <span class="cstat-no" title="statement not covered" >req.user.id;</span>
+&nbsp;
+		const result = <span class="cstat-no" title="statement not covered" >await discoveryService.fetchDiscoveries(user_id);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		if (!result || result.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >			return res.status(200).json({ success: true, message: 'No discoveries found' });</span>
+		}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		return res.status(200).json({ success: true, message: 'Successfully fetched all discoveries', data: result });</span>
 	} catch (error) {
 <span class="cstat-no" title="statement not covered" >		return res.status(500).json({</span>
 			success: false,
-			message: 'Internal server error',
-			error: 'Internal server error',
+			message: 'Failed to fetch discoveries',
 		});
 	}
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >getMapSightings(</span>req, res) {
+async function <span class="fstat-no" title="function not covered" >followAnimal(</span>req, res) {
 <span class="cstat-no" title="statement not covered" >	try {</span>
-<span class="cstat-no" title="statement not covered" >		return res.status(501).json({</span>
-			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
-		});
+		const user_id = <span class="cstat-no" title="statement not covered" >req.user.id;</span>
+		const animal_id = <span class="cstat-no" title="statement not covered" >req.body.animal_id;</span>
+&nbsp;
+		const success = <span class="cstat-no" title="statement not covered" >await discoveryService.followAnimal(user_id, animal_id);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		if (!success) {</span>
+<span class="cstat-no" title="statement not covered" >			return res.status(200).json({ success: false, message: "Couldn't follow animal" });</span>
+		}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		return res.status(200).json({ success: true, message: 'Followed animal' });</span>
 	} catch (error) {
-<span class="cstat-no" title="statement not covered" >		return res.status(500).json({</span>
-			success: false,
-			error: 'Internal server error',
-		});
+<span class="cstat-no" title="statement not covered" >		return res.status(500).json({ success: false, message: 'Failed to follow animal' });</span>
 	}
 }
 &nbsp;
@@ -261,26 +343,25 @@ export const discoveryController = {
 	getAllAnimals,
 	getMapSightings,
 	insertNewAnimal,
-	getMapSightings,
+	followAnimal,
 };
 &nbsp;</pre></td></tr></table></pre>
 
-			<div class="push"></div>
-			<!-- for sticky footer -->
-		</div>
-		<!-- /wrapper -->
-		<div class="footer quiet pad2 space-top1 center small">
-			Code coverage generated by
-			<a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-			at 2025-08-14T08:51:36.957Z
-		</div>
-		<script src="../../prettify.js"></script>
-		<script>
-			window.onload = function () {
-				prettyPrint();
-			};
-		</script>
-		<script src="../../sorter.js"></script>
-		<script src="../../block-navigation.js"></script>
-	</body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-08-16T19:22:41.312Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
 </html>
+    

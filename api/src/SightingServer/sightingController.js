@@ -1,4 +1,4 @@
-import { sightingService } from './sightingService';
+import { sightingService } from './sightingService.js';
 
 async function createSighting(req, res) {
 	try {

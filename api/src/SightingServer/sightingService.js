@@ -1,4 +1,4 @@
-import { sightingRepository } from './sightingRepository';
+import { sightingRepository } from './sightingRepository.js';
 
 async function createSighting(user_id, file, geolocation) {
 	// add AI integration here using [file] parameter
