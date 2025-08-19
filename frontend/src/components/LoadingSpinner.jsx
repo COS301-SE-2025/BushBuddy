@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoading } from "./LoadingContext";
+import { useLoading } from "../contexts/LoadingContext";
 
 export default function GlobalSpinner() {
   const { loadingCount } = useLoading();

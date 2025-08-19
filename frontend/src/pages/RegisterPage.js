@@ -7,9 +7,12 @@ import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
 
 import { checkAuthStatus, handleRegister } from '../controllers/UsersController';
+import { useLoading } from '../contexts/LoadingContext';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
+  const { startLoading, stopLoading } = useLoading();
+
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -24,17 +27,24 @@ const AuthScreen = () => {
   async function onSubmit(e) {
     e.preventDefault();
 
-    const result = await handleRegister(username, email, password);
+    startLoading();
+    try {
 
-    if (result.success) {
-      navigate("/main");
-    } else {
+      const result = await handleRegister(username, email, password);
 
-      const isLoggedIn = await checkAuthStatus();
-      if(isLoggedIn)
+      if (result.success) {
         navigate("/main");
+      } else {
 
-      setError(result.message);
+        const isLoggedIn = await checkAuthStatus();
+        if (isLoggedIn)
+          navigate("/main");
+
+        setError(result.message);
+      }
+
+    } finally {
+      stopLoading();
     }
   }
 
