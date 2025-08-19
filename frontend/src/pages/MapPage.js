@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, LayersControl, useMap } from 'react-le
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapPage.css';
-import { PostsController } from '../controllers/PostsController';
+import { SightingsController } from '../controllers/SightingsController';
 
 const userIcon = L.icon({
   iconUrl: require("../assets/user-location.png"),
@@ -26,6 +26,8 @@ function RecenterMap({ position }) {
 const MapPage = () => {
   const [currentPosition, setCurrentPosition] = useState(null);  // user current location
   const defaultPosition = [-25.8812222, 28.291611111111113]; // fallback location
+  
+  const [sightings, setSightings] = useState([]);
 
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -34,8 +36,19 @@ const MapPage = () => {
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
   });
 
-  // Request user location
   useEffect(() => {
+    //fetch sightings
+    const fetchSightings = async () => {
+      const response = await SightingsController.handleFetchAllSightings();
+      console.log(response);
+      if (response.success) {
+        setSightings(response.result.sightings);
+      } else {
+        console.error(response.message);
+      }
+    };
+
+    // Request user location
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -49,6 +62,9 @@ const MapPage = () => {
         }
       );
     }
+
+    fetchSightings();
+    console.log(sightings);
   }, []);
 
   return (
@@ -74,6 +90,10 @@ const MapPage = () => {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
+
+        {sightings.map((entry) => (
+          <Marker position={[entry.geolocation_lat, entry.geolocation_long]}/>
+        ))}
 
         {/* Default location marker */}
         <Marker position={defaultPosition} />

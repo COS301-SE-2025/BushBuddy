@@ -41,7 +41,7 @@ async function fetchSightingImage(key) {
 async function fetchAllSightings() {
     try {
 		//add filters for sightings 
-		const query = `SELECT * FROM identifications LIMIT 50;`;
+		const query = `SELECT * FROM identifications ORDER BY created_at DESC LIMIT 25;`;
 
         const result = await db.query(query);
 

@@ -1,24 +1,20 @@
-import { PostService } from "../services/PostService";
+import { SightingService } from "../services/SightingService";
 
-async function handleFetchAllSightings( identificationId, description, shareLocation, image) {
+async function handleFetchAllSightings( ) {
     try {
-        
-        const result = await PostService.fetchAllSightings(createPostRequest);
+        const result = await SightingService.fetchAllSightings();
+
+        //add in sightingsModel
 
         return { success: true, result };
     } catch(error) {
         return {
             success: false,
-            message: error.response?.data?.message || "Failed to create post",
+            message: error.response?.data?.message || "Failed to fetch sightings",
         };
     }
 }
 
-export const PostService = {
-	createPost,
-	fetchPost,
-	fetchUsersPosts,
-	fetchAllPosts,
-	likePost,
-	addComment,
+export const SightingsController = {
+	handleFetchAllSightings
 };

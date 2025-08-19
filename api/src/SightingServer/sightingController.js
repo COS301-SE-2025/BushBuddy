@@ -81,7 +81,7 @@ async function fetchAllSightings(req, res) {
 		return res.status(200).json({
 			success:true,
 			message: 'Sightings fetched successfully',
-			data: result
+			sightings: result
 		});
 	} catch (error) {
 		console.error('Error fetching all sightings: ', error);
