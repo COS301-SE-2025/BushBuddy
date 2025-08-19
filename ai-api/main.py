@@ -19,10 +19,14 @@ app = FastAPI(title="BushBuddy AI API", version="1.0.0")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3001",
+        "https://bushbuddy-dev.onrender.com",
+        "https://bush-buddy.onrender.com"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 # Load YOLO model at startup
