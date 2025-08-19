@@ -34,3 +34,32 @@
     border: none;
     z-index: 10;
 }
+
+/* Override Bootstrap modal width */
+.custom-modal {
+  max-width: 500px;   /* popup width */
+  margin: auto;       /* keep it centered horizontally */
+}
+
+/* Style the modal content box */
+.modal-content {
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* popup shadow */
+}
+
+/* Center the body content */
+.modal-body {
+  text-align: center;
+}
+
+/* Make form elements look neat */
+.modal-body input,
+.modal-body textarea {
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.5) !important;  /* semi-transparent black */
+}

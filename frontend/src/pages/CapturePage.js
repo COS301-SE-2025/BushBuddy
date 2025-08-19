@@ -1,10 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
-import { Container } from 'react-bootstrap';
+import { Container, Modal, Button, Form } from 'react-bootstrap';
 import './CapturePage.css';
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
+  const [showForm, setShowForm] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
 
   const videoConstraints = {
     width: { ideal: 1280 },
@@ -16,7 +18,18 @@ const CapturePage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       console.log("Captured Image:", imageSrc);
+      setShowForm(true);
+      //Storing capture image
     }
+  };
+
+  const handleClose = () => setShowForm(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Handle form submission
+    console.log("Form submitted");
+    setShowForm(false);
   };
 
   return (
@@ -43,6 +56,39 @@ const CapturePage = () => {
             </svg>
           </button>
         </div>
+
+        <Modal 
+          show={showForm} 
+          onHide={handleClose} 
+          centered 
+          size="sm" 
+          dialogClassName="custom-modal"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Captured Image Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {capturedImage && (
+              <img 
+                src={capturedImage} 
+                alt="Captured" 
+                className="img-fluid mb-3" 
+                style={{ borderRadius: "10px", maxHeight: "150px" }} 
+              />
+            )}
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="formName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" placeholder="Enter name" required />
+              </Form.Group> 
+              <Form.Group className="mb-3" controlId="formNotes">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control as="textarea" rows={3} placeholder="Add notes" />
+              </Form.Group>
+              <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
       </Container>
     </Container>
   );
