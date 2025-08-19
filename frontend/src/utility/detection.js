@@ -40,7 +40,7 @@ export const detectImage = async (imgSource, model, classThreshold, canvasRef) =
         const boxes_data = boxes.dataSync();
         const scores_data = scores.dataSync();
         const classes_data = classes.dataSync();
-        renderBoxes(canvasRef, classThreshold. boxes_data, scores_data, classes_data, [xRatio, yRatio]); // Render bounding boxes
+        renderBoxes(canvasRef, classThreshold, boxes_data, scores_data, classes_data, [xRatio, yRatio]); // Render bounding boxes
         tf.dispose(res);
     });
 

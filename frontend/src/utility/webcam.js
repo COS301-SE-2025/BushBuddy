@@ -1,4 +1,4 @@
-export class webcam {
+export class Webcam {
     open = (videoRef) => {
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices
