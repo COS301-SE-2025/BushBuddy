@@ -200,6 +200,9 @@ discoveryApp.post('/bestiary', upload.single('file'), discoveryController.insert
  */
 discoveryApp.get('/sightings', express.json(), discoveryController.getMapSightings);
 
+
+discoveryApp.post('/follow', express.json(), discoveryController.followAnimal);
+
 setupSwaggerDiscovery(discoveryApp);
 
 export default discoveryApp;

@@ -4,3 +4,266 @@
   display: flex;
   flex-direction: column;
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #ffffff;
+  border-bottom: 1.5px solid #ddddddc7;
+}
+
+.back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.699);
+}
+
+.share {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.699);
+}
+
+.title-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 700px;
+  height: 10%;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+  position: absolute;
+}
+
+.username {
+  font-weight: bold;
+  color: rgb(107, 107, 107);
+}
+
+.title-container{
+  margin: 0 auto;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-image {
+  width: 105%;
+  height: auto;
+  max-width: 700px;
+  border-radius: 15px;
+}
+
+.map-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.map-image {
+  width: 105%;
+  height: auto;
+  max-width: 700px;
+  border-radius: 15px;
+}
+
+.map-overlay {
+  position: absolute;
+  background-color: #ff6b35;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.map-overlay .icon {
+  color: white;
+  font-size: 24px;
+}
+
+.engagement-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 700px;
+}
+
+.engagement-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.engagement-stats .icon {
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.engagement-stats .engament-amount {
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.date {
+  font-weight: bold;
+  color: rgb(119, 119, 119);
+  margin-right: 8px;
+}
+
+.description-wrapper {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  max-width: 700px;
+  margin-left: 8px;
+}
+
+.description-wrapper .username{
+  font-weight: bold;
+  color: rgb(107, 107, 107);
+  margin: 0 0.5rem;
+}
+
+.description {
+  position: relative;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.commentsBreak {
+  border: none;
+  background-color: rgb(151, 151, 151);
+  height: 0.1rem;
+  width: 85%;
+  max-width: 600px;
+}
+
+.comments-header {
+  color: rgb(107, 107, 107);
+  max-width: 600px;
+  margin: 0.1rem 0 0.6rem 0;
+  font-size: 0.9rem;
+}
+
+.comments-wrapper {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 8%;
+}
+
+.comment {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  max-width: 700px;
+  margin-left: 8px;
+}
+
+.comment .username{
+  font-weight: bold;
+  color: rgb(107, 107, 107);
+  margin: 0 0.5rem;
+}
+
+.comment-text{
+  position: relative;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: black;
+}
+
+.loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4b6949ff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

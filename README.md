@@ -89,7 +89,7 @@ both visual and audio detection.
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
-      <img src="res\img\team\ruan.jpg" width="2000" height="auto">
+      <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
     </td>
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuizen</b></h2>

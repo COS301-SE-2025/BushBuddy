@@ -17,7 +17,7 @@ async function registerUser({ username, password, email }) {
 			password: hashedPassword,
 		});
 
-		const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+		const token = jwt.sign({ id: user.id, username: user.username, admin: user.is_admin }, process.env.JWT_SECRET, {
 			expiresIn: '24h',
 		});
 
@@ -42,7 +42,7 @@ async function loginUser({ username, password }) {
 			throw new Error('Invalid username or password');
 		}
 
-		const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+		const token = jwt.sign({ id: user.id, username: user.username, admin: user.is_admin }, process.env.JWT_SECRET, {
 			expiresIn: '24h',
 		});
 		return token;

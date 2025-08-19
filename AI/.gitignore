@@ -4,3 +4,5 @@ runs/
 venv/
 __pycache__/
 *.pyc
+images/
+.ruff_cache/

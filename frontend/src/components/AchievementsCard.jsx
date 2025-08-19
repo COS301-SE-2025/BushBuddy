@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AchievementsCard.css';
+import PopUpModal from './PopUpModal';
+
 import { FaTrophy, FaPaperPlane, FaLeaf } from 'react-icons/fa';
 import { SiSurveymonkey } from "react-icons/si";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
-
 
 const achievements = [
   {
@@ -41,6 +42,8 @@ const achievements = [
 ];
 
 const AchievementsCard = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
     <div className="achievements-card">
       <div className="achievements-header">
@@ -61,9 +64,9 @@ const AchievementsCard = () => {
               <div className="achievement-desc">{ach.desc}</div>
               <div className="achievement-rank" style={{
                 color: ach.rank === "LEGENDARY" ? "#FFD600" : 
-                       ach.rank === "RARE" ? "#b36fff" : 
-                       ach.rank === "UNCOMMON" ? "#4fa3ff" : 
-                       "#6fdc8c"
+                        ach.rank === "RARE" ? "#b36fff" : 
+                        ach.rank === "UNCOMMON" ? "#4fa3ff" : 
+                        "#6fdc8c"
               }}>{ach.rank}</div>
             </div>
             <div className="achievement-status">{ach.status}</div>
@@ -72,12 +75,16 @@ const AchievementsCard = () => {
       </div>
       <div 
         className='acheivements-viewAll'
-        onClick={() => alert('View All Achievements Clicked')}
+        onClick={() => setShowPopup(true)}
       >
         <span className='achievements-viewAll-text' style={{Color:"ff6b00", fontSize:"11pt", marginRight:"20"}}>
           View All Achievements →
         </span>
       </div>
+      <PopUpModal 
+        show={showPopup} 
+        onClose={() => setShowPopup(false)}
+      />
     </div>
   );
 };

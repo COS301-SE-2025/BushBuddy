@@ -1,9 +1,11 @@
 import express from 'express';
 import { authController } from './authController.js';
 import { setupSwaggerAuth } from './swagger.js';
+import cookieParser from 'cookie-parser';
 
 const authApp = express();
 authApp.use(express.json());
+authApp.use(cookieParser());
 
 // routes to controllers go here
 
@@ -208,6 +210,7 @@ authApp.post('/login', authController.loginUser);
  *                   example: "Logout failed"
  */
 authApp.post('/logout', authController.logoutUser);
+authApp.get('/status', authController.checkLoginStatus);
 
 setupSwaggerAuth(authApp);
 
