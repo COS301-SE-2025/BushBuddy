@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1c60907c.css",
+    "main.js": "/static/js/main.992d6a7a.js",
+    "static/js/453.9c159729.chunk.js": "/static/js/453.9c159729.chunk.js",
+    "static/media/nature-background.mp4": "/static/media/nature-background.600421795ce6d93ca2e2.mp4",
+    "static/media/NotFound.png": "/static/media/NotFound.ebabe7a2e897b51a91cf.png",
+    "static/media/Jean-Steyn-ProfilePic.jpg": "/static/media/Jean-Steyn-ProfilePic.4d0c5db2808b8c4eafbd.jpg",
+    "static/media/Jean-Steyn-ProfilePic.webp": "/static/media/Jean-Steyn-ProfilePic.c2f4083e09333e679c47.webp",
+    "static/media/Map-Demo.webp": "/static/media/Map-Demo.bc1c3e06c6220a19440e.webp",
+    "static/media/BushBuddy_Green.png": "/static/media/BushBuddy_Green.5e84ccf2faddcff85082.png",
+    "static/media/EpiUseLogo.png": "/static/media/EpiUseLogo.d6465af45647ec18bfdc.png",
+    "static/media/BushBuddy.webp": "/static/media/BushBuddy.7f7207c6fc512d746391.webp",
+    "index.html": "/index.html",
+    "main.1c60907c.css.map": "/static/css/main.1c60907c.css.map",
+    "main.992d6a7a.js.map": "/static/js/main.992d6a7a.js.map",
+    "453.9c159729.chunk.js.map": "/static/js/453.9c159729.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1c60907c.css",
+    "static/js/main.992d6a7a.js"
+  ]
+}
