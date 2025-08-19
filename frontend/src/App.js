@@ -11,55 +11,62 @@ import RegisterPage from './pages/RegisterPage';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './pages/error_pages/404_Page';
+import { LoadingProvider } from "./contexts/LoadingContext";
+import GlobalSpinner from './components/LoadingSpinner';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route
-            path="/main"
-            element={
-              <ProtectedRoute> <MainScreen /> </ProtectedRoute>
-            }
-          />
+    <LoadingProvider>
+      <GlobalSpinner />
 
-          <Route
-            path="/map"
-            element={
-              <ProtectedRoute> <MapPage /> </ProtectedRoute>
-            }
-          />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route
+              path="/main"
+              element={
+                <ProtectedRoute> <MainScreen /> </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/capture"
-            element={
-              <ProtectedRoute> <CapturePage /> </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/map"
+              element={
+                <ProtectedRoute> <MapPage /> </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/feed"
-            element={
-              <ProtectedRoute> <FeedScreen /> </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/capture"
+              element={
+                <ProtectedRoute> <CapturePage /> </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute> <ProfilePage /> </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/feed"
+              element={
+                <ProtectedRoute> <FeedScreen /> </ProtectedRoute>
+              }
+            />
 
-        </Route>
-        <Route path="/login" element={<AuthScreen />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-        <Route path="/" element={<LandingPage />} />
-      </Routes>
-    </BrowserRouter>
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute> <ProfilePage /> </ProtectedRoute>
+              }
+            />
+
+          </Route>
+          <Route path="/login" element={<AuthScreen />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/" element={<LandingPage />} />
+        </Routes>
+      </BrowserRouter>
+    </LoadingProvider>
+
   );
 }
 

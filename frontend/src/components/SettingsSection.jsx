@@ -3,9 +3,11 @@ import './SettingsSection.css';
 import PopUpModal from './PopUpModal';
 
 import { FaEnvelope, FaLock, FaQuestionCircle, FaInfoCircle, FaSignOutAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const SettingsSection = ({ onLogout }) => {
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="settings-section">
@@ -26,7 +28,7 @@ const SettingsSection = ({ onLogout }) => {
           <span>Help & Support</span>
           <span className="settings-arrow">{'>'}</span>
         </div>
-        <div className="settings-row" tabIndex={0} role="button" onClick={() => setShowPopup(true)}>
+        <div className="settings-row" tabIndex={0} role="button" onClick={() => navigate("/about")}>
           <FaInfoCircle className="settings-icon" />
           <span>About App</span>
           <span className="settings-arrow">{'>'}</span>
