@@ -9,8 +9,9 @@ import base64
 import io
 from typing import Optional, List, Dict, Any
 import cv2
+import uvicorn
 
-app = FastAPI(title="Animal Detection API", version="1.0.0")
+app = FastAPI(title="BushBuddy AI API", version="1.0.0")
 
 # Add CORS middleware
 app.add_middleware(
@@ -257,6 +258,5 @@ async def detect_all_animals(request: DetectionRequest):
         raise HTTPException(status_code=500, detail=f"Detection failed: {str(e)}")
 
 if __name__ == "__main__":
-    import uvicorn
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
