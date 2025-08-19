@@ -1,4 +1,7 @@
 import os
+# Set environment variables before importing OpenCV-dependent libraries
+os.environ['OPENCV_IO_ENABLE_OPENEXR'] = '0'
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -134,7 +137,7 @@ def draw_bounding_boxes(image: np.ndarray, boxes, class_ids, confidences) -> np.
 @app.get("/")
 async def root():
     return {
-        "message": "NushBuddy's AI API",
+        "message": "BushBuddy AI API",
         "endpoints": {
             "/detect": "POST - Detect animals in image",
             "/detect_all": "POST - Detect all animals in image",
