@@ -96,6 +96,9 @@ async function likePost(post_id, user_id) {
 			const query = 'INSERT INTO likes (user_id, post_id) VALUES ($1, $2);';
 			const params = [user_id, post_id];
 
+			const incQuery = 'UPDATE posts SET likes = likes + 1 WHERE id = $1;';
+			await db.query(incQuery, [post_id]);
+
 			const result = await db.query(query, params);
 
 			return result;
@@ -123,6 +126,9 @@ async function addComment(details) {
 			post_id,
 			comment_text
 		]
+
+		const incQuery = 'UPDATE posts SET comments = comments + 1 WHERE id = $1;';
+		await db.query(incQuery, [post_id]);
 
         const result = await db.query(query,params);
 
