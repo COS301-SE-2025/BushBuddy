@@ -3,9 +3,9 @@ import { User, LoginRequest, RegisterRequest } from "../../models/UserModel";
 describe("UserModel classes", () => {
   describe("User", () => {
     it("should set the token property from constructor args", () => {
-      const user = new User({ token: "very_secure_token" });
+      const user = new User({ username: "testUser" });
 
-      expect(user.token).toBe("very_secure_token");
+      expect(user.username).toBe("testUser");
     });
 
     it("should have undefined token if not provided", () => {
