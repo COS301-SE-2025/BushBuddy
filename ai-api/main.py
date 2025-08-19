@@ -134,7 +134,7 @@ def draw_bounding_boxes(image: np.ndarray, boxes, class_ids, confidences) -> np.
 @app.get("/")
 async def root():
     return {
-        "message": "Animal Detection API",
+        "message": "NushBuddy's AI API",
         "endpoints": {
             "/detect": "POST - Detect animals in image",
             "/detect_all": "POST - Detect all animals in image",
@@ -258,5 +258,5 @@ async def detect_all_animals(request: DetectionRequest):
         raise HTTPException(status_code=500, detail=f"Detection failed: {str(e)}")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 7860))
     uvicorn.run(app, host="0.0.0.0", port=port)
