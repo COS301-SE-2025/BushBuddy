@@ -58,8 +58,43 @@ async function viewHistory(req, res) {
 	}
 }
 
+async function fetchAllSightings(req, res) {
+	try {
+		//add filters for sightings
+		
+		const result = await sightingService.fetchAllSightings();
+
+		if(!result){
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch Sightings'
+			});
+		}
+
+		if(result.rows==0){
+			return res.status(204).json({ 
+				success: true, 
+				message: 'No Sightings found with specified filters' 
+			});
+		}
+
+		return res.status(200).json({
+			success:true,
+			message: 'Sightings fetched successfully',
+			data: result
+		});
+	} catch (error) {
+		console.error('Error fetching all sightings: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 export const sightingController = {
 	createSighting,
 	viewSighting,
 	viewHistory,
+	fetchAllSightings,
 };

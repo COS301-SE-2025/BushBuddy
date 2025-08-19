@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, LayersControl, useMap } from 'react-le
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapPage.css';
+import { PostsController } from '../controllers/PostsController';
 
 const userIcon = L.icon({
   iconUrl: require("../assets/user-location.png"),
