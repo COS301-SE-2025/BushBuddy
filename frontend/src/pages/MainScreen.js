@@ -8,8 +8,6 @@ import { FaCamera } from 'react-icons/fa';
 import BestiaryComponent from './BestiaryComponent'; // Import the new component
 import SettingsModal from '../components/SettingsModal'; // Adjust path as needed
 
-import { checkAuthStatus } from "../controllers/UsersController";  // remove this later
-
 const MainScreen = () => {
     const navigate = useNavigate();
     const userName = "Ruan Esterhuizen";

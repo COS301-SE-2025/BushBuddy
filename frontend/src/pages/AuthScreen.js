@@ -5,8 +5,8 @@ import Logo from '../assets/EpiUseLogo.png';
 import BushBuddy from '../assets/BushBuddy.webp';
 import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
-
 import { handleLogin } from '../controllers/UsersController';
+import { useLoading } from '../contexts/LoadingContext';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const AuthScreen = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const { startLoading, stopLoading } = useLoading();
 
   const handleToggle = () => {
     setShowPassword((prev) => !prev);
@@ -21,12 +22,21 @@ const AuthScreen = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
-    const result = await handleLogin(username, password);
+    startLoading();
 
-    if (result.success) {
-      navigate("/main");
-    } else {
-      setError(result.message);
+
+
+    try {
+      startLoading();
+      const result = await handleLogin(username, password);
+
+      if (result.success) {
+        navigate("/main");
+      } else {
+        setError(result.message);
+      }
+    } finally {
+      stopLoading();
     }
 
   }

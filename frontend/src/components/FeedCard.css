@@ -37,9 +37,9 @@
   padding: 3% 4% 3% 4%;
 }
 
-.description {
+.feed-card-description {
   margin: 0 0 1% 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: rgb(58, 58, 58);
   text-align: left;
 }

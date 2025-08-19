@@ -46,7 +46,7 @@ describe('AuthController', () => {
 			});
 			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
 				httpOnly: true,
-				sameSite: 'lax',
+				sameSite: 'None',
 				secure: process.env.NODE_ENV === 'production',
 				maxAge: 24 * 60 * 60 * 1000, // 24 hours
 			});
