@@ -13,4 +13,13 @@ export class webcam {
             });
         } else alert("Can't open camera");
     };
+
+    close = (videoRef) => {
+        if(videoRef.srcObject) {
+            videoRef.srcObject.getTracks().forEach((track) => {
+                track.stop();                
+            });
+            videoRef.srcObject = null;
+        } else alert("Please open webcam first")
+    }
 }
