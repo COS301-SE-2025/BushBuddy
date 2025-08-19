@@ -71,7 +71,7 @@ const CapturePage = () => {
 
 export default CapturePage; */
 
-import React, { useRef, useState, useEffect } from 'react';
+/* import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
@@ -151,4 +151,7 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage;
+export default CapturePage; */
+
+
+
