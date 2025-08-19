@@ -1,9 +1,14 @@
 .map-page {
-  height: 75vh;
+  height: 90vh;
   border-radius: 50%;
+  z-index: 9;
 }
 
 .map-container {
     border-radius: 0.5rem;
     overflow: hidden;
+}
+
+.leaflet-container {
+  z-index: 1 !important;
 }
