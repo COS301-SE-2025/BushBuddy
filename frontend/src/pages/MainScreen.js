@@ -24,28 +24,28 @@ const MainScreen = () => {
             <Container className='quick-actions'>
                 <Container className='actions-container'>
                     <div className='quick-action-wrapper'>
-                        <Button className='action-button'>
+                        <Button className='action-button' onClick={() => navigate("/capture") }>
                             <FontAwesomeIcon icon={faCamera} size='2x' />
                         </Button>
                         <label>Scanner</label>
                     </div>
 
                     <div className='quick-action-wrapper'>
-                        <Button className='action-button'>
+                        <Button className='action-button' onClick={() => navigate("/feed")}>
                             <FontAwesomeIcon icon={faClockRotateLeft} size='2x' />
                         </Button>
                         <label>History</label>
                     </div>
 
                     <div className='quick-action-wrapper'>
-                        <Button className='action-button'>
+                        <Button className='action-button' onClick={() => navigate("/map")}>
                             <FontAwesomeIcon icon={faMapMarkedAlt} size='2x' />
                         </Button>
                         <label>Map</label>
                     </div>
 
                     <div className='quick-action-wrapper'>
-                        <Button className='action-button'>
+                        <Button className='action-button' onClick={() => navigate("/profile")}>
                             <FontAwesomeIcon icon={faGear} size='2x' />
                         </Button>
                         <label>Settings</label>
