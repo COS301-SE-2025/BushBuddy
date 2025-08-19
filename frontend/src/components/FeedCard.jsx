@@ -34,7 +34,7 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible }) => {
       <img src={entry.image_url} alt={entry.title} className="feed-card-image" />
 
       <div className="feed-card-body">
-        <p className="description">
+        <p className="feed-card-description">
           <strong>{entry.user_id}</strong> {entry.description}
         </p>
         <div className="engagement">
