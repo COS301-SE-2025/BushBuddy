@@ -11,7 +11,7 @@ import { checkAuthStatus } from "../controllers/UsersController";  // remove thi
 
 const MainScreen = () => {
     const navigate = useNavigate();
-    const userName = "Jean Steyn";
+    const userName = "Ruan Esterhuizen";
 
     return (
         <div className="main-screen">
