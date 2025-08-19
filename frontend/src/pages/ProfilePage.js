@@ -10,8 +10,8 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <ProfileHeader />
-      <ActivityStatsCard />
-      <AchievementsCard />
+      {/*<ActivityStatsCard />
+      <AchievementsCard />*/}
       <SettingsSection onLogout={() => alert('Logged out!')} />
     </div>
   );
