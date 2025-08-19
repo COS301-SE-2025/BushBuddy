@@ -7,12 +7,73 @@ import AchievementsCard from '../components/AchievementsCard.jsx';
 import SettingsSection from '../components/SettingsSection';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const baseUrl = process.env.REACT_APP_API_URL || '';
+      
+      // Use relative URLs that work in both development and production (important because it worked just on localhost)
+      const possibleUrls = [
+        `${baseUrl}/api/auth/logout`,
+        `${baseUrl}/auth/logout`, 
+        `${baseUrl}/logout`
+      ];
+
+      let response;
+      let lastError;
+
+      // Try each URL until one works
+      for (const url of possibleUrls) {
+        try {
+          console.log('Trying logout URL:', url);
+          response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          });
+          
+          if (response.ok) {
+            console.log('Logout request successful with URL:', url);
+            break;
+          } else {
+            console.log(`URL ${url} returned status:`, response.status);
+          }
+        } catch (err) {
+          console.log(`URL ${url} failed:`, err.message);
+          lastError = err;
+          continue;
+        }
+      }
+
+      if (!response || !response.ok) {
+        console.error(`All logout URLs failed. Last error: ${lastError?.message || 'Unknown error'}`);
+      }
+
+      // Always logout on frontend regardless of server response
+      console.log('Logging out user and redirecting...');
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate('/login');
+
+    } catch (error) {
+      console.error('Error during logout:', error);
+      
+      // Always logout on frontend even if server call fails
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="profile-page">
       <ProfileHeader />
       {/*<ActivityStatsCard />
       <AchievementsCard />*/}
-      <SettingsSection onLogout={() => alert('Logged out!')} />
+      <SettingsSection onLogout={handleLogout} />
     </div>
   );
 };
