@@ -11,3 +11,9 @@ expo-env.d.ts
 
 # coverage files
 coverage/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

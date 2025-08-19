@@ -52,9 +52,11 @@
     "@babel/core": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
+    "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.3.0",
     "babel-jest": "^30.0.5",
     "jest": "^29.6.2",
     "jest-environment-jsdom": "^30.0.5"
