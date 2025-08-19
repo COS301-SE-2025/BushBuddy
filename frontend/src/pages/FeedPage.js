@@ -20,81 +20,27 @@ const FeedPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await PostsController.handleFetchAllPosts();
-      if (response.success) {
-        setPosts(response.posts);
-      } else {
-        console.error(response.message);
+      try {
+        setLoading(true);
+        const response = await PostsController.handleFetchAllPosts();
+        if (response.success) {
+          setPosts(response.posts);
+        } else {
+          console.error(response.message);
+        }
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPosts();
   }, []);
-    
-  const feedEntries = [
-    { 
-      id: '1',
-      type: 'elephant',
-      title: 'Elephant Bull Spotted',
-      user: 'Ruan',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
-      location: 'Kruger National Park',
-      timestamp: '21/05/2025 8:45',
-      image: require('../assets/Elephant.webp'),
-      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
-      description: 'I spotted this large Elephant bull near Bateleur road this morning while on a game drive',
-      likes: 24,
-      comments: 8,
-      isLiked: false
-    },
-    { 
-      id: '2',
-      type: 'lion',
-      title: 'Pride of Lions',
-      user: 'Ruben',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
-      location: 'Mabula Nature Reserve',
-      timestamp: '20/05/2025 17:45',
-      image: require('../assets/Pride-Lions-Demo.webp'),
-      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
-      description: 'Amazing pride of lions spotted resting under acacia trees. The cubs were playing while the adults kept watch.',
-      likes: 18,
-      comments: 5,
-      isLiked: true
-    },
-    { 
-      id: '3',
-      type: 'rhino',
-      title: 'White Rhinos Spotted',
-      user: 'Raffie',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
-      location: 'Dinokeng',
-      timestamp: '21/05/2025 8:45',
-      image: require('../assets/rhino-group.webp'),
-      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
-      description: 'Two magnificent white rhinos grazing peacefully in the early morning light. Such incredible creatures!',
-      likes: 31,
-      comments: 12,
-      isLiked: false
-    },
-    { 
-      id: '4',
-      type: 'antelope',
-      title: 'Eland Spotted',
-      user: 'Tom',
-      userAvatar: require('../assets/Jean-Steyn-ProfilePic.webp'), // Placeholder holder fix later Jean
-      location: 'Rietvlei Nature Reserve',
-      timestamp: '21/05/2025 8:45',
-      image: require('../assets/Eland.webp'),
-      mapImage: require('../assets/Map-Demo.webp'), // Map view demo image.The same image is used for all entries because of the demo
-      description: 'Beautiful herd of eland antelope spotted during sunset. They were so graceful moving across the grassland.',
-      likes: 15,
-      comments: 3,
-      isLiked: false
-    },
-  ];
 
   const renderPostDetailModal = () => {
     if (!selectedPost) return null;
@@ -189,17 +135,24 @@ const FeedPage = () => {
 
   return (
     <div className="feed-page">
-      <SearchBar />
       <FeedFilters />
-      {posts.map((entry) => (
-        <FeedCard
-          key={entry.id}
-          entry={entry}
-          setSelectedPost={setSelectedPost}
-          setPostDetailVisible={setPostDetailVisible}
-        />
-      ))}
-      {postDetailVisible && renderPostDetailModal()}
+      {loading ? (
+        <div className="loader-wrapper">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        <>
+          {posts.map((entry) => (
+            <FeedCard
+              key={entry.id}
+              entry={entry}
+              setSelectedPost={setSelectedPost}
+              setPostDetailVisible={setPostDetailVisible}
+            />
+          ))}
+          {postDetailVisible && renderPostDetailModal()}
+        </>
+      )}
     </div>
   );
 };
