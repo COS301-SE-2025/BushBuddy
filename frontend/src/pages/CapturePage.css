@@ -15,6 +15,7 @@
 .capture-button-wrapper {
     position: relative;
     width: 100%;
+    bottom: 20px;
 }
 
 .capture-button {
@@ -23,7 +24,7 @@
     align-items: center;
     position: absolute;
     top: 50%;
-    left: 90%;
+    left: 10%;
     transform: translate(-50%, -50%);
     width: 4rem;
     height: 4rem;
