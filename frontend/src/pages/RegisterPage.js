@@ -6,7 +6,7 @@ import BushBuddy from '../assets/BushBuddy.webp';
 import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import VideoBackground from '../components/VideoBackground';
 
-import { handleRegister } from '../controllers/UsersController';
+import { checkAuthStatus, handleRegister } from '../controllers/UsersController';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
@@ -29,6 +29,11 @@ const AuthScreen = () => {
     if (result.success) {
       navigate("/main");
     } else {
+
+      const isLoggedIn = await checkAuthStatus();
+      if(isLoggedIn)
+        navigate("/main");
+
       setError(result.message);
     }
   }
