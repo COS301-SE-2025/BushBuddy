@@ -7,6 +7,9 @@ import axios from 'axios';
 
 var animalName = "RubberDuck";
 var confidence = "420.15";
+var image;
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
@@ -21,31 +24,103 @@ const CapturePage = () => {
     facingMode: { ideal: "environment" },
   };
 
-  async function toBase64(input) {  //just for testing
-    // If it's already a File or Blob
-    if (input instanceof File || input instanceof Blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(input);
-        reader.onload = () => resolve(reader.result.split(",")[1]); // clean base64
-        reader.onerror = (error) => reject(error);
-      });
+  function base64ToBlob(base64, mimeType) {
+    const byteCharacters = atob(base64); // decode base64 → binary string
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
 
-    if (typeof input === "string") {
-      const response = await fetch(input); // must be in /public folder
-      const blob = await response.blob();
-
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onload = () => resolve(reader.result.split(",")[1]); // clean base64
-        reader.onerror = (error) => reject(error);
-      });
-    }
-
-    throw new Error("Unsupported input type for toBase64");
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
   }
+
+  function compressBase64Image(base64, maxWidth = 1024, quality = 0.8) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Calculate new dimensions
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64.split(',')[1]); // Remove data URL prefix
+      };
+      img.src = `data:image/jpeg;base64,${base64}`;
+    });
+  }
+
+async function createSighting(base64Image) {
+    try {
+        const mimeType = "image/jpeg";
+        const blob = base64ToBlob(base64Image, mimeType);
+
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+            });
+        });
+        const { latitude, longitude } = position.coords;
+
+        const formData = new FormData();
+        formData.append("longitude", longitude.toString());
+        formData.append("latitude", latitude.toString());
+        formData.append("file", blob, "sighting.jpg");
+
+        // Use XMLHttpRequest instead of fetch to bypass the issue
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'https://bushbuddy-api-dev.onrender.com/sightings/');
+            
+            // Add credentials (equivalent to credentials: 'include' in fetch)
+            xhr.withCredentials = true;
+
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve(response);
+                    } catch (e) {
+                        console.log('Response is not JSON:', xhr.responseText);
+                        resolve(xhr.responseText);
+                    }
+                } else {
+                    reject(new Error(`HTTP ${xhr.status}: ${xhr.responseText}`));
+                }
+            };
+
+            xhr.onerror = () => {
+                reject(new Error('Network error'));
+            };
+
+            xhr.ontimeout = () => {
+                reject(new Error('Request timeout'));
+            };
+
+            xhr.timeout = 120000;
+
+            console.log('Sending XMLHttpRequest with credentials...');
+            xhr.send(formData);
+        });
+
+    } catch (error) {
+        console.error("Upload error:", error);
+        throw error;
+    }
+}
 
   const captureImage = async () => {
     // Capture the image from webcam
@@ -62,8 +137,8 @@ const CapturePage = () => {
     // Send to API
     try {
       const response = await axios.post(
-        // "http://localhost:7860/detect",
-        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
+        "http://localhost:7860/detect",
+        // "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
         { image: base64Image },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -72,6 +147,9 @@ const CapturePage = () => {
 
       animalName = response.data.detection;
       confidence = response.data.confidence;
+      image = response.data.image;
+
+      createSighting(image,)
 
       setApiResponse(response.data);
 
