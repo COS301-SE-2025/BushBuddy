@@ -62,7 +62,8 @@ const CapturePage = () => {
     // Send to API
     try {
       const response = await axios.post(
-        "http://localhost:7860/detect",
+        // "http://localhost:7860/detect",
+        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
         { image: base64Image },
         { headers: { "Content-Type": "application/json" } }
       );
