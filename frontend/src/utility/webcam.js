@@ -10,6 +10,7 @@ export class Webcam {
             })
             .then((stream) => {
                 videoRef.srcObject = stream;
+                console.log("Stream input received : ", videoRef.srcObject);
             });
         } else alert("Can't open camera");
     };

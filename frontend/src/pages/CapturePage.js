@@ -159,6 +159,7 @@ import "./CapturePage.css";
 import { Webcam } from "../utility/webcam";
 import { detectVideo } from "../utility/detection";
 import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
 
 const CapturePage = () => {
   const videoRef = useRef(null);
@@ -169,22 +170,42 @@ const CapturePage = () => {
   const classThreshold = 0.5; // set your threshold here
   const [model, setModel] = useState(null);
 
-  // Load YOLOv5 model once
   useEffect(() => {
+    const initModel = async () => {
+      try {
+        const net = await loadModel();
+        setModel({net, inputShape: net.inputs[0].shape});
+      } catch (err) {
+        console.error("Error loading model:", err);
+      }
+    }
+    initModel();
+  }, []);
+  
+
+  // Load YOLOv5 model once
+  /*useEffect(() => {
     const loadModel = async () => {
       const net = await tf.loadGraphModel("/model/model.json");
       setModel({ net, inputShape: net.inputs[0].shape });
     };
     loadModel();
-  }, []);
+  }, []);*/
 
   // Open webcam and start detection when model is ready
   useEffect(() => {
     if (model) {
-      webcam.open(videoRef.current);
+      const videoEl = videoRef.current;
 
-      // run detection loop on video
-      detectVideo(videoRef.current, model, classThreshold, canvasRef.current);
+      webcam.open(videoEl);
+
+      // wait until video metadata is loaded
+      videoEl.onloadedmetadata = () => {
+        videoEl.play().then(() => {
+          // start detection loop only after video is playing
+          detectVideo(videoEl, model, classThreshold, canvasRef.current);
+        }).catch(err => console.warn("Video play failed", err));
+      };
     }
   }, [model]);
 
@@ -199,7 +220,7 @@ const CapturePage = () => {
       setCapturedImage(imageData);
 
       // stop the video stream when captured
-      webcam.close(videoRef.current);
+      //webcam.close(videoRef.current);
     }
   };
 

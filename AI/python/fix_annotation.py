@@ -1,6 +1,6 @@
 import json
 
-INPUT_FILE = OUTPUT_FILE = "projectMammals.json"
+INPUT_FILE = OUTPUT_FILE = "model.json"
 
 
 with open(INPUT_FILE, "r", encoding="utf-8") as inFile:
