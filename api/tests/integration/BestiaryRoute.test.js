@@ -14,18 +14,15 @@ beforeAll((done) => {
 	const BESTIARY_PORT = process.env.BESTIARY_PORT || 4002;
 	const GATEWAY_PORT = process.env.PORT || 3000;
 
-	bestiaryServer = discoveryApp.listen(BESTIARY_PORT, () => {
-		console.log(`✅ Bestiary service running on port ${BESTIARY_PORT}`);
-		gatewayServer = app.listen(GATEWAY_PORT, () => {
-			console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
-			done();
-		});
+	gatewayServer = app.listen(GATEWAY_PORT, () => {
+		console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
+		done();
 	});
 });
 
 afterAll(async () => {
 	await new Promise((resolve) => gatewayServer.close(resolve));
-	await new Promise((resolve) => bestiaryServer.close(resolve));
+	// await new Promise((resolve) => bestiaryServer.close(resolve));
 	await db.close();
 });
 
