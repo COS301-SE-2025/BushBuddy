@@ -33,7 +33,6 @@ const FeedPage = () => {
     fetchPosts();
   }, []);
 
-  // ✅ Update comment count in parent state
   const handleIncrementComments = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.map((p) =>
@@ -65,7 +64,7 @@ const FeedPage = () => {
               post={selectedPost.data.post}
               comments={selectedPost.data.comments}
               onClose={() => setPostDetailVisible(false)}
-              onCommentAdded={handleIncrementComments} // pass callback
+              onCommentAdded={handleIncrementComments}
             />
           )}
         </>

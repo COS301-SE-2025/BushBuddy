@@ -1,11 +1,13 @@
 .bestiary-component {
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #FFFFF0;
-    min-height: 100vh;
     color: #333;
     width: 100%;
     max-width: 100%;
     margin: 0;
+    padding: 0;
 }
 
 /* Header Section - Hidden */
@@ -27,8 +29,8 @@
     color: white;
     border-radius: 24px;
     padding: 20px;
-    margin: 2% auto 20px auto;
-    width: 90%;
+    margin: 2% 0 2% 0;
+    width: 100%;
     max-width: 800px;
     box-sizing: border-box;
 }
@@ -128,14 +130,38 @@
 }
 
 /* Bestiary Grid - Card container style */
+
+.beast-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+}
+
+.beast-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4b6949ff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .bestiary-cards-wrapper {
     background-color: #4b6949ff;
     color: white;
     border-radius: 24px;
     padding: 20px;
     margin: 2% auto;
-    width: 90%;
+    width: 100%;
     max-width: 800px;
+    min-height: 200px;
     box-sizing: border-box;
 }
 
@@ -156,6 +182,7 @@
     transition: all 0.3s ease;
     cursor: pointer;
     color: white;
+    min-height: 60px;
 }
 
 .bestiary-card:hover {
@@ -195,17 +222,11 @@
     border: none;
 }
 
-.bestiary-card .card-body {
-    padding: 0;
-    background: none;
-}
-
-.animal-name {
+.beast-name {
     color: white;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 8px;
     line-height: 1.3;
 }
 
@@ -486,7 +507,6 @@
 .empty-state h5 {
     color: white;
     font-weight: 600;
-    margin-bottom: 10px;
 }
 
 .empty-state p {
@@ -496,19 +516,14 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .bestiary-component {
-        padding: 15px;
-    }
-    
     .bestiary-header,
-    .bestiary-filters,
     .bestiary-cards-wrapper,
     .loading-container,
     .error-container,
     .empty-state {
-        width: 90%;
+        width: 100%;
         /* Corrected margin to push the element left */
-        margin: 2% auto 20px 10px; 
+        margin: 2% 0 20px 0; 
     }
     
     .bestiary-header {
@@ -581,178 +596,5 @@
 
     .modal-image {
         max-height: 200px;
-    }
-}
-
-@media (max-width: 576px) {
-    .bestiary-header,
-    .bestiary-filters,
-    .bestiary-cards-wrapper,
-    .loading-container,
-    .error-container,
-    .empty-state {
-        width: 92%;
-        /* Corrected margin to push the element left */
-        margin: 2% auto 20px 10px;
-    }
-    
-    .bestiary-header {
-        padding: 12px;
-    }
-    
-    .bestiary-title {
-        font-size: 1.1rem;
-    }
-    
-    .achievements-button {
-        font-size: 12px;
-        padding: 0 12px;
-        height: 2rem;
-    }
-    
-    .bestiary-filters {
-        padding: 12px;
-    }
-    
-    .bestiary-cards-wrapper {
-        padding: 12px;
-    }
-    
-    .bestiary-cards-wrapper .row {
-        gap: 12px;
-    }
-    
-    .bestiary-card {
-        padding: 12px;
-    }
-    
-    .bestiary-card-image {
-        height: 70px;
-    }
-    
-    .animal-name {
-        font-size: 13px;
-    }
-    
-    .filter-pills-container {
-        gap: 8px;
-    }
-    
-    .filter-pill {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-    
-    .bestiary-search-input {
-        font-size: 13px;
-    }
-    
-    .filter-dropdown-label {
-        font-size: 13px;
-    }
-    
-    .results-counter {
-        font-size: 12px;
-    }
-
-    /* Small Mobile Modal Styles */
-    .animal-detail-modal .modal-dialog {
-        margin: 0.25rem;
-        max-width: calc(100vw - 0.5rem);
-    }
-
-    .modal-header-custom {
-        padding: 12px;
-    }
-
-    .modal-content-custom {
-        padding: 0 12px 12px;
-        max-height: 75vh;
-    }
-
-    .modal-animal-name {
-        font-size: 22px;
-    }
-
-    .modal-section {
-        margin-bottom: 20px;
-    }
-
-    .modal-section-title {
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
-    .modal-image {
-        max-height: 180px;
-    }
-
-    .detail-row {
-        gap: 8px;
-        margin-bottom: 12px;
-    }
-
-    .detail-label {
-        min-width: 60px;
-        font-size: 13px;
-    }
-
-    .detail-value,
-    .fact-text,
-    .modal-description {
-        font-size: 13px;
-    }
-}
-
-/* Very small screens */
-@media (max-width: 360px) {
-    .bestiary-cards-wrapper .row {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .bestiary-card {
-        padding: 10px;
-    }
-    
-    .bestiary-card-image {
-        height: 60px;
-    }
-    
-    .animal-name {
-        font-size: 12px;
-    }
-    
-    .type-badge {
-        font-size: 8px;
-        padding: 2px 6px;
-    }
-
-    /* Very Small Modal Styles */
-    .modal-animal-name {
-        font-size: 20px;
-    }
-
-    .modal-scientific-name {
-        font-size: 12px;
-    }
-
-    .modal-section-title {
-        font-size: 15px;
-    }
-
-    .detail-value,
-    .fact-text,
-    .modal-description {
-        font-size: 12px;
-    }
-
-    .detail-label {
-        font-size: 12px;
-        min-width: 55px;
-    }
-
-    .modal-image {
-        max-height: 150px;
     }
 }
