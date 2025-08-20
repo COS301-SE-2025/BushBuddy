@@ -43,10 +43,28 @@ both visual and audio detection.
 
 </details>
 
-## Documentation 
+## Documentation (For Demo 3)
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
+[SRS - v3](https://drive.google.com/file/d/1r2bg6XUfBbGcn0mc4chpqP5DMiF_vDWe/view?usp=drive_link) </br>
+Includes Architecture, Service contracts and Deployment model
+
+[User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
+
+[Technical Installation Manual - v1](https://drive.google.com/file/d/1MGEMAULuyjmF-MhAVQ6Z7E2PieuJFMl7/view?usp=drive_link)
+
+[Coding Standards - v2](https://drive.google.com/file/d/1L_oBp_nodmkSP0WaSuJJN3pnIfb4N2pT/view?usp=drive_link) </br>
+Git Branching Strategy included
+
+## Demos
+### Demo 2
+
+[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
+
+[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
+
+#### Demo 2-specific documentation (Outdated)
 [SRS Document - v2](https://drive.google.com/file/d/1TYf6k7-EyThm4crbMr_7NvyNV4Fznedt/view?usp=drive_link)
 
 [Architectural Requirements - v1](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
@@ -56,14 +74,6 @@ both visual and audio detection.
 [Coding Standards - v1](https://drive.google.com/file/d/12enrjoGXYy_JLajD-r4YTvM261CNjG1t/view?usp=drive_link)
 
 [Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
-
-## Demos
-### Demo 2
-
-[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
-
-[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
-
 
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
@@ -123,7 +133,7 @@ both visual and audio detection.
     </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruben Gadd</b></h2>
-      <b style="font-size: 18px; color: #555;">System Architect, DevOps, Integration, Services, and Testing Engineer</b>
+      <b style="font-size: 18px; color: #555;">AI Data Analyst</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a final year Information and Knowledge Systems student specializing in Data Science, which
         has given me early insights into machine learning and sparked my interests in AI. I also have a
@@ -152,7 +162,7 @@ both visual and audio detection.
     </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Raphael Rato</b></h2>
-      <b style="font-size: 18px; color: #555;">UX/UI Designer, Services, and Data Engineer</b>
+      <b style="font-size: 18px; color: #555;">Frontend Developer, System Architect</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a Computer Science student with a strong passion for technology, software development, and
         innovative system design. Throughout my studies, I have built a solid foundation in key
@@ -180,7 +190,7 @@ both visual and audio detection.
     </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Tom Schulz</b></h2>
-      <b style="font-size: 18px; color: #555;">UX Designer, UI, Services, and Testing Engineer</b>
+      <b style="font-size: 18px; color: #555;">Backend and Deployment Engineer</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am currently in my third year of studying Computer Science, a degree which has equipped me
         with knowledge in a wide variety of fields, including software engineering methodologies, database
@@ -202,7 +212,7 @@ both visual and audio detection.
     </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Jean Steyn</b></h2>
-      <b style="font-size: 18px; color: #555;">DevOps, Integration, and Data Engineer</b>
+      <b style="font-size: 18px; color: #555;">AI Training Engineer, Deployment</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a final year Computer Science student with a keen interest in both Computer Graphics and
         Web Development. My degree has equipped me with a solid understanding of software
