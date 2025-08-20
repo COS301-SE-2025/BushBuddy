@@ -14,6 +14,9 @@ const CapturePage = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
 
   const videoConstraints = {
     width: { ideal: 1280 },
@@ -48,44 +51,48 @@ const CapturePage = () => {
   }
 
   const captureImage = async () => {
-    // Capture the image from webcam
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (!imageSrc) return;
+  // Capture the image from webcam
+  const imageSrc = webcamRef.current?.getScreenshot();
+  if (!imageSrc) return;
 
-    console.log("Captured Image (data URL):", imageSrc);
-    setCapturedImage(imageSrc);
+  console.log("Captured Image (data URL):", imageSrc);
+  setCapturedImage(imageSrc);
 
-    // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
-    const base64Image = imageSrc.split(",")[1];
-    // console.log("Clean Base64 preview:", base64Image.substring(0, 50) + "...");
+  // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
+  const base64Image = imageSrc.split(",")[1];
 
-    // Send to API
-    try {
-      const response = await axios.post(
-        // "http://localhost:7860/detect",
-        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
-        { image: base64Image },
-        { headers: { "Content-Type": "application/json" } }
-      );
+  // Show spinner
+  setLoading(true);
 
-      console.log("Prediction result:", response.data);
+  try {
+    const response = await axios.post(
+      // "http://localhost:7860/detect",
+      "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
+      { image: base64Image },
+      { headers: { "Content-Type": "application/json" } }
+    );
 
-      animalName = response.data.detection;
-      confidence = response.data.confidence;
+    console.log("Prediction result:", response.data);
 
-      setApiResponse(response.data);
+    let animalName = response.data.detection;
+    let confidence = response.data.confidence;
 
-      if (animalName == null) {
-        animalName = "No animals found";
-        confidence = "";
-      }
+    setApiResponse(response.data);
 
-      setShowForm(true);
-
-    } catch (err) {
-      console.error("API request failed:", err);
+    if (animalName == null) {
+      animalName = "No animals found";
+      confidence = "";
     }
-  };
+
+    setShowForm(true);
+
+  } catch (err) {
+    console.error("API request failed:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
   const handleClose = () => setShowForm(false);
@@ -105,6 +112,7 @@ const CapturePage = () => {
 
   return (
     <Container className="scanner-page">
+      {loading && <div className="spinner"></div>}
       <Container className="webcam-wrapper">
         <Webcam
           ref={webcamRef}
@@ -154,7 +162,7 @@ const CapturePage = () => {
                   {apiResponse.detection && (
                     <>
                       <h4 className="animal-name">{apiResponse.detection}</h4>
-                      <p className="confidence">Confidence: {apiResponse.confidence}%</p>
+                      <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
                     </>
                   )}
                 </div>
