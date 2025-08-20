@@ -39,10 +39,14 @@ describe('AuthController', () => {
 
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(201);
-			expect(res.json).toHaveBeenCalledWith({ message: 'User registered successfully' });
+			expect(res.json).toHaveBeenCalledWith({
+				success: true,
+				message: 'User registered successfully',
+				data: { username: 'testuser' },
+			});
 			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
 				httpOnly: true,
-				sameSite: 'lax',
+				sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 				secure: process.env.NODE_ENV === 'production',
 				maxAge: 24 * 60 * 60 * 1000, // 24 hours
 			});
@@ -65,8 +69,8 @@ describe('AuthController', () => {
 			await authController.registerUser(req, res);
 
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
-			expect(res.status).toHaveBeenCalledWith(400);
-			expect(res.json).toHaveBeenCalledWith({ error: 'Registration failed' });
+			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: 'Registration failed' });
 		});
 
 		test('should return an error if returned user is null', async () => {
@@ -86,7 +90,7 @@ describe('AuthController', () => {
 			await authController.registerUser(req, res);
 			expect(authService.registerUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(400);
-			expect(res.json).toHaveBeenCalledWith({ error: 'User registration failed' });
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: 'User registration failed' });
 		});
 	});
 
@@ -109,10 +113,14 @@ describe('AuthController', () => {
 
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(200);
-			expect(res.json).toHaveBeenCalledWith({ message: 'User logged in successfully' });
+			expect(res.json).toHaveBeenCalledWith({
+				success: true,
+				message: 'User logged in successfully',
+				data: { username: 'testuser' },
+			});
 			expect(res.cookie).toHaveBeenCalledWith('token', expect.any(Object), {
 				httpOnly: true,
-				sameSite: 'lax',
+				sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 				secure: process.env.NODE_ENV === 'production',
 				maxAge: 24 * 60 * 60 * 1000, // 24 hours
 			});
@@ -134,8 +142,8 @@ describe('AuthController', () => {
 			await authController.loginUser(req, res);
 
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
-			expect(res.status).toHaveBeenCalledWith(401);
-			expect(res.json).toHaveBeenCalledWith({ error: 'Login failed' });
+			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: 'Login failed' });
 		});
 
 		test('should return an error if user not found', async () => {
@@ -155,7 +163,7 @@ describe('AuthController', () => {
 
 			expect(authService.loginUser).toHaveBeenCalledWith(req.body);
 			expect(res.status).toHaveBeenCalledWith(401);
-			expect(res.json).toHaveBeenCalledWith({ error: 'Invalid username or password' });
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: 'Invalid username or password' });
 		});
 	});
 
@@ -181,7 +189,7 @@ describe('AuthController', () => {
 			// expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
 			expect(res.clearCookie).toHaveBeenCalledWith('token');
 			expect(res.status).toHaveBeenCalledWith(200);
-			expect(res.json).toHaveBeenCalledWith({ message: 'User logged out successfully' });
+			expect(res.json).toHaveBeenCalledWith({ success: true, message: 'User logged out successfully' });
 		});
 
 		test('should return an error if logout fails', async () => {
@@ -203,7 +211,7 @@ describe('AuthController', () => {
 
 			// expect(authService.logoutUser).toHaveBeenCalledWith(req.body.userId);
 			expect(res.status).toHaveBeenCalledWith(500);
-			expect(res.json).toHaveBeenCalledWith({ error: 'Logout failed' });
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: 'Logout failed' });
 		});
 	});
 });

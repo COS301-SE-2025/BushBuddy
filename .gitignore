@@ -10,4 +10,6 @@ expo-env.d.ts
 .vscode
 
 # coverage files
-# coverage/
+coverage/
+
+build/

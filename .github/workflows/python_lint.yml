@@ -39,8 +39,9 @@ jobs:
           pip3 install -r AI/python/requirements.txt
       - name: Run Pylint
         run: python3 -m pylint --rcfile=AI/python/.pylintrc AI/python/*.py || true
+
       - name: Run Flake8
-        run: python3 -m flake8 AI/python/ --max-line-length=100
+        run: python3 -m flake8 AI/python/ --config=AI/python/.flake8
 
   test-python:
     name: Test Python Code

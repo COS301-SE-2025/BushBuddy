@@ -37,8 +37,11 @@
   padding: 3% 4% 3% 4%;
 }
 
-.description {
+.feed-card-description {
   margin: 0 0 1% 0;
+  font-size: 0.8em;
+  color: rgb(58, 58, 58);
+  text-align: left;
 }
 
 .engagement {
@@ -47,8 +50,36 @@
   font-size: 0.95em;
 }
 
-.likes{
-    margin-right: 15px;
+.likes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.heart {
+  margin-right: 0.2rem;
+  cursor: pointer;
+}
+
+.heart.filled {
+  size: 23;
+  margin-right: 0.2rem;
+  color: red;
+  fill: red;
+  cursor: pointer;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.bubble {
+  size: 20;
+  margin-right: 0.2rem;
 }
 
 .feed-card-footer {
