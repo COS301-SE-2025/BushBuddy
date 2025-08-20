@@ -10,13 +10,13 @@ async function registerUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'None',
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
 		res.status(201).json({ success: true, message: 'User registered successfully', data: { username } });
 	} catch (error) {
-		// console.error('Error in registerUser:', error);
+		console.error('Error in registerUser:', error);
 		res.status(500).json({ success: false, message: 'Registration failed' });
 	}
 }

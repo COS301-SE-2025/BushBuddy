@@ -6,12 +6,19 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 dotenv.config();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS;
+
+app.use(express.static(path.join(__dirname, '../../frontend/build/')));
 
 app.use(
 	cors({
@@ -31,7 +38,7 @@ app.use(
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
 		credentials: true,
-		exposedHeaders: ['Set-Cookie']
+		exposedHeaders: ['Set-Cookie'],
 	})
 );
 
@@ -45,8 +52,7 @@ const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 const POST_PORT = process.env.POST_PORT || 4004;
 
-
-const publicRoutes = ['/auth/register', '/auth/login', '/auth/status', '/docs'];
+const publicRoutes = ['/auth/register', '/auth/login', '/auth/status', '/login', '/register'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -122,6 +128,10 @@ app.get('/docs', async (req, res, next) => {
 	} catch (error) {
 		next(error);
 	}
+});
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
 });
 
 // default route for handling 404 errors
