@@ -5,11 +5,15 @@ on:
     branches:
       - dev-AI
       - dev
+    paths:
+      - 'AI/**'
   pull_request:
     branches:
       - main
       - dev-AI
       - dev
+    paths:
+      - 'AI/**'
 
 jobs:
   lint-python:
