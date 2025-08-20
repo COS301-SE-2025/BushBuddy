@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 
 const postingApp = express.Router();
 postingApp.use(express.json());
-postingApp.use(cookieParser());
+// postingApp.use(cookieParser());
 
 /**
  * @swagger
