@@ -2,9 +2,9 @@ import express from 'express';
 import { postingController } from './postingController.js';
 import cookieParser from 'cookie-parser';
 
-const postingApp = express();
+const postingApp = express.Router();
 postingApp.use(express.json());
-postingApp.use(cookieParser());
+// postingApp.use(cookieParser());
 
 /**
  * @swagger

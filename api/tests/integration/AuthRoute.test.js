@@ -14,18 +14,15 @@ beforeAll((done) => {
 	const AUTH_PORT = process.env.AUTH_PORT || 4001;
 	const GATEWAY_PORT = process.env.PORT || 3000;
 
-	authServer = authApp.listen(AUTH_PORT, () => {
-		console.log(`✅ Auth service running on port ${AUTH_PORT}`);
-		gatewayServer = app.listen(GATEWAY_PORT, () => {
-			console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
-			done();
-		});
+	gatewayServer = app.listen(GATEWAY_PORT, () => {
+		console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
+		done();
 	});
 });
 
 afterAll(async () => {
 	await new Promise((resolve) => gatewayServer.close(resolve));
-	await new Promise((resolve) => authServer.close(resolve));
+	// await new Promise((resolve) => authServer.close(resolve));
 	await db.close();
 });
 
@@ -38,11 +35,11 @@ describe('Full Auth Flow', () => {
 		try {
 			const res = await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
-			// console.log('Registration response:', res);
+			// console.log('Registration response:', res.body);
 
 			expect(res.statusCode).toBe(201);
 			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
@@ -57,7 +54,7 @@ describe('Full Auth Flow', () => {
 		try {
 			await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test2@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 

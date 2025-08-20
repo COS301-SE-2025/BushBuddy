@@ -3,7 +3,7 @@ import multer from 'multer';
 
 import { sightingController } from './sightingController.js';
 
-const sightingsApp = express();
+const sightingsApp = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // upload endpoint

@@ -1,4 +1,7 @@
 import os
+# Set environment variables before importing OpenCV-dependent libraries
+os.environ['OPENCV_IO_ENABLE_OPENEXR'] = '0'
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -16,10 +19,14 @@ app = FastAPI(title="BushBuddy AI API", version="1.0.0")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3001",
+        "https://bushbuddy-dev.onrender.com",
+        "https://bush-buddy.onrender.com"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 # Load YOLO model at startup
@@ -134,7 +141,7 @@ def draw_bounding_boxes(image: np.ndarray, boxes, class_ids, confidences) -> np.
 @app.get("/")
 async def root():
     return {
-        "message": "Animal Detection API",
+        "message": "BushBuddy AI API",
         "endpoints": {
             "/detect": "POST - Detect animals in image",
             "/detect_all": "POST - Detect all animals in image",
@@ -258,5 +265,5 @@ async def detect_all_animals(request: DetectionRequest):
         raise HTTPException(status_code=500, detail=f"Detection failed: {str(e)}")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 7860))
     uvicorn.run(app, host="0.0.0.0", port=port)

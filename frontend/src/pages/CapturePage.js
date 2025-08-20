@@ -3,13 +3,22 @@ import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
 
-const animalName = "Rhino";
-const confidence = "92.15";
+import axios from 'axios';
+
+var animalName = "RubberDuck";
+var confidence = "420.15";
 
 const CapturePage = () => {
   const webcamRef = useRef(null);
   const [showForm, setShowForm] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [apiResponse, setApiResponse] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
 
   const videoConstraints = {
     width: { ideal: 1280 },
@@ -17,32 +26,96 @@ const CapturePage = () => {
     facingMode: { ideal: "environment" },
   };
 
-  const captureImage = () => {
+  async function toBase64(input) {  //just for testing
+    // If it's already a File or Blob
+    if (input instanceof File || input instanceof Blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(input);
+        reader.onload = () => resolve(reader.result.split(",")[1]); // clean base64
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    if (typeof input === "string") {
+      const response = await fetch(input); // must be in /public folder
+      const blob = await response.blob();
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onload = () => resolve(reader.result.split(",")[1]); // clean base64
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    throw new Error("Unsupported input type for toBase64");
+  }
+
+  const captureImage = async () => {
+    // Capture the image from webcam
     const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      console.log("Captured Image:", imageSrc);
-      setCapturedImage(imageSrc);
+    if (!imageSrc) return;
+
+    console.log("Captured Image (data URL):", imageSrc);
+    setCapturedImage(imageSrc);
+
+    // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
+    const base64Image = imageSrc.split(",")[1];
+
+    // Show spinner
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        // "http://localhost:7860/detect",
+        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
+        { image: base64Image },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      console.log("Prediction result:", response.data);
+
+      let animalName = response.data.detection;
+      let confidence = response.data.confidence;
+
+      setApiResponse(response.data);
+
+      if (animalName == null) {
+        animalName = "No animals found";
+        confidence = "";
+      }
+
       setShowForm(true);
+
+    } catch (err) {
+      console.error("API request failed:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
+
+
   const handleClose = () => setShowForm(false);
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    
+
     console.log("Form submitted with data:", {
       postName: formData.get('postName'),
       description: formData.get('description'),
       geolocation: formData.get('geolocation') === 'on'
     });
-    
+
     setShowForm(false);
+    setShowPopup(true);
   };
 
   return (
     <Container className="scanner-page">
+      {loading && <div className="spinner"></div>}
       <Container className="webcam-wrapper">
         <Webcam
           ref={webcamRef}
@@ -81,37 +154,41 @@ const CapturePage = () => {
               <h3 className="form-title">Animal Detection Result</h3>
 
               {/* Visual Fields */}
-              {capturedImage && (
+              {apiResponse?.image && (
                 <div className="detection-result">
-                  <img 
-                    src={capturedImage} 
-                    alt="Detected Animal" 
-                    className="captured-image"
+                  <img
+                    src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
+                    alt="Detected Animal"
+                    className="detected-image"
+                    style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
                   />
-                  <h4 className="animal-name">{animalName}</h4>
-                  <p className="confidence">Confidence: {confidence}%</p>
+                  {apiResponse.detection && (
+                    <>
+                      <h4 className="animal-name">{apiResponse.detection}</h4>
+                      <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
+                    </>
+                  )}
                 </div>
               )}
-
               {/* Form */}
               <form onSubmit={handleSubmit} className="detection-form">
                 <div className="form-group">
                   <label htmlFor="postName">Post Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     id="postName"
                     name="postName"
-                    placeholder="Enter a post title" 
-                    required 
+                    placeholder="Enter a post title"
+                    required
                   />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="description">Description</label>
-                  <textarea 
+                  <textarea
                     id="description"
                     name="description"
-                    rows="3" 
+                    rows="3"
                     placeholder="Write something..."
                   ></textarea>
                 </div>
@@ -120,8 +197,8 @@ const CapturePage = () => {
                   <label htmlFor="geolocation">Enable Geolocation</label>
                   <div className="switch-container">
                     <label className="switch-label">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         id="geolocation"
                         name="geolocation"
                         className="geolocation-switch"
@@ -138,6 +215,22 @@ const CapturePage = () => {
             </div>
           </div>
         )}
+
+        {showPopup && (
+          <div className="form-overlay">
+            <div className="success-popup">
+              <h4>Post created successfully</h4>
+              <button
+                className="submit-button"
+                onClick={() => setShowPopup(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+
+
       </Container>
     </Container>
   );
