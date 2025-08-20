@@ -166,6 +166,7 @@
     font-size: 16px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     font-family: inherit;
+    color: black;
 }
 
 .form-group input[type="text"]:focus,
@@ -282,4 +283,22 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.success-popup {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+.success-popup h4 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
 }

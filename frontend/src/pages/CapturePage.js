@@ -13,6 +13,8 @@ const CapturePage = () => {
   const [showForm, setShowForm] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -51,47 +53,47 @@ const CapturePage = () => {
   }
 
   const captureImage = async () => {
-  // Capture the image from webcam
-  const imageSrc = webcamRef.current?.getScreenshot();
-  if (!imageSrc) return;
+    // Capture the image from webcam
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (!imageSrc) return;
 
-  console.log("Captured Image (data URL):", imageSrc);
-  setCapturedImage(imageSrc);
+    console.log("Captured Image (data URL):", imageSrc);
+    setCapturedImage(imageSrc);
 
-  // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
-  const base64Image = imageSrc.split(",")[1];
+    // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
+    const base64Image = imageSrc.split(",")[1];
 
-  // Show spinner
-  setLoading(true);
+    // Show spinner
+    setLoading(true);
 
-  try {
-    const response = await axios.post(
-      // "http://localhost:7860/detect",
-      "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
-      { image: base64Image },
-      { headers: { "Content-Type": "application/json" } }
-    );
+    try {
+      const response = await axios.post(
+        // "http://localhost:7860/detect",
+        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
+        { image: base64Image },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-    console.log("Prediction result:", response.data);
+      console.log("Prediction result:", response.data);
 
-    let animalName = response.data.detection;
-    let confidence = response.data.confidence;
+      let animalName = response.data.detection;
+      let confidence = response.data.confidence;
 
-    setApiResponse(response.data);
+      setApiResponse(response.data);
 
-    if (animalName == null) {
-      animalName = "No animals found";
-      confidence = "";
+      if (animalName == null) {
+        animalName = "No animals found";
+        confidence = "";
+      }
+
+      setShowForm(true);
+
+    } catch (err) {
+      console.error("API request failed:", err);
+    } finally {
+      setLoading(false);
     }
-
-    setShowForm(true);
-
-  } catch (err) {
-    console.error("API request failed:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
@@ -108,6 +110,7 @@ const CapturePage = () => {
     });
 
     setShowForm(false);
+    setShowPopup(true);
   };
 
   return (
@@ -212,6 +215,22 @@ const CapturePage = () => {
             </div>
           </div>
         )}
+
+        {showPopup && (
+          <div className="form-overlay">
+            <div className="success-popup">
+              <h4>Post created successfully</h4>
+              <button
+                className="submit-button"
+                onClick={() => setShowPopup(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+
+
       </Container>
     </Container>
   );
