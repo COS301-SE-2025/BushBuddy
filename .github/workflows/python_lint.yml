@@ -6,6 +6,8 @@ on:
       - main
       - dev-AI
       - dev
+    paths:
+      - 'AI/**'
 
 jobs:
   lint-python:
