@@ -161,8 +161,7 @@ async function fetchPost(req, res) {
 async function likePost(req, res) {
 	try {
 		//add implementation for unliking a post
-		if(!req.params.postId)
-		{
+		if (!req.params.postId) {
 			return res.status(400).json({
 				success: false,
 				message: 'Post ID is required',
@@ -184,11 +183,11 @@ async function likePost(req, res) {
 		const user = req.user;
 
 		const result = await postingService.likePost(req.params.postId, user.id);
-    
-		if(!result){
+
+		if (!result) {
 			return res.status(409).json({
 				success: false,
-				message: 'Post is already liked by user'
+				message: 'Post is already liked by user',
 			});
 		}
 

@@ -180,7 +180,7 @@ describe('postingController', () => {
 			expect(res.status).toHaveBeenCalledWith(200);
 		});
 
-		test('should return 400 if service returns null', async () => {
+		test('should return 409 if service returns null', async () => {
 			postingService.likePost.mockResolvedValue(null);
 			const req = {
 				params: { postId: 1 },
@@ -189,7 +189,7 @@ describe('postingController', () => {
 			};
 
 			await postingController.likePost(req, res);
-			expect(res.status).toHaveBeenCalledWith(400);
+			expect(res.status).toHaveBeenCalledWith(409);
 		});
 
 		test('should return 500 on error', async () => {
