@@ -1,9 +1,8 @@
 import express from 'express';
 import { discoveryController } from './discoveryController.js';
 import multer from 'multer';
-import { setupSwaggerDiscovery } from './swagger.js';
 
-const discoveryApp = express();
+const discoveryApp = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 /**
@@ -200,9 +199,6 @@ discoveryApp.post('/bestiary', upload.single('file'), discoveryController.insert
  */
 discoveryApp.get('/sightings', express.json(), discoveryController.getMapSightings);
 
-
 discoveryApp.post('/follow', express.json(), discoveryController.followAnimal);
-
-setupSwaggerDiscovery(discoveryApp);
 
 export default discoveryApp;

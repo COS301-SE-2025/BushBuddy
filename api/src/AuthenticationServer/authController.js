@@ -56,18 +56,19 @@ async function checkLoginStatus(req, res) {
 	try {
 		// const userHeader = req.headers['x-user-data'];
 		// const user = userHeader ? JSON.parse(userHeader) : null;
-		const token = req.cookies.token;
-		if (!token)
-			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		// const token = req.cookies.token;
+		// if (!token)
+		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
 
-		try {
-			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-			req.user = decodedUser;
-		} catch (error) {
-			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		}
+		// try {
+		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+		// 	req.user = decodedUser;
+		// } catch (error) {
+		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		// }
 
 		const user = req.user;
+		console.log('USER OBJECT: ', user);
 		if (!user) {
 			return res.status(401).json({ success: false, message: 'User not logged in' });
 		}
