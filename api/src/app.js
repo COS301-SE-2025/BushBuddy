@@ -47,7 +47,7 @@ app.use(
 
 app.options('*', cors());
 
-app.use(express.json());
+// app.use(express.json());
 app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
@@ -55,7 +55,7 @@ const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 const POST_PORT = process.env.POST_PORT || 4004;
 
-const publicRoutes = ['/auth/register', '/auth/login', '/login', '/register'];
+const publicRoutes = ['/auth/register', '/auth/login', '/login', '/register', '/ping'];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -80,6 +80,11 @@ app.use((req, res, next) => {
 	}
 
 	next();
+});
+
+//keepalive route
+app.get('/ping', (req, res) => {
+	return res.status(200).send('pong');
 });
 
 // routes go here
