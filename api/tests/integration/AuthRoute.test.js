@@ -38,11 +38,11 @@ describe('Full Auth Flow', () => {
 		try {
 			const res = await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
-			// console.log('Registration response:', res);
+			// console.log('Registration response:', res.body);
 
 			expect(res.statusCode).toBe(201);
 			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
@@ -57,7 +57,7 @@ describe('Full Auth Flow', () => {
 		try {
 			await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test2@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
