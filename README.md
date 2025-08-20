@@ -22,6 +22,8 @@ AI-Powered African Wildlife Detection System
 
 </div>
 
+[BushBuddy PWA](https://bushbuddyapp.onrender.com/)
+
 ## Project Description
 <details>
   <summary><b>What is BushBuddy?</b></summary>
