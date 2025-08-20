@@ -58,8 +58,16 @@
 }
 
 .heart {
+  margin-right: 0.2rem;
+  cursor: pointer;
+}
+
+.heart.filled {
   size: 23;
   margin-right: 0.2rem;
+  color: red;
+  fill: red;
+  cursor: pointer;
 }
 
 .comments {

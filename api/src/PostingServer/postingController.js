@@ -160,6 +160,7 @@ async function fetchPost(req, res) {
 
 async function likePost(req, res) {
 	try {
+		//add implementation for unliking a post
 		if (!req.params.postId) {
 			return res.status(400).json({
 				success: false,
@@ -184,9 +185,9 @@ async function likePost(req, res) {
 		const result = await postingService.likePost(req.params.postId, user.id);
 
 		if (!result) {
-			return res.status(400).json({
+			return res.status(409).json({
 				success: false,
-				message: 'Failed to add like to post',
+				message: 'Post is already liked by user',
 			});
 		}
 

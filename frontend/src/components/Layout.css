@@ -130,7 +130,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: translateX(-35%);
+    transform: translateX(-24%);
     color: white;
     text-decoration: none;
     border: none;
@@ -163,7 +163,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: translateX(35%);
+    transform: translateX(43%);
     color: white;
     text-decoration: none;
     border: none;
@@ -177,7 +177,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: translateX(10%) translateY(2%);
+    transform: translateX(18%) translateY(2%);
     color: white;
     text-decoration: none;
     border: none;
