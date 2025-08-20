@@ -38,7 +38,7 @@ describe('Full Auth Flow', () => {
 		try {
 			const res = await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
@@ -57,7 +57,7 @@ describe('Full Auth Flow', () => {
 		try {
 			await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test2@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
