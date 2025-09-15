@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaCamera, FaPen } from 'react-icons/fa';
 import './ProfileHeader.css';
+import PopUpModal from './PopUpModal';
 
 const ProfileHeader = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
     <div className="profile-header">
       <div className="profile-header-row">
@@ -37,11 +40,15 @@ const ProfileHeader = () => {
       <div className="profile-header-btn-row">
         <button 
           className="profile-header-btn"
-          onClick={() => alert('/edit-profile')}
+          onClick={() => setShowPopup(true)}
         >
           Edit Profile <FaPen />
         </button>
       </div>
+      <PopUpModal 
+        show={showPopup} 
+        onClose={() => setShowPopup(false)}
+      />
     </div>
   );
 };

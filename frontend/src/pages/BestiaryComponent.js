@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Card, Spinner, Alert, Button, Badge, Modal } from 'react-bootstrap';
 import './BestiaryComponent.css';
 import { checkAuthStatus } from "../controllers/UsersController";
+import { DiscoveryController, handleFetchBestiaryAnimals } from "../controllers/DiscoveryController";
 
 const BestiaryComponent = () => {
     const [animals, setAnimals] = useState([]);
@@ -50,71 +51,11 @@ const BestiaryComponent = () => {
     useEffect(() => {
         const fetchAnimals = async () => {
             try {
-                setLoading(true);
+                const data = await DiscoveryController.handleFetchBestiaryAnimals();
                 
-                // Try multiple authentication methods
-                let headers = {
-                    'Content-Type': 'application/json',
-                };
-                // (Not lus to find the auth)
-                // Method 1: Try using your existing checkAuthStatus function
-                try {
-                    const authData = await checkAuthStatus();
-                    console.log('Auth data:', authData); // Debug log
-                    
-                    if (authData && authData.token) {
-                        headers['Authorization'] = `Bearer ${authData.token}`;
-                    } else if (authData && authData.accessToken) {
-                        headers['Authorization'] = `Bearer ${authData.accessToken}`;
-                    }
-                } catch (authError) {
-                    console.log('checkAuthStatus failed:', authError);
-                }
-                
-                // Method 2: Try common token storage locations
-                const possibleTokens = [
-                    localStorage.getItem('authToken'),
-                    localStorage.getItem('token'),
-                    localStorage.getItem('accessToken'),
-                    localStorage.getItem('jwt'),
-                    sessionStorage.getItem('authToken'),
-                    sessionStorage.getItem('token'),
-                    sessionStorage.getItem('accessToken'),
-                    sessionStorage.getItem('jwt'),
-                ];
-                
-                const token = possibleTokens.find(t => t && t !== 'null' && t !== 'undefined');
-                if (token && !headers['Authorization']) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
-                
-                console.log('Request headers:', headers); // Debug log
-                
-                const response = await fetch('https://bushbuddy-api-dev.onrender.com/discover/bestiary', {
-                    method: 'GET',
-                    headers: headers,
-                    credentials: 'include', // Include cookies if needed
-                });
-                
-                console.log('Response status:', response.status); // Debug
-                console.log('Response headers:', response.headers); // Debug log
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        // Try to get more info about the auth error
-                        const errorText = await response.text();
-                        console.log('401 Error details:', errorText);
-                        throw new Error('Authentication failed. Please check your login status.');
-                    }
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('API Response:', data); // Debug log
-                
-                if (data.success && data.data) {
-                    setAnimals(data.data);
-                    setFilteredAnimals(data.data);
+                if (data.success && data.result.data) {
+                    setAnimals(data.result.data);
+                    setFilteredAnimals(data.result.data);
                 } else {
                     throw new Error('Invalid data format received');
                 }
@@ -288,7 +229,7 @@ const BestiaryComponent = () => {
     };
 
     return (
-        <Container className="bestiary-component">
+        <div className="bestiary-component">
             {/* Header Section */}
             <div className="bestiary-header">
                 <h2 className="bestiary-title">Bestiary</h2>
@@ -342,11 +283,9 @@ const BestiaryComponent = () => {
             </div>
 
             {/* Animals Grid */}
-            <div className="bestiary-cards-wrapper">
                 {loading ? (
-                    <div className="loading-container">
-                        <Spinner animation="border" role="status" variant="light" />
-                        <div className="mt-2">Loading animals...</div>
+                    <div className="beast-loader-wrapper">
+                        <div className="beast-loader"></div>
                     </div>
                 ) : error ? (
                     <div className="error-container">
@@ -375,11 +314,12 @@ const BestiaryComponent = () => {
                         </p>
                     </div>
                 ) : (
+                <div className="bestiary-cards-wrapper">
                     <div className="row">
                         {filteredAnimals.map((animal) => (
                             <div key={animal.id}>
                                 <Card 
-                                    className="bestiary-card h-100"
+                                    className="bestiary-card"
                                     onClick={() => handleAnimalPress(animal)}
                                 >
                                     <div className="card-image-wrapper">
@@ -397,7 +337,7 @@ const BestiaryComponent = () => {
                                         </Badge>
                                     </div>
                                     <Card.Body className="d-flex flex-column">
-                                        <Card.Title className="animal-name">
+                                        <Card.Title className="beast-name">
                                             {animal.name}
                                         </Card.Title>
                                         <div className="status-indicator">
@@ -411,12 +351,12 @@ const BestiaryComponent = () => {
                             </div>
                         ))}
                     </div>
+                </div>
                 )}
-            </div>
 
             {/* Animal Detail Modal */}
             <AnimalDetailModal />
-        </Container>
+        </div>
     );
 };
 
