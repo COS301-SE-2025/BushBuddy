@@ -30,7 +30,8 @@ for i in BASE_DIRS:
     os.makedirs(i, exist_ok=True)
 
 
-# Function taking the directory where the images will be stored as well as the observation currently being used
+# Function taking the directory where the images will be stored as well as the observation
+# currently being used
 def store_animal_data(directory_path, observation, animal_common_name):
     taxon = observation.get("taxon", {})
     name = (
