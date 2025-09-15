@@ -29,38 +29,30 @@ const preprocess = (source, modelWidth, modelHeight) => {
 };
 
 
-export const detectImage = async (imgSource, model, classThreshold, canvasRef) => {
-    const [modelWidth, modelHeight] = model.inputs[0].slice(1, 3);
-    console.log("Model dimensions:", modelWidth, modelHeight);
+const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 
-    tf.engine().startScope(); // start scoping tf engine
-    const [input, xRatio, yRatio] = preprocess(imgSource, modelWidth, modelHeight);
-    console.log("Preprocessed input:", input.shape, "xRatio:", xRatio, "yRatio:", yRatio);
-
-    const res = await model.executeAsync(input); // single tensor due to v11
-    const outputData = res.dataSync(); // flatten
-    const numBoxes = outputData.length / ( 5 + Object.keys(model.outputs[0].shape).length);
+const postprocess = (outputData, resShape, classThreshold) => {
+    const numBoxes = resShape[1];
+    const numClasses = resShape[2] - 5;
 
     const boxes = [];
     const scores = [];
     const classes = [];
 
-    const numClasses = res.shape[2] - 5;
-
-    for(let i = 0; i < res.shape[1]; i++){
+    for(let i = 0; i < numBoxes; i++){
         const offset = i * (5 + numClasses);
 
         const x = outputData[offset];
         const y = outputData[offset + 1];
         const w = outputData[offset + 2];
         const h = outputData[offset + 3];
-        const objectness = outputData[offset + 4];
+        const objectness = sigmoid(outputData[offset + 4]);
 
         let bestClass = -1;
         let bestScore = 0;
 
         for(let c = 0; c < numClasses; c++){
-            const classProb = outputData[offset + 5 + c];
+            const classProb = sigmoid(outputData[offset + 5 + c]);
             const score = objectness * classProb;
             if (score > bestScore){
                 bestScore = score;
@@ -70,9 +62,9 @@ export const detectImage = async (imgSource, model, classThreshold, canvasRef) =
 
         if( bestScore > classThreshold) {
             const x1 = x - w / 2;
-            const y1 = x - h / 2;
+            const y1 = y - h / 2;
             const x2 = x + w / 2;
-            const y2 = x + h / 2;
+            const y2 = y + h / 2;
 
             boxes.push([x1, y1, x2, y2]);
             scores.push(bestScore);
@@ -80,7 +72,46 @@ export const detectImage = async (imgSource, model, classThreshold, canvasRef) =
         }
     }
 
-    renderBoxes(canvasRef, classThreshold, boxes.flat(), scores, classes, [xRatio, yRatio]);
+    return { boxes, scores, classes }
+}
+
+const applyNMS = async (boxes, scores, maxOutputSize = 100, iouThreshold = 0.5) => {
+  if (!boxes.length) return { boxes: [], scores: [], classes: [] };
+
+  const boxesTensor = tf.tensor2d(boxes);
+  const scoresTensor = tf.tensor1d(scores);
+
+  const selectedIndices = await tf.image
+    .nonMaxSuppressionAsync(boxesTensor, scoresTensor, maxOutputSize, iouThreshold)
+    .then((t) => t.array());
+
+  boxesTensor.dispose();
+  scoresTensor.dispose();
+
+  const finalBoxes = selectedIndices.map((i) => boxes[i]);
+  const finalScores = selectedIndices.map((i) => scores[i]);
+
+  return { boxes: finalBoxes, scores: finalScores, indices: selectedIndices };
+};
+
+export const detectImage = async (imgSource, model, classThreshold, canvasRef) => {
+    const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
+
+    tf.engine().startScope();
+    const [input, xRatio, yRatio] = preprocess(imgSource, modelWidth, modelHeight);
+
+    const res = await model.execute(input);
+    const outputData = res.dataSync();
+
+    let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
+
+    const nmsResult = await applyNMS(boxes, scores);
+    const finalBoxes = nmsResult.boxes;
+    const finalScores = nmsResult.scores;
+    const finalClasses = nmsResult.indices.map((i) => classes[i]);
+
+    renderBoxes(canvasRef, classThreshold, finalBoxes.flat(), finalScores, finalClasses, [xRatio, yRatio]);
+
     tf.dispose(res);
     tf.engine().endScope();
 };
@@ -110,46 +141,13 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
             const outputData = res.dataSync();
             console.log("Output data length:", outputData.length);
 
-            const numClasses = res.shape[2] - 5;
-            console.log("Number of detections:", numClasses);
+            let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
+    
+            const nmsResult = await applyNMS(boxes, scores);
 
-            const boxes = [];
-            const scores = [];
-            const classes = [];
-
-            for (let i = 0; i < res.shape[1]; i++) {
-                const offset = i * (5 + numClasses);
-
-                const x = outputData[offset];
-                const y = outputData[offset + 1];
-                const w = outputData[offset + 2];
-                const h = outputData[offset + 3];
-                const objectness = outputData[offset + 4];
-                
-                let bestClass = -1;
-                let bestScore = 0;
-
-                for (let c = 0; c < numClasses; c++) {
-                    const classProb = outputData[offset + 5 + c];
-                    const score = objectness * classProb;
-                    if ( score > bestScore) {
-                        bestScore = score;
-                        bestClass = c;
-                    }
-                }
-                
-                if( bestScore > classThreshold) {
-                    const x1 = x - w / 2;
-                    const y1 = x - h / 2;
-                    const x2 = x + w / 2;
-                    const y2 = x + h / 2;
-
-                    boxes.push([x1, y1, x2, y2]);
-                    scores.push(bestScore);
-                    classes.push(bestClass);
-                }
-
-            }
+            boxes = nmsResult.boxes;
+            scores = nmsResult.scores;
+            classes = nmsResult.indices.map((i) => classes[i]);
 
             console.log("First 5 boxes:", boxes.slice(0, 5));
             console.log("First 5 scores:", scores.slice(0, 5));

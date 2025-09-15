@@ -164,7 +164,7 @@ const CapturePage = () => {
           screenshotQuality={1}
           forceScreenshotSourceSize
         /> {/* The Canvas is used as overlay for the rendering boxes */}
-          <cavnas ref={overlayRef} className="overlay" />
+          <canvas ref={overlayRef} className="overlay" />
         <div className="capture-button-wrapper">
           <button className="capture-button" onClick={captureImage}>
             <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30}
