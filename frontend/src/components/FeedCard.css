@@ -37,9 +37,9 @@
   padding: 3% 4% 3% 4%;
 }
 
-.description {
+.feed-card-description {
   margin: 0 0 1% 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: rgb(58, 58, 58);
   text-align: left;
 }
@@ -58,8 +58,16 @@
 }
 
 .heart {
+  margin-right: 0.2rem;
+  cursor: pointer;
+}
+
+.heart.filled {
   size: 23;
   margin-right: 0.2rem;
+  color: red;
+  fill: red;
+  cursor: pointer;
 }
 
 .comments {

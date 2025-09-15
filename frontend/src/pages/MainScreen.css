@@ -1,13 +1,30 @@
-.quick-actions {
-    padding: 1px;
+.main-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding: 0;
 }
 
-.actions-container {
+.welcome-message {
     width: 90%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.bestiary-welcome {
+    margin: 0.5rem 0;
+}
+
+.bestiary-heading {
+    margin: 0.5rem 0
+}
+
+
+.actions-container {
+    width: 80%;
+    max-width: 700px;
     height: 10%;
     background-color: #4b6949;
     border-radius: 1rem;
@@ -16,6 +33,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
+    overflow: hidden;
 }
 
 .quick-action-wrapper {
@@ -44,13 +62,37 @@ label {
     color: white;
 }
 
-.bestiary-container {
-    background-color: #F5F5F5; 
+.bestiary {
+    background-color: #FFFFF0; 
     width: 90%;
+    max-width: 700px;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bestiary-head-container {
+    width: 100%;
+    max-width: 700px;
+    height: 10%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.bestiary-container {
+    width: 100%;
+    max-width: 732px;
+    height: 10%;
     border-radius: 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    overflow: hidden;
 }

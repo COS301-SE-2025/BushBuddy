@@ -14,18 +14,15 @@ beforeAll((done) => {
 	const AUTH_PORT = process.env.AUTH_PORT || 4001;
 	const GATEWAY_PORT = process.env.PORT || 3000;
 
-	authServer = authApp.listen(AUTH_PORT, () => {
-		console.log(`✅ Auth service running on port ${AUTH_PORT}`);
-		gatewayServer = app.listen(GATEWAY_PORT, () => {
-			console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
-			done();
-		});
+	gatewayServer = app.listen(GATEWAY_PORT, () => {
+		console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
+		done();
 	});
 });
 
 afterAll(async () => {
 	await new Promise((resolve) => gatewayServer.close(resolve));
-	await new Promise((resolve) => authServer.close(resolve));
+	// await new Promise((resolve) => authServer.close(resolve));
 	await db.close();
 });
 
@@ -36,13 +33,13 @@ beforeEach(async () => {
 describe('Full Auth Flow', () => {
 	test('POST /auth/register should create a user', async () => {
 		try {
-			const res = await request(app).post('/auth/register/').send({
+			const res = await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
-			// console.log('Registration response:', res);
+			// console.log('Registration response:', res.body);
 
 			expect(res.statusCode).toBe(201);
 			expect(res.headers['set-cookie'][0]).toEqual(expect.stringContaining('token='));
@@ -55,13 +52,13 @@ describe('Full Auth Flow', () => {
 
 	test('POST /auth/login should succeed with valid credentials', async () => {
 		try {
-			await request(app).post('/auth/register/').send({
+			await request(app).post('/auth/register').send({
 				username: 'autotestuser',
-				email: 'test2@example.com',
+				email: 'autotest@example.com',
 				password: 'securepass',
 			});
 
-			const res = await request(app).post('/auth/login/').send({
+			const res = await request(app).post('/auth/login').send({
 				username: 'autotestuser',
 				password: 'securepass',
 			});
@@ -78,7 +75,7 @@ describe('Full Auth Flow', () => {
 	});
 
 	test('GET /auth/status/ should succeed with valid token', async () => {
-		const res = await request(app).get('/auth/status/').set('Cookie', `token=${token}`).send();
+		const res = await request(app).get('/auth/status').set('Cookie', `token=${token}`).send();
 		console.log(res.body);
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toHaveProperty('data', 'Test User');

@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import './FeedFilters.css';
+import PopUpModal from './PopUpModal';
+
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdPaw, IoMdWarning } from "react-icons/io";
 import { GiElephant, GiDeerTrack } from "react-icons/gi";
 import { FaShieldAlt } from "react-icons/fa";
 import { PiBirdFill } from "react-icons/pi";
-import './FeedFilters.css';
+
 
 const FeedFilters = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
   const filterOptions = ['Friends', 'Following', 'Nearby', 'Popular'];
   const [selectedFilter, setSelectedFilter] = useState('Friends');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -24,7 +29,7 @@ const FeedFilters = () => {
   return (
     <div className="filters-container">
       <div className="filters-column">
-        <div className="dropdown-filter">
+        {/* <div className="dropdown-filter">
           <div className="select-wrapper">
             <select
               value={selectedFilter}
@@ -46,14 +51,17 @@ const FeedFilters = () => {
               <IoMdArrowDropdown size={22} color="white" />
             </span>
           </div>
-        </div>
+        </div> */}
         
         <div className="animal-filters">
           {animalFilters.map((animal) => (
             <button
               key={animal.type}
               className={`animal-filter ${selectedAnimal === animal.type ? 'active' : 'all'}`}
-              onClick={() => setSelectedAnimal(animal.type)}
+              onClick={() => {
+                setSelectedAnimal(animal.type);
+                setShowPopup(true);
+              }}
               style={{ 
                 backgroundColor: selectedAnimal === animal.type ? animal.color : '#4b6949ff',
                 color: selectedAnimal === animal.type ? 'white' : animal.color
@@ -70,6 +78,10 @@ const FeedFilters = () => {
           ))}
         </div>
       </div>
+      <PopUpModal 
+        show={showPopup} 
+        onClose={() => setShowPopup(false)}
+      />
     </div>
   );
 };

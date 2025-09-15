@@ -38,8 +38,22 @@ async function fetchSightingImage(key) {
 	}
 }
 
+async function fetchAllSightings() {
+    try {
+		//add filters for sightings 
+		const query = `SELECT * FROM identifications ORDER BY created_at DESC LIMIT 25;`;
+
+        const result = await db.query(query);
+
+		return result.rows;
+	} catch (error) {
+		throw new Error(`Error fetching all sightings: ${error.message}`);
+	}
+}
+
 export const sightingRepository = {
 	uploadSightingFile,
 	saveNewSighting,
 	fetchSightingImage,
+	fetchAllSightings,
 };

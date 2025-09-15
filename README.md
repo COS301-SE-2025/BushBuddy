@@ -12,12 +12,12 @@ AI-Powered African Wildlife Detection System
 ---
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![YOLOv5](https://img.shields.io/badge/YOLOv5-FFBB00?style=for-the-badge&logo=python&logoColor=black)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)
+
 ---
 
 </div>
@@ -43,10 +43,28 @@ both visual and audio detection.
 
 </details>
 
-## Documentation 
+## Documentation (For Demo 3)
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
+[SRS - v3](https://drive.google.com/file/d/1r2bg6XUfBbGcn0mc4chpqP5DMiF_vDWe/view?usp=drive_link) </br>
+Includes Architecture, Service contracts and Deployment model
+
+[User Manual - v1](https://drive.google.com/file/d/1GXb2neDk17QxZcIzZJT2WMMHPDZr_dVE/view?usp=sharing)
+
+[Technical Installation Manual - v1](https://drive.google.com/file/d/1MGEMAULuyjmF-MhAVQ6Z7E2PieuJFMl7/view?usp=drive_link)
+
+[Coding Standards - v2](https://drive.google.com/file/d/1L_oBp_nodmkSP0WaSuJJN3pnIfb4N2pT/view?usp=drive_link) </br>
+Git Branching Strategy included
+
+## Demos
+### Demo 2
+
+[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
+
+[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
+
+#### Demo 2-specific documentation (Outdated)
 [SRS Document - v2](https://drive.google.com/file/d/1TYf6k7-EyThm4crbMr_7NvyNV4Fznedt/view?usp=drive_link)
 
 [Architectural Requirements - v1](https://drive.google.com/file/d/1Uqa9UzRE5ih11MwFN7lwQD2w0yVkd97c/view?usp=drive_link)
@@ -56,14 +74,6 @@ both visual and audio detection.
 [Coding Standards - v1](https://drive.google.com/file/d/12enrjoGXYy_JLajD-r4YTvM261CNjG1t/view?usp=drive_link)
 
 [Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
-
-## Demos
-### Demo 2
-
-[Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
-
-[Demo 2 Presentation](https://drive.google.com/file/d/1yUmeMrDVniDWTD4ZyGiQ4xITobSHlkiy/view?usp=drive_link)
-
 
 ### Demo 1
 [Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
@@ -82,18 +92,20 @@ both visual and audio detection.
   <summary><b>Team Members</b></summary>
 
 <img src="res\img\ReturnZero_ logo.png" alt="ReturnZero Logo" height="150">
+<p>Left to right: Raphael Rato, Ruben Gadd, Ruan Esterhuizen, Tom Schulz, Jean Steyn</p>
 
 <img src="res\img\team\team_full.jpg" alt="ReturnZero Logo" width="500">
 
 <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;">
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruan Esterhuizen</b></h2>
-      <b style="font-size: 18px; color: #555;">Project Manager, UX Designer</b>
+      <b style="font-size: 18px; color: #555;">Project Manager, Frontend Developer</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I’m a final-year BSc Computer Science student with a keen interest in software engineering and
         web development. I am a full-stack developer who takes a detail-oriented and practical approach
@@ -117,12 +129,12 @@ both visual and audio detection.
   </tr>
   <!-- Second Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Ruben Gadd</b></h2>
-      <b style="font-size: 18px; color: #555;">System Architect, DevOps, Integration, Services, and Testing Engineer</b>
+      <b style="font-size: 18px; color: #555;">AI Data Analyst</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a final year Information and Knowledge Systems student specializing in Data Science, which
         has given me early insights into machine learning and sparked my interests in AI. I also have a
@@ -146,12 +158,12 @@ both visual and audio detection.
   </tr>
   <!-- Third Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Raphael Rato</b></h2>
-      <b style="font-size: 18px; color: #555;">UX/UI Designer, Services, and Data Engineer</b>
+      <b style="font-size: 18px; color: #555;">Frontend Developer, System Architect</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a Computer Science student with a strong passion for technology, software development, and
         innovative system design. Throughout my studies, I have built a solid foundation in key
@@ -174,12 +186,12 @@ both visual and audio detection.
   </tr>
   <!-- Fourth Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Tom Schulz</b></h2>
-      <b style="font-size: 18px; color: #555;">UX Designer, UI, Services, and Testing Engineer</b>
+      <b style="font-size: 18px; color: #555;">Backend and Deployment Engineer</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am currently in my third year of studying Computer Science, a degree which has equipped me
         with knowledge in a wide variety of fields, including software engineering methodologies, database
@@ -196,12 +208,12 @@ both visual and audio detection.
   </tr>
   <!-- Fifth Row -->
   <tr>
-    <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
+<!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto" style="border-radius: 50%; border: 2px solid #ddd;">
-    </td>
+    </td> -->
     <td style="vertical-align: top; width: 70%; padding: 20px;">
       <h2 style="font-size: 24px; margin: 0 0 10px;"><b>Jean Steyn</b></h2>
-      <b style="font-size: 18px; color: #555;">DevOps, Integration, and Data Engineer</b>
+      <b style="font-size: 18px; color: #555;">AI Training Engineer, Deployment</b>
       <p style="font-size: 16px; color: #333; line-height: 1.5;">
         I am a final year Computer Science student with a keen interest in both Computer Graphics and
         Web Development. My degree has equipped me with a solid understanding of software

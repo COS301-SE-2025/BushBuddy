@@ -10,13 +10,13 @@ async function registerUser(req, res) {
 		}
 		res.cookie('token', token, {
 			httpOnly: true,
-			sameSite: 'None',
+			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 24 * 60 * 60 * 1000, // 24 hours
 		});
 		res.status(201).json({ success: true, message: 'User registered successfully', data: { username } });
 	} catch (error) {
-		// console.error('Error in registerUser:', error);
+		console.error('Error in registerUser:', error);
 		res.status(500).json({ success: false, message: 'Registration failed' });
 	}
 }
@@ -56,18 +56,19 @@ async function checkLoginStatus(req, res) {
 	try {
 		// const userHeader = req.headers['x-user-data'];
 		// const user = userHeader ? JSON.parse(userHeader) : null;
-		const token = req.cookies.token;
-		if (!token)
-			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		// const token = req.cookies.token;
+		// if (!token)
+		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
 
-		try {
-			const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-			req.user = decodedUser;
-		} catch (error) {
-			return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		}
+		// try {
+		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+		// 	req.user = decodedUser;
+		// } catch (error) {
+		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
+		// }
 
 		const user = req.user;
+		console.log('USER OBJECT: ', user);
 		if (!user) {
 			return res.status(401).json({ success: false, message: 'User not logged in' });
 		}
