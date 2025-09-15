@@ -96,22 +96,28 @@ const applyNMS = async (boxes, scores, maxOutputSize = 100, iouThreshold = 0.5) 
 
 export const detectImage = async (imgSource, model, classThreshold, canvasRef) => {
     const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
+    console.log("Model dimensions:", modelWidth, modelHeight);
 
-    tf.engine().startScope();
+    tf.engine().startScope(); // start scoping tf engine
     const [input, xRatio, yRatio] = preprocess(imgSource, modelWidth, modelHeight);
+    console.log("Preprocessed input:", input.shape, "xRatio:", xRatio, "yRatio:", yRatio);
 
-    const res = await model.execute(input);
-    const outputData = res.dataSync();
+    const res = await model.execute(input); // single tensor due to v11
+    const outputData = res.dataSync(); // flatten
 
     let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
-
+    
     const nmsResult = await applyNMS(boxes, scores);
+
     const finalBoxes = nmsResult.boxes;
     const finalScores = nmsResult.scores;
     const finalClasses = nmsResult.indices.map((i) => classes[i]);
 
-    renderBoxes(canvasRef, classThreshold, finalBoxes.flat(), finalScores, finalClasses, [xRatio, yRatio]);
+    console.log("First 5 boxes:", finalBoxes.slice(0, 5));
+    console.log("First 5 scores:", finalScores.slice(0, 5));
+    console.log("First 5 classes:", finalClasses.slice(0, 5));
 
+    renderBoxes(canvasRef, classThreshold, finalBoxes.flat(), finalScores, finalClasses, [xRatio, yRatio]);
     tf.dispose(res);
     tf.engine().endScope();
 };
@@ -139,21 +145,22 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
             console.log("Raw output tensor:", res);
 
             const outputData = res.dataSync();
-            console.log("Output data length:", outputData.length);
+            console.log("First 20 values of output tensor:", outputData.slice(0, 20));
+            console.log("Shape of output tensor:", res.shape);
 
             let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
     
             const nmsResult = await applyNMS(boxes, scores);
 
-            boxes = nmsResult.boxes;
-            scores = nmsResult.scores;
-            classes = nmsResult.indices.map((i) => classes[i]);
+            const finalBoxes = nmsResult.boxes;
+            const finalScores = nmsResult.scores;
+            const finalClasses = nmsResult.indices.map((i) => classes[i]);
 
-            console.log("First 5 boxes:", boxes.slice(0, 5));
-            console.log("First 5 scores:", scores.slice(0, 5));
-            console.log("First 5 classes:", classes.slice(0, 5));
+            console.log("First 5 boxes:", finalBoxes.slice(0, 5));
+            console.log("First 5 scores:", finalScores.slice(0, 5));
+            console.log("First 5 classes:", finalClasses.slice(0, 5));
 
-            renderBoxes(canvasRef, classThreshold, boxes.flat(), scores, classes, [xRatio, yRatio]);
+            renderBoxes(canvasRef, classThreshold, finalBoxes.flat(), finalScores, finalClasses, [xRatio, yRatio]);
             tf.dispose(res);
         } catch (err) {
             console.error("Error during model execution:", err);
