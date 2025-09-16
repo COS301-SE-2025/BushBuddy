@@ -32,35 +32,33 @@ const preprocess = (source, modelWidth, modelHeight) => {
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 
 const postprocess = (outputData, resShape, classThreshold) => {
-    const numBoxes = resShape[1];
-    const numClasses = resShape[2] - 5;
+    const numBoxes = resShape[2];     // 8400
+    const numClasses = resShape[1] - 5; // 41
 
     const boxes = [];
     const scores = [];
     const classes = [];
 
-    for(let i = 0; i < numBoxes; i++){
-        const offset = i * (5 + numClasses);
-
-        const x = outputData[offset];
-        const y = outputData[offset + 1];
-        const w = outputData[offset + 2];
-        const h = outputData[offset + 3];
-        const objectness = sigmoid(outputData[offset + 4]);
+    for (let i = 0; i < numBoxes; i++) {
+        const x = outputData[0 * numBoxes + i];
+        const y = outputData[1 * numBoxes + i];
+        const w = outputData[2 * numBoxes + i];
+        const h = outputData[3 * numBoxes + i];
+        const objectness = sigmoid(outputData[4 * numBoxes + i]);
 
         let bestClass = -1;
         let bestScore = 0;
 
-        for(let c = 0; c < numClasses; c++){
-            const classProb = sigmoid(outputData[offset + 5 + c]);
+        for (let c = 0; c < numClasses; c++) {
+            const classProb = sigmoid(outputData[(5 + c) * numBoxes + i]);
             const score = objectness * classProb;
-            if (score > bestScore){
+            if (score > bestScore) {
                 bestScore = score;
                 bestClass = c;
             }
         }
 
-        if( bestScore > classThreshold) {
+        if (bestScore > classThreshold) {
             const x1 = x - w / 2;
             const y1 = y - h / 2;
             const x2 = x + w / 2;
@@ -72,26 +70,27 @@ const postprocess = (outputData, resShape, classThreshold) => {
         }
     }
 
-    return { boxes, scores, classes }
-}
+    return { boxes, scores, classes };
+};
 
 const applyNMS = async (boxes, scores, maxOutputSize = 100, iouThreshold = 0.5) => {
-  if (!boxes.length) return { boxes: [], scores: [], classes: [] };
+    if (!boxes.length) return { boxes: [], scores: [], classes: [] };
 
-  const boxesTensor = tf.tensor2d(boxes);
-  const scoresTensor = tf.tensor1d(scores);
+    const boxesTensor = tf.tensor2d(boxes);
+    const scoresTensor = tf.tensor1d(scores);
 
-  const selectedIndices = await tf.image
-    .nonMaxSuppressionAsync(boxesTensor, scoresTensor, maxOutputSize, iouThreshold)
-    .then((t) => t.array());
+    const selectedIndices = await tf.image
+        .nonMaxSuppressionAsync(boxesTensor, scoresTensor, maxOutputSize, iouThreshold)
+        .then((t) => t.array());
 
-  boxesTensor.dispose();
-  scoresTensor.dispose();
+    boxesTensor.dispose();
+    scoresTensor.dispose();
 
-  const finalBoxes = selectedIndices.map((i) => boxes[i]);
-  const finalScores = selectedIndices.map((i) => scores[i]);
+    const finalBoxes = selectedIndices.map((i) => boxes[i]);
+    const finalScores = selectedIndices.map((i) => scores[i]);
+    if (!boxes.length) return { boxes: [], scores: [], classes: [], indices: [] };
 
-  return { boxes: finalBoxes, scores: finalScores, indices: selectedIndices };
+    return { boxes: finalBoxes, scores: finalScores, indices: selectedIndices };
 };
 
 export const detectImage = async (imgSource, model, classThreshold, canvasRef) => {

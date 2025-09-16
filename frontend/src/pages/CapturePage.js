@@ -47,7 +47,7 @@ const CapturePage = () => {
 
   useEffect( () => {
     if(model && webcamRef.current?.video && overlayRef.current) {
-      detectVideo(webcamRef.current.video, model, 0.20, overlayRef.current); // Remember, 4 parameters are -> vidSource, AI model, classThreshold, canvas Reference
+      detectVideo(webcamRef.current.video, model, 0.3, overlayRef.current); // Remember, 4 parameters are -> vidSource, AI model, classThreshold, canvas Reference
     }
   },[model]);
 
