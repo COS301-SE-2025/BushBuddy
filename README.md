@@ -27,7 +27,7 @@ AI-Powered African Wildlife Detection System
 ## Project Description
 BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South Africa’s wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
 <details>
-  <summary><b>What is BushBuddy?</b></summary>
+  <summary><b>Read More</b></summary>
   <p>
 Unleash the power of instant wildlife recognition: where every encounter with
 African wildlife becomes an opportunity for discovery. In this vibrant
