@@ -25,7 +25,7 @@ AI-Powered African Wildlife Detection System
 [BushBuddy PWA](https://bushbuddyapp.onrender.com/)
 
 ## Project Description
-BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South Africa’s wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
+BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South African wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
 <details>
   <summary><b>Read More</b></summary>
   <p>
