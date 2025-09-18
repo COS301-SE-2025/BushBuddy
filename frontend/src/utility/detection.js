@@ -7,132 +7,173 @@ const preprocess = (source, modelWidth, modelHeight) => {
     const input = tf.tidy(() => {
         const img = tf.browser.fromPixels(source);
 
-        // Padding images to squade, in other words, [n, m] -> [n, n]
-        const [h, w] = img.shape.slice(0, 2); // Getting source width & height
+        // Pad to square
+        const [h, w] = img.shape.slice(0, 2);
         const maxSize = Math.max(w, h);
         const imgPadded = img.pad([
-            [0, maxSize - h], // Padding bottom only
-            [0, maxSize - w], // Padding right only
+            [0, maxSize - h],
+            [0, maxSize - w],
             [0, 0],
         ]);
 
-        xRatio = maxSize / w; // Updating xration
+        xRatio = maxSize / w;
         yRatio = maxSize / h;
 
         return tf.image
-        .resizeBilinear(imgPadded, [modelWidth, modelHeight]) // resizing frame
-        .div(255.0) // normalize
-        .expandDims(0);
+            .resizeBilinear(imgPadded, [modelWidth, modelHeight])
+            .div(255.0)
+            .expandDims(0);
     });
 
     return [input, xRatio, yRatio];
 };
 
-
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 
-const postprocess = (outputData, resShape, classThreshold) => {
-    const numBoxes = resShape[2];     // 8400
-    const numClasses = resShape[1] - 5; // 41
-
+export function postprocess(flatOutput, classThreshold, xRatio, yRatio) {
     const boxes = [];
     const scores = [];
     const classes = [];
 
-    for (let i = 0; i < numBoxes; i++) {
-        const x = outputData[0 * numBoxes + i];
-        const y = outputData[1 * numBoxes + i];
-        const w = outputData[2 * numBoxes + i];
-        const h = outputData[3 * numBoxes + i];
-        const objectness = sigmoid(outputData[4 * numBoxes + i]);
+    flatOutput.forEach((row) => {
+        let [x, y, w, h, obj, ...classProbs] = row;
 
-        let bestClass = -1;
-        let bestScore = 0;
+        const objectness = sigmoid(obj);
+        const classProbsSigmoid = classProbs.map(sigmoid);
+        const bestClassProb = Math.max(...classProbsSigmoid);
+        const classIndex = classProbsSigmoid.indexOf(bestClassProb);
+        const confidence = objectness * bestClassProb;
 
-        for (let c = 0; c < numClasses; c++) {
-            const classProb = sigmoid(outputData[(5 + c) * numBoxes + i]);
-            const score = objectness * classProb;
-            if (score > bestScore) {
-                bestScore = score;
-                bestClass = c;
-            }
-        }
-
-        if (bestScore > classThreshold) {
-            const x1 = x - w / 2;
-            const y1 = y - h / 2;
-            const x2 = x + w / 2;
-            const y2 = y + h / 2;
+        if (confidence > classThreshold) {
+            const x1 = (x - w / 2) * xRatio;
+            const y1 = (y - h / 2) * yRatio;
+            const x2 = (x + w / 2) * xRatio;
+            const y2 = (y + h / 2) * yRatio;
 
             boxes.push([x1, y1, x2, y2]);
-            scores.push(bestScore);
-            classes.push(bestClass);
+            scores.push(confidence);
+            classes.push(classIndex);
         }
-    }
+    });
 
+    console.log("Boxes after filtering:", boxes.length);
     return { boxes, scores, classes };
-};
+}
 
-const applyNMS = async (boxes, scores, maxOutputSize = 100, iouThreshold = 0.5) => {
+const applyNMS = async (boxes, scores, classes, maxOutputSize = 20, iouThreshold = 0.3) => {
     if (!boxes.length) return { boxes: [], scores: [], classes: [] };
 
-    const boxesTensor = tf.tensor2d(boxes);
-    const scoresTensor = tf.tensor1d(scores);
+    const classMap = {};
+    for (let i = 0; i < classes.length; i++) {
+        const cls = classes[i];
+        if (!classMap[cls]) classMap[cls] = [];
+        classMap[cls].push({ box: boxes[i], score: scores[i], index: i });
+    }
 
-    const selectedIndices = await tf.image
-        .nonMaxSuppressionAsync(boxesTensor, scoresTensor, maxOutputSize, iouThreshold)
-        .then((t) => t.array());
+    const finalBoxes = [];
+    const finalScores = [];
+    const finalClasses = [];
 
-    boxesTensor.dispose();
-    scoresTensor.dispose();
+    for (const cls in classMap) {
+        const classDets = classMap[cls];
+        const classBoxes = classDets.map(d => d.box);
+        const classScores = classDets.map(d => d.score);
 
-    const finalBoxes = selectedIndices.map((i) => boxes[i]);
-    const finalScores = selectedIndices.map((i) => scores[i]);
-    if (!boxes.length) return { boxes: [], scores: [], classes: [], indices: [] };
+        const boxesTensor = tf.tensor2d(classBoxes);
+        const scoresTensor = tf.tensor1d(classScores);
 
-    return { boxes: finalBoxes, scores: finalScores, indices: selectedIndices };
+        const selectedIndices = await tf.image
+            .nonMaxSuppressionAsync(boxesTensor, scoresTensor, maxOutputSize, iouThreshold)
+            .then(t => t.array());
+
+        boxesTensor.dispose();
+        scoresTensor.dispose();
+
+        selectedIndices.forEach(idx => {
+            const origIdx = classDets[idx].index;
+            finalBoxes.push(boxes[origIdx]);
+            finalScores.push(scores[origIdx]);
+            finalClasses.push(classes[origIdx]);
+        });
+    }
+
+    console.log("NMS: Total boxes after NMS:", finalBoxes.length);
+    return { boxes: finalBoxes, scores: finalScores, classes: finalClasses };
 };
 
-export const detectImage = async (imgSource, model, classThreshold, canvasRef) => {
+export const detectImage = async (model, classThreshold = 0.5, canvasRef) => {
     const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
-    console.log("Model dimensions:", modelWidth, modelHeight);
+    console.log("Model input dimensions:", modelWidth, modelHeight);
 
-    tf.engine().startScope(); // start scoping tf engine
-    const [input, xRatio, yRatio] = preprocess(imgSource, modelWidth, modelHeight);
+    const canvas = canvasRef;
+    const img = new Image();
+    img.src = "/test.jpg"; // load test image
+    await new Promise(resolve => (img.onload = resolve));
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    tf.engine().startScope();
+
+    const [input, xRatio, yRatio] = preprocess(img, modelWidth, modelHeight);
     console.log("Preprocessed input:", input.shape, "xRatio:", xRatio, "yRatio:", yRatio);
 
-    const res = await model.execute(input); // single tensor due to v11
-    const outputData = res.dataSync(); // flatten
+    try {
+        const res = await model.executeAsync(input); // async preferred
+        console.log("Raw output shape:", res.shape);
 
-    let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
-    
-    const nmsResult = await applyNMS(boxes, scores);
+        // Assuming output shape: [1, channels, numBoxes] => transpose to [numBoxes, channels]
+        const outputTensor = tf.tensor(res.dataSync(), res.shape);
+        const outputTransposed = outputTensor.transpose([0, 2, 1]);
+        const flatOutput = outputTransposed.arraySync()[0];
 
-    const finalBoxes = nmsResult.boxes;
-    const finalScores = nmsResult.scores;
-    const finalClasses = nmsResult.indices.map((i) => classes[i]);
+        outputTensor.dispose();
+        outputTransposed.dispose();
+        tf.dispose(res);
 
-    console.log("First 5 boxes:", finalBoxes.slice(0, 5));
-    console.log("First 5 scores:", finalScores.slice(0, 5));
-    console.log("First 5 classes:", finalClasses.slice(0, 5));
+        console.log("First row of flatOutput:", flatOutput[0]);
 
-    renderBoxes(canvasRef, classThreshold, finalBoxes.flat(), finalScores, finalClasses, [xRatio, yRatio]);
-    tf.dispose(res);
+        // Postprocess predictions
+        const { boxes, scores, classes } = postprocess(flatOutput, classThreshold, xRatio, yRatio);
+        console.log("Postprocess results -> boxes:", boxes.length);
+
+        // Apply NMS
+        const nmsResult = await applyNMS(boxes, scores, classes);
+        console.log("NMS kept:", nmsResult.boxes.length);
+
+        // Render
+        renderBoxes(
+            canvas,
+            classThreshold,
+            nmsResult.boxes.flat(),
+            nmsResult.scores,
+            nmsResult.classes,
+            [xRatio, yRatio]
+        );
+    } catch (err) {
+        console.error("Error during model execution:", err);
+    }
+
     tf.engine().endScope();
 };
 
 
-export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
+
+/*export const detectVideo = (vidSource, model, classThreshold = 0.5, canvasRef) => {
     const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
     console.log("Model input size:", modelWidth, modelHeight);
 
     const detectFrame = async () => {
         console.log("detectFrame called...");
 
-        if( vidSource.videoWidth === 0 || vidSource.videoHeight === 0) {
-            requestAnimationFrame(detectFrame)
+        if (vidSource.videoWidth === 0 || vidSource.videoHeight === 0) {
+            requestAnimationFrame(detectFrame);
             return;
         }
+
+        const canvas = canvasRef;
+        canvas.width = vidSource.videoWidth;
+        canvas.height = vidSource.videoHeight;
 
         tf.engine().startScope();
 
@@ -140,7 +181,7 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
         console.log("Input tensor shape:", input.shape);
 
         try {
-            const res = await model.execute(input); // In yolov11. Expected tensor output is [1, N, C]. N is based on 640 x 640 = 8400. C is dependent on the classes count + 5 if im not mistaken
+            const res = await model.execute(input);
             console.log("Raw output tensor:", res);
 
             const outputData = res.dataSync();
@@ -149,11 +190,11 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
 
             let { boxes, scores, classes } = postprocess(outputData, res.shape, classThreshold);
     
-            const nmsResult = await applyNMS(boxes, scores);
+            const nmsResult = await applyNMS(boxes, scores, classes);
 
             const finalBoxes = nmsResult.boxes;
             const finalScores = nmsResult.scores;
-            const finalClasses = nmsResult.indices.map((i) => classes[i]);
+            const finalClasses = nmsResult.classes;
 
             console.log("First 5 boxes:", finalBoxes.slice(0, 5));
             console.log("First 5 scores:", finalScores.slice(0, 5));
@@ -170,4 +211,4 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
     };
 
     detectFrame();
-};
+};*/

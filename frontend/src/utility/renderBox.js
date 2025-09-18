@@ -14,8 +14,7 @@ export const renderBoxes = (
   classThreshold,
   boxes_data,
   scores_data,
-  classes_data,
-  ratios
+  classes_data
 ) => {
   const ctx = canvasRef.getContext("2d");
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clean canvas
@@ -30,30 +29,37 @@ export const renderBoxes = (
   ctx.font = font;
   ctx.textBaseline = "top";
 
+  const modelWidth = 640;  // Hardcoded from model.inputs[0].shape
+  const modelHeight = 640;
+
+  console.log("Canvas dimensions:", ctx.canvas.width, ctx.canvas.height);
+  console.log("Ratios:", ratios);
+
   for (let i = 0; i < scores_data.length; ++i) {
-    // filter based on class threshold
     if (scores_data[i] > classThreshold) {
       const klass = labels[classes_data[i]];
       const color = colors.get(classes_data[i]);
       const score = (scores_data[i] * 100).toFixed(1);
 
       let [x1, y1, x2, y2] = boxes_data.slice(i * 4, (i + 1) * 4);
-      x1 *= canvasRef.width * ratios[0];
-      x2 *= canvasRef.width * ratios[0];
-      y1 *= canvasRef.height * ratios[1];
-      y2 *= canvasRef.height * ratios[1];
+      x1 *= (canvasRef.width * ratios[0]) / modelWidth;
+      x2 *= (canvasRef.width * ratios[0]) / modelWidth;
+      y1 *= (canvasRef.height * ratios[1]) / modelHeight;
+      y2 *= (canvasRef.height * ratios[1]) / modelHeight;
       const width = x2 - x1;
       const height = y2 - y1;
 
-      // draw box.
+      console.log(`Box ${i}: [${x1.toFixed(2)}, ${y1.toFixed(2)}, ${width.toFixed(2)}, ${height.toFixed(2)}], Class: ${klass}, Score: ${score}%`);
+
+      // draw box
       ctx.fillStyle = Colors.hexToRgba(color, 0.2);
       ctx.fillRect(x1, y1, width, height);
-      // draw border box.
+      // draw border box
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(Math.min(ctx.canvas.width, ctx.canvas.height) / 200, 2.5);
       ctx.strokeRect(x1, y1, width, height);
 
-      // Draw the label background.
+      // Draw the label background
       ctx.fillStyle = color;
       const textWidth = ctx.measureText(klass + " - " + score + "%").width;
       const textHeight = parseInt(font, 10); // base 10

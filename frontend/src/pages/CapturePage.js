@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+/*import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
@@ -90,7 +90,8 @@ const CapturePage = () => {
       detectImage(img, model, 0.3, canvas);
       document.body.appendChild(canvas); // for now, attach canvas to see results
     };
-    /*// Capture the image from webcam
+    /*
+    // Capture the image from webcam
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
 
@@ -129,11 +130,11 @@ const CapturePage = () => {
       console.error("API request failed:", err);
     } finally {
       setLoading(false);
-    }*/
-  };
+    }
+  };*/
 
 
-
+/*
   const handleClose = () => setShowForm(false);
 
   const handleSubmit = (event) => {
@@ -163,7 +164,7 @@ const CapturePage = () => {
           mirrored={false}
           screenshotQuality={1}
           forceScreenshotSourceSize
-        /> {/* The Canvas is used as overlay for the rendering boxes */}
+        /> {/* The Canvas is used as overlay for the rendering boxes *//*}
           <canvas ref={overlayRef} className="overlay" />
         <div className="capture-button-wrapper">
           <button className="capture-button" onClick={captureImage}>
@@ -177,11 +178,11 @@ const CapturePage = () => {
           </button>
         </div>
 
-        {/* Custom Overlay */}
+        {/* Custom Overlay *//*}
         {showForm && (
           <div className="form-overlay">
             <div className="form-container">
-              {/* Close button */}
+              {/* Close button *//*}
               <button className="close-button" onClick={handleClose}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -191,7 +192,7 @@ const CapturePage = () => {
 
               <h3 className="form-title">Animal Detection Result</h3>
 
-              {/* Visual Fields */}
+              {/* Visual Fields *//*}
               {apiResponse?.image && (
                 <div className="detection-result">
                   <img
@@ -208,7 +209,7 @@ const CapturePage = () => {
                   )}
                 </div>
               )}
-              {/* Form */}
+              {/* Form *//*}
               <form onSubmit={handleSubmit} className="detection-form">
                 <div className="form-group">
                   <label htmlFor="postName">Post Name</label>
@@ -279,5 +280,44 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage;
+export default CapturePage; */
 
+
+import React, { useRef, useState, useEffect } from "react";
+import { Container } from 'react-bootstrap';
+import './CapturePage.css';
+import { detectImage } from "../utility/detect";
+import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
+
+const CapturePage = () => {
+  const [model, setModel] = useState(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    async function initModel() {
+      const m = await loadModel();
+      setModel(m);
+    }
+    initModel();
+  }, []);
+
+  useEffect(() => {
+    if (model && canvasRef.current) {
+      detectImage(model, 0.5, canvasRef.current).then(results => {
+        console.log("Detection results in CapturePage:", results);
+      });
+    }
+  }, [model]);
+
+
+  return (
+    <Container className="scanner-page">
+      <Container className="webcam-wrapper">
+        <canvas ref={canvasRef} className="overlay" />
+      </Container>
+    </Container>
+  );
+};
+
+export default CapturePage;
