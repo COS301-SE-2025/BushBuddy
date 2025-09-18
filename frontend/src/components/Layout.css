@@ -89,6 +89,22 @@
     transition: 0.3s;
 }
 
+.help-button-capture {
+    position: fixed;
+    bottom: 4.3rem;
+    right: 3.4rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: #ff6b00;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+    z-index: 100;
+    transition: 0.3s;
+}
+
 .help-section:hover {
     background-color: rgba(145, 145, 145, 0.514);
     color: #ff6b00;
