@@ -49,7 +49,9 @@ async function createPost(req, res) {
 
 async function fetchAllPosts(req, res) {
 	try {
-		const result = await postingService.fetchAllPosts();
+		const user = req.user;
+
+		const result = await postingService.fetchAllPosts(user.id);
 
 		if (!result) {
 			return res.status(400).json({
@@ -133,7 +135,9 @@ async function fetchPost(req, res) {
 
 		const postId = parseInt(req.params.postId, 10);
 
-		const result = await postingService.fetchPost(postId);
+		const user = req.user;
+
+		const result = await postingService.fetchPost(user.id, postId);
 
 		if (!result) {
 			return res.status(400).json({
@@ -168,28 +172,9 @@ async function likePost(req, res) {
 			});
 		}
 
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const result = await postingService.likePost(req.params.postId, user.id);
-
-		if (!result) {
-			return res.status(409).json({
-				success: false,
-				message: 'Post is already liked by user',
-			});
-		}
 
 		return res.status(200).json({
 			success: true,

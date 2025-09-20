@@ -88,15 +88,33 @@ async function likePost(post_id, user_id) {
 			await db.query(incQuery, [post_id]);
 
 			const result = await db.query(query, params);
-			console.info(result);
 			return result;
 		}
+		else {
+			const query = 'DELETE FROM likes WHERE user_id = $1 AND post_id = $2;';
+			const params = [user_id, post_id];
 
-		//update amount of likes in posts?
+			const decQuery = 'UPDATE posts SET likes = likes - 1 WHERE id = $1;';
+			await db.query(decQuery, [post_id]);
+
+			const result = await db.query(query, params);
+			return result;
+		}
 
 		return null;
 	} catch (error) {
 		throw new Error(`Error adding like to post: ${error.message}`);
+	}
+}
+
+async function checkLikedStatus(user_id, post_id) {
+	try {
+		const query = `SELECT * FROM likes WHERE user_id = $1 AND post_id = $2`;
+		const exists = await db.query(query, [user_id, post_id]);
+
+		return exists.rowCount > 0;
+	} catch (error) {
+		throw new Error(`Error checking liked status: ${error.message}`);
 	}
 }
 
@@ -159,6 +177,7 @@ export const postingRepository = {
 	fetchAllUserPosts,
 	fetchAllPosts,
 	likePost,
+	checkLikedStatus,
 	addComment,
 	fetchPostImage,
 	fetchUserName,

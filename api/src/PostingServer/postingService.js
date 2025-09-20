@@ -12,7 +12,7 @@ async function createPost(details) {
     }
 }
 
-async function fetchAllPosts() {
+async function fetchAllPosts(user_id) {
     try {
         const allPosts = await postingRepository.fetchAllPosts();
 
@@ -20,6 +20,7 @@ async function fetchAllPosts() {
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
             post.user_id = await postingRepository.fetchUserName(post.user_id);
             post.created_at = await formatTimestamp(post.created_at);
+            post.isLiked = await postingRepository.checkLikedStatus(user_id, post.id);
         }
 
         return allPosts;
@@ -46,7 +47,7 @@ async function fetchAllUserPosts(user_id) {
     }
 }
 
-async function fetchPost(post_id) {
+async function fetchPost(user_id, post_id) {
     try{
         const result = await postingRepository.fetchPost(post_id);
 
@@ -58,6 +59,7 @@ async function fetchPost(post_id) {
         result.post.image_url = await postingRepository.fetchPostImage(result.post.image_url);
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
         result.post.created_at = await formatTimestamp(result.post.created_at);
+        result.post.isLiked = await postingRepository.checkLikedStatus(user_id, post_id);
 
         for(const comment of result.comments){
             comment.user_id = await postingRepository.fetchUserName(comment.user_id);

@@ -1,6 +1,6 @@
 export class Post {
     // add what will be returned for fetching posts
-    constructor({ id, user_id, image_url, identification_id, description, share_location, is_removed, created_at, likes, comments }) {
+    constructor({ id, user_id, image_url, identification_id, description, share_location, is_removed, created_at, likes, comments, isLiked}) {
         this.id = id;
         this.user_id = user_id;
         this.image_url = image_url;
@@ -11,6 +11,7 @@ export class Post {
         this.created_at = created_at;
         this.likes = likes;
         this.comments = comments;
+        this.isLiked = isLiked;
     }
 }
 

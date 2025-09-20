@@ -30,6 +30,7 @@ async function fetchAllPosts() {
             is_removed: result.is_removed,
             created_at: result.created_at,
             likes: result.likes,
+            isLiked: result.isLiked,
             comments: result.comments
         }));
     }

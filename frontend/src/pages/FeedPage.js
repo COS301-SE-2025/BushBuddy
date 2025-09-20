@@ -41,6 +41,23 @@ const FeedPage = () => {
     );
   };
 
+  const handleDecLikes = (postId) => {
+    console.log("Decreasing likes for post ID:", postId);
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
+        p.id === postId ? { ...p, likes: (p.likes || 0) - 1, isLiked: false } : p
+      )
+    );
+  };
+
+  const handleIncLikes = (postId) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
+        p.id === postId ? { ...p, likes: (p.likes || 0) + 1, isLiked: true } : p
+      )
+    );
+  };
+
   return (
     <div className="feed-page">
       <FeedFilters />
@@ -51,20 +68,22 @@ const FeedPage = () => {
       ) : (
         <>
           {posts.map((entry) => (
-            <FeedCard
-              key={entry.id}
-              entry={entry}
-              setSelectedPost={setSelectedPost}
-              setPostDetailVisible={setPostDetailVisible}
-            />
+              <FeedCard
+                key={entry.id}
+                entry={entry}
+                setSelectedPost={setSelectedPost}
+                setPostDetailVisible={setPostDetailVisible}
+              />
           ))}
 
           {postDetailVisible && selectedPost && (
             <PostDetailModal
               post={selectedPost.data.post}
               comments={selectedPost.data.comments}
-              onClose={() => setPostDetailVisible(false)}
+              onClose={() => {window.location.reload()}} //temporary fix for modal not updating likes
               onCommentAdded={handleIncrementComments}
+              onLikeDec={handleDecLikes}
+              onLikeInc={handleIncLikes}
             />
           )}
         </>
