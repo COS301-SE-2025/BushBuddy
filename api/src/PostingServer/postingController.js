@@ -49,9 +49,13 @@ async function createPost(req, res) {
 
 async function fetchAllPosts(req, res) {
 	try {
+		if (!req.params.filter) {
+			return res.status(400).json({ success: false, message: 'Filter is required' });
+		}
+
 		const user = req.user;
 
-		const result = await postingService.fetchAllPosts(user.id);
+		const result = await postingService.fetchAllPosts(user.id, req.params.filter);
 
 		if (!result) {
 			return res.status(400).json({

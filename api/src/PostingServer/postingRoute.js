@@ -109,7 +109,7 @@ postingApp.post('/', postingController.createPost);
  *       500:
  *         description: Internal server error
  */
-postingApp.get('/all', postingController.fetchAllPosts);
+postingApp.get('/all/:filter', postingController.fetchAllPosts);
 
 /**
  * @swagger

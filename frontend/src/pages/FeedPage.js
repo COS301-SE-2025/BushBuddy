@@ -12,12 +12,13 @@ const FeedPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('All');
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await PostsController.handleFetchAllPosts();
+        const response = await PostsController.handleFetchAllPosts(filter);
         if (response.success) {
           setPosts(response.posts);
         } else {
@@ -31,7 +32,7 @@ const FeedPage = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [filter]);
 
   const handleIncrementComments = (postId) => {
     setPosts((prevPosts) =>
@@ -58,9 +59,13 @@ const FeedPage = () => {
     );
   };
 
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter); // Update filter state
+  };
+
   return (
     <div className="feed-page">
-      <FeedFilters />
+      <FeedFilters onFilterChange={handleFilterChange} />
       {loading ? (
         <div className="loader-wrapper">
           <div className="loader"></div>

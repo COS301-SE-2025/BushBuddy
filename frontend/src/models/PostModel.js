@@ -26,8 +26,8 @@ export class CreatePostRequest {
 
 //insert parameters and filters
 export class FetchAllPostsRequest {
-    constructor({ }) {
-
+    constructor({ filter }) {
+        this.filter = filter;
     }
 }
 

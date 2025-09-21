@@ -12,9 +12,9 @@ async function createPost(details) {
     }
 }
 
-async function fetchAllPosts(user_id) {
+async function fetchAllPosts(user_id, filter) {
     try {
-        const allPosts = await postingRepository.fetchAllPosts();
+        const allPosts = await postingRepository.fetchAllPosts(filter);
 
         for(const post of allPosts){
             post.image_url = await postingRepository.fetchPostImage(post.image_url);

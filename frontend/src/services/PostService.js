@@ -13,8 +13,8 @@ async function createPost(createPostRequest) {
 }
 
 //add params and filters to fetchAllPostsRequest model
-async function fetchAllPosts() {
-    const response = await apiClient.get("/posts/all");
+async function fetchAllPosts(filter) {
+    const response = await apiClient.get(`/posts/all/${filter}`);
     const results = response.data;
     const postsBefore = results.data;
 
@@ -34,7 +34,7 @@ async function fetchAllPosts() {
             comments: result.comments
         }));
     }
-    
+
     return posts;
 }
 

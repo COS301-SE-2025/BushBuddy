@@ -32,9 +32,41 @@ async function createPost(details) {
 	}
 }
 
-async function fetchAllPosts() {
+async function fetchAllPosts(filter) { //insert range/limit params
 	try {
-		const query = `SELECT * FROM posts ORDER BY created_at DESC LIMIT 50;`;
+		console.error("Filter received in fetchAllPosts:", filter);
+		var query = "";
+
+		switch(filter)
+		{
+			case 'predator':
+				query = `SELECT * FROM posts WHERE identification_id IN 
+					(SELECT id FROM identifications WHERE animal_id IN
+					(SELECT id FROM animals WHERE type = 'Predator'))
+					ORDER BY created_at DESC LIMIT 10 ;`;
+				break;
+			case 'small mammal':
+				query = `SELECT * FROM posts WHERE identification_id IN 
+					(SELECT id FROM identifications WHERE animal_id IN
+					(SELECT id FROM animals WHERE type = 'Small and Medium Mammal'))
+					ORDER BY created_at DESC LIMIT 10 ;`;
+				break;
+			case 'large mammal':
+				query = `SELECT * FROM posts WHERE identification_id IN 
+					(SELECT id FROM identifications WHERE animal_id IN
+					(SELECT id FROM animals WHERE type = 'Large Mammal'))
+					ORDER BY created_at DESC LIMIT 10 ;`;
+				break;
+			case 'antelope':
+				query = `SELECT * FROM posts WHERE identification_id IN 
+					(SELECT id FROM identifications WHERE animal_id IN
+					(SELECT id FROM animals WHERE type = 'Antelope'))
+					ORDER BY created_at DESC LIMIT 10 ;`;
+				break;
+			default:
+				query = `SELECT * FROM posts ORDER BY created_at DESC LIMIT 10 ;`;
+				break;
+		}
 
 		const result = await db.query(query);
 
