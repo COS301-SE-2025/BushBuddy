@@ -11,6 +11,7 @@ import authApp from './AuthenticationServer/authRoute.js';
 import discoveryApp from './DiscoveryServer/discoveryRoute.js';
 import sightingsApp from './SightingServer/sightingRoute.js';
 import postingApp from './PostingServer/postingRoute.js';
+import profileApp from './ProfileServer/profileRoute.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -90,6 +91,8 @@ app.use('/discover', discoveryApp);
 app.use('/sightings', sightingsApp);
 
 app.use('/posts', postingApp);
+
+app.use('/profile', profileApp);
 
 // app.use('/docs', swaggerUI.serve);
 
