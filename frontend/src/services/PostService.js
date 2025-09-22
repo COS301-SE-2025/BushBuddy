@@ -29,7 +29,8 @@ async function fetchAllPosts() {
             shareLocation: result.shareLocation,
             is_removed: result.is_removed,
             created_at: result.created_at,
-            likes: result.likes
+            likes: result.likes,
+            comments: result.comments
         }));
     }
     
@@ -46,15 +47,17 @@ async function fetchUsersPosts() {
     return response.data;
 }
 
+//function for unlikePost
+
 async function likePost(likePostRequest) {
-    const { postId, ...body} = likePostRequest;
-    const response = await apiClient.get(`/posts/${postId}/like`);
+    const { postId } = likePostRequest;
+    const response = await apiClient.post(`/posts/${postId}/like`);
     return response.success;
 }
 
 async function addComment(commentPostRequest) {
     const { postId, ...body} = commentPostRequest;
-    const response = await apiClient.get(`/posts/${postId}/comment`, body);
+    const response = await apiClient.post(`/posts/${postId}/comment`, body);
     return response.success;
 }
 

@@ -44,7 +44,7 @@ const InstallPrompt = () => {
 
     return (
         <div className="install-container">
-            <p>BushBuddy works better outside of your browser!</p>
+            <p className='install-text'>BushBuddy works better outside of your browser!</p>
             <button  className='install-button' onClick={handleInstallClick}>
                 Add to Home Screen
             </button>

@@ -25,6 +25,19 @@ async function createSighting(user_id, file, geolocation) {
 	}
 }
 
+async function fetchAllSightings() {
+	try {
+		//add filters for sightings 
+		const allSightings = await sightingRepository.fetchAllSightings();
+
+		return allSightings;
+	} catch (error) {
+		console.error("Error in sightingService.fetchAllSightings:", error);
+		throw new Error('Failed to fetch all posts');
+	}
+}
+
 export const sightingService = {
 	createSighting,
+	fetchAllSightings,
 };
