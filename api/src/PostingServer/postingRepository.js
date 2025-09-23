@@ -4,10 +4,10 @@ import s3 from '../db/imageStorage.js';
 
 async function createPost(details) {
 	try {
-		const { user_id, identification_id, description, share_location } = details;
+		const { user_id, identification_id, description, share_location, } = details;
 
 		const image_query = `SELECT image_url FROM identifications WHERE id = $1;`;
-
+		console.log("ID: "+identification_id);
 		const image_result = await db.query(image_query, [identification_id]);
 		const image_url = image_result.rows[0]?.image_url;
 

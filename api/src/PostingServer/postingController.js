@@ -3,27 +3,16 @@ import jwt from 'jsonwebtoken';
 
 async function createPost(req, res) {
 	try {
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const details = {
 			user_id: user.id,
 			identification_id: req.body.identification_id,
 			description: req.body.description,
-			share_location: req.body.shareLocation,
+			share_location: req.body.share_location,
+			image_url: req.body.image_url,
 		};
-
+		
 		const result = await postingService.createPost(details);
 
 		if (!result) {
