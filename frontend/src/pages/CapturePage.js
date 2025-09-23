@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import './CapturePage.css';
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
+import AudioDetect from '../components/AudioDetect';
 
 import axios from 'axios';
 
@@ -16,7 +17,7 @@ const CapturePage = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-
+  const [activeMode, setActiveMode] = useState('LIVE');
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -59,7 +60,7 @@ const CapturePage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
 
-    console.log("Captured Image (data URL):", imageSrc);
+    // console.log("Captured Image (data URL):", imageSrc);
     setCapturedImage(imageSrc);
 
     // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
@@ -76,7 +77,7 @@ const CapturePage = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      console.log("Prediction result:", response.data);
+      // console.log("Prediction result:", response.data);
 
       let animalName = response.data.detection;
       let confidence = response.data.confidence;
@@ -117,125 +118,146 @@ const CapturePage = () => {
   return (
     <div className="scanner-page">
       <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
-      <div className="webcam-wrapper">
-        <Webcam
-          ref={webcamRef}
-          className="webcam"
-          audio={false}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          mirrored={false}
-          screenshotQuality={1}
-          forceScreenshotSourceSize
-          />
+      
+      {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
+      {activeMode === 'AUDIO' ? (
+        <AudioDetect />
+      ) : (
+        <div className="webcam-wrapper">
+          <Webcam
+            ref={webcamRef}
+            className="webcam"
+            audio={false}
+            screenshotFormat="image/jpeg"
+            videoConstraints={videoConstraints}
+            mirrored={false}
+            screenshotQuality={1}
+            forceScreenshotSourceSize
+            />
 
-        {loading && (
-          <div className="spinner-overlay">
-            <div className="spinner"></div>
-          </div>
-        )}
+          {loading && (
+            <div className="spinner-overlay">
+              <div className="spinner"></div>
+            </div>
+          )}
+        </div>
+      )}
+      
+      <div className="capture-footer">
+        <button className="capture-button" onClick={captureImage}><FaCamera color="white"size={30}></FaCamera></button>
         
+        <div className="capture-nav">
+          <span 
+            className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
+            onClick={() => setActiveMode('UPLOAD')}
+          >
+            UPLOAD
+          </span>
+          <span 
+            className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
+            onClick={() => setActiveMode('LIVE')}
+          >
+            LIVE
+          </span>
+          <span 
+            className={`captureNavButtons ${activeMode === 'AUDIO' ? 'active' : ''}`}
+            onClick={() => setActiveMode('AUDIO')}
+          >
+            AUDIO
+          </span>
+        </div>
       </div>
-        <div className="capture-footer">
-          <button className="capture-button" onClick={captureImage}><FaCamera color="white"size={30}></FaCamera></button>
-          
-          <div className="capture-nav">
-            <span className="captureNavButtons">UPLOAD</span>
-            <span className="captureNavButtons">LIVE</span>
-            <span className="captureNavButtons">AUDIO</span>
+
+      {/* Custom Overlay */}
+      {showForm && (
+        <div className="form-overlay">
+          <div className="form-container">
+            {/* Close button */}
+            <button className="close-button" onClick={handleClose}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <h3 className="form-title">Animal Detection Result</h3>
+
+            {/* Visual Fields */}
+            {apiResponse?.image && (
+              <div className="detection-result">
+                <img
+                  src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
+                  alt="Detected Animal"
+                  className="detected-image"
+                  style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
+                />
+                {apiResponse.detection && (
+                  <>
+                    <h4 className="animal-name">{apiResponse.detection}</h4>
+                    <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
+                  </>
+                )}
+              </div>
+            )}
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="detection-form">
+              <div className="form-group">
+                <label htmlFor="postName">Post Name</label>
+                <input
+                  type="text"
+                  id="postName"
+                  name="postName"
+                  placeholder="Enter a post title"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="3"
+                  placeholder="Write something..."
+                ></textarea>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="geolocation">Enable Geolocation</label>
+                <div className="switch-container">
+                  <label className="switch-label">
+                    <input
+                      type="checkbox"
+                      id="geolocation"
+                      name="geolocation"
+                      className="geolocation-switch"
+                    />
+                    <span className="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" className="submit-button">
+                Submit
+              </button>
+            </form>
           </div>
         </div>
+      )}
 
-        {/* Custom Overlay */}
-        {showForm && (
-          <div className="form-overlay">
-            <div className="form-container">
-              {/* Close button */}
-              <button className="close-button" onClick={handleClose}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-
-              <h3 className="form-title">Animal Detection Result</h3>
-
-              {/* Visual Fields */}
-              {apiResponse?.image && (
-                <div className="detection-result">
-                  <img
-                    src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
-                    alt="Detected Animal"
-                    className="detected-image"
-                    style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
-                  />
-                  {apiResponse.detection && (
-                    <>
-                      <h4 className="animal-name">{apiResponse.detection}</h4>
-                      <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
-                    </>
-                  )}
-                </div>
-              )}
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="detection-form">
-                <div className="form-group">
-                  <label htmlFor="postName">Post Name</label>
-                  <input
-                    type="text"
-                    id="postName"
-                    name="postName"
-                    placeholder="Enter a post title"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows="3"
-                    placeholder="Write something..."
-                  ></textarea>
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="geolocation">Enable Geolocation</label>
-                  <div className="switch-container">
-                    <label className="switch-label">
-                      <input
-                        type="checkbox"
-                        id="geolocation"
-                        name="geolocation"
-                        className="geolocation-switch"
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </div>
-                </div>
-
-                <button type="submit" className="submit-button">
-                  Submit
-                </button>
-              </form>
-            </div>
+      {showPopup && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>Post created successfully</h4>
+            <button
+              className="submit-button"
+              onClick={() => setShowPopup(false)}
+            >
+              OK
+            </button>
           </div>
-        )}
-
-        {showPopup && (
-          <div className="form-overlay">
-            <div className="success-popup">
-              <h4>Post created successfully</h4>
-              <button
-                className="submit-button"
-                onClick={() => setShowPopup(false)}
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
