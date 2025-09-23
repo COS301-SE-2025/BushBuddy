@@ -40,7 +40,6 @@ const MapPage = () => {
     //fetch sightings
     const fetchSightings = async () => {
       const response = await SightingsController.handleFetchAllSightings();
-      console.log(response);
       if (response.success) {
         setSightings(response.result.sightings);
       } else {
@@ -64,7 +63,6 @@ const MapPage = () => {
     }
 
     fetchSightings();
-    console.log(sightings);
   }, []);
 
   return (
