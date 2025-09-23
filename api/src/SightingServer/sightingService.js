@@ -1,5 +1,20 @@
 import { sightingRepository } from './sightingRepository.js';
 
+//temp function
+async function createSight(user_id, animal, confidence, file, geolocation) {
+	try {
+		console.log(user_id, animal, confidence, file, geolocation);
+		const image_url = await sightingRepository.uploadSightingFile(file);
+
+		const result = await sightingRepository.saveNewSight(user_id, animal, confidence, image_url, 'image', geolocation);
+
+		return { identification_id: result.rows[0].id };
+	} catch (error) {
+		if (error !== 'Error uploading file' || error !== 'Error adding sighting to DB') console.error(error);
+		throw new Error('Failed to create new sighting');
+	}
+}
+
 async function createSighting(user_id, file, geolocation) {
 	// add AI integration here using [file] parameter
 	// file is stored as a JS Buffer object (binary data)
@@ -38,6 +53,7 @@ async function fetchAllSightings() {
 }
 
 export const sightingService = {
+	createSight,
 	createSighting,
 	fetchAllSightings,
 };

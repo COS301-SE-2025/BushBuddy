@@ -1,5 +1,17 @@
 import { SightingService } from "../services/SightingService";
 
+async function handleCreateSighting(formData) {
+    try {
+        const result = await SightingService.createSighting(formData);
+        return { success: true, result : result.data };
+    } catch (error) {
+        return {
+        success: false,
+        message: error.response?.data?.message || "Failed to create sighting",
+        };
+    }
+}
+
 async function handleFetchAllSightings( ) {
     try {
         const result = await SightingService.fetchAllSightings();
@@ -16,5 +28,6 @@ async function handleFetchAllSightings( ) {
 }
 
 export const SightingsController = {
+    handleCreateSighting,
 	handleFetchAllSightings
 };

@@ -18,9 +18,14 @@
     z-index: 10;
 }
 
+.closeScanner:hover {
+    background-color: #e55a00;
+    cursor: pointer;
+}
+
 .icon-bold {
-  font-weight: bold; /* For font-based icons */
-  stroke-width: 2px; /* For SVG icons */
+  font-weight: bold;
+  stroke-width: 2px;
 }
 
 .webcam-wrapper {
@@ -36,9 +41,13 @@
 }
 
 .webcam {
-    width: 100%;
+    width: auto;
     height: 85vh;
-    object-fit: cover;
+}
+
+.display-cap-image {
+    width: auto;
+    height: 85vh;
 }
 
 .capture-footer {
@@ -110,7 +119,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 500;
     backdrop-filter: blur(2px);
 }
 
@@ -173,17 +182,15 @@
 /* Detection Result Styles */
 .detection-result {
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.captured-image {
-    max-width: 100%;
-    max-height: 180px;
+.detected-image {
+    width: 100%;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: contain;
     border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .animal-name {
@@ -209,13 +216,22 @@
 .form-group {
     display: flex;
     flex-direction: column;
+    left: 0;
+    width: 100%;
 }
 
 .form-group label {
+    display: block;
+    text-align: left;
     margin-bottom: 8px;
     font-weight: 500;
     color: #333;
     font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 .form-group input[type="text"],
@@ -236,16 +252,10 @@
     box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
 }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
 /* Toggle Switch Styles */
 .switch-container {
     display: flex;
     align-items: center;
-    margin-top: 5px;
 }
 
 .switch-label {
@@ -340,13 +350,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000; /* Ensure it appears above other elements */
+  z-index: 5000; /* Ensure it appears above other elements */
 }
 
 .spinner {
   margin-top: 10px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4b6949ff;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -362,16 +372,24 @@
   background: white;
   border-radius: 20px;
   padding: 30px;
+  width: 70%;
   max-width: 400px;
-  width: 90%;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s ease-out;
 }
 
 .success-popup h4 {
+  margin-top: 20px;
   margin-bottom: 20px;
   color: #333;
   font-size: 20px;
   font-weight: 600;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }

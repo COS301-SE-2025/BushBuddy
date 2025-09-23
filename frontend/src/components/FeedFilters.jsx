@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import './FeedFilters.css';
 import PopUpModal from './PopUpModal';
 
-import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdPaw, IoMdWarning } from "react-icons/io";
-import { GiElephant, GiDeerTrack } from "react-icons/gi";
+import { GiElephant, GiDeerTrack, GiFoxTail } from "react-icons/gi";
 import { FaShieldAlt } from "react-icons/fa";
 import { PiBirdFill } from "react-icons/pi";
 
 
-const FeedFilters = () => {
+const FeedFilters = ({ onFilterChange }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const filterOptions = ['Friends', 'Following', 'Nearby', 'Popular'];
@@ -19,12 +18,16 @@ const FeedFilters = () => {
 
   const animalFilters = [
     { type: 'all', icon: <IoMdPaw size={25} />, color: '#FF6B35' },
-    { type: 'elephant', icon: <GiElephant size={25} />, color: '#4CAF50' },
-    { type: 'lion', icon: <IoMdWarning size={25} />, color: '#FF9800' },
-    { type: 'rhino', icon: <FaShieldAlt size={25} />, color: '#2196F3' },
-    { type: 'antelope', icon: <GiDeerTrack size={27} />, color: '#cb35e6ff' },
-    { type: 'bird', icon: <PiBirdFill size={25} />, color: '#00BCD4' }
+    { type: 'predator', icon: <IoMdWarning size={25} />, color: '#FF9800' },
+    { type: 'small mammal', icon: <GiFoxTail size={25} />, color: '#2196F3' },
+    { type: 'large mammal', icon: <FaShieldAlt size={25} />, color: '#4CAF50' },
+    { type: 'antelope', icon: <GiDeerTrack size={27} />, color: '#cb35e6ff' }
   ];
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    onFilterChange(filter);
+  };
 
   return (
     <div className="filters-container">
@@ -60,7 +63,7 @@ const FeedFilters = () => {
               className={`animal-filter ${selectedAnimal === animal.type ? 'active' : 'all'}`}
               onClick={() => {
                 setSelectedAnimal(animal.type);
-                setShowPopup(true);
+                onFilterChange(animal.type);
               }}
               style={{ 
                 backgroundColor: selectedAnimal === animal.type ? animal.color : '#4b6949ff',

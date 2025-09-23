@@ -5,18 +5,22 @@ async function createSighting(req, res) {
 		const user_id = req.user.id;
 		const longitude = req.body.longitude;
 		const latitude = req.body.latitude;
-		if (!req.file || !longitude || !latitude) {
+		const confidence = req.body.confidence;
+		const animal = req.body.animal;
+		if (!req.file || !animal || !confidence) {
 			return res.status(400).json({ success: false, message: 'Some required fields are missing' });
 		}
 		// uploaded image, stored as a JS Buffer object (binary data)
 		const image = req.file.buffer;
-		const result = sightingService.createSighting(user_id, image, { longitude, latitude });
-
+		//change createSight to createSighting once confirmed
+		const result = await sightingService.createSight(user_id, animal, confidence, image, { longitude, latitude });
 		if (!result) {
 			return res.status(400).json({ success: false, message: 'Failed to create sighting with given data' });
 		}
 
-		return res.status(200).json({ success: true, message: 'Successfully created new sighting', data: result });
+		return res.status(200).json({ success: true, message: 'Successfully created new sighting', data : {
+			identification_id: result.identification_id
+		} });
 	} catch (error) {
 		console.error('Error handling new sighting: ', error);
 		return res.status(500).json({
