@@ -16,8 +16,7 @@ export class Post {
 }
 
 export class CreatePostRequest {
-    constructor({ image_url, identification_id, description, share_location }) {
-        this.image_url = image_url;
+    constructor({ identification_id, description, share_location }) {
         this.identification_id = identification_id;
         this.description = description;
         this.share_location = share_location;

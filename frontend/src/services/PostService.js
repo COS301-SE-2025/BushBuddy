@@ -8,7 +8,7 @@ import {
 } from "../models/PostModel";
 
 async function createPost(createPostRequest) {
-    const response = await apiClient.post("/posts", createPostRequest);
+    const response = await apiClient.post("/posts/", createPostRequest);
     return response.data;
 }
 

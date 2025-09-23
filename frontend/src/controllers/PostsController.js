@@ -7,13 +7,12 @@ import {
 	AddCommentRequest,
 } from "../models/PostModel";
 
-async function handleCreatePost( identificationId, description, shareLocation, image) {
+async function handleCreatePost( identification_id, description, share_location) {
     try {
         const createPostRequest = new CreatePostRequest({
-            identificationId,
+            identification_id,
             description,
-            shareLocation,
-            image
+            share_location,
         });
         
         const result = await PostService.createPost(createPostRequest);
