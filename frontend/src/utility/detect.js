@@ -169,7 +169,7 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
   tf.engine().startScope();
 
   try {
-    console.log("OG Image dim ", img.wdith, img.height);
+    console.log("OG Image dim ", img.width, img.height);
     //  ---------------- Preprocess ---------------- 
     const { input, scale, paddingX, paddingY } = await preprocess(
       img,
