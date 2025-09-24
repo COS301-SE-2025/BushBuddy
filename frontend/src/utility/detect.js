@@ -151,19 +151,21 @@ async function applyNMS(
 /**
  * Main detection function
  */
-export async function detectImage(model, classThreshold = 0.25, canvasRef) {
+export async function detectImage(model, classThreshold = 0.25, canvasRef, img) {
   console.log("Starting detection...");
   const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
   console.log("Model input dimensions:", modelWidth, modelHeight);
 
-  const img = new Image();
+  
+  img = new Image();
   img.src = "/test2.jpg"; // Public test image
   await new Promise((resolve) => (img.onload = resolve));
-
+  
+  /*
   const canvas = canvasRef;
   canvas.width = img.width;
   canvas.height = img.height;
-
+  */
   tf.engine().startScope();
 
   try {

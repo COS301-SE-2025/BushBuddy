@@ -82,14 +82,14 @@ const CapturePage = () => {
 
     const img = new Image();
     img.src = imageSrc;
+
     img.onload = () => {
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
-      const results = detectImage(img, model, 0.5, canvas);
-      //document.body.appendChild(canvas); // for now, attach canvas to see results
-      
 
+      // Call an async function here
+      runDetection(img, canvas);
     };
 
     /* ------- API AI model
@@ -135,7 +135,19 @@ const CapturePage = () => {
     }*/
   };
 
+  const runDetection = async (img, canvas) => {
+    try {
+      const results = await detectImage(model, 0.5, canvas, img);
 
+      console.log("Detection results CapturePage: ", results);
+
+      animalName = results.labels;
+      confidence = results.scores;
+      setShowForm(true);
+    } catch (err) {
+      console.error("Error during detection:", err);
+    }
+  };
 
   const handleClose = () => setShowForm(false);
 
@@ -198,15 +210,15 @@ const CapturePage = () => {
               {apiResponse?.image && (
                 <div className="detection-result">
                   <img
-                    src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
+                    src={`${img}`}
                     alt="Detected Animal"
                     className="detected-image"
                     style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
                   />
                   {apiResponse.detection && (
                     <>
-                      <h4 className="animal-name">{apiResponse.detection}</h4>
-                      <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
+                      <h4 className="animal-name">{animalName}</h4>
+                      <p className="confidence">Confidence: {confidence * 100}%</p>
                     </>
                   )}
                 </div>
