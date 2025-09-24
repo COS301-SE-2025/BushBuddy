@@ -3,7 +3,7 @@ import librosa
 import numpy as np
 
 # --- CONFIG ---
-MODEL_PATH = "best_model.h5"
+MODEL_PATH = "bushbuddy_full_model.h5"
 LABELS = ['baboon', 'black wildebeest', 'buffalo', 'cheetah', 'elephant', 'hippo', 'impala', 'lion', 'meerkat', 'rhino']  # same order as training
 N_MFCC = 40
 EXPECTED_FRAMES = 87 
@@ -12,7 +12,7 @@ SR = 22050
 model = tf.keras.models.load_model(MODEL_PATH)
 print("Model loaded")
 
-audio_file = "data/meerkat/mee_6.wav" 
+audio_file = "mee_6.wav" 
 y, sr = librosa.load(audio_file, sr=SR)
 
 mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=N_MFCC, hop_length=512)
