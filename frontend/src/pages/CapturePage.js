@@ -14,7 +14,6 @@ var animalName = "None";
 var confidence = "None";
 
 
-
 const CapturePage = () => {
   const [model, setModel] = useState(null);
   useEffect(() => {
@@ -137,12 +136,13 @@ const CapturePage = () => {
 
   const runDetection = async (img, canvas) => {
     try {
-      const results = await detectImage(model, 0.5, canvas, img);
+      const results = await detectImage(model, 0.25, canvas, img);
 
       console.log("Detection results CapturePage: ", results);
 
-      animalName = results.labels;
-      confidence = results.scores;
+      setCapturedImage(img.src);
+      animalName = results.labels[0];
+      confidence = results.scores[0];
       setShowForm(true);
     } catch (err) {
       console.error("Error during detection:", err);
@@ -207,15 +207,15 @@ const CapturePage = () => {
               <h3 className="form-title">Animal Detection Result</h3>
 
               {/* Visual Fields */}
-              {apiResponse?.image && (
+              {capturedImage && (
                 <div className="detection-result">
                   <img
-                    src={`${img}`}
+                    src={capturedImage}
                     alt="Detected Animal"
                     className="detected-image"
                     style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
                   />
-                  {apiResponse.detection && (
+                  {animalName && (
                     <>
                       <h4 className="animal-name">{animalName}</h4>
                       <p className="confidence">Confidence: {confidence * 100}%</p>

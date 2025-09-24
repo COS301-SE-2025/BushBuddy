@@ -154,13 +154,13 @@ async function applyNMS(
 export async function detectImage(model, classThreshold = 0.25, canvasRef, img) {
   console.log("Starting detection...");
   const [modelWidth, modelHeight] = model.inputs[0].shape.slice(1, 3);
-  console.log("Model input dimensions:", modelWidth, modelHeight);
+  //console.log("Model input dimensions:", modelWidth, modelHeight);
 
-  
+  /*
   img = new Image();
   img.src = "/test2.jpg"; // Public test image
   await new Promise((resolve) => (img.onload = resolve));
-  
+  */
   /*
   const canvas = canvasRef;
   canvas.width = img.width;
@@ -169,6 +169,7 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
   tf.engine().startScope();
 
   try {
+    console.log("OG Image dim ", img.wdith, img.height);
     //  ---------------- Preprocess ---------------- 
     const { input, scale, paddingX, paddingY } = await preprocess(
       img,
@@ -224,11 +225,11 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
 
     // convert predictions to labels 
     const labeled = nmsResults.classes.map(idx => labels[idx]);
-  
+    const rounded_scores = nmsResults.scores.map(score => Math.round(score * 10000) / 10000);
     
 
     console.log("Detection finished.");
-    return {scores: nmsResults.scores, labels: labeled};
+    return {scores: rounded_scores, labels: labeled};
   } catch (err) {
     console.error("Error during detection:", err);
     return { scores: [], classes: [] };

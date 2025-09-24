@@ -77,6 +77,7 @@ export const renderBoxesVideo = (
  * @param {Array} scores_data scores array
  * @param {Array} classes_data class array
  */
+/*
 export const renderBoxesImg = (
   img,
   classThreshold,
@@ -136,7 +137,7 @@ export const renderBoxesImg = (
       ctx.fillText(klass + " - " + score + "%", x1 - 1, yText < 0 ? 0 : yText);
     }
   }
-};
+}; */
 
 class Colors {
   // ultralytics color palette https://ultralytics.com/
@@ -176,4 +177,4 @@ class Colors {
         )}, ${alpha})`
       : null;
   };
-}
+} 
