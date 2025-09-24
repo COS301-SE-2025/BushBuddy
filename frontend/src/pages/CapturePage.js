@@ -1,18 +1,17 @@
-/*import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
-import { detectImage, detectVideo } from "../utility/detection";
+import { detectImage } from "../utility/detect";
 import * as tf from "@tensorflow/tfjs";
 import { loadModel } from "../utility/modelStorageOperations";
 
 
-
+ //-- Mock data
 import axios from 'axios';
 
-
-var animalName = "RubberDuck";
-var confidence = "420.15";
+var animalName = "None";
+var confidence = "None";
 
 
 
@@ -45,11 +44,11 @@ const CapturePage = () => {
     facingMode: { ideal: "environment" },
   };
 
-  useEffect( () => {
+  /*useEffect( () => {
     if(model && webcamRef.current?.video && overlayRef.current) {
       detectVideo(webcamRef.current.video, model, 0.3, overlayRef.current); // Remember, 4 parameters are -> vidSource, AI model, classThreshold, canvas Reference
     }
-  },[model]);
+  },[model]);*/
 
   async function toBase64(input) {  //just for testing
     // If it's already a File or Blob
@@ -87,10 +86,13 @@ const CapturePage = () => {
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
-      detectImage(img, model, 0.3, canvas);
-      document.body.appendChild(canvas); // for now, attach canvas to see results
+      const results = detectImage(img, model, 0.5, canvas);
+      //document.body.appendChild(canvas); // for now, attach canvas to see results
+      
+
     };
-    /*
+
+    /* ------- API AI model
     // Capture the image from webcam
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
@@ -130,11 +132,11 @@ const CapturePage = () => {
       console.error("API request failed:", err);
     } finally {
       setLoading(false);
-    }
-  };*/
+    }*/
+  };
 
 
-/*
+
   const handleClose = () => setShowForm(false);
 
   const handleSubmit = (event) => {
@@ -164,7 +166,7 @@ const CapturePage = () => {
           mirrored={false}
           screenshotQuality={1}
           forceScreenshotSourceSize
-        /> {/* The Canvas is used as overlay for the rendering boxes *//*}
+        /> {/* The Canvas is used as overlay for the rendering boxes */}
           <canvas ref={overlayRef} className="overlay" />
         <div className="capture-button-wrapper">
           <button className="capture-button" onClick={captureImage}>
@@ -178,11 +180,11 @@ const CapturePage = () => {
           </button>
         </div>
 
-        {/* Custom Overlay *//*}
+        {/* Custom Overlay */}
         {showForm && (
           <div className="form-overlay">
             <div className="form-container">
-              {/* Close button *//*}
+              {/* Close button */}
               <button className="close-button" onClick={handleClose}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -192,7 +194,7 @@ const CapturePage = () => {
 
               <h3 className="form-title">Animal Detection Result</h3>
 
-              {/* Visual Fields *//*}
+              {/* Visual Fields */}
               {apiResponse?.image && (
                 <div className="detection-result">
                   <img
@@ -209,7 +211,7 @@ const CapturePage = () => {
                   )}
                 </div>
               )}
-              {/* Form *//*}
+              {/* Form */}
               <form onSubmit={handleSubmit} className="detection-form">
                 <div className="form-group">
                   <label htmlFor="postName">Post Name</label>
@@ -280,9 +282,9 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage; */
+export default CapturePage; 
 
-
+/*
 import React, { useRef, useState, useEffect } from "react";
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
@@ -320,4 +322,4 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage;
+export default CapturePage; */

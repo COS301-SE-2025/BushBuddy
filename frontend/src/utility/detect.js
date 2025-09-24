@@ -213,18 +213,23 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
     console.log("Sample boxes after NMS:", nmsResults.boxes.slice(0, 3));
 
     //  ---------------- Render ---------------- 
-    renderBoxes(canvasRef, classThreshold, nmsResults.boxes, nmsResults.scores, nmsResults.classes);
+    //renderBoxes(canvasRef, classThreshold, nmsResults.boxes, nmsResults.scores, nmsResults.classes);
 
     // Some memory cleanup
     tf.dispose(input);
     if (Array.isArray(rawOutput)) rawOutput.forEach((t) => t.dispose());
     else rawOutput.dispose();
 
+    // convert predictions to labels 
+    const labeled = nmsResults.classes.map(idx => labels[idx]);
+  
+    
+
     console.log("Detection finished.");
-    return nmsResults;
+    return {scores: nmsResults.scores, labels: labeled};
   } catch (err) {
     console.error("Error during detection:", err);
-    return { boxes: [], scores: [], classes: [] };
+    return { scores: [], classes: [] };
   } finally {
     tf.engine().endScope();
   }
