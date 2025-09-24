@@ -48,13 +48,15 @@ async function preprocess(img, modelWidth, modelHeight) {
   return { input, scale, paddingX, paddingY };
 }
 
+
+
 /**
  * Sigmoid helper
  */
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 
 /**
- * Convert raw model output to bounding boxes, scores, classes
+ * Convert raw model output to bounding boxes, scores(probability), classes
  */
 function postprocess(flatOutput, classThreshold, modelWidth, modelHeight) {
   console.log("Postprocessing raw output...");
@@ -155,7 +157,7 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
   console.log("Model input dimensions:", modelWidth, modelHeight);
 
   const img = new Image();
-  img.src = "/test.jpg"; // Public test image
+  img.src = "/test2.jpg"; // Public test image
   await new Promise((resolve) => (img.onload = resolve));
 
   const canvas = canvasRef;
@@ -165,7 +167,7 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
   tf.engine().startScope();
 
   try {
-    // Preprocess
+    //  ---------------- Preprocess ---------------- 
     const { input, scale, paddingX, paddingY } = await preprocess(
       img,
       modelWidth,
@@ -173,9 +175,9 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
     );
     console.log("Input tensor shape:", input.shape);
 
-    // Run inference
+    // ---------------- Run inference ---------------- 
     console.log("Running model inference...");
-    const rawOutput = await model.predict(input);
+    const rawOutput = await model.execute(input);
     console.log("Raw output:", rawOutput);
     console.log("Raw output shape:", rawOutput.shape);
 
@@ -187,7 +189,7 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
     const flatOutput = outputTransposed.arraySync()[0];
     console.log("FlatOutput first row:", flatOutput[0]);
 
-    // Postprocess
+    //  ---------------- Postprocess ---------------- 
     const { boxes, scores, classes } = postprocess(
       flatOutput,
       classThreshold,
@@ -205,14 +207,15 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef) {
 
     console.log("Boxes after mapping back:", mappedBoxes.slice(0, 3));
 
-    // Apply NMS
+    //  ---------------- Apply NMS ---------------- 
     const nmsResults = await applyNMS(mappedBoxes, scores, classes);
     console.log("Boxes after NMS:", nmsResults.boxes.length);
     console.log("Sample boxes after NMS:", nmsResults.boxes.slice(0, 3));
 
-    // Render (disabled for now)
-    // renderBoxes(canvasRef, classThreshold, nmsResults.boxes.flat(), nmsResults.scores, nmsResults.classes, [img.width, img.height]);
+    //  ---------------- Render ---------------- 
+    renderBoxes(canvasRef, classThreshold, nmsResults.boxes, nmsResults.scores, nmsResults.classes);
 
+    // Some memory cleanup
     tf.dispose(input);
     if (Array.isArray(rawOutput)) rawOutput.forEach((t) => t.dispose());
     else rawOutput.dispose();
