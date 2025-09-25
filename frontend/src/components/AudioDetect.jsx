@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as tf from "@tensorflow/tfjs";
 import Meyda from "meyda";
+import './AudioDetect.css';
 
 const AudioDetect = ({
   modelPath = "/audio-model/model.json",
@@ -26,31 +27,21 @@ const AudioDetect = ({
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
 
-  // Load model on mount
   useEffect(() => {
     const loadModel = async () => {
       try {
         await tf.ready();
-        console.log("TensorFlow.js backend:", tf.getBackend());
-
         const loadedModel = await tf.loadLayersModel(modelPath);
         setModel(loadedModel);
-
-        console.log("Model loaded successfully");
-        console.log("Inputs:", loadedModel.inputs);
-        console.log("Outputs:", loadedModel.outputs);
       } catch (err) {
-        console.error("Model load error:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
     loadModel();
   }, [modelPath]);
 
-  // Shared function to process audio (file or blob)
   const processAudioBlob = async (audioBlob) => {
     try {
       const arrayBuffer = await audioBlob.arrayBuffer();
@@ -60,7 +51,6 @@ const AudioDetect = ({
       const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
       const rawData = audioBuffer.getChannelData(0);
 
-      // Frame & MFCC extraction
       const frameSize = 1024;
       const hopSize = 512;
       let mfccs = [];
@@ -93,41 +83,27 @@ const AudioDetect = ({
 
       mfccTensor = mfccTensor.expandDims(-1).expandDims(0);
 
-      // Predict
       const prediction = model.predict(mfccTensor);
       const probs = prediction.dataSync();
       const bestIdx = probs.indexOf(Math.max(...probs));
       const label = labels[bestIdx];
       const confidence = (probs[bestIdx] * 100).toFixed(2);
 
-      // Debug: top 3
-      const sortedProbs = probs
-        .map((prob, idx) => ({
-          label: labels[idx],
-          confidence: (prob * 100).toFixed(2),
-        }))
-        .sort((a, b) => b.confidence - a.confidence)
-        .slice(0, 3);
-
-      console.log("Top 3 predictions:", sortedProbs);
       alert(`${label}, ${confidence}%`);
 
       mfccTensor.dispose();
       prediction.dispose();
     } catch (err) {
-      console.error("Audio processing error:", err);
       alert(`Error: ${err.message}`);
     }
   };
 
-  // Handle file upload (audio)
   const handleAudioUpload = async (event) => {
     const file = event.target.files[0];
     if (!file || !model) return;
     await processAudioBlob(file);
   };
 
-  // Handle video upload -> extract audio
   const handleVideoUpload = async (event) => {
     const file = event.target.files[0];
     if (!file || !model) return;
@@ -136,15 +112,10 @@ const AudioDetect = ({
       const videoEl = document.createElement("video");
       videoEl.src = URL.createObjectURL(file);
       videoEl.muted = true;
-
-      await videoEl.play().catch(() => {}); // ensure metadata loads
+      await videoEl.play().catch(() => { });
       const stream = videoEl.captureStream();
       const audioTrack = stream.getAudioTracks()[0];
-
-      if (!audioTrack) {
-        alert("No audio track found in this video.");
-        return;
-      }
+      if (!audioTrack) return;
 
       const audioStream = new MediaStream([audioTrack]);
       const mediaRecorder = new MediaRecorder(audioStream);
@@ -164,21 +135,18 @@ const AudioDetect = ({
         if (mediaRecorder.state !== "inactive") mediaRecorder.stop();
       };
     } catch (err) {
-      console.error("Video processing error:", err);
       alert(`Video processing error: ${err.message}`);
     }
   };
 
-  // Recording logic
   const startRecording = async () => {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    if (!navigator.mediaDevices) {
       alert("Microphone not supported in this browser.");
       return;
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
-
       chunksRef.current = [];
       mediaRecorderRef.current = mediaRecorder;
 
@@ -195,7 +163,6 @@ const AudioDetect = ({
       mediaRecorder.start();
       setRecording(true);
 
-      // Auto-stop after 30s
       setTimeout(() => {
         if (mediaRecorder.state !== "inactive") {
           mediaRecorder.stop();
@@ -203,7 +170,6 @@ const AudioDetect = ({
         }
       }, 30000);
     } catch (err) {
-      console.error("Recording error:", err);
       alert(`Recording error: ${err.message}`);
     }
   };
@@ -216,55 +182,52 @@ const AudioDetect = ({
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-2">BuddyScanner - Audio Detection</h1>
+    <div className="audio-page">
+      <h1>Audio Detection</h1>
 
       {loading && <p>Loading model...</p>}
-      {error && <p className="text-red-600">Error: {error}</p>}
+      {error && <p>Error: {error}</p>}
       {model && (
         <>
-          <p className="text-green-600">Upload audio, video, or record live</p>
+          <p className="instruction-text">Upload audio, video, or record live</p>
 
-          {/* Audio upload */}
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={handleAudioUpload}
-            className="mt-4 block"
-          />
-
-          {/* Video upload */}
-          <input
-            type="file"
-            accept="video/*"
-            onChange={handleVideoUpload}
-            className="mt-4 block"
-          />
-
-          <div className="mt-4">
-            {!recording ? (
-              <button
-                onClick={startRecording}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-              >
-                Start Recording (30s max)
-              </button>
-            ) : (
-              <button
-                onClick={stopRecording}
-                className="px-4 py-2 bg-red-500 text-white rounded"
-              >
-                Stop Recording
-              </button>
-            )}
+          <div className="record-container">
+            <button
+              onClick={recording ? stopRecording : startRecording}
+              className={`record-btn ${recording ? "stop recording" : "start"}`}
+            >
+              {recording ? "Stop" : "Start"}
+            </button>
           </div>
 
           {audioUrl && (
-            <div className="mt-4">
-              <p className="font-semibold">Recorded Audio (debug playback):</p>
+            <div className="playback-container">
+              <p className="playback-text">Recorded Audio:</p>
               <audio controls src={audioUrl}></audio>
             </div>
           )}
+
+          <div className="upload-container">
+            <label className="upload-btn">
+              Upload Audio
+              <input
+                type="file"
+                accept="audio/*"
+                onChange={handleAudioUpload}
+                style={{ display: "none" }}
+              />
+            </label>
+            <label className="upload-btn">
+              Upload Video
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoUpload}
+                style={{ display: "none" }}
+              />
+            </label>
+          </div>
+
         </>
       )}
     </div>
