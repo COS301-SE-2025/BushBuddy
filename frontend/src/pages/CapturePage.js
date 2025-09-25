@@ -118,48 +118,55 @@ const CapturePage = () => {
   return (
     <div className="scanner-page">
       <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
-      
-      {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
-      {activeMode === 'AUDIO' ? (
-        <AudioDetect />
-      ) : (
-        <div className="webcam-wrapper">
-          <Webcam
-            ref={webcamRef}
-            className="webcam"
-            audio={false}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-            mirrored={false}
-            screenshotQuality={1}
-            forceScreenshotSourceSize
+
+      <div className='scanner-main-content'>
+        {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
+        {activeMode === 'AUDIO' ? (
+          <AudioDetect />
+        ) : (
+          <div className="webcam-wrapper">
+            <Webcam
+              ref={webcamRef}
+              className="webcam"
+              audio={false}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              mirrored={false}
+              screenshotQuality={1}
+              forceScreenshotSourceSize
             />
 
-          {loading && (
-            <div className="spinner-overlay">
-              <div className="spinner"></div>
-            </div>
-          )}
-        </div>
-      )}
-      
+            {loading && (
+              <div className="spinner-overlay">
+                <div className="spinner"></div>
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
       <div className="capture-footer">
-        <button className="capture-button" onClick={captureImage}><FaCamera color="white"size={30}></FaCamera></button>
-        
+        {activeMode == 'LIVE' && (
+          <button className="capture-button" onClick={captureImage}>
+            <FaCamera color="white" size={30} />
+          </button>
+        )}
+
         <div className="capture-nav">
-          <span 
+          <span
             className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
             onClick={() => setActiveMode('UPLOAD')}
           >
             UPLOAD
           </span>
-          <span 
+          <span
             className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
             onClick={() => setActiveMode('LIVE')}
           >
             LIVE
           </span>
-          <span 
+          <span
             className={`captureNavButtons ${activeMode === 'AUDIO' ? 'active' : ''}`}
             onClick={() => setActiveMode('AUDIO')}
           >
