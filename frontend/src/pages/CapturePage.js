@@ -8,6 +8,7 @@ import { loadModel } from "../utility/modelStorageOperations";
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
 import AudioDetect from '../components/AudioDetect';
+import ServerSideDetect from '../components/ServerSideDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
@@ -227,7 +228,7 @@ const CapturePage = () => {
         );
       }
 
-      if (postResult===null || !postResult.success || !postResult) {
+      if (postResult === null || !postResult.success || !postResult) {
         setLoading(false);
         setShowForm(false);
         setShowFailPopup(true);
@@ -253,8 +254,9 @@ const CapturePage = () => {
       <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
 
       <div className='scanner-main-content'>
-        {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
-        {activeMode === 'AUDIO' ? (
+        {activeMode === 'UPLOAD' ? (
+          <ServerSideDetect />
+        ) : activeMode === 'AUDIO' ? (
           <AudioDetect />
         ) : (
           <div className="webcam-wrapper">
@@ -291,7 +293,7 @@ const CapturePage = () => {
             className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
             onClick={() => setActiveMode('UPLOAD')}
           >
-            UPLOAD
+            OFFLINE
           </span>
           <span
             className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
@@ -370,7 +372,7 @@ const CapturePage = () => {
                       </button>
                     </form>
                   </>
-                ):(
+                ) : (
                   <>
                     <h4 className="animal-name">No Animal Detected</h4>
                     <button className="submit-button" onClick={handleClose}>
