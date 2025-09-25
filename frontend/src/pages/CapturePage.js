@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import './CapturePage.css';
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
+import AudioDetect from '../components/AudioDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
@@ -18,6 +19,8 @@ const CapturePage = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [activeMode, setActiveMode] = useState('LIVE');
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showFailPopup, setShowFailPopup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -62,6 +65,7 @@ const CapturePage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
 
+
     setCapturedImage(imageSrc);
     setBackgroundImage(imageSrc);
 
@@ -78,6 +82,7 @@ const CapturePage = () => {
         { image: base64Image },
         { headers: { "Content-Type": "application/json" } }
       );
+
 
       let animalName = response.data.detection;
       let confidence = response.data.confidence;
@@ -193,32 +198,60 @@ const CapturePage = () => {
   return (
     <div className="scanner-page">
       <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
-      <div className="webcam-wrapper">
-        {backgroundImage ? (
-          <img
-            src={capturedImage}
-            alt="Captured"
-            className="display-cap-image"
-          />
+
+      <div className='scanner-main-content'>
+        {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
+        {activeMode === 'AUDIO' ? (
+          <AudioDetect />
         ) : (
-          <Webcam
-            ref={webcamRef}
-            className="webcam"
-            audio={false}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-            mirrored={false}
-            screenshotQuality={1}
-            forceScreenshotSourceSize
-          />
+          <div className="webcam-wrapper">
+            <Webcam
+              ref={webcamRef}
+              className="webcam"
+              audio={false}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              mirrored={false}
+              screenshotQuality={1}
+              forceScreenshotSourceSize
+            />
+
+            {loading && (
+              <div className="spinner-overlay">
+                <div className="spinner"></div>
+              </div>
+            )}
+          </div>
         )}
+
       </div>
+
       <div className="capture-footer">
-        <button className="capture-button" onClick={captureImage}><FaCamera color="white" size={30}></FaCamera></button>
+        {activeMode == 'LIVE' && (
+          <button className="capture-button" onClick={captureImage}>
+            <FaCamera color="white" size={30} />
+          </button>
+        )}
+
         <div className="capture-nav">
-          <span className="captureNavButtons">UPLOAD</span>
-          <span className="captureNavButtons">LIVE</span>
-          <span className="captureNavButtons">AUDIO</span>
+          <span
+            className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
+            onClick={() => setActiveMode('UPLOAD')}
+          >
+            UPLOAD
+          </span>
+          <span
+            className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
+            onClick={() => setActiveMode('LIVE')}
+          >
+            LIVE
+          </span>
+          <span
+            className={`captureNavButtons ${activeMode === 'AUDIO' ? 'active' : ''}`}
+            onClick={() => setActiveMode('AUDIO')}
+          >
+            AUDIO
+          </span>
         </div>
       </div>
 
