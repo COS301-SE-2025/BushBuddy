@@ -82,7 +82,7 @@ function postprocess(flatOutput, classThreshold, modelWidth, modelHeight) {
       classesArr.push(classIndex);
     }
   });
-
+  /*
   console.log(
     "Postprocessing complete -> boxes:",
     boxes.length,
@@ -90,7 +90,7 @@ function postprocess(flatOutput, classThreshold, modelWidth, modelHeight) {
     scores.length,
     "classes:",
     classesArr.length
-  );
+  );*/
   return { boxes, scores, classes: classesArr };
 }
 
@@ -104,7 +104,7 @@ async function applyNMS(
   maxOutputSize = 20,
   iouThreshold = 0.3
 ) {
-  console.log("Applying Non-Max Suppression...");
+  //console.log("Applying Non-Max Suppression...");
   if (!boxes.length) return { boxes: [], scores: [], classes: [], indices: [] };
 
   const finalBoxes = [];
@@ -139,7 +139,7 @@ async function applyNMS(
     scoreTensor.dispose();
   }
 
-  console.log("NMS complete -> boxes:", finalBoxes.length);
+  //console.log("NMS complete -> boxes:", finalBoxes.length);
   return {
     boxes: finalBoxes,
     scores: finalScores,
@@ -169,28 +169,27 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
   tf.engine().startScope();
 
   try {
-    console.log("OG Image dim ", img.width, img.height);
     //  ---------------- Preprocess ---------------- 
     const { input, scale, paddingX, paddingY } = await preprocess(
       img,
       modelWidth,
       modelHeight
     );
-    console.log("Input tensor shape:", input.shape);
+    //console.log("Input tensor shape:", input.shape);
 
     // ---------------- Run inference ---------------- 
     console.log("Running model inference...");
     const rawOutput = await model.execute(input);
-    console.log("Raw output:", rawOutput);
-    console.log("Raw output shape:", rawOutput.shape);
+    //console.log("Raw output:", rawOutput);
+    //console.log("Raw output shape:", rawOutput.shape);
 
     // Convert to flat array
     const outputTensor = tf.tensor(rawOutput.dataSync(), rawOutput.shape);
     const outputTransposed = outputTensor.transpose([0, 2, 1]); // [1, 8400, 46]
-    console.log("Output transposed tensor shape:", outputTransposed.shape);
+    //console.log("Output transposed tensor shape:", outputTransposed.shape);
 
     const flatOutput = outputTransposed.arraySync()[0];
-    console.log("FlatOutput first row:", flatOutput[0]);
+    //console.log("FlatOutput first row:", flatOutput[0]);
 
     //  ---------------- Postprocess ---------------- 
     const { boxes, scores, classes } = postprocess(
@@ -208,12 +207,12 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
       (y2 - paddingY) / scale,
     ]);
 
-    console.log("Boxes after mapping back:", mappedBoxes.slice(0, 3));
+    //console.log("Boxes after mapping back:", mappedBoxes.slice(0, 3));
 
     //  ---------------- Apply NMS ---------------- 
     const nmsResults = await applyNMS(mappedBoxes, scores, classes);
-    console.log("Boxes after NMS:", nmsResults.boxes.length);
-    console.log("Sample boxes after NMS:", nmsResults.boxes.slice(0, 3));
+    //console.log("Boxes after NMS:", nmsResults.boxes.length);
+    //console.log("Sample boxes after NMS:", nmsResults.boxes.slice(0, 3));
 
     //  ---------------- Render ---------------- 
     //renderBoxes(canvasRef, classThreshold, nmsResults.boxes, nmsResults.scores, nmsResults.classes);
