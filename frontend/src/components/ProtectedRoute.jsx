@@ -15,8 +15,7 @@ const ProtectedRoute = ({ children }) => {
 
     if (isLoggedIn === null) {
         return <p>Loading...</p>;
-    }
-
+    } 
     return isLoggedIn ? children : <Navigate to="/login" replace />;
 };
 

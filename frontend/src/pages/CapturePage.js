@@ -1,14 +1,31 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
+import { detectImage } from "../utility/detect";
+import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
 
+
+ //-- Mock data
 import axios from 'axios';
 
-var animalName = "RubberDuck";
-var confidence = "420.15";
+var animalName = "None";
+var confidence = "None";
+
 
 const CapturePage = () => {
+  const [model, setModel] = useState(null);
+  useEffect(() => {
+    async function initModel() {
+      const m = await loadModel();
+      setModel(m);
+    }
+    initModel();
+  }, []);
+
+
+  const overlayRef = useRef(null);
   const webcamRef = useRef(null);
   const [showForm, setShowForm] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -25,6 +42,12 @@ const CapturePage = () => {
     height: { ideal: 720 },
     facingMode: { ideal: "environment" },
   };
+
+  /*useEffect( () => {
+    if(model && webcamRef.current?.video && overlayRef.current) {
+      detectVideo(webcamRef.current.video, model, 0.3, overlayRef.current); // Remember, 4 parameters are -> vidSource, AI model, classThreshold, canvas Reference
+    }
+  },[model]);*/
 
   async function toBase64(input) {  //just for testing
     // If it's already a File or Blob
@@ -53,6 +76,22 @@ const CapturePage = () => {
   }
 
   const captureImage = async () => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (!imageSrc || !model) return;
+
+    const img = new Image();
+    img.src = imageSrc;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Call an async function here
+      runDetection(img, canvas);
+    };
+
+    /* ------- API AI model
     // Capture the image from webcam
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
@@ -92,10 +131,23 @@ const CapturePage = () => {
       console.error("API request failed:", err);
     } finally {
       setLoading(false);
-    }
+    }*/
   };
 
+  const runDetection = async (img, canvas) => {
+    try {
+      const results = await detectImage(model, 0.25, canvas, img);
 
+      console.log("Detection results CapturePage: ", results);
+
+      setCapturedImage(img.src);
+      animalName = results.labels[0];
+      confidence = results.scores[0];
+      setShowForm(true);
+    } catch (err) {
+      console.error("Error during detection:", err);
+    }
+  };
 
   const handleClose = () => setShowForm(false);
 
@@ -126,7 +178,8 @@ const CapturePage = () => {
           mirrored={false}
           screenshotQuality={1}
           forceScreenshotSourceSize
-        />
+        /> {/* The Canvas is used as overlay for the rendering boxes */}
+          <canvas ref={overlayRef} className="overlay" />
         <div className="capture-button-wrapper">
           <button className="capture-button" onClick={captureImage}>
             <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30}
@@ -154,18 +207,18 @@ const CapturePage = () => {
               <h3 className="form-title">Animal Detection Result</h3>
 
               {/* Visual Fields */}
-              {apiResponse?.image && (
+              {capturedImage && (
                 <div className="detection-result">
                   <img
-                    src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
+                    src={capturedImage}
                     alt="Detected Animal"
                     className="detected-image"
                     style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
                   />
-                  {apiResponse.detection && (
+                  {animalName && (
                     <>
-                      <h4 className="animal-name">{apiResponse.detection}</h4>
-                      <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
+                      <h4 className="animal-name">{animalName}</h4>
+                      <p className="confidence">Confidence: {confidence * 100}%</p>
                     </>
                   )}
                 </div>
@@ -231,9 +284,54 @@ const CapturePage = () => {
         )}
 
 
+        {capturedImage && (
+          <div className="captured-image-wrapper">
+            <img src={capturedImage} alt="Captured" className="captured-image" />
+          </div>
+        )}
       </Container>
     </Container>
   );
 };
 
-export default CapturePage;
+export default CapturePage; 
+
+/*
+import React, { useRef, useState, useEffect } from "react";
+import { Container } from 'react-bootstrap';
+import './CapturePage.css';
+import { detectImage } from "../utility/detect";
+import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
+
+const CapturePage = () => {
+  const [model, setModel] = useState(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    async function initModel() {
+      const m = await loadModel();
+      setModel(m);
+    }
+    initModel();
+  }, []);
+
+  useEffect(() => {
+    if (model && canvasRef.current) {
+      detectImage(model, 0.5, canvasRef.current).then(results => {
+        console.log("Detection results in CapturePage:", results);
+      });
+    }
+  }, [model]);
+
+
+  return (
+    <Container className="scanner-page">
+      <Container className="webcam-wrapper">
+        <canvas ref={canvasRef} className="overlay" />
+      </Container>
+    </Container>
+  );
+};
+
+export default CapturePage; */

@@ -9,12 +9,19 @@ import LandingPage from './pages/LandingPage';
 import AboutPage from './pages/AboutPage';
 import RegisterPage from './pages/RegisterPage';
 import Layout from './components/Layout';
+import React, {useEffect} from 'react';
+import { downloadModel } from './utility/modelStorageOperations';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './pages/error_pages/404_Page';
 import { LoadingProvider } from "./contexts/LoadingContext";
 import GlobalSpinner from './components/LoadingSpinner';
 
 function App() {
+  useEffect(() => {
+    downloadModel().catch(err => {
+      console.error("Failed to download model on launch:", err);
+    });
+  }, []);
   return (
     <LoadingProvider>
       <GlobalSpinner />
