@@ -1,21 +1,66 @@
 /* Existing webcam styles */
+
+.closeScanner{
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    background-color: #ff6b00;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.closeScanner:hover {
+    background-color: #e55a00;
+    cursor: pointer;
+}
+
+.icon-bold {
+  font-weight: bold;
+  stroke-width: 2px;
+}
+
 .webcam-wrapper {
-    position: relative;
-    background-color: grey;
-    border-radius: 0.5rem;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    top: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .webcam {
-    width: 100%;
-    height: 80vh;
-    object-fit: cover;
-    border-radius: 0.5rem;
+    width: auto;
+    height: 85vh;
 }
 
-.capture-button-wrapper {
-    position: relative;
+.display-cap-image {
+    width: auto;
+    height: 85vh;
+}
+
+.capture-footer {
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    bottom: 20px;
+    height: 15vh;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 5;
 }
 
 .capture-button {
@@ -23,9 +68,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 50%;
-    left: 10%;
-    transform: translate(-50%, -50%);
+    top: 13%;
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
@@ -37,6 +80,32 @@
 
 .capture-button:hover {
     background-color: #e55a00;
+    cursor: pointer;
+}
+
+.capture-nav {
+    position: fixed;
+    bottom: 1.5%;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.captureNavButtons {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    transition: 0.2s ease;
+    font-weight: 600;
+}
+
+.captureNavButtons:hover {
+    color: #e55a00;
+    cursor: pointer;
 }
 
 /* Custom Overlay Styles */
@@ -50,7 +119,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 500;
     backdrop-filter: blur(2px);
 }
 
@@ -113,17 +182,15 @@
 /* Detection Result Styles */
 .detection-result {
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.captured-image {
-    max-width: 100%;
-    max-height: 180px;
+.detected-image {
+    width: 100%;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: contain;
     border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .animal-name {
@@ -149,13 +216,22 @@
 .form-group {
     display: flex;
     flex-direction: column;
+    left: 0;
+    width: 100%;
 }
 
 .form-group label {
+    display: block;
+    text-align: left;
     margin-bottom: 8px;
     font-weight: 500;
     color: #333;
     font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 .form-group input[type="text"],
@@ -176,16 +252,10 @@
     box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
 }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
 /* Toggle Switch Styles */
 .switch-container {
     display: flex;
     align-items: center;
-    margin-top: 5px;
 }
 
 .switch-label {
@@ -270,10 +340,23 @@
     }
 }
 
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000; /* Ensure it appears above other elements */
+}
+
 .spinner {
   margin-top: 10px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4b6949ff;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -289,14 +372,15 @@
   background: white;
   border-radius: 20px;
   padding: 30px;
+  width: 70%;
   max-width: 400px;
-  width: 90%;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s ease-out;
 }
 
 .success-popup h4 {
+  margin-top: 20px;
   margin-bottom: 20px;
   color: #333;
   font-size: 20px;
@@ -311,4 +395,10 @@
     height: 100%;
     pointer-events: none;
     border-radius: 0.5rem;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }

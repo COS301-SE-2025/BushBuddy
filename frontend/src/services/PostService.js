@@ -8,13 +8,13 @@ import {
 } from "../models/PostModel";
 
 async function createPost(createPostRequest) {
-    const response = await apiClient.post("/posts", createPostRequest);
+    const response = await apiClient.post("/posts/", createPostRequest);
     return response.data;
 }
 
 //add params and filters to fetchAllPostsRequest model
-async function fetchAllPosts() {
-    const response = await apiClient.get("/posts/all");
+async function fetchAllPosts(filter) {
+    const response = await apiClient.get(`/posts/all/${filter}`);
     const results = response.data;
     const postsBefore = results.data;
 
@@ -30,10 +30,11 @@ async function fetchAllPosts() {
             is_removed: result.is_removed,
             created_at: result.created_at,
             likes: result.likes,
+            isLiked: result.isLiked,
             comments: result.comments
         }));
     }
-    
+
     return posts;
 }
 

@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 images/
 .ruff_cache/
+audio/data/

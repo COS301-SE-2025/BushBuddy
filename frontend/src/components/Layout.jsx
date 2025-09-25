@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Layout.css';
 import SettingsModal from './SettingsModal';
 import HelpModal from './HelpModal';
@@ -11,6 +11,8 @@ function Layout() {
   const location = useLocation();
   const path = location.pathname;
   
+  const [showNavAndHead, setShowNavAndHead] = useState(true);
+
   const [showSettings, setShowSettings] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -72,82 +74,106 @@ function Layout() {
 
   const showSettingsIcon = ['/profile'].includes(path);
 
+  useEffect(() => {
+    // Hide the nav bar on specific routes
+    const hideNavBarRoutes = ['/capture'];
+    setShowNavAndHead(!hideNavBarRoutes.includes(path));
+  }, [path]);
+
 return (
     <div className="layout-wrapper">
-      <Navbar fixed="top" className="header">
-        <img 
-          src={require("../assets/BushBuddy.webp")}
-          alt="App Icon"
-          className="header-icon"
-        />
-        <Navbar.Brand className="header-brand">
-          {getHeaderText()}
-        </Navbar.Brand>
+      {showNavAndHead && (
+        <Navbar fixed="top" className="header">
+          <img 
+            src={require("../assets/BushBuddy.webp")}
+            alt="App Icon"
+            className="header-icon"
+          />
+          <Navbar.Brand className="header-brand">
+            {getHeaderText()}
+          </Navbar.Brand>
 
-        {
-            showSettingsIcon ? (
-              <div
-                className="header-settings-icon"
-                onClick={() => setShowSettings(true)}
-              >
-                <FaCog size={28} color="#FFFFFF" />
-              </div>
-            ) : (
-              <div 
-                className="header-profile-icon"
-                onClick={() => navigate('/profile')}
-              >
-                <img 
-                  src={require("../assets/Jean-Steyn-ProfilePic.jpg")}
-                  alt="Profile"
-                  className="header-profile-img"
-                />
-              </div>
-            )
-          }
-      </Navbar>
-
+          {
+              showSettingsIcon ? (
+                <div
+                  className="header-settings-icon"
+                  onClick={() => setShowSettings(true)}
+                >
+                  <FaCog size={28} color="#FFFFFF" />
+                </div>
+              ) : (
+                <div 
+                  className="header-profile-icon"
+                  onClick={() => navigate('/profile')}
+                >
+                  <img 
+                    src={require("../assets/Jean-Steyn-ProfilePic.jpg")}
+                    alt="Profile"
+                    className="header-profile-img"
+                  />
+                </div>
+              )
+            }
+        </Navbar>
+      )}
       <Container className="main-content">
         <Outlet />
 
-        <div className="help-div">
-          <div
-            className="help-section"
-            onClick={() => {
-              setHelpText(getHelpText());
-              setShowHelp(true);
-            }}
-          >
-            <FaQuestionCircle size={'1.5rem'} />
+        {path === '/capture' ? (
+          <div className="help-div">
+            <div
+              className="help-button-capture"
+              onClick={() => {
+                setHelpText(getHelpText());
+                setShowHelp(true);
+              }}
+            >
+              <FaQuestionCircle size={'1.5rem'} />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="help-div">
+            <div
+              className="help-section"
+              onClick={() => {
+                setHelpText(getHelpText());
+                setShowHelp(true);
+              }}
+            >
+              <FaQuestionCircle size={'1.5rem'} />
+            </div>
+          </div>
+        )}
       </Container>
 
-      <Navbar className="footer">
-        <Button className={`nav-button-home ${path === '/main' ? 'active' : ''}`} onClick={() => navigate('/main')}>
-          <FaHome size={'1.5rem'} />
-          <span className="nav-label">Home</span>
-        </Button>
+      {showNavAndHead && (
+        <Navbar className="footer">
+          <Button className={`nav-button-home ${path === '/main' ? 'active' : ''}`} onClick={() => navigate('/main')}>
+            <FaHome size={'1.5rem'} />
+            <span className="nav-label">Home</span>
+          </Button>
 
-        <Button className={`nav-button-map ${path === '/map' ? 'active' : ''}`} onClick={() => navigate('/map')}>
-          <FaMapMarkedAlt size={'1.5rem'} />
-          <span className="nav-label">Map</span>
-        </Button>
+          <Button className={`nav-button-map ${path === '/map' ? 'active' : ''}`} onClick={() => navigate('/map')}>
+            <FaMapMarkedAlt size={'1.5rem'} />
+            <span className="nav-label">Map</span>
+          </Button>
 
-        <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
-          <FaCamera size={'1.5rem'} />
-        </Button>
+          <Button className="nav-button-scanner" onClick={() => navigate('/capture')}>
+            <FaCamera size={'1.5rem'} />
+          </Button>
 
-        <Button className={`nav-button-feed ${path === '/feed' ? 'active' : ''}`} onClick={() => navigate('/feed')}>
-          <FaRegNewspaper size={'1.5rem'} />
-          <span className="nav-label">Feed</span>
-        </Button>
+          <Button className={`nav-button-feed ${path === '/feed' ? 'active' : ''}`} onClick={() => navigate('/feed')}>
+            <FaRegNewspaper size={'1.5rem'} />
+            <span className="nav-label">Feed</span>
+          </Button>
 
-        <Button className={`nav-button-profile ${path === '/profile' ? 'active' : ''}`} onClick={() => navigate('/profile')}>
-          <FaUser size={'1.3rem'} />
-          <span className="nav-label-profile">Profile</span>
-        </Button>
-      </Navbar>
+          <Button className={`nav-button-profile ${path === '/profile' ? 'active' : ''}`} onClick={() => navigate('/profile')}>
+            <FaUser size={'1.3rem'} />
+            <span className="nav-label-profile">Profile</span>
+          </Button>
+        </Navbar>
+      )}
+
       <SettingsModal
         show={showSettings}
         onClose={() => setShowSettings(false)}

@@ -5,7 +5,11 @@ import './CapturePage.css';
 import { detectImage } from "../utility/detect";
 import * as tf from "@tensorflow/tfjs";
 import { loadModel } from "../utility/modelStorageOperations";
-
+import { FaCamera } from 'react-icons/fa';
+import { IoMdClose } from "react-icons/io";
+import AudioDetect from '../components/AudioDetect';
+import { SightingsController } from '../controllers/SightingsController';
+import { PostsController } from '../controllers/PostsController';
 
  //-- Mock data
 import axios from 'axios';
@@ -28,13 +32,16 @@ const CapturePage = () => {
   const overlayRef = useRef(null);
   const webcamRef = useRef(null);
   const [showForm, setShowForm] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-
-
+  const [activeMode, setActiveMode] = useState('LIVE');
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showFailPopup, setShowFailPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [descriptionError, setDescriptionError] = useState(false); // New state for error
 
 
   const videoConstraints = {
@@ -96,8 +103,9 @@ const CapturePage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
 
-    console.log("Captured Image (data URL):", imageSrc);
+
     setCapturedImage(imageSrc);
+    setBackgroundImage(imageSrc);
 
     // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
     const base64Image = imageSrc.split(",")[1];
@@ -113,7 +121,6 @@ const CapturePage = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      console.log("Prediction result:", response.data);
 
       let animalName = response.data.detection;
       let confidence = response.data.confidence;
@@ -149,139 +156,253 @@ const CapturePage = () => {
     }
   };
 
-  const handleClose = () => setShowForm(false);
+  const resetBackground = () => {
+    setBackgroundImage(null);
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
+  const resetCapture = () => {
+    setCapturedImage(null);
+  };
 
-    console.log("Form submitted with data:", {
-      postName: formData.get('postName'),
-      description: formData.get('description'),
-      geolocation: formData.get('geolocation') === 'on'
-    });
-
+  const handleClose = () => {
     setShowForm(false);
-    setShowPopup(true);
+    resetCapture();
+  }
+
+  const handleSubmit = async (event) => {
+    setLoading(true);
+
+    try {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+
+      const description = formData.get('description').trim();
+
+      // Validate description
+      if (!description) {
+        setDescriptionError(true); // Show error message
+        setLoading(false);
+        return;
+      }
+      setDescriptionError(false); // Clear error if valid
+
+      let geoLocLat = null;
+      let geoLocLong = null;
+
+      if (formData.get('geolocation') === 'on' && navigator.geolocation) {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        geoLocLat = position.coords.latitude;
+        geoLocLong = position.coords.longitude;
+      }
+
+      // Convert base64 image to Blob
+      const byteString = atob(capturedImage.split(",")[1]);
+      const mimeString = capturedImage.split(",")[0].split(":")[1].split(";")[0];
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+      const imageBlob = new Blob([uint8Array], { type: mimeString });
+
+      // Sighting
+      const sightingData = new FormData();
+      sightingData.append("animal", apiResponse.detection);
+      sightingData.append("confidence", (apiResponse.confidence * 100).toFixed(2));
+      sightingData.append("longitude", geoLocLong);
+      sightingData.append("latitude", geoLocLat);
+      sightingData.append("file", imageBlob);
+
+      const sightResult = await SightingsController.handleCreateSighting(sightingData);
+
+      // Post
+      let postResult = null;
+      if (sightResult.success) {
+        postResult = await PostsController.handleCreatePost(
+          sightResult.result.identification_id,
+          description,
+          formData.get('geolocation') === 'on' ? true : false
+        );
+      }
+
+      if (postResult===null || !postResult.success || !postResult) {
+        setLoading(false);
+        setShowForm(false);
+        setShowFailPopup(true);
+        resetCapture();
+        throw new Error("Failed to create post");
+      }
+
+      setShowForm(false);
+      setShowSuccessPopup(true);
+      resetCapture();
+    } catch (err) {
+      console.error("Error during submission:", err);
+      setShowForm(false);
+      setShowFailPopup(true);
+    } finally {
+      setLoading(false);
+      resetBackground();
+    }
   };
 
   return (
-    <Container className="scanner-page">
-      {loading && <div className="spinner"></div>}
-      <Container className="webcam-wrapper">
-        <Webcam
-          ref={webcamRef}
-          className="webcam"
-          audio={false}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          mirrored={false}
-          screenshotQuality={1}
-          forceScreenshotSourceSize
-        /> {/* The Canvas is used as overlay for the rendering boxes */}
-          <canvas ref={overlayRef} className="overlay" />
-        <div className="capture-button-wrapper">
+    <div className="scanner-page">
+      <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
+
+      <div className='scanner-main-content'>
+        {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
+        {activeMode === 'AUDIO' ? (
+          <AudioDetect />
+        ) : (
+          <div className="webcam-wrapper">
+            <Webcam
+              ref={webcamRef}
+              className="webcam"
+              audio={false}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              mirrored={false}
+              screenshotQuality={1}
+              forceScreenshotSourceSize
+            />
+
+            {loading && (
+              <div className="spinner-overlay">
+                <div className="spinner"></div>
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
+      <div className="capture-footer">
+        {activeMode == 'LIVE' && (
           <button className="capture-button" onClick={captureImage}>
-            <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30}
-              fill={"white"} viewBox="0 0 24 24">
-              <path d="M10.5 5 11.5 4.33 12.5 5 12.17 3.83 13 3.12 12 3 11.5 2 11 3 10 3.12 10.83 3.83 10.5 5z" />
-              <path d="M20.33 13.67 19.5 12 18.67 13.67 17 13.88 18.39 15.06 17.83 17 19.5 15.89 21.17 17 20.61 15.06 22 13.88 20.33 13.67z" />
-              <path d="M4.83 9 6.5 7.89 8.17 9 7.61 7.05 9 5.88 7.33 5.67 6.5 4 5.67 5.67 4 5.88 5.39 7.05 4.83 9z" />
-              <path d="m18.71,2.29c-.39-.39-1.02-.39-1.41,0L2.29,17.29c-.39.39-.39,1.02,0,1.41l3,3c.2.2.45.29.71.29s.51-.1.71-.29l15-15c.39-.39.39-1.02,0-1.41l-3-3ZM6,19.59l-1.59-1.59,9.09-9.09,1.59,1.59-9.09,9.09Zm10.5-10.5l-1.59-1.59,3.09-3.09,1.59,1.59-3.09,3.09Z" />
-            </svg>
+            <FaCamera color="white" size={30} />
           </button>
+        )}
+
+        <div className="capture-nav">
+          <span
+            className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
+            onClick={() => setActiveMode('UPLOAD')}
+          >
+            UPLOAD
+          </span>
+          <span
+            className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
+            onClick={() => setActiveMode('LIVE')}
+          >
+            LIVE
+          </span>
+          <span
+            className={`captureNavButtons ${activeMode === 'AUDIO' ? 'active' : ''}`}
+            onClick={() => setActiveMode('AUDIO')}
+          >
+            AUDIO
+          </span>
         </div>
+      </div>
 
-        {/* Custom Overlay */}
-        {showForm && (
-          <div className="form-overlay">
-            <div className="form-container">
-              {/* Close button */}
-              <button className="close-button" onClick={handleClose}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
+      {/* Custom Overlay */}
+      {showForm && (
+        <div className="form-overlay">
+          <div className="form-container">
+            {/* Close button */}
+            <button className="close-button" onClick={handleClose}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
 
-              <h3 className="form-title">Animal Detection Result</h3>
+            <h3 className="form-title">Animal Detection Result</h3>
 
-              {/* Visual Fields */}
-              {capturedImage && (
-                <div className="detection-result">
-                  <img
-                    src={capturedImage}
-                    alt="Detected Animal"
-                    className="detected-image"
-                    style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
-                  />
-                  {animalName && (
-                    <>
-                      <h4 className="animal-name">{animalName}</h4>
-                      <p className="confidence">Confidence: {confidence * 100}%</p>
-                    </>
-                  )}
-                </div>
-              )}
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="detection-form">
-                <div className="form-group">
-                  <label htmlFor="postName">Post Name</label>
-                  <input
-                    type="text"
-                    id="postName"
-                    name="postName"
-                    placeholder="Enter a post title"
-                    required
-                  />
-                </div>
+            {/* Visual Fields */}
+            {capturedImage && (
+              <div className="detection-result">
+                <img
+                  src={capturedImage}
+                  alt="Detected Animal"
+                  className="detected-image"
+                />
+                {animalName ? (
+                  <>
+                    <h4 className="animal-name">{animalName}</h4>
+                    <p className="confidence">Confidence: {(confidence * 100).toFixed(2)}%</p>
+                    <hr style={{ width: "85%", backgroundColor: "lightgrey", height: "2px", border: "none" }} />
 
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows="3"
-                    placeholder="Write something..."
-                  ></textarea>
-                </div>
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="detection-form">
+                      <div className="form-group">
+                        <label htmlFor="description" style={{ left: 0 }}>Description</label>
+                        {descriptionError && (
+                          <p className="error-message">Description cannot be empty.</p>
+                        )}
+                        <textarea
+                          id="description"
+                          name="description"
+                          rows="3"
+                          placeholder="Write something..."
+                        ></textarea>
+                      </div>
 
-                <div className="form-group">
-                  <label htmlFor="geolocation">Enable Geolocation</label>
-                  <div className="switch-container">
-                    <label className="switch-label">
-                      <input
-                        type="checkbox"
-                        id="geolocation"
-                        name="geolocation"
-                        className="geolocation-switch"
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </div>
-                </div>
+                      {/* Add geolocation conditional for rhino */}
+                      <div className="form-group">
+                        <label htmlFor="geolocation">Enable Geolocation</label>
+                        <label className="switch-label">
+                          <input
+                            type="checkbox"
+                            id="geolocation"
+                            name="geolocation"
+                            className="geolocation-switch"
+                          />
+                          <span className="slider"></span>
+                        </label>
+                      </div>
 
-                <button type="submit" className="submit-button">
-                  Submit
-                </button>
-              </form>
-            </div>
+                      <button type="submit" className="submit-button">
+                        Submit
+                      </button>
+                    </form>
+                  </>
+                ):(
+                  <>
+                    <h4 className="animal-name">No Animal Detected</h4>
+                    <button className="submit-button" onClick={handleClose}>
+                      OK
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
-        )}
+        </div>
+      )}
 
-        {showPopup && (
-          <div className="form-overlay">
-            <div className="success-popup">
-              <h4>Post created successfully</h4>
-              <button
-                className="submit-button"
-                onClick={() => setShowPopup(false)}
-              >
-                OK
-              </button>
-            </div>
+      {loading && (
+        <div className="spinner-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+
+      {showSuccessPopup && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>Post created successfully</h4>
+            <button
+              className="submit-button"
+              onClick={() => setShowSuccessPopup(false)}
+            >
+              OK
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
 
         {capturedImage && (
@@ -289,8 +410,20 @@ const CapturePage = () => {
             <img src={capturedImage} alt="Captured" className="captured-image" />
           </div>
         )}
-      </Container>
-    </Container>
+      {showFailPopup && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>Failed to Create Post</h4>
+            <button
+              className="submit-button"
+              onClick={() => setShowFailPopup(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
