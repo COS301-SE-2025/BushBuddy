@@ -83,33 +83,43 @@
   align-items: center;
 }
 
+/* Ensure the parent container is relatively positioned */
+.map-section-img {
+  position: relative; 
+  display: inline-block;
+  width: 95%;
+  max-width: 700px;
+}
+
 .post-image {
-  width: 105%;
+  width: 100%;
   height: auto;
   max-width: 700px;
   border-radius: 15px;
   margin: 0 0 16px 0;
 }
 
-.map-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
+/* Map image styling */
 .map-image {
-  width: 105%;
+  position: absolute; /* Position it relative to the .map-section-img container */
+  bottom: 10px; /* Adjust the distance from the bottom of the post image */
+  right: 10px; /* Adjust the distance from the right of the post image */
+  width: 25%; /* Set the size of the map image (adjust as needed) */
   height: auto;
-  max-width: 700px;
-  border-radius: 15px;
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for better visibility */
+  z-index: 2; /* Ensure it overlays the post image */
 }
 
+/* Map overlay icon styling */
 .map-overlay {
   position: absolute;
+  bottom: 15px; /* Adjust the position of the overlay icon */
+  right: 15px;
   background-color: #ff6b35;
   border-radius: 50%;
   padding: 10px;
+  z-index: 3; /* Ensure it appears above the map image */
 }
 
 .engagement-date {

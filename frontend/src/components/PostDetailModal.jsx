@@ -85,14 +85,15 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
           </div>
         </div>
 
-        <img className="post-image" src={post.image_url} alt={post.title} />
 
-        <div className="map-section">
+        <div className="map-section-img">
+          <img className="post-image" src={post.image_url} alt={post.title} />
           <img
             className="map-image"
             src={require("../assets/Map-Demo.webp")}
             alt="Map view"
-          />
+          >
+          </img>
           <div className="map-overlay">
             <FaLocationDot color="white" size={18} />
           </div>
