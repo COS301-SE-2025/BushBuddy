@@ -1,19 +1,35 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
+import { detectImage } from "../utility/detect";
+import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
 import AudioDetect from '../components/AudioDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
+ //-- Mock data
 import axios from 'axios';
 
-var animalName = "RubberDuck";
-var confidence = "420.15";
+var animalName = "None";
+var confidence = "None";
+
 
 const CapturePage = () => {
+  const [model, setModel] = useState(null);
+  useEffect(() => {
+    async function initModel() {
+      const m = await loadModel();
+      setModel(m);
+    }
+    initModel();
+  }, []);
+
+
+  const overlayRef = useRef(null);
   const webcamRef = useRef(null);
   const [showForm, setShowForm] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -33,6 +49,12 @@ const CapturePage = () => {
     height: { ideal: 720 },
     facingMode: { ideal: "environment" },
   };
+
+  /*useEffect( () => {
+    if(model && webcamRef.current?.video && overlayRef.current) {
+      detectVideo(webcamRef.current.video, model, 0.3, overlayRef.current); // Remember, 4 parameters are -> vidSource, AI model, classThreshold, canvas Reference
+    }
+  },[model]);*/
 
   async function toBase64(input) {  //just for testing
     // If it's already a File or Blob
@@ -61,6 +83,22 @@ const CapturePage = () => {
   }
 
   const captureImage = async () => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (!imageSrc || !model) return;
+
+    const img = new Image();
+    img.src = imageSrc;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Call an async function here
+      runDetection(img, canvas);
+    };
+
+    /* ------- API AI model
     // Capture the image from webcam
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) return;
@@ -100,6 +138,21 @@ const CapturePage = () => {
       console.error("API request failed:", err);
     } finally {
       setLoading(false);
+    }*/
+  };
+
+  const runDetection = async (img, canvas) => {
+    try {
+      const results = await detectImage(model, 0.25, canvas, img);
+
+      console.log("Detection results CapturePage: ", results);
+
+      setCapturedImage(img.src);
+      animalName = results.labels[0];
+      confidence = results.scores[0];
+      setShowForm(true);
+    } catch (err) {
+      console.error("Error during detection:", err);
     }
   };
 
@@ -270,17 +323,17 @@ const CapturePage = () => {
             <h3 className="form-title">Animal Detection Result</h3>
 
             {/* Visual Fields */}
-            {apiResponse?.image && (
+            {capturedImage && (
               <div className="detection-result">
                 <img
-                  src={`data:image/png;base64,${apiResponse.image}`}
+                  src={capturedImage}
                   alt="Detected Animal"
                   className="detected-image"
                 />
-                {apiResponse.detection ? (
+                {animalName ? (
                   <>
-                    <h4 className="animal-name">{apiResponse.detection}</h4>
-                    <p className="confidence">Confidence: {(apiResponse.confidence * 100).toFixed(2)}%</p>
+                    <h4 className="animal-name">{animalName}</h4>
+                    <p className="confidence">Confidence: {(confidence * 100).toFixed(2)}%</p>
                     <hr style={{ width: "85%", backgroundColor: "lightgrey", height: "2px", border: "none" }} />
 
                     {/* Form */}
@@ -351,6 +404,12 @@ const CapturePage = () => {
         </div>
       )}
 
+
+        {capturedImage && (
+          <div className="captured-image-wrapper">
+            <img src={capturedImage} alt="Captured" className="captured-image" />
+          </div>
+        )}
       {showFailPopup && (
         <div className="form-overlay">
           <div className="success-popup">
@@ -368,4 +427,44 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage;
+export default CapturePage; 
+
+/*
+import React, { useRef, useState, useEffect } from "react";
+import { Container } from 'react-bootstrap';
+import './CapturePage.css';
+import { detectImage } from "../utility/detect";
+import * as tf from "@tensorflow/tfjs";
+import { loadModel } from "../utility/modelStorageOperations";
+
+const CapturePage = () => {
+  const [model, setModel] = useState(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    async function initModel() {
+      const m = await loadModel();
+      setModel(m);
+    }
+    initModel();
+  }, []);
+
+  useEffect(() => {
+    if (model && canvasRef.current) {
+      detectImage(model, 0.5, canvasRef.current).then(results => {
+        console.log("Detection results in CapturePage:", results);
+      });
+    }
+  }, [model]);
+
+
+  return (
+    <Container className="scanner-page">
+      <Container className="webcam-wrapper">
+        <canvas ref={canvasRef} className="overlay" />
+      </Container>
+    </Container>
+  );
+};
+
+export default CapturePage; */
