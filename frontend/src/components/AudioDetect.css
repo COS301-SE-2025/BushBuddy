@@ -33,7 +33,7 @@
 }
 
 .record-btn.stop {
-    background-color: #ef4444;
+    background-color: #f5582d;
 }
 
 .record-btn.recording {
@@ -42,7 +42,7 @@
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        box-shadow: 0 0 0 0 rgba(245, 88, 45);
     }
 
     70% {
