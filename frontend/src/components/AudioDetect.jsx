@@ -256,6 +256,7 @@ const AudioDetect = ({
       {result && (
         <div className="form-overlay">
           <div className="success-popup">
+            <h4>Detection Result</h4>
             {result.error ? (
               <p>{result.error}</p>
             ) : (
