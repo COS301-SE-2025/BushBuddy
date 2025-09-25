@@ -65,8 +65,9 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install -r AI/python/requirements.txt
       - name: Run Python Scripts
+        working-directory: AI/python
         run: |
-          for script in AI/python/*.py; do
+          for script in *.py; do
             if [[ -f "$script" && "$script" != *"__init__.py" ]]; then
               echo "Running $script"
               python3 "$script" || { echo "Script $script failed"; exit 1; }
