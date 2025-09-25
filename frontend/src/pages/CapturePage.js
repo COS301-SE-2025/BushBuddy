@@ -143,7 +143,7 @@ const CapturePage = () => {
 
   const runDetection = async (img, canvas) => {
     try {
-      const results = await detectImage(model, 0.25, canvas, img);
+      const results = await detectImage(model, 0.5, canvas, img);
 
       console.log("Detection results CapturePage: ", results);
 
