@@ -83,3 +83,132 @@
     color: white;
     background-color: #4b6949ff;
 }
+
+/* Spinner overlay */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #4b6949ff;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+    /* Proper flex centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1100;
+}
+
+/* The popup box */
+.modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+
+    max-width: 300px;
+    width: 90%;
+    max-height: 200px;
+    overflow-y: auto;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    /* Prevent stretching */
+    display: inline-block;
+}
+
+.modal p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.modal button {
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #4b6949ff;
+    color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* Overlay same as form-overlay */
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+}
+
+/* Popup box */
+.success-popup {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.success-popup p {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Button already styled in your app */
+.submit-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #4b6949ff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}

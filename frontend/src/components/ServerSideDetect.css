@@ -54,7 +54,6 @@
     transform: translateY(0);
 }
 
-/* Spinner */
 .spinner {
     position: fixed;
     top: 50%;
@@ -74,7 +73,6 @@
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Custom Overlay Styles - Same as CapturePage */
 .form-overlay {
     position: fixed;
     top: 0;
@@ -145,7 +143,6 @@
     font-weight: 600;
 }
 
-/* Detection Result Styles */
 .detection-result {
     text-align: center;
     margin-bottom: 25px;
@@ -216,7 +213,6 @@
     min-height: 80px;
 }
 
-/* Toggle Switch Styles */
 .switch-container {
     display: flex;
     align-items: center;
@@ -265,7 +261,6 @@
     transform: translateX(24px);
 }
 
-/* Submit Button */
 .submit-button {
     background-color: #ff6b00;
     color: white;
@@ -288,7 +283,6 @@
     transform: translateY(0);
 }
 
-/* Success Popup */
 .success-popup {
     background: white;
     border-radius: 20px;
@@ -307,7 +301,6 @@
     font-weight: 600;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .upload-page {
         padding: 20px;

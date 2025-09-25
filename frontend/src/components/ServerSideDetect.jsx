@@ -96,6 +96,7 @@ const ServerSideDetect = () => {
 
             <div className="upload-options">
                 <h1>Upload a Photo</h1>
+                <p>Higher detection accuracy</p>
                 <p>Less battery usage, uses more mobile data</p>
 
                 {/* Upload Button */}
