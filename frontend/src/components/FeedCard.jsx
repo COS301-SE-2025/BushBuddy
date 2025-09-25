@@ -13,7 +13,7 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible }) => {
     try {
       const response = await PostsController.handleFetchPost(entry.id);
       if (response.success) {
-        setSelectedPost(response.post);
+        setSelectedPost(response.post, likes);
         setPostDetailVisible(true);
       } else {
         console.error(response.message);
@@ -62,11 +62,11 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible }) => {
             ) : (
               <CiHeart className="heart" size={23} />
             )}
-            {likes}
+            {likes} {/*entry.likes for gloabl state consistency*/}
           </span>
           <span className="comments">
             <IoChatbubbleEllipsesOutline className="bubble" size={20} />
-            {entry.comments /* ✅ no local state, use parent’s data */}
+            {entry.comments}
           </span>
         </div>
         <div className="feed-card-footer">

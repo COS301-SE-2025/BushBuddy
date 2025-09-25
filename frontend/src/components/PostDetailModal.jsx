@@ -6,7 +6,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
 import { PostsController } from "../controllers/PostsController";
 
-const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
+const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, onLikeInc }) => {
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likes, setLikes] = useState(post.likes || 0);
 
@@ -15,13 +15,20 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
   const [showCommentInput, setCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
 
-  //implement case for when user has liked post(css of it)
   const handleLike = async () => {
     try {
       const response = await PostsController.handleLikePost(post.id);
       if (response.success) {
         setIsLiked(!isLiked);
-        setLikes(isLiked ? likes - 1 : likes + 1);
+
+        if (isLiked) {
+          onLikeDec(post.id);
+          setLikes(likes - 1);
+        } else {
+          onLikeInc(post.id);
+          setLikes(likes + 1);
+        }
+
       } else {
         console.error(response.message);
       }
