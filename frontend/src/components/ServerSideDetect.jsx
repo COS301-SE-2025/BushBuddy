@@ -2,22 +2,28 @@ import React, { useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import './ServerSideDetect.css';
 import axios from 'axios';
+import { SightingsController } from '../controllers/SightingsController';
+import { PostsController } from '../controllers/PostsController';
 
 const ServerSideDetect = () => {
     const fileInputRef = useRef(null);
 
     const [showForm, setShowForm] = useState(false);
     const [capturedImage, setCapturedImage] = useState(null);
-    const [apiResponse, setApiResponse] = useState(null);
-    const [showPopup, setShowPopup] = useState(false);
+    const [animalName, setAnimalName] = useState(null);
+    const [confidence, setConfidence] = useState(null);
+    const [apiImage, setApiImage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showFailPopup, setShowFailPopup] = useState(false);
+    const [descriptionError, setDescriptionError] = useState(false);
 
     // Convert file to base64
     const toBase64 = async (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(",")[1]); // clean base64
+            reader.onload = () => resolve(reader.result.split(',')[1]);
             reader.onerror = (error) => reject(error);
         });
     };
@@ -27,67 +33,107 @@ const ServerSideDetect = () => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Validate file type
         if (!file.type.startsWith('image/')) {
             alert('Please select an image file.');
             return;
         }
 
-        console.log("Selected file:", file);
-
-        // Create preview URL
         const previewUrl = URL.createObjectURL(file);
         setCapturedImage(previewUrl);
-
         setLoading(true);
 
         try {
-            // Convert to base64
             const base64Image = await toBase64(file);
 
-            // Send to API
             const response = await axios.post(
-                "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
+                'https://RuanEsterhuizen-BushBuddy.hf.space/detect',
                 { image: base64Image },
-                { headers: { "Content-Type": "application/json" } }
+                { headers: { 'Content-Type': 'application/json' } }
             );
 
-            console.log("Prediction result:", response.data);
-
-            let animalName = response.data.detection;
-            let confidence = response.data.confidence;
-
-            setApiResponse(response.data);
-
-            if (animalName == null) {
-                animalName = "No animals found";
-                confidence = "";
-            }
-
+            setAnimalName(response.data.detection ?? 'Unknown');
+            setConfidence(response.data.confidence ?? 0);
+            setApiImage(response.data.image);
             setShowForm(true);
-
         } catch (err) {
-            console.error("API request failed:", err);
-            alert('Failed to process image. Please try again.');
+            console.error('API request failed:', err);
+            alert('Failed to process image.');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleClose = () => setShowForm(false);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-
-        console.log("Form submitted with data:", {
-            postName: formData.get('postName'),
-            description: formData.get('description'),
-            geolocation: formData.get('geolocation') === 'on'
-        });
-
+    const handleClose = () => {
         setShowForm(false);
-        setShowPopup(true);
+        setCapturedImage(null);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+
+        try {
+            const formData = new FormData(event.target);
+            const description = formData.get('description')?.trim();
+            const shareLocation = formData.get('geolocation') === 'on';
+
+            if (!description) {
+                setDescriptionError(true);
+                setLoading(false);
+                return;
+            }
+            setDescriptionError(false);
+
+            let geoLocLat = null;
+            let geoLocLong = null;
+
+            if (shareLocation && navigator.geolocation) {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                geoLocLat = position.coords.latitude;
+                geoLocLong = position.coords.longitude;
+            }
+
+            // Convert previewUrl -> Blob
+            const response = await fetch(capturedImage);
+            const imageBlob = await response.blob();
+
+            // Sighting
+            const sightingData = new FormData();
+            sightingData.append('animal', animalName ?? 'Unknown');
+            sightingData.append(
+                'confidence',
+                confidence ? (confidence * 100).toFixed(2) : '0'
+            );
+            sightingData.append('longitude', geoLocLong);
+            sightingData.append('latitude', geoLocLat);
+            sightingData.append('file', imageBlob);
+
+            const sightResult = await SightingsController.handleCreateSighting(sightingData);
+
+            let postResult = null;
+            if (sightResult.success) {
+                postResult = await PostsController.handleCreatePost(
+                    sightResult.result.identification_id,
+                    description,
+                    shareLocation
+                );
+            }
+
+            if (!postResult || !postResult.success) {
+                setShowFailPopup(true);
+                throw new Error('Failed to create post');
+            }
+
+            setShowForm(false);
+            setShowSuccessPopup(true);
+        } catch (err) {
+            console.error('Submission failed:', err);
+            setShowFailPopup(true);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -99,7 +145,6 @@ const ServerSideDetect = () => {
                 <p>Higher detection accuracy</p>
                 <p>Less battery usage, uses more mobile data</p>
 
-                {/* Upload Button */}
                 <div className="upload-section">
                     <input
                         type="file"
@@ -112,10 +157,6 @@ const ServerSideDetect = () => {
                         className="upload-button"
                         onClick={() => fileInputRef.current?.click()}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24}
-                            fill={"white"} viewBox="0 0 24 24">
-                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                        </svg>
                         Upload Image
                     </button>
                 </div>
@@ -124,48 +165,40 @@ const ServerSideDetect = () => {
             {showForm && (
                 <div className="form-overlay">
                     <div className="form-container">
-                        {/* Close button */}
                         <button className="close-button" onClick={handleClose}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
+                            ✕
                         </button>
 
                         <h3 className="form-title">Animal Detection Result</h3>
 
-                        {/* Visual Fields */}
-                        {apiResponse?.image && (
-                            <div className="detection-result">
+                        <div className="detection-result">
+                            {apiImage ? (
                                 <img
-                                    src={`data:image/png;base64,${apiResponse.image}`} // decode base64 from API
+                                    src={`data:image/png;base64,${apiImage}`}
                                     alt="Detected Animal"
                                     className="detected-image"
-                                    style={{ maxWidth: "400px", maxHeight: "300px", objectFit: "contain" }}
                                 />
-                                {apiResponse.detection && (
-                                    <>
-                                        <h4 className="animal-name">{apiResponse.detection}</h4>
-                                        <p className="confidence">Confidence: {apiResponse.confidence * 100}%</p>
-                                    </>
-                                )}
-                            </div>
-                        )}
-                        {/* Form */}
+                            ) : (
+                                capturedImage && (
+                                    <img
+                                        src={capturedImage}
+                                        alt="Uploaded"
+                                        className="detected-image"
+                                    />
+                                )
+                            )}
+                            <h4 className="animal-name">{animalName}</h4>
+                            <p className="confidence">
+                                Confidence: {(confidence * 100).toFixed(2)}%
+                            </p>
+                        </div>
+
                         <form onSubmit={handleSubmit} className="detection-form">
                             <div className="form-group">
-                                <label htmlFor="postName">Post Name</label>
-                                <input
-                                    type="text"
-                                    id="postName"
-                                    name="postName"
-                                    placeholder="Enter a post title"
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
                                 <label htmlFor="description">Description</label>
+                                {descriptionError && (
+                                    <p className="error-message">Description cannot be empty.</p>
+                                )}
                                 <textarea
                                     id="description"
                                     name="description"
@@ -176,17 +209,15 @@ const ServerSideDetect = () => {
 
                             <div className="form-group">
                                 <label htmlFor="geolocation">Enable Geolocation</label>
-                                <div className="switch-container">
-                                    <label className="switch-label">
-                                        <input
-                                            type="checkbox"
-                                            id="geolocation"
-                                            name="geolocation"
-                                            className="geolocation-switch"
-                                        />
-                                        <span className="slider"></span>
-                                    </label>
-                                </div>
+                                <label className="switch-label">
+                                    <input
+                                        type="checkbox"
+                                        id="geolocation"
+                                        name="geolocation"
+                                        className="geolocation-switch"
+                                    />
+                                    <span className="slider"></span>
+                                </label>
                             </div>
 
                             <button type="submit" className="submit-button">
@@ -197,13 +228,27 @@ const ServerSideDetect = () => {
                 </div>
             )}
 
-            {showPopup && (
+            {showSuccessPopup && (
                 <div className="form-overlay">
                     <div className="success-popup">
                         <h4>Post created successfully</h4>
                         <button
                             className="submit-button"
-                            onClick={() => setShowPopup(false)}
+                            onClick={() => setShowSuccessPopup(false)}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {showFailPopup && (
+                <div className="form-overlay">
+                    <div className="success-popup">
+                        <h4>Failed to Create Post</h4>
+                        <button
+                            className="submit-button"
+                            onClick={() => setShowFailPopup(false)}
                         >
                             OK
                         </button>
