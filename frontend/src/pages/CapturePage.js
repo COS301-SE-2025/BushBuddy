@@ -12,11 +12,8 @@ import ServerSideDetect from '../components/ServerSideDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
- //-- Mock data
-import axios from 'axios';
-
-var animalName = "None";
-var confidence = "None";
+//-- Mock data
+// import axios from 'axios';
 
 
 const CapturePage = () => {
@@ -28,6 +25,9 @@ const CapturePage = () => {
     }
     initModel();
   }, []);
+
+  const [animalName, setAnimalName] = useState(null);
+  const [confidence, setConfidence] = useState(null);
 
 
   const overlayRef = useRef(null);
@@ -149,8 +149,8 @@ const CapturePage = () => {
       console.log("Detection results CapturePage: ", results);
 
       setCapturedImage(img.src);
-      animalName = results.labels[0];
-      confidence = results.scores[0];
+      setAnimalName(results.labels?.[0] ?? "Unknown");
+      setConfidence(results.scores?.[0] ?? 0);
       setShowForm(true);
     } catch (err) {
       console.error("Error during detection:", err);
@@ -209,9 +209,13 @@ const CapturePage = () => {
       const imageBlob = new Blob([uint8Array], { type: mimeString });
 
       // Sighting
+      // Sighting
       const sightingData = new FormData();
-      sightingData.append("animal", apiResponse.detection);
-      sightingData.append("confidence", (apiResponse.confidence * 100).toFixed(2));
+      sightingData.append("animal", animalName ?? "Unknown");
+      sightingData.append(
+        "confidence",
+        confidence ? (confidence * 100).toFixed(2) : "0"
+      );
       sightingData.append("longitude", geoLocLong);
       sightingData.append("latitude", geoLocLat);
       sightingData.append("file", imageBlob);
@@ -221,6 +225,8 @@ const CapturePage = () => {
       // Post
       let postResult = null;
       if (sightResult.success) {
+        console.log("hello");
+
         postResult = await PostsController.handleCreatePost(
           sightResult.result.identification_id,
           description,
@@ -293,7 +299,7 @@ const CapturePage = () => {
             className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
             onClick={() => setActiveMode('UPLOAD')}
           >
-            OFFLINE
+            ONLINE
           </span>
           <span
             className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
@@ -407,11 +413,11 @@ const CapturePage = () => {
       )}
 
 
-        {capturedImage && (
-          <div className="captured-image-wrapper">
-            <img src={capturedImage} alt="Captured" className="captured-image" />
-          </div>
-        )}
+      {capturedImage && (
+        <div className="captured-image-wrapper">
+          <img src={capturedImage} alt="Captured" className="captured-image" />
+        </div>
+      )}
       {showFailPopup && (
         <div className="form-overlay">
           <div className="success-popup">
@@ -429,7 +435,7 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage; 
+export default CapturePage;
 
 /*
 import React, { useRef, useState, useEffect } from "react";
