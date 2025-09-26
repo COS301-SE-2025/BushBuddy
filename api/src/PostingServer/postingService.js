@@ -63,6 +63,7 @@ async function fetchPost(user_id, post_id) {
 
         for(const comment of result.comments){
             comment.user_id = await postingRepository.fetchUserName(comment.user_id);
+            comment.created_at = await formatCommentTimestamp(comment.created_at);
         }
 
         return result;
@@ -94,6 +95,16 @@ async function addComment(data) {
     }
 }
 
+async function formatCommentTimestamp(timestamp){
+    const date = new Date(timestamp);
+
+    const dayMonth = date.getDate() + "/" + date.toLocaleString("en-US", { month: "2-digit" }) + "/" + date.getFullYear();
+    const newTime = date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+    const output = `${dayMonth} ${newTime}`;
+    return output;
+}
+
 async function formatTimestamp(timestamp){
     const date = new Date(timestamp);
 
@@ -111,4 +122,5 @@ export const postingService = {
     fetchAllPosts,
     likePost,
     addComment,
+    formatTimestamp,
 };
