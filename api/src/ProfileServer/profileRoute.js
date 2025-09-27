@@ -1,5 +1,5 @@
 import express from 'express';
-import { profileController } from './profileController';
+import { profileController } from './profileController.js';
 
 const profileApp = express.Router();
 profileApp.use(express.json());

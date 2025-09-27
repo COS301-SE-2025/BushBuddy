@@ -1,4 +1,4 @@
-import db from '../db/index';
+import db from '../db/index.js';
 
 async function updateThemePreference(user, preference) {
 	let query = '';

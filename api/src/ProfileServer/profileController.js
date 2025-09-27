@@ -1,8 +1,8 @@
-import { profileService } from './profileService';
+import { profileService } from './profileService.js';
 
 async function updateUserPreferences(req, res) {
 	try {
-		const { user_id } = req.user.id;
+		const user_id = req.user.id;
 		const { preferences } = req.body;
 
 		const result = await profileService.updateUserPreferences(user_id, preferences);
