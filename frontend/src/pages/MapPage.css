@@ -14,6 +14,10 @@
   transform: translateY(-0.4rem);
 }
 
+.leaflet-control-layers span {
+  color: black; /* Targets any additional text inside the control layers */
+}
+
 .leaflet-popup-tip {
   display: none; /* Hides the popup tip */
 }

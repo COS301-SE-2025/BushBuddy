@@ -83,7 +83,6 @@
   align-items: center;
 }
 
-/* Ensure the parent container is relatively positioned */
 .map-section-img {
   position: relative; 
   display: inline-block;
@@ -99,27 +98,25 @@
   margin: 0 0 16px 0;
 }
 
-/* Map image styling */
-.map-image {
-  position: absolute; /* Position it relative to the .map-section-img container */
-  bottom: 10px; /* Adjust the distance from the bottom of the post image */
-  right: 10px; /* Adjust the distance from the right of the post image */
-  width: 25%; /* Set the size of the map image (adjust as needed) */
-  height: auto;
-  border-radius: 8px; /* Add rounded corners */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for better visibility */
-  z-index: 2; /* Ensure it overlays the post image */
+/* Map styling */
+.feed-map-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 8rem;
+  height: 6rem;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(0.8rem) !important;
 }
 
-/* Map overlay icon styling */
-.map-overlay {
-  position: absolute;
-  bottom: 15px; /* Adjust the position of the overlay icon */
-  right: 15px;
-  background-color: #ff6b35;
-  border-radius: 50%;
-  padding: 10px;
-  z-index: 3; /* Ensure it appears above the map image */
+.feed-map-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  pointer-events: none;
+  transform: translateY(0.8rem) !important;
 }
 
 .engagement-date {
@@ -196,7 +193,7 @@
   border: none;
   background-color: rgb(151, 151, 151);
   height: 0.1rem;
-  width: 100%;
+  width: 98%;
   max-width: 700px;
 }
 
@@ -253,7 +250,7 @@
   width: 100%;
   max-width: 700px;
   padding: 6px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0 ;
 }
 
 .comment:last-child {

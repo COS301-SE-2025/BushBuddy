@@ -67,6 +67,7 @@ async function fetchPost(user_id, sight_id) {
 		result.post.user_id = await sightingRepository.fetchUserName(result.post.user_id);
 		result.post.created_at = await formatTimestamp(result.post.created_at);
 		result.post.isLiked = await sightingRepository.checkLikedStatus(user_id, post_id);
+				result.post.geoLocation = await sightingRepository.fetchGeoLocation(result.post.identification_id);
 
 		for(const comment of result.comments){
 			comment.user_id = await sightingRepository.fetchUserName(comment.user_id);
