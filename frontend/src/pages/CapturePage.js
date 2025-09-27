@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
+import { useNavigate } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
 import { detectImage } from "../utility/detect";
@@ -8,15 +9,12 @@ import { loadModel } from "../utility/modelStorageOperations";
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
 import AudioDetect from '../components/AudioDetect';
+import ServerSideDetect from '../components/ServerSideDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
- //-- Mock data
-import axios from 'axios';
-
-var animalName = "None";
-var confidence = "None";
-
+//-- Mock data
+// import axios from 'axios';
 
 const CapturePage = () => {
   const [model, setModel] = useState(null);
@@ -28,6 +26,9 @@ const CapturePage = () => {
     initModel();
   }, []);
 
+  const [animalName, setAnimalName] = useState(null);
+  const [confidence, setConfidence] = useState(null);
+  const navigate = useNavigate();
 
   const overlayRef = useRef(null);
   const webcamRef = useRef(null);
@@ -35,7 +36,6 @@ const CapturePage = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
   const [activeMode, setActiveMode] = useState('LIVE');
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showFailPopup, setShowFailPopup] = useState(false);
@@ -85,9 +85,11 @@ const CapturePage = () => {
   const captureImage = async () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc || !model) return;
+    setBackgroundImage(imageSrc);
 
     const img = new Image();
     img.src = imageSrc;
+    setLoading(true);
 
     img.onload = () => {
       const canvas = document.createElement("canvas");
@@ -143,18 +145,19 @@ const CapturePage = () => {
 
   const runDetection = async (img, canvas) => {
     try {
-      //img.src = "/test.jpg"; // Public test image
-      //await new Promise((resolve) => (img.onload = resolve))
-      const results = await detectImage(model, 0.25, canvas, img);
+      const results = await detectImage(model, 0.5, canvas, img);
 
       console.log("Detection results CapturePage: ", results);
 
       setCapturedImage(img.src);
-      animalName = results.labels[0];
-      confidence = results.scores[0];
+      setAnimalName(results.labels?.[0] ?? "Unknown");
+      setConfidence(results.scores?.[0] ?? 0);
       setShowForm(true);
     } catch (err) {
       console.error("Error during detection:", err);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -168,6 +171,7 @@ const CapturePage = () => {
 
   const handleClose = () => {
     setShowForm(false);
+    resetBackground();
     resetCapture();
   }
 
@@ -211,8 +215,11 @@ const CapturePage = () => {
 
       // Sighting
       const sightingData = new FormData();
-      sightingData.append("animal", apiResponse.detection);
-      sightingData.append("confidence", (apiResponse.confidence * 100).toFixed(2));
+      sightingData.append("animal", animalName ?? "Unknown");
+      sightingData.append(
+        "confidence",
+        confidence ? (confidence * 100).toFixed(2) : "0"
+      );
       sightingData.append("longitude", geoLocLong);
       sightingData.append("latitude", geoLocLat);
       sightingData.append("file", imageBlob);
@@ -222,6 +229,8 @@ const CapturePage = () => {
       // Post
       let postResult = null;
       if (sightResult.success) {
+        console.log("hello");
+
         postResult = await PostsController.handleCreatePost(
           sightResult.result.identification_id,
           description,
@@ -229,7 +238,7 @@ const CapturePage = () => {
         );
       }
 
-      if (postResult===null || !postResult.success || !postResult) {
+      if (postResult === null || !postResult.success || !postResult) {
         setLoading(false);
         setShowForm(false);
         setShowFailPopup(true);
@@ -252,30 +261,29 @@ const CapturePage = () => {
 
   return (
     <div className="scanner-page">
-      <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
+      <div className='closeScanner' onClick={() => navigate('/feed')}><IoMdClose className="icon-bold" /></div>
 
       <div className='scanner-main-content'>
-        {/* Conditionally render webcam wrapper or AudioDetect based on activeMode */}
-        {activeMode === 'AUDIO' ? (
+        {activeMode === 'UPLOAD' ? (
+          <ServerSideDetect />
+        ) : activeMode === 'AUDIO' ? (
           <AudioDetect />
         ) : (
           <div className="webcam-wrapper">
-            <Webcam
-              ref={webcamRef}
-              className="webcam"
-              audio={false}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              mirrored={false}
-              screenshotQuality={1}
-              forceScreenshotSourceSize
-            />
-
-            {loading && (
-              <div className="spinner-overlay">
-                <div className="spinner"></div>
-              </div>
-            )}
+          { backgroundImage ? (
+              <img src={backgroundImage} alt="Background" className="display-cap-image" />
+          ) : (
+              <Webcam
+                ref={webcamRef}
+                className="webcam"
+                audio={false}
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+                mirrored={false}
+                screenshotQuality={1}
+                forceScreenshotSourceSize
+              />
+          )}
           </div>
         )}
 
@@ -293,7 +301,7 @@ const CapturePage = () => {
             className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
             onClick={() => setActiveMode('UPLOAD')}
           >
-            UPLOAD
+            ONLINE
           </span>
           <span
             className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
@@ -372,7 +380,7 @@ const CapturePage = () => {
                       </button>
                     </form>
                   </>
-                ):(
+                ) : (
                   <>
                     <h4 className="animal-name">No Animal Detected</h4>
                     <button className="submit-button" onClick={handleClose}>
@@ -406,12 +414,6 @@ const CapturePage = () => {
         </div>
       )}
 
-
-        {capturedImage && (
-          <div className="captured-image-wrapper">
-            <img src={capturedImage} alt="Captured" className="captured-image" />
-          </div>
-        )}
       {showFailPopup && (
         <div className="form-overlay">
           <div className="success-popup">
@@ -429,7 +431,7 @@ const CapturePage = () => {
   );
 };
 
-export default CapturePage; 
+export default CapturePage;
 
 /*
 import React, { useRef, useState, useEffect } from "react";

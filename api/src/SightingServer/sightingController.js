@@ -32,14 +32,29 @@ async function createSighting(req, res) {
 
 async function viewSighting(req, res) {
 	try {
-		return res.status(501).json({
+		if (!req.params.id) {
+			return res.status(400).json({ success: false, message: 'Sighting ID is required' });
+		}
+
+		const sight_id = parseInt(req.params.id, 10);
+
+		const result = await sightingService.fetchSighting(sight_id);
+
+		if (!result) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch sighting',
+			});
+		}
+
+		return res.status(201).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Sighting fetched successfully',
+			data: result,
 		});
 	} catch (error) {
-		console.error('Error handling view sighting: ', error);
-		return res.status(500).json({
+		console.error('Error fetching sighting: ', error);
+		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
 		});
@@ -56,6 +71,39 @@ async function viewHistory(req, res) {
 	} catch (error) {
 		console.error('Error handling sighting history: ', error);
 		return res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
+async function fetchPost(req, res) {
+	try {
+		if (!req.params.id) {
+			return res.status(400).json({ success: false, message: 'Sighting ID is required' });
+		}
+
+		const sight_id = parseInt(req.params.id, 10);
+		
+		const user = req.user;
+
+		const result = await sightingService.fetchPost(user.id, sight_id);
+
+		if (!result) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch post',
+			});
+		}
+
+		return res.status(201).json({
+			success: true,
+			message: 'Post fetched successfully',
+			data: result,
+		});
+	} catch (error) {
+		console.error('Error fetching post: ', error);
+		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
 		});
@@ -100,5 +148,6 @@ export const sightingController = {
 	createSighting,
 	viewSighting,
 	viewHistory,
+	fetchPost,
 	fetchAllSightings,
 };

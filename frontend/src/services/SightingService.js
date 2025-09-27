@@ -14,7 +14,19 @@ async function fetchAllSightings() {
     return response.data;
 }
 
+async function fetchSightingDetails( id ) {
+    const response = await apiClient.get(`/sightings/${id}`);
+    return response.data;
+}
+
+async function fetchPostDetails( id ) {
+    const response = await apiClient.get(`/sightings/post/${id}`);
+    return response.data;
+}
+
 export const SightingService = {
+    fetchSightingDetails,
     createSighting,
     fetchAllSightings,
+    fetchPostDetails,
 }
