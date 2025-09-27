@@ -45,8 +45,8 @@ const CapturePage = () => {
 
 
   const videoConstraints = {
-    width: { ideal: 1280 },
-    height: { ideal: 720 },
+    width: { ideal:  800},
+    height: { ideal: 800 },
     facingMode: { ideal: "environment" },
   };
 
