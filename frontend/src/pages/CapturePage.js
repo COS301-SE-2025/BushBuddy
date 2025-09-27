@@ -151,9 +151,23 @@ const CapturePage = () => {
 
       console.log("Detection results CapturePage: ", results);
 
+      let labels = results.labels || [];
+      let scores = results.scores || [];
+
+      const filtered = labels
+      .map((label, i) => ({ label, score: scores[i] }))
+      .filter(item => item.label !== "Background");
+
+      if (filtered.length === 0) {
+      // If background was the only result
+      setAnimalName(["No results found"]);
+      setConfidence([]);
+    } else {
+      setAnimalName(filtered.map(f => f.label));
+      setConfidence(filtered.map(f => f.score));
+    }
+
       setCapturedImage(img.src);
-      setAnimalName(results.labels?.[0] ?? "Unknown");
-      setConfidence(results.scores?.[0] ?? 0);
       setShowForm(true);
     } catch (err) {
       console.error("Error during detection:", err);
@@ -217,10 +231,10 @@ const CapturePage = () => {
 
       // Sighting
       const sightingData = new FormData();
-      sightingData.append("animal", animalName ?? "Unknown");
+      sightingData.append("animal", animalName[0] ?? "Unknown");
       sightingData.append(
         "confidence",
-        confidence ? (confidence * 100).toFixed(2) : "0"
+        confidence[0] ? (confidence[0] * 100).toFixed(2) : "0"
       );
       sightingData.append("longitude", geoLocLong);
       sightingData.append("latitude", geoLocLat);
@@ -342,10 +356,21 @@ const CapturePage = () => {
                   alt="Detected Animal"
                   className="detected-image"
                 />
-                {animalName ? (
+
+                {animalName.length > 0 ? (
                   <>
-                    <h4 className="animal-name">{animalName}</h4>
-                    <p className="confidence">Confidence: {(confidence * 100).toFixed(2)}%</p>
+                    {/* Show detected animals */}
+                    <h4 className="animal-name">
+                      {animalName.join(", ")}
+                    </h4>
+
+                    {/* Only show confidence if you’re still tracking it per detection */}
+                    {confidence.length > 0 && (
+                      <p className="confidence">
+                        Confidence: {confidence.map(c => `${(c * 100).toFixed(2)}%`).join(", ")}
+                      </p>
+                    )}
+
                     <hr style={{ width: "85%", backgroundColor: "lightgrey", height: "2px", border: "none" }} />
 
                     {/* Form */}
@@ -363,7 +388,8 @@ const CapturePage = () => {
                         ></textarea>
                       </div>
 
-                      {!endangered.includes(animalName) && /*Endangered Conditional*/(
+                      {/* Only show geolocation toggle if NONE of the detected animals are endangered */}
+                      {!animalName.some(name => endangered.includes(name)) && (
                         <div className="form-group">
                           <label htmlFor="geolocation">Enable Geolocation</label>
                           <label className="switch-label">
@@ -385,6 +411,7 @@ const CapturePage = () => {
                   </>
                 ) : (
                   <>
+                    {/* If only "Background" → No Animal Detected */}
                     <h4 className="animal-name">No Animal Detected</h4>
                     <button className="submit-button" onClick={handleClose}>
                       OK

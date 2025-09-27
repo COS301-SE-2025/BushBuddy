@@ -223,7 +223,8 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
     else rawOutput.dispose();
 
     // convert predictions to labels 
-    const combined = nmsResults.scores.map((score, i) => ({
+    const combined = nmsResults.scores
+    .map((score, i) => ({
       score: Math.round(score * 10000) / 10000,
       label: labels[nmsResults.classes[i]],
     }));
