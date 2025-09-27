@@ -1,0 +1,181 @@
+.audio-page {
+    padding: 2rem;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.instruction-text {
+    color: #4b6949ff;
+    margin-bottom: 2rem;
+}
+
+/* Record button */
+.record-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.record-btn {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.record-btn.start {
+    background-color: #4b6949ff;
+}
+
+.record-btn.stop {
+    background-color: #f5582d;
+}
+
+.record-btn.recording {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(245, 88, 45);
+    }
+
+    70% {
+        box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* Audio playback */
+.playback-container {
+    margin-bottom: 2rem;
+}
+
+.playback-text {
+    font-weight: bold;
+}
+
+/* Upload buttons */
+.upload-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid #555;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+    color: white;
+    background-color: #4b6949ff;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+    /* Proper flex centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1100;
+}
+
+/* The popup box */
+.modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+
+    max-width: 300px;
+    width: 90%;
+    max-height: 200px;
+    overflow-y: auto;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    /* Prevent stretching */
+    display: inline-block;
+}
+
+.modal p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.modal button {
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #4b6949ff;
+    color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* Overlay same as form-overlay */
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+}
+
+/* Popup box */
+.success-popup {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.success-popup p {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Button already styled in your app */
+.submit-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #4b6949ff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}

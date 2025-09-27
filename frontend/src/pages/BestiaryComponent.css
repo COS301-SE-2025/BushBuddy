@@ -173,11 +173,16 @@
     width: 100%;
 }
 
+.bestiary-cards-wrapper .row > :nth-last-child(1):nth-child(odd) {
+    grid-column: span 2;
+    justify-self: center;
+}
+
 .bestiary-card {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 16px;
-    padding: 16px;
+    padding: 16px 14px;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;

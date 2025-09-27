@@ -12,12 +12,13 @@ const FeedPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [postDetailVisible, setPostDetailVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('All');
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await PostsController.handleFetchAllPosts();
+        const response = await PostsController.handleFetchAllPosts(filter);
         if (response.success) {
           setPosts(response.posts);
         } else {
@@ -31,7 +32,7 @@ const FeedPage = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [filter]);
 
   const handleIncrementComments = (postId) => {
     setPosts((prevPosts) =>
@@ -41,9 +42,30 @@ const FeedPage = () => {
     );
   };
 
+  const handleDecLikes = (postId) => {
+    console.log("Decreasing likes for post ID:", postId);
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
+        p.id === postId ? { ...p, likes: (p.likes || 0) - 1, isLiked: false } : p
+      )
+    );
+  };
+
+  const handleIncLikes = (postId) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
+        p.id === postId ? { ...p, likes: (p.likes || 0) + 1, isLiked: true } : p
+      )
+    );
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter); // Update filter state
+  };
+
   return (
     <div className="feed-page">
-      <FeedFilters />
+      <FeedFilters onFilterChange={handleFilterChange} />
       {loading ? (
         <div className="loader-wrapper">
           <div className="loader"></div>
@@ -51,20 +73,22 @@ const FeedPage = () => {
       ) : (
         <>
           {posts.map((entry) => (
-            <FeedCard
-              key={entry.id}
-              entry={entry}
-              setSelectedPost={setSelectedPost}
-              setPostDetailVisible={setPostDetailVisible}
-            />
+              <FeedCard
+                key={entry.id}
+                entry={entry}
+                setSelectedPost={setSelectedPost}
+                setPostDetailVisible={setPostDetailVisible}
+              />
           ))}
 
           {postDetailVisible && selectedPost && (
             <PostDetailModal
               post={selectedPost.data.post}
               comments={selectedPost.data.comments}
-              onClose={() => setPostDetailVisible(false)}
+              onClose={() => {window.location.reload()}} //temporary fix for modal not updating likes
               onCommentAdded={handleIncrementComments}
+              onLikeDec={handleDecLikes}
+              onLikeInc={handleIncLikes}
             />
           )}
         </>

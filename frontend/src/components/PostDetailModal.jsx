@@ -5,8 +5,11 @@ import { IoShareSocial, IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { CiHeart } from "react-icons/ci";
 import { PostsController } from "../controllers/PostsController";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
+const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, onLikeInc }) => {
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likes, setLikes] = useState(post.likes || 0);
 
@@ -15,13 +18,30 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
   const [showCommentInput, setCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
 
-  //implement case for when user has liked post(css of it)
+  const smallIcon = new L.Icon({
+    iconUrl: require("leaflet/dist/images/marker-icon.png"),
+    iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+    shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+    iconSize: [20, 32], // Set the size of the marker (width, height)
+    iconAnchor: [10, 32], // Anchor the marker at its base
+    popupAnchor: [1, -32], // Position the popup relative to the marker
+    shadowSize: [31, 31], // Size of the shadow
+  });
+
   const handleLike = async () => {
     try {
       const response = await PostsController.handleLikePost(post.id);
       if (response.success) {
         setIsLiked(!isLiked);
-        setLikes(isLiked ? likes - 1 : likes + 1);
+
+        if (isLiked) {
+          onLikeDec(post.id);
+          setLikes(likes - 1);
+        } else {
+          onLikeInc(post.id);
+          setLikes(likes + 1);
+        }
+
       } else {
         console.error(response.message);
       }
@@ -36,14 +56,16 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
     try {
       const response = await PostsController.handleCommentPost(post.id, newComment);
       if (response.success) {
+        const timestamp = new Date().toLocaleString();
         comments.push({
           id: response.commentId,
           user_id: "You",
           comment_text: newComment,
+          timestamp: timestamp,
         });
         setNewComment("");
         setCommentInput(false);
-        setCommentsAmount(commentsAmount+1)
+        setCommentsAmount(commentsAmount + 1);
 
         if (onCommentAdded) {
           onCommentAdded(post.id);
@@ -57,37 +79,49 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
   };
 
   return (
-    <div className="modal">
+    <div className="post-modal">
       <div className="modal-header">
         <button className="back" onClick={onClose}>
           <FaArrowLeft size={20} />
         </button>
-        <button className="share">
+        {/* <button className="share">
           <IoShareSocial size={22} />
-        </button>
+        </button> */}
       </div>
 
       <div className="modal-content">
         <div className="title-header">
           <div className="user-details">
-            <div className="avatar">E</div>
-            <p className="username">{post.user_id}</p>
+            {/* add in image for profilePic */}
+            <div className="avatar">{post.user_id[0]}</div>
           </div>
           <div className="title-container">
             <p className="post-title">Animal Spotted</p>
           </div>
         </div>
 
-        <img className="post-image" src={post.image_url} alt={post.title} />
 
-        <div className="map-section">
-          <img
-            className="map-image"
-            src={require("../assets/Map-Demo.webp")}
-            alt="Map view"
-          />
-          <div className="map-overlay">
-            <FaLocationDot color="white" size={18} />
+        <div className="map-section-img">
+          <img className="post-image" src={post.image_url} alt={post.title} />
+          {/* add navigate to map onclick */}
+          <div className="feed-map-overlay" >
+            <MapContainer
+              center={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]}
+              zoom={11}
+              scrollWheelZoom={false}
+              className="feed-map-container"
+              attributionControl={false}
+              zoomControl={false}
+              dragging={false}
+              doubleClickZoom={false}
+              touchZoom={false}
+            >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]} icon={smallIcon} />
+            </MapContainer>
           </div>
         </div>
 
@@ -138,15 +172,25 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded }) => {
         )}
 
         <hr className="commentsBreak" />
-        <p className="comments-header">Other Comments:</p>
-        <div className="comments-wrapper">
-          {comments.map((comment) => (
-            <div className="comment" key={comment.id}>
-              <p className="username">{comment.user_id}</p>
-              <p className="description-text">{comment.comment_text}</p>
+        {comments.length != 0 ? (
+          <>
+            <p className="comments-header">Other Comments:</p>
+            <div className="comments-wrapper">
+              {comments.map((comment) => (
+                <div className="comment" key={comment.id}>
+                  <div className="comment-content">
+                      <p className="username">{comment.user_id}</p>
+                      <p className="description-text">{comment.comment_text}</p>
+                  </div>
+                  <p className="comments-timestamp">{comment.created_at}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <div className="comments-wrapper">
+          </div>
+        )}
       </div>
     </div>
   );

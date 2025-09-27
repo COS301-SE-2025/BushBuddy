@@ -5,18 +5,22 @@ async function createSighting(req, res) {
 		const user_id = req.user.id;
 		const longitude = req.body.longitude;
 		const latitude = req.body.latitude;
-		if (!req.file || !longitude || !latitude) {
+		const confidence = req.body.confidence;
+		const animal = req.body.animal;
+		if (!req.file || !animal || !confidence) {
 			return res.status(400).json({ success: false, message: 'Some required fields are missing' });
 		}
 		// uploaded image, stored as a JS Buffer object (binary data)
 		const image = req.file.buffer;
-		const result = sightingService.createSighting(user_id, image, { longitude, latitude });
-
+		//change createSight to createSighting once confirmed
+		const result = await sightingService.createSight(user_id, animal, confidence, image, { longitude, latitude });
 		if (!result) {
 			return res.status(400).json({ success: false, message: 'Failed to create sighting with given data' });
 		}
 
-		return res.status(200).json({ success: true, message: 'Successfully created new sighting', data: result });
+		return res.status(200).json({ success: true, message: 'Successfully created new sighting', data : {
+			identification_id: result.identification_id
+		} });
 	} catch (error) {
 		console.error('Error handling new sighting: ', error);
 		return res.status(500).json({
@@ -28,14 +32,29 @@ async function createSighting(req, res) {
 
 async function viewSighting(req, res) {
 	try {
-		return res.status(501).json({
+		if (!req.params.id) {
+			return res.status(400).json({ success: false, message: 'Sighting ID is required' });
+		}
+
+		const sight_id = parseInt(req.params.id, 10);
+
+		const result = await sightingService.fetchSighting(sight_id);
+
+		if (!result) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch sighting',
+			});
+		}
+
+		return res.status(201).json({
 			success: true,
-			message: 'Feature not yet implemented',
-			data: [],
+			message: 'Sighting fetched successfully',
+			data: result,
 		});
 	} catch (error) {
-		console.error('Error handling view sighting: ', error);
-		return res.status(500).json({
+		console.error('Error fetching sighting: ', error);
+		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
 		});
@@ -52,6 +71,39 @@ async function viewHistory(req, res) {
 	} catch (error) {
 		console.error('Error handling sighting history: ', error);
 		return res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
+async function fetchPost(req, res) {
+	try {
+		if (!req.params.id) {
+			return res.status(400).json({ success: false, message: 'Sighting ID is required' });
+		}
+
+		const sight_id = parseInt(req.params.id, 10);
+		
+		const user = req.user;
+
+		const result = await sightingService.fetchPost(user.id, sight_id);
+
+		if (!result) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch post',
+			});
+		}
+
+		return res.status(201).json({
+			success: true,
+			message: 'Post fetched successfully',
+			data: result,
+		});
+	} catch (error) {
+		console.error('Error fetching post: ', error);
+		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
 		});
@@ -96,5 +148,6 @@ export const sightingController = {
 	createSighting,
 	viewSighting,
 	viewHistory,
+	fetchPost,
 	fetchAllSightings,
 };

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css';
 import ProfileHeader from '../components/ProfileHeader.jsx';
 import ActivityStatsCard from '../components/ActivityStatsCard.jsx';
 import AchievementsCard from '../components/AchievementsCard.jsx';
 import SettingsSection from '../components/SettingsSection';
+import FeedCard from "../components/FeedCard.jsx";
+import { PostsController } from "../controllers/PostsController";
+import PostDetailModal from "../components/PostDetailModal";
 
 const ProfilePage = () => {
+
 	const navigate = useNavigate();
 
 	/* const handleLogout = async () => {
@@ -67,8 +71,7 @@ const ProfilePage = () => {
       navigate('/login');
     }
   }; */
-
-	const handleLogout = async () => {
+  const handleLogout = async () => {
 		try {
 			const result = await fetch('/api/auth/logout', {
 				method: 'POST',
@@ -87,14 +90,114 @@ const ProfilePage = () => {
 		}
 	};
 
-	return (
-		<div className="profile-page">
-			<ProfileHeader />
-			{/*<ActivityStatsCard />
-      <AchievementsCard />*/}
-			<SettingsSection onLogout={handleLogout} />
-		</div>
-	);
-};
+  return (
+    <div className="profile-page">
+      <div className="profile-nav">
+        <span
+          className={`profile-nav-buttons ${activeMode === 'POSTS' ? 'active' : ''}`}
+          onClick={() => setActiveMode('POSTS')}
+        >
+          MY POSTS
+        </span>
+        <span
+          className={`profile-nav-buttons ${activeMode === 'ACHIEVEMENTS' ? 'active' : ''}`}
+          onClick={() => setActiveMode('ACHIEVEMENTS')}
+        >
+          ACHIEVEMENTS
+        </span>
+        <span
+          className={`profile-nav-buttons ${activeMode === 'PROFILE' ? 'active' : ''}`}
+          onClick={() => setActiveMode('PROFILE')}
+        >
+          PROFILE
+        </span>
+      </div>
+
+      {activeMode === 'POSTS' ? (
+        <>
+          {loading ? (
+            <div className="loader-wrapper">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            <>
+              {posts.map((entry) => (
+                  <FeedCard
+                    key={entry.id}
+                    entry={entry}
+                    setSelectedPost={setSelectedPost}
+                    setPostDetailVisible={setPostDetailVisible}
+                    setDeleteConfirmation={setDeleteConfirmation}
+                    setPostToDelete={setPostToDelete}
+                  />
+              ))}
+
+              {postDetailVisible && selectedPost && (
+                <PostDetailModal
+                  post={selectedPost.data.post}
+                  comments={selectedPost.data.comments}
+                  onClose={() => {window.location.reload()}} //temporary fix for modal not updating likes
+                  onCommentAdded={handleIncrementComments}
+                  onLikeDec={handleDecLikes}
+                  onLikeInc={handleIncLikes}
+                />
+              )}
+            </>
+          )}
+        </>
+      ) : activeMode === 'ACHIEVEMENTS' ? (
+        <>
+        <p>achievements</p>
+          {/*<ActivityStatsCard />
+            <AchievementsCard />*/}
+        </>
+      ) : (
+        <>
+          <ProfileHeader />
+          <SettingsSection onLogout={handleLogout} />
+        </>
+      )}
+      
+      {loading && (
+        <div className="loader-wrapper">
+          <div className="loader"></div>
+        </div>
+      )}
+
+      {showDeleteConfirmation && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>Are you sure you want to delete this post?</h4>
+            <button
+              className="yes-button"
+              onClick={() => handleDelete()}
+            >
+              YES
+            </button>
+            <button
+              className="no-button"
+              onClick={() => handleCloseDelete()}
+            >
+              NO
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showPopup && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>{popUpText}</h4>
+            <button
+              className="submit-button"
+              onClick={() => setShowPopup(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 
 export default ProfilePage;
