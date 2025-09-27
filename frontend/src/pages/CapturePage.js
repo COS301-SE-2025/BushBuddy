@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from 'react-webcam';
+import { useNavigate } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import './CapturePage.css';
 import { detectImage } from "../utility/detect";
@@ -15,7 +16,6 @@ import { PostsController } from '../controllers/PostsController';
 //-- Mock data
 // import axios from 'axios';
 
-
 const CapturePage = () => {
   const [model, setModel] = useState(null);
   useEffect(() => {
@@ -28,7 +28,7 @@ const CapturePage = () => {
 
   const [animalName, setAnimalName] = useState(null);
   const [confidence, setConfidence] = useState(null);
-
+  const navigate = useNavigate();
 
   const overlayRef = useRef(null);
   const webcamRef = useRef(null);
@@ -261,7 +261,7 @@ const CapturePage = () => {
 
   return (
     <div className="scanner-page">
-      <div className='closeScanner' onClick={() => window.history.back()}><IoMdClose className="icon-bold" /></div>
+      <div className='closeScanner' onClick={() => navigate('/feed')}><IoMdClose className="icon-bold" /></div>
 
       <div className='scanner-main-content'>
         {activeMode === 'UPLOAD' ? (

@@ -31,7 +31,7 @@ const MapPage = () => {
   const [selectedSighting, setSelectedSighting] = useState(null); // Data for the clicked marker
   const [modalData, setModalData] = useState(null); // Data for modal visibility
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
-    const [showFailPopup, setShowFailPopup] = useState(false);
+  const [showFailPopup, setShowFailPopup] = useState(false);
 
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -75,6 +75,7 @@ const MapPage = () => {
       const response = await SightingsController.handleFetchSightingDetails(sightingId);
       if (response.success) {
         setSelectedSighting(response.data);
+        setCurrentPosition([response.data.geolocation_lat, response.data.geolocation_long]);
       } else {
         console.error(response.message);
       }

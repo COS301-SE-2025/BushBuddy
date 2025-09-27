@@ -60,6 +60,7 @@ async function fetchPost(user_id, post_id) {
         result.post.user_id = await postingRepository.fetchUserName(result.post.user_id);
         result.post.created_at = await formatTimestamp(result.post.created_at);
         result.post.isLiked = await postingRepository.checkLikedStatus(user_id, post_id);
+        result.post.geoLocation = await postingRepository.fetchGeoLocation(result.post.identification_id);
 
         for(const comment of result.comments){
             comment.user_id = await postingRepository.fetchUserName(comment.user_id);

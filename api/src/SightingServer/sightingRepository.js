@@ -176,6 +176,18 @@ async function fetchAnimalName(animalId) {
 	}
 }
 
+async function fetchGeoLocation(identification_id) {
+	try {
+		const query = `SELECT geolocation_long, geolocation_lat FROM identifications WHERE id = $1;`;
+
+		const result = await db.query(query, [identification_id]);
+
+		return result.rows[0];
+	} catch (error) {
+		throw new Error(`Error fetching username: ${error.message}`);
+	}
+}
+
 export const sightingRepository = {
 	uploadSightingFile,
 	saveNewSight,
@@ -188,4 +200,5 @@ export const sightingRepository = {
 	fetchSightingImage,
 	fetchUserName,
 	fetchAnimalName,
+	fetchGeoLocation,
 };
