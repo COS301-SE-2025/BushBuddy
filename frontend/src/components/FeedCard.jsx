@@ -41,11 +41,12 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible }) => {
   return (
     <div className="feed-card" onClick={handleCardClick}>
       <div className="feed-card-header">
-        <img
+        {/* <img
           src={entry.userAvatar || require("../assets/Jean-Steyn-ProfilePic.webp")}
           alt={`${entry.user}'s avatar`}
           className="avatar"
-        />
+        /> */}
+        <div className="avatar">{entry.user_id[0]}</div>
         <span className="username">{entry.user_id}</span>
       </div>
 

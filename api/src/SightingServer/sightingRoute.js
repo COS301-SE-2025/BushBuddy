@@ -12,6 +12,8 @@ sightingsApp.post('/', upload.single('file'), sightingController.createSighting)
 sightingsApp.get('/all', express.json(), sightingController.fetchAllSightings);
 //history endpoint
 sightingsApp.get('/history', express.json(), sightingController.viewHistory);
+//fetch post with sighting id endpoint
+sightingsApp.get('/post/:id', express.json(), sightingController.fetchPost);
 // fetch endpoint
 sightingsApp.get('/:id', express.json(), sightingController.viewSighting);
 

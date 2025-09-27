@@ -27,6 +27,10 @@ const AudioDetect = ({
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
 
+  // new UI states
+  const [processing, setProcessing] = useState(false);
+  const [result, setResult] = useState(null);
+
   useEffect(() => {
     const loadModel = async () => {
       try {
@@ -44,6 +48,7 @@ const AudioDetect = ({
 
   const processAudioBlob = async (audioBlob) => {
     try {
+      setProcessing(true);
       const arrayBuffer = await audioBlob.arrayBuffer();
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)({
         sampleRate: 22050,
@@ -67,12 +72,11 @@ const AudioDetect = ({
       }
 
       if (mfccs.length === 0) {
-        alert("Could not extract MFCCs. Try another audio file.");
+        setResult({ error: "Could not extract MFCCs. Try another audio file." });
         return;
       }
 
       let mfccTensor = tf.tensor2d(mfccs).transpose();
-
       const EXPECTED_FRAMES = 87;
       if (mfccTensor.shape[1] < EXPECTED_FRAMES) {
         const padAmount = EXPECTED_FRAMES - mfccTensor.shape[1];
@@ -80,7 +84,6 @@ const AudioDetect = ({
       } else if (mfccTensor.shape[1] > EXPECTED_FRAMES) {
         mfccTensor = mfccTensor.slice([0, 0], [40, EXPECTED_FRAMES]);
       }
-
       mfccTensor = mfccTensor.expandDims(-1).expandDims(0);
 
       const prediction = model.predict(mfccTensor);
@@ -89,12 +92,14 @@ const AudioDetect = ({
       const label = labels[bestIdx];
       const confidence = (probs[bestIdx] * 100).toFixed(2);
 
-      alert(`${label}, ${confidence}%`);
+      setResult({ label, confidence });
 
       mfccTensor.dispose();
       prediction.dispose();
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      setResult({ error: err.message });
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -109,13 +114,20 @@ const AudioDetect = ({
     if (!file || !model) return;
 
     try {
+      setProcessing(true); // <-- show spinner right away
+
       const videoEl = document.createElement("video");
       videoEl.src = URL.createObjectURL(file);
       videoEl.muted = true;
+
       await videoEl.play().catch(() => { });
       const stream = videoEl.captureStream();
       const audioTrack = stream.getAudioTracks()[0];
-      if (!audioTrack) return;
+      if (!audioTrack) {
+        setResult({ error: "No audio track found in video." });
+        setProcessing(false);
+        return;
+      }
 
       const audioStream = new MediaStream([audioTrack]);
       const mediaRecorder = new MediaRecorder(audioStream);
@@ -135,13 +147,15 @@ const AudioDetect = ({
         if (mediaRecorder.state !== "inactive") mediaRecorder.stop();
       };
     } catch (err) {
-      alert(`Video processing error: ${err.message}`);
+      setResult({ error: `Video processing error: ${err.message}` });
+      setProcessing(false);
     }
   };
 
+
   const startRecording = async () => {
     if (!navigator.mediaDevices) {
-      alert("Microphone not supported in this browser.");
+      setResult({ error: "Microphone not supported in this browser." });
       return;
     }
     try {
@@ -170,7 +184,7 @@ const AudioDetect = ({
         }
       }, 30000);
     } catch (err) {
-      alert(`Recording error: ${err.message}`);
+      setResult({ error: `Recording error: ${err.message}` });
     }
   };
 
@@ -187,6 +201,7 @@ const AudioDetect = ({
 
       {loading && <p>Loading model...</p>}
       {error && <p>Error: {error}</p>}
+
       {model && (
         <>
           <p className="instruction-text">Upload audio, video, or record live</p>
@@ -227,8 +242,36 @@ const AudioDetect = ({
               />
             </label>
           </div>
-
         </>
+      )}
+
+      {/* Spinner */}
+      {processing && (
+        <div className="spinner-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+
+      {/* Result Modal */}
+      {result && (
+        <div className="form-overlay">
+          <div className="success-popup">
+            <h4>Detection Result</h4>
+            {result.error ? (
+              <p>{result.error}</p>
+            ) : (
+              <p>
+                {result.label}, {result.confidence}%
+              </p>
+            )}
+            <button
+              className="submit-button"
+              onClick={() => setResult(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
