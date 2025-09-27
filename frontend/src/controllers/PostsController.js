@@ -95,11 +95,25 @@ async function handleCommentPost( postId, comment ) {
     }
 }
 
+async function handleDeletePost( postId ) {
+    try {
+        const result = await PostService.deletePost(postId);
+
+        return { success:true, result };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Failed to delete post",
+        };
+    }
+}
+
 export const PostsController = {
     handleCreatePost,
     handleFetchAllPosts,
     handleFetchPost,
     handleFetchUsersPosts,
     handleLikePost,
-    handleCommentPost
+    handleCommentPost,
+    handleDeletePost
 };

@@ -223,12 +223,17 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
     else rawOutput.dispose();
 
     // convert predictions to labels 
-    const labeled = nmsResults.classes.map(idx => labels[idx]);
-    const rounded_scores = nmsResults.scores.map(score => Math.round(score * 10000) / 10000);
+    const combined = nmsResults.scores.map((score, i) => ({
+      score: Math.round(score * 10000) / 10000,
+      label: labels[nmsResults.classes[i]],
+    }));
+
+    // Sort from highest score to lowest
+    combined.sort((a, b) => b.score - a.score);
     
 
     console.log("Detection finished.");
-    return {scores: rounded_scores, labels: labeled};
+    return {scores: combined.map(item => item.score), labels: combined.map(item => item.label)};
   } catch (err) {
     console.error("Error during detection:", err);
     return { scores: [], classes: [] };

@@ -161,7 +161,7 @@ async function addComment(details) {
 		await db.query(incQuery, [post_id]);
 
 		const result = await db.query(query, params);
-		console.info(result);
+
 		return result.rows;
 	} catch (error) {
 		throw new Error(`Error adding comment to post: ${error.message}`);
@@ -173,8 +173,6 @@ async function fetchComments(post_id) {
 		const query = `SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC;`;
 
 		const result = await db.query(query, [post_id]);
-
-		//update amount of comments in posts?
 
 		return result.rows;
 	} catch (error) {
@@ -215,6 +213,20 @@ async function fetchGeoLocation(identification_id) {
 	}
 }
 
+async function deletePost(post_id, user_id) {
+	try {
+
+		const query = 'DELETE FROM posts WHERE user_id = $1 AND id = $2;';
+		const params = [user_id, post_id];
+
+		const result = await db.query(query, params);
+		
+		return result.rows;
+	} catch (error) {
+		throw new Error(`Error deleting post: ${error.message}`);
+	}
+}
+
 export const postingRepository = {
 	createPost,
 	fetchPost,
@@ -226,4 +238,5 @@ export const postingRepository = {
 	fetchPostImage,
 	fetchUserName,
 	fetchGeoLocation,
+	deletePost,
 };

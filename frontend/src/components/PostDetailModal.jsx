@@ -172,18 +172,25 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
         )}
 
         <hr className="commentsBreak" />
-        <p className="comments-header">Other Comments:</p>
-        <div className="comments-wrapper">
-          {comments.map((comment) => (
-            <div className="comment" key={comment.id}>
-              <div className="comment-content">
-                  <p className="username">{comment.user_id}</p>
-                  <p className="description-text">{comment.comment_text}</p>
-              </div>
-              <p className="comments-timestamp">{comment.created_at}</p>
+        {comments.length != 0 ? (
+          <>
+            <p className="comments-header">Other Comments:</p>
+            <div className="comments-wrapper">
+              {comments.map((comment) => (
+                <div className="comment" key={comment.id}>
+                  <div className="comment-content">
+                      <p className="username">{comment.user_id}</p>
+                      <p className="description-text">{comment.comment_text}</p>
+                  </div>
+                  <p className="comments-timestamp">{comment.created_at}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <div className="comments-wrapper">
+          </div>
+        )}
       </div>
     </div>
   );
