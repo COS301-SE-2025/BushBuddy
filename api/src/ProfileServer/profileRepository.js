@@ -66,6 +66,24 @@ async function updateLocationPreference(user, preference) {
 	}
 }
 
+async function fetchUserPreferences(user) {
+	try {
+		const result = await db.query(
+			'SELECT theme, enable_notifications, enable_location FROM user_preferences WHERE id=$1',
+			[user]
+		);
+
+		if (result.rowCount > 0) {
+			return result.rows[0];
+		} else {
+			return 'PREFERENCES_NOT_SET';
+		}
+	} catch (error) {
+		console.error(error);
+		return 'DB_ERROR';
+	}
+}
+
 async function userPreferencesExist(user) {
 	const result = await db.query('SELECT * FROM user_preferences WHERE id=$1;', [user]);
 
@@ -80,4 +98,5 @@ export const profileRepo = {
 	updateThemePreference,
 	updateNotificationPreference,
 	updateLocationPreference,
+	fetchUserPreferences,
 };

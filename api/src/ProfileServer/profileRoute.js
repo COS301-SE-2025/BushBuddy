@@ -5,5 +5,6 @@ const profileApp = express.Router();
 profileApp.use(express.json());
 
 profileApp.post('/preferences', profileController.updateUserPreferences);
+profileApp.get('/preferences', profileController.fetchUserPreferences);
 
 export default profileApp;

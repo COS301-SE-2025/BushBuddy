@@ -20,6 +20,29 @@ async function updateUserPreferences(req, res) {
 	}
 }
 
+async function fetchUserPreferences(req, res) {
+	const user_id = req.user.id;
+
+	const result = await profileService.fetchUserPreferences(user_id);
+
+	if (result === 'DB_ERROR') {
+		return res.status(500).json({ success: false, message: 'Internal Database Error' });
+	} else if (result === 'PREFERENCES_NOT_SET') {
+		return res.status(200).json({
+			success: true,
+			message: 'Retrieved user preferences',
+			data: { preferences: { theme: 'light', notifications: false, location: false } },
+		});
+	} else {
+		return res.status(200).json({
+			success: true,
+			message: 'Retrieved user preferences',
+			data: { preferences: result },
+		});
+	}
+}
+
 export const profileController = {
 	updateUserPreferences,
+	fetchUserPreferences,
 };

@@ -20,3 +20,8 @@ export async function updateUserPreferences(preferences) {
 	const response = await apiClient.post('/profile/preferences', { preferences: preferences });
 	return response.data;
 }
+
+export async function fetchUserPreferences() {
+	const response = await apiClient.get('/profile/preferences');
+	return response.data;
+}

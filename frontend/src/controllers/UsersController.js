@@ -1,4 +1,10 @@
-import { isAuthenticated, loginUser, registerUser, updateUserPreferences } from '../services/userService';
+import {
+	isAuthenticated,
+	loginUser,
+	registerUser,
+	updateUserPreferences,
+	fetchUserPreferences,
+} from '../services/userService';
 import { LoginRequest, RegisterRequest } from '../models/UserModel';
 
 export async function handleLogin(username, password) {
@@ -45,6 +51,18 @@ export async function updatePreferences(preference) {
 		return {
 			success: false,
 			message: 'Failed to update user preferences',
+		};
+	}
+}
+
+export async function fetchPreferences() {
+	try {
+		const result = await fetchUserPreferences();
+		return result;
+	} catch (error) {
+		return {
+			success: false,
+			message: 'Failed to fetch user preferences',
 		};
 	}
 }

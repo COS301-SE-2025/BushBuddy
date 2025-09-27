@@ -5,7 +5,7 @@ import HelpModal from './HelpModal';
 import { Container, Navbar, Button } from 'react-bootstrap';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaMapMarkedAlt, FaCamera, FaRegNewspaper, FaUser, FaCog, FaQuestionCircle } from 'react-icons/fa';
-import { updatePreferences } from '../controllers/UsersController';
+import { updatePreferences, fetchPreferences } from '../controllers/UsersController';
 import { useLoading } from '../contexts/LoadingContext';
 
 function Layout() {
@@ -86,6 +86,21 @@ function Layout() {
 		const hideNavBarRoutes = ['/capture'];
 		setShowNavAndHead(!hideNavBarRoutes.includes(path));
 	}, [path]);
+
+	useEffect(() => {
+		const handleFetchPreferences = async () => {
+			const preferences = await fetchPreferences();
+
+			if (preferences.success) {
+				const settings = preferences.data.preferences;
+				setDarkMode(settings.theme === 'dark');
+				setLocationTracking(settings.enable_location);
+				setNotifications(settings.enable_notifications);
+			}
+		};
+
+		handleFetchPreferences();
+	}, []);
 
 	const handleUpdateSetting = async (setting) => {
 		const preferences = {};
