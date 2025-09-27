@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 45px;
+    height: 5vh;
     background-color: #4b6949ff;
     color: white;
     padding: 1rem;
@@ -67,7 +67,7 @@
 .main-content {
     flex: 1;
     background-color: #FFFFF0;
-    padding: 80px 0 75px 0;
+    padding: 74px 0 75px 0;
     position: relative;
     overflow-x: hidden;
     box-sizing: border-box;

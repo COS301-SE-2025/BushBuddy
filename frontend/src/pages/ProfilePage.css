@@ -4,3 +4,82 @@
   display: flex;
   flex-direction: column;
 }
+
+.profile-nav {
+  top: 0;
+  width: 100%;
+  height: 6vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #4b6949ff;
+  margin-bottom: 1vh;
+  cursor: pointer;
+}
+
+.profile-nav-buttons {
+  width: 25%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  transition: 0.2s ease;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-nav-buttons:hover {
+  cursor: pointer;
+  transform: translateY(-1px);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.profile-nav-buttons.active {
+  color: rgba(255, 255, 255, 1);
+  background-color: #3e523e;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease; 
+}
+
+.yes-button {
+    background-color: #ff6b00;
+    color: white;
+    border: 2px solid #ff6b00;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.yes-button:hover {
+    border-color: #e55a00;
+    background-color: #e55a00;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.no-button {
+    background-color: white;
+    color: #ff6b00;
+    border: 2px solid #ff6b00;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.no-button:hover {
+    border-color: #e55a00;
+    background-color: #e55a00;
+    color: white;
+    transform: translateY(-1px);
+}

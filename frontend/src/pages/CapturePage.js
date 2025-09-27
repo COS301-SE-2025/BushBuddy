@@ -41,7 +41,7 @@ const CapturePage = () => {
   const [showFailPopup, setShowFailPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [descriptionError, setDescriptionError] = useState(false); // New state for error
+  const [descriptionError, setDescriptionError] = useState(false);
 
 
   const videoConstraints = {

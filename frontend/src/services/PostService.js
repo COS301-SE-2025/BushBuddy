@@ -45,10 +45,8 @@ async function fetchPost(postId) {
 
 async function fetchUsersPosts() {
     const response = await apiClient.get("/posts/userPosts");
-    return response.data;
+    return response.data.result;
 }
-
-//function for unlikePost
 
 async function likePost(likePostRequest) {
     const { postId } = likePostRequest;
@@ -62,6 +60,11 @@ async function addComment(commentPostRequest) {
     return response.success;
 }
 
+async function deletePost( postId ) {
+    const response = await apiClient.delete(`/posts/${postId}`);
+    return response.success;
+}
+
 export const PostService = {
 	createPost,
 	fetchPost,
@@ -69,4 +72,5 @@ export const PostService = {
 	fetchAllPosts,
 	likePost,
 	addComment,
+    deletePost,
 };
