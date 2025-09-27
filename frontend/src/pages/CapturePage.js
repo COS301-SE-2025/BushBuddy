@@ -45,8 +45,8 @@ const CapturePage = () => {
 
 
   const videoConstraints = {
-    width: { ideal: 1280 },
-    height: { ideal: 720 },
+    width: { ideal: 500 },
+    height: { ideal: 500 },
     facingMode: { ideal: "environment" },
   };
 
@@ -143,6 +143,8 @@ const CapturePage = () => {
 
   const runDetection = async (img, canvas) => {
     try {
+      //img.src = "/test.jpg"; // Public test image
+      //await new Promise((resolve) => (img.onload = resolve))
       const results = await detectImage(model, 0.25, canvas, img);
 
       console.log("Detection results CapturePage: ", results);
