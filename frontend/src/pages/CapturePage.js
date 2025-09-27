@@ -6,12 +6,14 @@ import './CapturePage.css';
 import { detectImage } from "../utility/detect";
 import * as tf from "@tensorflow/tfjs";
 import { loadModel } from "../utility/modelStorageOperations";
+import endangered from "../utility/endangered.json"
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
 import AudioDetect from '../components/AudioDetect';
 import ServerSideDetect from '../components/ServerSideDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
+
 
 //-- Mock data
 // import axios from 'axios';
@@ -45,8 +47,8 @@ const CapturePage = () => {
 
 
   const videoConstraints = {
-    width: { ideal: 1280 },
-    height: { ideal: 720 },
+    width: { ideal: 800 },
+    height: { ideal: 800 },
     facingMode: { ideal: "environment" },
   };
 
@@ -361,19 +363,20 @@ const CapturePage = () => {
                         ></textarea>
                       </div>
 
-                      {/* Add geolocation conditional for rhino */}
-                      <div className="form-group">
-                        <label htmlFor="geolocation">Enable Geolocation</label>
-                        <label className="switch-label">
-                          <input
-                            type="checkbox"
-                            id="geolocation"
-                            name="geolocation"
-                            className="geolocation-switch"
-                          />
-                          <span className="slider"></span>
-                        </label>
-                      </div>
+                      {!endangered.includes(animalName) && /*Endangered Conditional*/(
+                        <div className="form-group">
+                          <label htmlFor="geolocation">Enable Geolocation</label>
+                          <label className="switch-label">
+                            <input
+                              type="checkbox"
+                              id="geolocation"
+                              name="geolocation"
+                              className="geolocation-switch"
+                            />
+                            <span className="slider"></span>
+                          </label>
+                        </div>
+                      )}
 
                       <button type="submit" className="submit-button">
                         Submit
