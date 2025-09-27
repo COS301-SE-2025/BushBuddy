@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Button } from 'react-bootstrap';
 import './MainScreen.css';
@@ -10,13 +10,44 @@ import SettingsModal from '../components/SettingsModal'; // Adjust path as neede
 
 const MainScreen = () => {
 	const navigate = useNavigate();
-	const userName = sessionStorage.getItem('username');
+	// const userName = sessionStorage.getItem('profile') ? JSON.parse(sessionStorage.getItem('profile')).username : 'User';
 	const [showSettingsModal, setShowSettingsModal] = useState(false);
+	const [userName, setUserName] = useState('User');
+	const loadedProfile = useRef(false);
 
 	// Settings state - you might want to move this to a context or parent component later
 	const [darkMode, setDarkMode] = useState(false);
 	const [notifications, setNotifications] = useState(true);
 	const [locationTracking, setLocationTracking] = useState(false);
+
+	const loadProfile = () => {
+		const profile = sessionStorage.getItem('profile');
+
+		if (profile && !loadedProfile.current) {
+			const parsed = JSON.parse(profile);
+			setUserName(parsed.username);
+			loadedProfile.current = true;
+		} else if (!profile) {
+			// reset if no profile is stored
+			loadedProfile.current = false;
+			setUserName('User');
+		}
+	};
+
+	useEffect(() => {
+		loadProfile();
+
+		const handleProfileUpdated = () => loadProfile();
+		const handleProfileCleared = () => loadProfile();
+
+		window.addEventListener('profileUpdated', handleProfileUpdated);
+		window.addEventListener('profileCleared', handleProfileCleared);
+
+		return () => {
+			window.removeEventListener('profileUpdated', handleProfileUpdated);
+			window.removeEventListener('profileCleared', handleProfileCleared);
+		};
+	}, []);
 
 	const handleScannerClick = () => {
 		navigate('/capture'); // Adjust route as needed

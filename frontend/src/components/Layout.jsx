@@ -49,10 +49,9 @@ function Layout() {
 					credentials: 'include',
 				});
 				const data = await response.json();
-				console.log(data);
 				if (response.ok) {
-					window.sessionStorage.setItem('username', data.data.username);
-					window.sessionStorage.setItem('avatar', getGravatarUrl(data.data.email));
+					window.sessionStorage.setItem('profile', JSON.stringify(data.data));
+					window.dispatchEvent(new Event('profileUpdated'));
 				}
 			} catch (error) {
 				console.error(error);
@@ -185,12 +184,6 @@ function Layout() {
 		}
 	};
 
-	const getGravatarUrl = (email, size = 40) => {
-		if (!email) return `https://www.gravatar.com/avatar/?d=identicon&s=${size}`;
-		const hash = md5(email.trim().toLowerCase());
-		return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
-	};
-
 	return (
 		<div className="layout-wrapper">
 			{showNavAndHead && (
@@ -204,7 +197,19 @@ function Layout() {
 						</div>
 					) : (
 						<div className="header-profile-icon" onClick={() => navigate('/profile')}>
-							<img src={window.sessionStorage.getItem('avatar')} alt="Profile" className="header-profile-img" />
+							<img
+								src={
+									sessionStorage.getItem('profile')
+										? JSON.parse(sessionStorage.getItem('profile'))?.image
+										: `https://www.gravatar.com/avatar/?s=40&d=mp`
+								}
+								alt="Profile"
+								className="header-profile-img"
+								onError={(e) => {
+									e.target.onerror = null;
+									e.target.src = `https://www.gravatar.com/avatar/?s=40&d=mp`;
+								}}
+							/>
 						</div>
 					)}
 				</Navbar>

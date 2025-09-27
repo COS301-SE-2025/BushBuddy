@@ -30,7 +30,20 @@ async function fetchUserPreferences(user) {
 	return preferences;
 }
 
+async function fetchUserProfile(user) {
+	const result = await profileRepo.fetchUserProfile(user);
+	return result;
+}
+
+async function updateUserProfile(user, image, role, bio) {
+	const result = await profileRepo.updateUserProfile(user, image || null, role || null, bio || null);
+
+	return result;
+}
+
 export const profileService = {
 	updateUserPreferences,
 	fetchUserPreferences,
+	updateUserProfile,
+	fetchUserProfile,
 };

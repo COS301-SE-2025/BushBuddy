@@ -1,4 +1,5 @@
 import db from '../db/index.js';
+import s3 from '../db/imageStorage.js';
 
 async function updateThemePreference(user, preference) {
 	let query = '';
@@ -84,6 +85,43 @@ async function fetchUserPreferences(user) {
 	}
 }
 
+async function fetchUserProfile(user) {
+	try {
+		const result = await db.query('SELECT role, bio, created_at FROM users WHERE id=$1', [user]);
+
+		if (result.rowCount === 0) return 'ACCOUNT_DOES_NOT_EXIST';
+
+		const image_url = await s3.fetchImage(user);
+		if (image_url === 'R2_STORAGE_ERROR') {
+			image_url = 'https://www.gravatar.com/avatar/?s=40&d=mp';
+		}
+
+		const res = { ...result.rows[0], image: image_url };
+
+		return res;
+	} catch (err) {
+		console.error(err);
+		return 'DB_ERROR';
+	}
+}
+
+async function updateUserProfile(user, image, role, bio) {
+	try {
+		if (image) {
+			const key = await s3.storeImage(user, image);
+			if (key !== user) return 'IMAGE_STORAGE_ERROR';
+		}
+
+		const sql = 'UPDATE users SET role = COALESCE($1, role), bio = COALESCE($2, bio) WHERE id=$3;';
+		const res = await db.query(sql, [role, bio, user]);
+
+		if (res.rowCount === 0) return 'DB_ERROR';
+	} catch (error) {
+		console.error(error);
+		return 'STORAGE_ERROR';
+	}
+}
+
 async function userPreferencesExist(user) {
 	const result = await db.query('SELECT * FROM user_preferences WHERE id=$1;', [user]);
 
@@ -99,4 +137,6 @@ export const profileRepo = {
 	updateNotificationPreference,
 	updateLocationPreference,
 	fetchUserPreferences,
+	updateUserProfile,
+	fetchUserProfile,
 };

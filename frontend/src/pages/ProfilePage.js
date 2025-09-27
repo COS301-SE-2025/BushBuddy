@@ -78,6 +78,8 @@ const ProfilePage = () => {
 				credentials: 'include',
 			});
 			if (result.ok) {
+				window.sessionStorage.clear();
+				window.dispatchEvent(new Event('profileCleared'));
 				navigate('/login');
 			}
 		} catch (error) {
