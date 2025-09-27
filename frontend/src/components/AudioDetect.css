@@ -84,39 +84,6 @@
     background-color: #4b6949ff;
 }
 
-/* Spinner overlay */
-/* Dark background overlay */
-.spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* darker background */
-    z-index: 1500;
-}
-
-/* Centered spinner */
-.spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #ff6b00;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    z-index: 2000;
-}
-
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-
 .modal-overlay {
     position: fixed;
     top: 0;

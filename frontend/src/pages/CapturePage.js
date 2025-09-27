@@ -36,7 +36,6 @@ const CapturePage = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
   const [activeMode, setActiveMode] = useState('LIVE');
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showFailPopup, setShowFailPopup] = useState(false);
@@ -86,9 +85,11 @@ const CapturePage = () => {
   const captureImage = async () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc || !model) return;
+    setBackgroundImage(imageSrc);
 
     const img = new Image();
     img.src = imageSrc;
+    setLoading(true);
 
     img.onload = () => {
       const canvas = document.createElement("canvas");
@@ -155,6 +156,9 @@ const CapturePage = () => {
     } catch (err) {
       console.error("Error during detection:", err);
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   const resetBackground = () => {
@@ -167,6 +171,7 @@ const CapturePage = () => {
 
   const handleClose = () => {
     setShowForm(false);
+    resetBackground();
     resetCapture();
   }
 
@@ -208,7 +213,6 @@ const CapturePage = () => {
       }
       const imageBlob = new Blob([uint8Array], { type: mimeString });
 
-      // Sighting
       // Sighting
       const sightingData = new FormData();
       sightingData.append("animal", animalName ?? "Unknown");
@@ -266,22 +270,20 @@ const CapturePage = () => {
           <AudioDetect />
         ) : (
           <div className="webcam-wrapper">
-            <Webcam
-              ref={webcamRef}
-              className="webcam"
-              audio={false}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              mirrored={false}
-              screenshotQuality={1}
-              forceScreenshotSourceSize
-            />
-
-            {loading && (
-              <div className="spinner-overlay">
-                <div className="spinner"></div>
-              </div>
-            )}
+          { backgroundImage ? (
+              <img src={backgroundImage} alt="Background" className="display-cap-image" />
+          ) : (
+              <Webcam
+                ref={webcamRef}
+                className="webcam"
+                audio={false}
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+                mirrored={false}
+                screenshotQuality={1}
+                forceScreenshotSourceSize
+              />
+          )}
           </div>
         )}
 
@@ -412,12 +414,6 @@ const CapturePage = () => {
         </div>
       )}
 
-
-      {capturedImage && (
-        <div className="captured-image-wrapper">
-          <img src={capturedImage} alt="Captured" className="captured-image" />
-        </div>
-      )}
       {showFailPopup && (
         <div className="form-overlay">
           <div className="success-popup">
