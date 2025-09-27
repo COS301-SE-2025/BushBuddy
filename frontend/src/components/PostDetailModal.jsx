@@ -43,14 +43,16 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
     try {
       const response = await PostsController.handleCommentPost(post.id, newComment);
       if (response.success) {
+        const timestamp = new Date().toLocaleString();
         comments.push({
           id: response.commentId,
           user_id: "You",
           comment_text: newComment,
+          timestamp: timestamp,
         });
         setNewComment("");
         setCommentInput(false);
-        setCommentsAmount(commentsAmount+1)
+        setCommentsAmount(commentsAmount + 1);
 
         if (onCommentAdded) {
           onCommentAdded(post.id);
@@ -64,21 +66,21 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
   };
 
   return (
-    <div className="modal">
+    <div className="post-modal">
       <div className="modal-header">
         <button className="back" onClick={onClose}>
           <FaArrowLeft size={20} />
         </button>
-        <button className="share">
+        {/* <button className="share">
           <IoShareSocial size={22} />
-        </button>
+        </button> */}
       </div>
 
       <div className="modal-content">
         <div className="title-header">
           <div className="user-details">
-            <div className="avatar">E</div>
-            <p className="username">{post.user_id}</p>
+            {/* add in image for profilePic */}
+            <div className="avatar">{post.user_id[0]}</div>
           </div>
           <div className="title-container">
             <p className="post-title">Animal Spotted</p>
@@ -150,8 +152,11 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
         <div className="comments-wrapper">
           {comments.map((comment) => (
             <div className="comment" key={comment.id}>
-              <p className="username">{comment.user_id}</p>
-              <p className="description-text">{comment.comment_text}</p>
+              <div className="comment-content">
+                  <p className="username">{comment.user_id}</p>
+                  <p className="description-text">{comment.comment_text}</p>
+              </div>
+              <p className="comments-timestamp">{comment.created_at}</p>
             </div>
           ))}
         </div>

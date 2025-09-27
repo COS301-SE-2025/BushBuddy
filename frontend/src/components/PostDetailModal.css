@@ -1,4 +1,4 @@
-.modal {
+.post-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -196,8 +196,8 @@
   border: none;
   background-color: rgb(151, 151, 151);
   height: 0.1rem;
-  width: 85%;
-  max-width: 600px;
+  width: 100%;
+  max-width: 700px;
 }
 
 .comments-header {
@@ -242,17 +242,16 @@
   display: flex;
   flex-direction: column;
   justify-content: left;
-  width: 100%;
+  width: 98%;
   max-width: 700px;
   margin-bottom: 6rem;
 }
 
 .comment {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   width: 100%;
   max-width: 700px;
-  margin-left: 4px;
   padding: 6px 0;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -265,5 +264,21 @@
   font-weight: bold;
   color: rgb(107, 107, 107);
   margin: 0 0.5rem;
+}
+
+.comment-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.comments-timestamp {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: right;
 }
 

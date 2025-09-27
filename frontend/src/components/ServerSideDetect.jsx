@@ -138,29 +138,37 @@ const ServerSideDetect = () => {
 
     return (
         <Container className="upload-page">
-            {loading && <div className="spinner"></div>}
-
             <div className="upload-options">
                 <h1>Upload a Photo</h1>
                 <p>Higher detection accuracy</p>
                 <p>Less battery usage, uses more mobile data</p>
 
                 <div className="upload-section">
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileUpload}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                    />
-                    <button
-                        className="upload-button"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        Upload Image
-                    </button>
+                {!loading && (
+                    <>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileUpload}
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                        />
+                        <button
+                            className="upload-button"
+                            onClick={() => fileInputRef.current?.click()}
+                        >
+                            Upload Image
+                        </button>
+                    </>
+                )}
                 </div>
             </div>
+
+            {loading && (
+                <div className="spinner-overlay">
+                <div className="spinner"></div>
+                </div>
+            )}
 
             {showForm && (
                 <div className="form-overlay">
