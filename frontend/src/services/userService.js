@@ -17,11 +17,11 @@ export async function isAuthenticated() {
 }
 
 export async function updateUserPreferences(preferences) {
-	const response = await apiClient.post('/profile/preferences', { preferences: preferences });
+	const response = await apiClient.post('/user/preferences', { preferences: preferences });
 	return response.data;
 }
 
 export async function fetchUserPreferences() {
-	const response = await apiClient.get('/profile/preferences');
+	const response = await apiClient.get('/user/preferences');
 	return response.data;
 }

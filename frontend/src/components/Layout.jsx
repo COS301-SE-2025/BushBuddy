@@ -5,8 +5,9 @@ import HelpModal from './HelpModal';
 import { Container, Navbar, Button } from 'react-bootstrap';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaMapMarkedAlt, FaCamera, FaRegNewspaper, FaUser, FaCog, FaQuestionCircle } from 'react-icons/fa';
-import { updatePreferences, fetchPreferences } from '../controllers/UsersController';
+import { updatePreferences, fetchPreferences, checkAuthStatus } from '../controllers/UsersController';
 import { useLoading } from '../contexts/LoadingContext';
+import md5 from 'md5';
 
 function Layout() {
 	const navigate = useNavigate();
@@ -24,6 +25,43 @@ function Layout() {
 	const [helpText, setHelpText] = useState('');
 
 	const { startLoading, stopLoading } = useLoading();
+
+	useEffect(() => {
+		const checkLogin = async () => {
+			startLoading();
+			try {
+				const signedIn = await checkAuthStatus();
+				if (!signedIn) {
+					navigate('/login', { replace: true });
+				}
+			} catch (error) {
+				navigate('/login', { replace: true });
+			} finally {
+				stopLoading();
+			}
+		};
+
+		const fetchProfile = async () => {
+			try {
+				const response = await fetch('/api/user/profile', {
+					method: 'GET',
+					headers: { 'Content-Type': 'application/json' },
+					credentials: 'include',
+				});
+				const data = await response.json();
+				console.log(data);
+				if (response.ok) {
+					window.sessionStorage.setItem('username', data.data.username);
+					window.sessionStorage.setItem('avatar', getGravatarUrl(data.data.email));
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		checkLogin();
+		fetchProfile();
+	}, []);
 
 	const getHeaderText = () => {
 		switch (path) {
@@ -147,6 +185,12 @@ function Layout() {
 		}
 	};
 
+	const getGravatarUrl = (email, size = 40) => {
+		if (!email) return `https://www.gravatar.com/avatar/?d=identicon&s=${size}`;
+		const hash = md5(email.trim().toLowerCase());
+		return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+	};
+
 	return (
 		<div className="layout-wrapper">
 			{showNavAndHead && (
@@ -160,7 +204,7 @@ function Layout() {
 						</div>
 					) : (
 						<div className="header-profile-icon" onClick={() => navigate('/profile')}>
-							<img src={require('../assets/Jean-Steyn-ProfilePic.jpg')} alt="Profile" className="header-profile-img" />
+							<img src={window.sessionStorage.getItem('avatar')} alt="Profile" className="header-profile-img" />
 						</div>
 					)}
 				</Navbar>

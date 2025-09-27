@@ -7,9 +7,9 @@ import AchievementsCard from '../components/AchievementsCard.jsx';
 import SettingsSection from '../components/SettingsSection';
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const handleLogout = async () => {
+	/* const handleLogout = async () => {
     try {
       const baseUrl = process.env.REACT_APP_API_URL || '';
       
@@ -66,16 +66,33 @@ const ProfilePage = () => {
       sessionStorage.clear();
       navigate('/login');
     }
-  };
+  }; */
 
-  return (
-    <div className="profile-page">
-      <ProfileHeader />
-      {/*<ActivityStatsCard />
+	const handleLogout = async () => {
+		try {
+			const result = await fetch('/api/auth/logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+			});
+			if (result.ok) {
+				navigate('/login');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	return (
+		<div className="profile-page">
+			<ProfileHeader />
+			{/*<ActivityStatsCard />
       <AchievementsCard />*/}
-      <SettingsSection onLogout={handleLogout} />
-    </div>
-  );
+			<SettingsSection onLogout={handleLogout} />
+		</div>
+	);
 };
 
 export default ProfilePage;

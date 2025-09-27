@@ -6,5 +6,6 @@ profileApp.use(express.json());
 
 profileApp.post('/preferences', profileController.updateUserPreferences);
 profileApp.get('/preferences', profileController.fetchUserPreferences);
+profileApp.get('/profile', profileController.fetchProfile);
 
 export default profileApp;

@@ -42,7 +42,14 @@ async function fetchUserPreferences(req, res) {
 	}
 }
 
+async function fetchProfile(req, res) {
+	const { username, email } = req.user;
+
+	return res.status(200).json({ success: true, message: 'User profile fetched', data: { username, email } });
+}
+
 export const profileController = {
 	updateUserPreferences,
 	fetchUserPreferences,
+	fetchProfile,
 };
