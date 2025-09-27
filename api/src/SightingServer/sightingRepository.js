@@ -82,6 +82,19 @@ async function fetchSighting(post_id) {
 	}
 }
 
+async function fetchAllUserSightings(user_id) {
+    try {
+		const query = `SELECT * FROM identifications WHERE user_id = $1;`;
+
+
+        const result = await db.query(query,[user_id]);
+
+		return result;
+	} catch (error) {
+		throw new Error(`Error fetching all sightings: ${error.message}`);
+	}
+}
+
 async function fetchAllSightings() {
     try {
 		//add filters for sightings 
@@ -193,6 +206,7 @@ export const sightingRepository = {
 	saveNewSight,
 	saveNewSighting,
 	fetchSighting,
+	fetchAllUserSightings,
 	fetchAllSightings,
 	fetchPost,
 	fetchComments,

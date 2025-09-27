@@ -164,6 +164,7 @@ postingApp.get('/all/:filter', postingController.fetchAllPosts);
  */
 postingApp.get('/userPosts', postingController.fetchAllUserPosts);
 
+postingApp.get('/amount', postingController.fetchUserPostsAmount);
 
 /**
  * @swagger

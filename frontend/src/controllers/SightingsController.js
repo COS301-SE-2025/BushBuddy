@@ -27,6 +27,19 @@ async function handleFetchAllSightings( ) {
     }
 }
 
+async function handleFetchUserSightingsAmount( ) {
+    try {
+        const result = await SightingService.fetchUserSightingsAmount();
+
+        return { success: true, amountOfSightings: result };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Failed to fetch sightings amount",
+        };
+    }
+}
+
 async function handleFetchSightingDetails( id ) {
     try {
         const result = await SightingService.fetchSightingDetails( id );
@@ -58,4 +71,5 @@ export const SightingsController = {
 	handleFetchAllSightings,
     handleFetchSightingDetails,
     handleFetchPostDetails,
+    handleFetchUserSightingsAmount,
 };

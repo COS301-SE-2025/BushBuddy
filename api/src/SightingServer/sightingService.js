@@ -52,6 +52,19 @@ async function fetchAllSightings() {
 	}
 }
 
+async function fetchUserSightingsAmount(user_id) {
+	try {
+		const allSightings = await sightingRepository.fetchAllUserSightings(user_id);
+
+		const amount = allSightings.rows.length;
+
+		return amount;
+	} catch (error) {
+		console.error("Error in sightingService.fetchUserSightingsAmount:", error);
+		throw new Error('Failed to fetch amount of posts');
+	}
+}
+
 async function fetchPost(user_id, sight_id) {
 	try{
 		const result = await sightingRepository.fetchPost(sight_id);
@@ -115,6 +128,7 @@ export const sightingService = {
 	createSight,
 	createSighting,
 	fetchAllSightings,
+	fetchUserSightingsAmount,
 	fetchPost,
 	fetchSighting,
 	formatTimestamp

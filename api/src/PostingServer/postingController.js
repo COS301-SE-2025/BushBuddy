@@ -108,6 +108,32 @@ async function fetchAllUserPosts(req, res) {
 	}
 }
 
+async function fetchUserPostsAmount(req, res) {
+	try {
+		const user = req.user;
+
+		const amount = await postingService.fetchUserPostsAmount(user.id);
+		if (!amount) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch amount of posts',
+			});
+		}
+
+		return res.status(201).json({
+			success: true,
+			message: 'Amount of posts fetched successfully',
+			amount_posts: amount,
+		});
+	} catch (error) {
+		console.error('Error fetching amount of posts: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 async function fetchPost(req, res) {
 	try {
 		if (!req.params.postId) {
@@ -244,4 +270,5 @@ export const postingController = {
 	likePost,
 	addComment,
 	deletePost,
+	fetchUserPostsAmount,
 };

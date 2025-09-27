@@ -14,6 +14,11 @@ async function fetchAllSightings() {
     return response.data;
 }
 
+async function fetchUserSightingsAmount() {
+    const response = await apiClient.get("/sightings/amount");
+    return response.data.amount_sightings;
+}
+
 async function fetchSightingDetails( id ) {
     const response = await apiClient.get(`/sightings/${id}`);
     return response.data;
@@ -29,4 +34,5 @@ export const SightingService = {
     createSighting,
     fetchAllSightings,
     fetchPostDetails,
+    fetchUserSightingsAmount,
 }

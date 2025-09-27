@@ -54,6 +54,19 @@ async function handleFetchPost( postId ) {
     }
 }
 
+async function handleFetchUserPostsAmount( ) {
+    try {
+        const result = await PostService.fetchUserPostsAmount();
+
+        return { success: true, amountOfPosts: result };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Failed to fetch all posts amount",
+        };
+    }
+}
+
 async function handleFetchUsersPosts( ) {
     try {
         const posts = await PostService.fetchUsersPosts();
@@ -115,5 +128,6 @@ export const PostsController = {
     handleFetchUsersPosts,
     handleLikePost,
     handleCommentPost,
-    handleDeletePost
+    handleDeletePost,
+    handleFetchUserPostsAmount
 };

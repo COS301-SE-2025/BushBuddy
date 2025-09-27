@@ -144,10 +144,38 @@ async function fetchAllSightings(req, res) {
 	}
 }
 
+async function fetchUserSightingsAmount(req, res) {
+	try {
+		const user = req.user;
+		
+		const amount = await sightingService.fetchUserSightingsAmount(user.id);
+
+		if(!amount){
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch user sightings amount'
+			});
+		}
+
+		return res.status(200).json({
+			success:true,
+			message: 'Sightings amount fetched successfully',
+			amount_sightings: amount
+		});
+	} catch (error) {
+		console.error('Error fetching amount of sightings: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 export const sightingController = {
 	createSighting,
 	viewSighting,
 	viewHistory,
 	fetchPost,
 	fetchAllSightings,
+	fetchUserSightingsAmount,
 };

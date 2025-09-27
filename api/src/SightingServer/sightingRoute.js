@@ -10,6 +10,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 sightingsApp.post('/', upload.single('file'), sightingController.createSighting);
 //fetch all Sightings endpoint
 sightingsApp.get('/all', express.json(), sightingController.fetchAllSightings);
+//fetch amount of sightings by user endpoint
+sightingsApp.get('/amount', express.json(), sightingController.fetchUserSightingsAmount);
 //history endpoint
 sightingsApp.get('/history', express.json(), sightingController.viewHistory);
 //fetch post with sighting id endpoint
