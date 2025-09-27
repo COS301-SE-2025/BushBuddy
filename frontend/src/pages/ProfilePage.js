@@ -10,88 +10,10 @@ import { PostsController } from "../controllers/PostsController";
 import PostDetailModal from "../components/PostDetailModal";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
-  
-  const [activeMode, setActiveMode] = useState('POSTS');
-  const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [postToDelete, setPostToDelete] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [postDetailVisible, setPostDetailVisible] = useState(false);
-  const [showDeleteConfirmation, setDeleteConfirmation] = useState(false);
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [popUpText, setPopupText] = useState(null);
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        const response = await PostsController.handleFetchUsersPosts();
-        if (response.success) {
-          setPosts(response.posts);
-        } else {
-          console.error(response.message);
-        }
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-  
-  const handleIncrementComments = (postId) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((p) =>
-        p.id === postId ? { ...p, comments: (p.comments || 0) + 1 } : p
-      )
-    );
-  };
-
-  const handleDecLikes = (postId) => {
-    console.log("Decreasing likes for post ID:", postId);
-    setPosts((prevPosts) =>
-      prevPosts.map((p) =>
-        p.id === postId ? { ...p, likes: (p.likes || 0) - 1, isLiked: false } : p
-      )
-    );
-  };
-
-  const handleIncLikes = (postId) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((p) =>
-        p.id === postId ? { ...p, likes: (p.likes || 0) + 1, isLiked: true } : p
-      )
-    );
-  };
-
-  const handleDelete = async () => {
-    setDeleteLoading(true);
-    setDeleteConfirmation(false);
-    const result = await PostsController.handleDeletePost(postToDelete);
-    setDeleteLoading(false);
-
-    if(result.success){
-      setPopupText("Post deleted successfully");
-      setShowPopup(true);
-      setPosts((prevPosts) => prevPosts.filter((p) => p.id !== postToDelete));
-      setPostToDelete(null);
-    } else {
-      setPopupText("Failed to delete post");
-      setShowPopup(true);
-    }
-  }
-
-  const handleCloseDelete = async () => {
-    setDeleteConfirmation(false);
-    setPostToDelete(null);
-  }
-
-  const handleLogout = async () => {
+	/* const handleLogout = async () => {
     try {
       const baseUrl = process.env.REACT_APP_API_URL || '';
       
@@ -148,7 +70,25 @@ const ProfilePage = () => {
       sessionStorage.clear();
       navigate('/login');
     }
-  };
+  }; */
+  const handleLogout = async () => {
+		try {
+			const result = await fetch('/api/auth/logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+			});
+			if (result.ok) {
+				window.sessionStorage.clear();
+				window.dispatchEvent(new Event('profileCleared'));
+				navigate('/login');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
   return (
     <div className="profile-page">
@@ -259,6 +199,5 @@ const ProfilePage = () => {
       )}
     </div>
   );
-};
 
 export default ProfilePage;

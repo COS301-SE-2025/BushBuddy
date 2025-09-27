@@ -49,7 +49,7 @@ class ImageStorage {
 			return url;
 		} catch (error) {
 			console.error(error);
-			throw error;
+			return 'R2_STORAGE_ERROR';
 		}
 	}
 }

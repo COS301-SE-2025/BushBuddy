@@ -11,6 +11,7 @@ import authApp from './AuthenticationServer/authRoute.js';
 import discoveryApp from './DiscoveryServer/discoveryRoute.js';
 import sightingsApp from './SightingServer/sightingRoute.js';
 import postingApp from './PostingServer/postingRoute.js';
+import profileApp from './ProfileServer/profileRoute.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,7 +56,17 @@ const DISCOVER_PORT = process.env.DISCOVER_PORT || 4002;
 const SIGHTINGS_PORT = process.env.SIGHTINGS_PORT || 4003;
 const POST_PORT = process.env.POST_PORT || 4004;
 
-const publicRoutes = ['/auth/register', '/auth/login', '/login', '/register'];
+const publicRoutes = [
+	'/api/auth/register',
+	'/api/auth/login',
+	'/login',
+	'/register',
+	'/main',
+	'/map',
+	'/capture',
+	'/feed',
+	'/profile',
+];
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -83,13 +94,15 @@ app.use((req, res, next) => {
 });
 
 // routes go here
-app.use('/auth', authApp);
+app.use('/api/auth', authApp);
 
-app.use('/discover', discoveryApp);
+app.use('/api/discover', discoveryApp);
 
-app.use('/sightings', sightingsApp);
+app.use('/api/sightings', sightingsApp);
 
-app.use('/posts', postingApp);
+app.use('/api/posts', postingApp);
+
+app.use('/api/user', profileApp);
 
 // app.use('/docs', swaggerUI.serve);
 

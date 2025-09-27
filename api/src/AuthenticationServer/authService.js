@@ -17,9 +17,13 @@ async function registerUser({ username, password, email }) {
 			password: hashedPassword,
 		});
 
-		const token = jwt.sign({ id: user.id, username: user.username, admin: user.is_admin }, process.env.JWT_SECRET, {
-			expiresIn: '24h',
-		});
+		const token = jwt.sign(
+			{ id: user.id, username: user.username, email: user.email, admin: user.is_admin },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: '24h',
+			}
+		);
 
 		return token;
 	} catch (error) {
@@ -42,9 +46,13 @@ async function loginUser({ username, password }) {
 			throw new Error('Invalid username or password');
 		}
 
-		const token = jwt.sign({ id: user.id, username: user.username, admin: user.is_admin }, process.env.JWT_SECRET, {
-			expiresIn: '24h',
-		});
+		const token = jwt.sign(
+			{ id: user.id, username: username, email: user.email, admin: user.is_admin },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: '24h',
+			}
+		);
 		return token;
 	} catch (error) {
 		throw new Error(`Error logging in user: ${error.message}`);
