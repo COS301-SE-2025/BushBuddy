@@ -207,9 +207,8 @@ const ProfilePage = () => {
         </>
       ) : activeMode === 'ACHIEVEMENTS' ? (
         <>
-        <p>achievements</p>
-          {/*<ActivityStatsCard />
-            <AchievementsCard />*/}
+          <ActivityStatsCard />
+          <AchievementsCard />
         </>
       ) : (
         <>
