@@ -38,6 +38,7 @@ async function fetchAllUserPosts(user_id) {
             post.image_url = await postingRepository.fetchPostImage(post.image_url);
             post.user_id = await postingRepository.fetchUserName(post.user_id);
             post.created_at = await formatTimestamp(post.created_at);
+            post.isLiked = await postingRepository.checkLikedStatus(user_id, post.id);
         }
 
         return allPosts;
@@ -116,6 +117,17 @@ async function formatTimestamp(timestamp){
     return output;
 }
 
+async function deletePost(post_id, user_id){
+    try {
+        const result = await postingRepository.deletePost(post_id, user_id);
+
+        return result;
+    } catch (error){
+        console.error("Error in postingService.deletePost:", error);
+        throw new Error('Failed to delete post');
+    }
+}
+
 export const postingService = {
     createPost,
     fetchPost,
@@ -124,4 +136,5 @@ export const postingService = {
     likePost,
     addComment,
     formatTimestamp,
+    deletePost,
 };

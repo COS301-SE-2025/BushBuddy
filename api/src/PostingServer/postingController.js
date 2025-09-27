@@ -76,18 +76,6 @@ async function fetchAllPosts(req, res) {
 
 async function fetchAllUserPosts(req, res) {
 	try {
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const result = await postingService.fetchAllUserPosts(user.id);
@@ -109,7 +97,7 @@ async function fetchAllUserPosts(req, res) {
 		return res.status(200).json({
 			success: true,
 			message: 'User posts fetched successfully',
-			data: result,
+			result,
 		});
 	} catch (error) {
 		console.error('Error fetching all user posts: ', error);
@@ -191,18 +179,6 @@ async function addComment(req, res) {
 			});
 		}
 
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const data = {
@@ -233,6 +209,33 @@ async function addComment(req, res) {
 	}
 }
 
+async function deletePost(req, res) {
+	try {
+		
+		if (!req.params.postId) {
+			return res.status(400).json({
+				success: false,
+				message: 'Post ID is required',
+			});
+		}
+
+		const user = req.user;
+
+		const result = await postingService.deletePost(req.params.postId, user.id);
+
+		return res.status(200).json({
+			success: true,
+			message: 'Post deleted successfully',
+		});
+	} catch (error) {
+		console.error('Error deleting post: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 export const postingController = {
 	createPost,
 	fetchPost,
@@ -240,4 +243,5 @@ export const postingController = {
 	fetchAllPosts,
 	likePost,
 	addComment,
+	deletePost,
 };

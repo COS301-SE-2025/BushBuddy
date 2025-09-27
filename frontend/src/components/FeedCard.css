@@ -28,6 +28,18 @@
   margin-right: auto;
 }
 
+.delete-div {
+  margin-left: auto;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.6em;
+  color: #ff0000;
+}
+
 .feed-card-image {
   width: 100%;
   height: auto;
