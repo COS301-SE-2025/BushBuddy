@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HelpModal.css';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 
 const HelpModal = ({ show, onClose, helpText }) => {
+  const navigate = useNavigate();
   if (!show) return null;
 
   return (
@@ -20,11 +22,15 @@ const HelpModal = ({ show, onClose, helpText }) => {
           <p style={{ fontWeight: 'bold' }}>
             Helpfull Links:
           </p>
-          <button className="help-link" onClick={() => alert("User Manual")}>User Manual</button>
+          <button className="help-link" onClick={() => window.open("https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki/User-Manual")}>
+            User Manual
+          </button>
           <br/>
-          <button className="help-link" onClick={() => alert("FAQs")}>FAQs</button>
-          <br/>
-          <button className="help-link" onClick={() => alert("README")}>README</button>
+          {/* <button className="help-link" onClick={() => alert("FAQs")}>FAQs</button>
+          <br/> */}
+          <button className="help-link" onClick={() => window.open("https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection?tab=readme-ov-file#readme", "_blank")}>
+            README
+          </button>
         </div>
       </div>
     </div>

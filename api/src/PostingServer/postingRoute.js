@@ -164,6 +164,7 @@ postingApp.get('/all/:filter', postingController.fetchAllPosts);
  */
 postingApp.get('/userPosts', postingController.fetchAllUserPosts);
 
+
 /**
  * @swagger
  * /{postId}:
@@ -215,7 +216,7 @@ postingApp.get('/userPosts', postingController.fetchAllUserPosts);
  *         description: Post ID missing or invalid
  *       500:
  *         description: Internal server error
- */
+*/
 postingApp.get('/:postId', postingController.fetchPost);
 
 /**
@@ -242,7 +243,7 @@ postingApp.get('/:postId', postingController.fetchPost);
  *         description: Unauthorized (login required)
  *       500:
  *         description: Internal server error
- */
+*/
 postingApp.post('/:postId/like', postingController.likePost);
 
 /**
@@ -281,7 +282,9 @@ postingApp.post('/:postId/like', postingController.likePost);
  *         description: Unauthorized (login required)
  *       500:
  *         description: Internal server error
- */
+*/
 postingApp.post('/:postId/comment', postingController.addComment);
+
+postingApp.delete('/:postId', postingController.deletePost);
 
 export default postingApp;

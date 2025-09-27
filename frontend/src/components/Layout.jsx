@@ -94,26 +94,26 @@ return (
           </Navbar.Brand>
 
           {
-              showSettingsIcon ? (
-                <div
-                  className="header-settings-icon"
-                  onClick={() => setShowSettings(true)}
-                >
-                  <FaCog size={28} color="#FFFFFF" />
-                </div>
-              ) : (
-                <div 
-                  className="header-profile-icon"
-                  onClick={() => navigate('/profile')}
-                >
-                  <img 
-                    src={require("../assets/Jean-Steyn-ProfilePic.jpg")}
-                    alt="Profile"
-                    className="header-profile-img"
-                  />
-                </div>
-              )
-            }
+            showSettingsIcon ? (
+              <div
+                className="header-settings-icon"
+                onClick={() => setShowSettings(true)}
+              >
+                <FaCog size={28} color="#FFFFFF" />
+              </div>
+            ) : (
+              <div 
+                className="header-profile-icon"
+                onClick={() => navigate('/profile')}
+              >
+                <img 
+                  src={require("../assets/Jean-Steyn-ProfilePic.jpg")}
+                  alt="Profile"
+                  className="header-profile-img"
+                />
+              </div>
+            )
+          }
         </Navbar>
       )}
       <Container className="main-content">
