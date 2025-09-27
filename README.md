@@ -109,7 +109,6 @@ Git Branching Strategy included
 <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;">
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-
 <!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
     </td> -->
