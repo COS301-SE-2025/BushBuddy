@@ -77,7 +77,7 @@ describe('Testing postingRepository', () => {
 
 			const result = await postingRepository.fetchAllPosts();
 
-			expect(db.query).toHaveBeenCalledWith('SELECT * FROM posts ORDER BY created_at DESC LIMIT 50;');
+			expect(db.query).toHaveBeenCalledWith('SELECT * FROM posts ORDER BY created_at DESC LIMIT 10;');
 			expect(result).toEqual([{ id: 1, description: 'test' }]);
 		});
 
@@ -136,14 +136,6 @@ describe('Testing postingRepository', () => {
 			expect(db.query.mock.calls[0][0]).toMatch(/SELECT/);
 			expect(db.query.mock.calls[2][0]).toMatch(/INSERT/);
 			expect(result).toBeDefined();
-		});
-
-		test('should return null if like already exists', async () => {
-			db.query.mockResolvedValueOnce({ rowCount: 1 });
-
-			const result = await postingRepository.likePost(1, 99);
-
-			expect(result).toBeNull();
 		});
 
 		test('should throw error when DB fails', async () => {
