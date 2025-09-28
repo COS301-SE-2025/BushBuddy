@@ -79,9 +79,47 @@ async function checkLoginStatus(req, res) {
 	}
 }
 
+async function updateUserPassword(req, res) {
+	try {
+		const userID = req.user.id;
+		const { currentPassword, newPassword, confirmPassword } = req.body;
+
+		if (!currentPassword || !newPassword || !confirmPassword) {
+			return res.status(400).json({ success: false, message: 'One or more required fields missing' });
+		}
+
+		if (newPassword === currentPassword) {
+			return res.status(400).json({ success: false, message: 'New password cannot be the same as old password' });
+		}
+
+		if (newPassword !== confirmPassword) {
+			return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
+		}
+
+		const result = await authService.changePassword(userID, currentPassword, newPassword);
+
+		switch (result) {
+			case 'DB_ERROR':
+			case 'SERVER_ERROR':
+				return res.status(400).json({ success: false, message: 'Something went wrong. Please try again later' });
+			case 'INCORRECT_PASSWORD':
+			case 'INVALID_REQUEST':
+				return res.status(401).json({ success: false, message: 'Username or password is incorrect' });
+			case 'REQ_FIELDS_MISSING':
+				return res.status(400).json({ success: false, message: 'One or more required fields missing' });
+			case 'REQUEST_SUCCESS':
+				return res.status(200).json({ success: true, message: 'Password changed' });
+		}
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ success: false, message: 'Internal server error' });
+	}
+}
+
 export const authController = {
 	registerUser,
 	loginUser,
 	logoutUser,
 	checkLoginStatus,
+	updateUserPassword,
 };
