@@ -1,5 +1,18 @@
 import { sightingService } from './sightingService.js';
 
+const endangered = [
+  "African Wild Dog",
+  "Black Rhino",
+  "Black Rhinoceros",
+  "White Rhino",
+  "White Rhinoceros",
+  "Cheetah",
+  "Elephant",
+  "Leopard",
+  "Lion",
+  "Pangolin"
+]
+
 async function createSighting(req, res) {
 	try {
 		const user_id = req.user.id;
@@ -10,6 +23,12 @@ async function createSighting(req, res) {
 		if (!req.file || !animal || !confidence) {
 			return res.status(400).json({ success: false, message: 'Some required fields are missing' });
 		}
+
+		if(endangered.includes(animal) && (longitude!=null||latitude!=null))
+		{
+			return res.status(400).json({ success: false, message: 'Failed to create sighting since endangered animal was passed with geolocation' });
+		}
+
 		// uploaded image, stored as a JS Buffer object (binary data)
 		const image = req.file.buffer;
 		//change createSight to createSighting once confirmed
