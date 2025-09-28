@@ -50,8 +50,8 @@ const BestiaryComponent = () => {
 	// Fetch animals from API
 	useEffect(() => {
 		const fetchAnimals = async () => {
-			if (localStorage.getItem('bestiary')) {
-				const bestiary = JSON.parse(localStorage.getItem('bestiary'));
+			if (sessionStorage.getItem('bestiary')) {
+				const bestiary = JSON.parse(sessionStorage.getItem('bestiary'));
 				setAnimals(bestiary);
 				setFilteredAnimals(bestiary);
 				setLoading(false);
@@ -63,7 +63,7 @@ const BestiaryComponent = () => {
 				if (data.success && data.result.data) {
 					setAnimals(data.result.data);
 					setFilteredAnimals(data.result.data);
-					localStorage.setItem('bestiary', JSON.stringify(data.result.data));
+					sessionStorage.setItem('bestiary', JSON.stringify(data.result.data));
 				} else {
 					throw new Error('Invalid data format received');
 				}
