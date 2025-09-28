@@ -125,28 +125,28 @@ const MapPage = () => {
         </LayersControl>
 
         {sightings.map((entry) => (
-          <Marker
-            key={entry.id} // Ensure each marker has a unique key
-            position={[entry.geolocation_lat, entry.geolocation_long]}
-            eventHandlers={{
-              click: () => fetchSightingDetails(entry.id), // Fetch details when marker is clicked
-            }}
-          >
-            <Popup className="popup">
-              {selectedSighting && selectedSighting.id === entry.id ? (
-                <div onClick={() => fetchPostDetails(entry.id)}>
-                  <h3>{selectedSighting.animal_id}</h3>
-                  <img className='popUpImg' src={selectedSighting.image_url}></img>
-                  <p><b>Sighted by:</b> {selectedSighting.user_id}</p>
-                  <p><b>{new Date(selectedSighting.created_at).toLocaleString()}</b></p>
-                </div>
-              ) : (
-                <div className="pop-up-loader-wrapper">
-                  <div className="pop-up-loader"></div>
-                </div>
-              )}
-            </Popup>
-          </Marker>
+            <Marker
+              key={entry.id} // Ensure each marker has a unique key
+              position={[entry.geolocation_lat, entry.geolocation_long]}
+              eventHandlers={{
+                click: () => fetchSightingDetails(entry.id), // Fetch details when marker is clicked
+              }}
+            >
+              <Popup className="popup">
+                {selectedSighting && selectedSighting.id === entry.id ? (
+                  <div onClick={() => fetchPostDetails(entry.id)}>
+                    <h3>{selectedSighting.animal_id}</h3>
+                    <img className='popUpImg' src={selectedSighting.image_url}></img>
+                    <p><b>Sighted by:</b> {selectedSighting.user_id}</p>
+                    <p><b>{new Date(selectedSighting.created_at).toLocaleString()}</b></p>
+                  </div>
+                ) : (
+                  <div className="pop-up-loader-wrapper">
+                    <div className="pop-up-loader"></div>
+                  </div>
+                )}
+              </Popup>
+            </Marker>
         ))}
 
         {/* User location marker */}

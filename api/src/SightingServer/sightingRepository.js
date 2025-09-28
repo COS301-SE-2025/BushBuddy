@@ -112,7 +112,7 @@ async function fetchAllUserSightingsWithAnimalNames(user_id) {
 async function fetchAllSightings() {
     try {
 		//add filters for sightings 
-		const query = `SELECT * FROM identifications WHERE geolocation_long<>0 ORDER BY created_at DESC LIMIT 15;`;
+		const query = `SELECT * FROM identifications WHERE geolocation_lat IS NOT NULL ORDER BY created_at DESC LIMIT 15;`;
 
         const result = await db.query(query);
 
