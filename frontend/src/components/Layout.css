@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 45px;
+    height: 5vh;
     background-color: #4b6949ff;
     color: white;
     padding: 1rem;
@@ -67,7 +67,7 @@
 .main-content {
     flex: 1;
     background-color: #FFFFF0;
-    padding: 80px 0 75px 0;
+    padding: 74px 0 75px 0;
     position: relative;
     overflow-x: hidden;
     box-sizing: border-box;
@@ -77,6 +77,22 @@
     position: fixed;
     bottom: 4.5rem;
     right: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: #ff6b00;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+    z-index: 100;
+    transition: 0.3s;
+}
+
+.help-button-capture {
+    position: fixed;
+    bottom: 4.3rem;
+    right: 3.4rem;
     height: 1.5rem;
     width: 1.5rem;
     border-radius: 50%;

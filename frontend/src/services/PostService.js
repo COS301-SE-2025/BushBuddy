@@ -8,13 +8,13 @@ import {
 } from "../models/PostModel";
 
 async function createPost(createPostRequest) {
-    const response = await apiClient.post("/posts", createPostRequest);
+    const response = await apiClient.post("/posts/", createPostRequest);
     return response.data;
 }
 
 //add params and filters to fetchAllPostsRequest model
-async function fetchAllPosts() {
-    const response = await apiClient.get("/posts/all");
+async function fetchAllPosts(filter) {
+    const response = await apiClient.get(`/posts/all/${filter}`);
     const results = response.data;
     const postsBefore = results.data;
 
@@ -30,10 +30,11 @@ async function fetchAllPosts() {
             is_removed: result.is_removed,
             created_at: result.created_at,
             likes: result.likes,
+            isLiked: result.isLiked,
             comments: result.comments
         }));
     }
-    
+
     return posts;
 }
 
@@ -44,10 +45,13 @@ async function fetchPost(postId) {
 
 async function fetchUsersPosts() {
     const response = await apiClient.get("/posts/userPosts");
-    return response.data;
+    return response.data.result;
 }
 
-//function for unlikePost
+async function fetchUserPostsAmount() {
+    const response = await apiClient.get("/posts/amount");
+    return response.data.amount_posts;
+}
 
 async function likePost(likePostRequest) {
     const { postId } = likePostRequest;
@@ -61,6 +65,11 @@ async function addComment(commentPostRequest) {
     return response.success;
 }
 
+async function deletePost( postId ) {
+    const response = await apiClient.delete(`/posts/${postId}`);
+    return response.success;
+}
+
 export const PostService = {
 	createPost,
 	fetchPost,
@@ -68,4 +77,6 @@ export const PostService = {
 	fetchAllPosts,
 	likePost,
 	addComment,
+    deletePost,
+    fetchUserPostsAmount,
 };

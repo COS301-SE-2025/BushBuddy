@@ -7,13 +7,12 @@ import {
 	AddCommentRequest,
 } from "../models/PostModel";
 
-async function handleCreatePost( identificationId, description, shareLocation, image) {
+async function handleCreatePost( identification_id, description, share_location) {
     try {
         const createPostRequest = new CreatePostRequest({
-            identificationId,
+            identification_id,
             description,
-            shareLocation,
-            image
+            share_location,
         });
         
         const result = await PostService.createPost(createPostRequest);
@@ -27,15 +26,14 @@ async function handleCreatePost( identificationId, description, shareLocation, i
     }
 }
 
-//add input params
-async function handleFetchAllPosts( ) {
+//add params for post amount ranges
+async function handleFetchAllPosts(filter) {
     try {
-        //add input params
-        const fetchAllPostsRequest = new FetchAllPostsRequest({ });
-        const result = await PostService.fetchAllPosts();
+        const fetchAllPostsRequest = new FetchAllPostsRequest({ filter });
+        const result = await PostService.fetchAllPosts(filter);
 
-        return { success:true, posts:result };
-    } catch(error) {
+        return { success: true, posts: result };
+    } catch (error) {
         return {
             success: false,
             message: error.response?.data?.message || "Failed to fetch all posts",
@@ -52,6 +50,19 @@ async function handleFetchPost( postId ) {
         return {
             success: false,
             message: error.response?.data?.message || "Failed to fetch post",
+        };
+    }
+}
+
+async function handleFetchUserPostsAmount( ) {
+    try {
+        const result = await PostService.fetchUserPostsAmount();
+
+        return { success: true, amountOfPosts: result };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Failed to fetch all posts amount",
         };
     }
 }
@@ -97,11 +108,26 @@ async function handleCommentPost( postId, comment ) {
     }
 }
 
+async function handleDeletePost( postId ) {
+    try {
+        const result = await PostService.deletePost(postId);
+
+        return { success:true, result };
+    } catch(error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Failed to delete post",
+        };
+    }
+}
+
 export const PostsController = {
     handleCreatePost,
     handleFetchAllPosts,
     handleFetchPost,
     handleFetchUsersPosts,
     handleLikePost,
-    handleCommentPost
+    handleCommentPost,
+    handleDeletePost,
+    handleFetchUserPostsAmount
 };

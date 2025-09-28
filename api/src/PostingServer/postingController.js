@@ -3,27 +3,16 @@ import jwt from 'jsonwebtoken';
 
 async function createPost(req, res) {
 	try {
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const details = {
 			user_id: user.id,
 			identification_id: req.body.identification_id,
 			description: req.body.description,
-			share_location: req.body.shareLocation,
+			share_location: req.body.share_location,
+			image_url: req.body.image_url,
 		};
-
+		
 		const result = await postingService.createPost(details);
 
 		if (!result) {
@@ -49,7 +38,13 @@ async function createPost(req, res) {
 
 async function fetchAllPosts(req, res) {
 	try {
-		const result = await postingService.fetchAllPosts();
+		if (!req.params.filter) {
+			return res.status(400).json({ success: false, message: 'Filter is required' });
+		}
+
+		const user = req.user;
+
+		const result = await postingService.fetchAllPosts(user.id, req.params.filter);
 
 		if (!result) {
 			return res.status(400).json({
@@ -81,18 +76,6 @@ async function fetchAllPosts(req, res) {
 
 async function fetchAllUserPosts(req, res) {
 	try {
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const result = await postingService.fetchAllUserPosts(user.id);
@@ -114,10 +97,36 @@ async function fetchAllUserPosts(req, res) {
 		return res.status(200).json({
 			success: true,
 			message: 'User posts fetched successfully',
-			data: result,
+			result,
 		});
 	} catch (error) {
 		console.error('Error fetching all user posts: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
+async function fetchUserPostsAmount(req, res) {
+	try {
+		const user = req.user;
+
+		const amount = await postingService.fetchUserPostsAmount(user.id);
+		if (!(amount>-1)) {
+			return res.status(400).json({
+				success: false,
+				message: 'Failed to fetch amount of posts',
+			});
+		}
+
+		return res.status(201).json({
+			success: true,
+			message: 'Amount of posts fetched successfully',
+			amount_posts: amount,
+		});
+	} catch (error) {
+		console.error('Error fetching amount of posts: ', error);
 		res.status(500).json({
 			success: false,
 			error: 'Internal server error',
@@ -133,7 +142,9 @@ async function fetchPost(req, res) {
 
 		const postId = parseInt(req.params.postId, 10);
 
-		const result = await postingService.fetchPost(postId);
+		const user = req.user;
+
+		const result = await postingService.fetchPost(user.id, postId);
 
 		if (!result) {
 			return res.status(400).json({
@@ -168,28 +179,9 @@ async function likePost(req, res) {
 			});
 		}
 
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
 		const user = req.user;
 
 		const result = await postingService.likePost(req.params.postId, user.id);
-
-		if (!result) {
-			return res.status(409).json({
-				success: false,
-				message: 'Post is already liked by user',
-			});
-		}
 
 		return res.status(200).json({
 			success: true,
@@ -212,18 +204,6 @@ async function addComment(req, res) {
 				message: 'Post ID is required',
 			});
 		}
-
-		// const token = req.cookies.token;
-		// if (!token){
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
-
-		// try {
-		// 	const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-		// 	req.user = decodedUser;
-		// } catch (error) {
-		// 	return res.status(401).json({ success: false, message: 'You must be logged in to perform this action' });
-		// }
 
 		const user = req.user;
 
@@ -255,6 +235,33 @@ async function addComment(req, res) {
 	}
 }
 
+async function deletePost(req, res) {
+	try {
+		
+		if (!req.params.postId) {
+			return res.status(400).json({
+				success: false,
+				message: 'Post ID is required',
+			});
+		}
+
+		const user = req.user;
+
+		const result = await postingService.deletePost(req.params.postId, user.id);
+
+		return res.status(200).json({
+			success: true,
+			message: 'Post deleted successfully',
+		});
+	} catch (error) {
+		console.error('Error deleting post: ', error);
+		res.status(500).json({
+			success: false,
+			error: 'Internal server error',
+		});
+	}
+}
+
 export const postingController = {
 	createPost,
 	fetchPost,
@@ -262,4 +269,6 @@ export const postingController = {
 	fetchAllPosts,
 	likePost,
 	addComment,
+	deletePost,
+	fetchUserPostsAmount,
 };
