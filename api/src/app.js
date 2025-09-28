@@ -22,6 +22,11 @@ dotenv.config();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS;
 
+//keepalive route
+app.get('/ping', (req, res) => {
+	return res.status(200).send('pong');
+});
+
 app.use(express.static(path.join(__dirname, '../../frontend/build/')));
 
 app.use(
@@ -94,10 +99,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-//keepalive route
-app.get('/ping', (req, res) => {
-	return res.status(200).send('pong');
-});
+
 
 // routes go here
 app.use('/api/auth', authApp);
