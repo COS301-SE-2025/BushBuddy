@@ -190,7 +190,7 @@
 }
 
 .detected-image {
-    width: 100%;
+    width: auto;
     max-width: 400px;
     max-height: 400px;
     object-fit: contain;

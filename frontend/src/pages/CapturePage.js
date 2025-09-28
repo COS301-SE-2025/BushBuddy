@@ -47,8 +47,8 @@ const CapturePage = () => {
 
 
   const videoConstraints = {
-    width: { ideal:  800},
-    height: { ideal: 800 },
+    width: { ideal:  1280},
+    height: { ideal: 720 },
     facingMode: { ideal: "environment" },
   };
 
@@ -315,7 +315,7 @@ const CapturePage = () => {
                 />
 
                 {/* CASE 1: No results OR only "Background" */}
-                {animalName.length === 0 || (animalName.length === 1 && animalName[0] === "Background") ? (
+                {animalName.length === 0 || (animalName.length === 1 && (animalName[0] === "Background" || animalName[0] === "No results found" )) ? (
                   <div className="popup-message">
                     <h4 className="animal-name">No results found</h4>
                     <button className="submit-button" onClick={handleClose}>
