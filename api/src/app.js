@@ -48,7 +48,7 @@ app.use(
 
 app.options('*', cors());
 
-app.use(express.json());
+// app.use(express.json());
 app.use(cookieParser());
 
 const AUTH_PORT = process.env.AUTH_PORT || 4001;
@@ -67,6 +67,7 @@ const publicRoutes = [
 	'/feed',
 	'/profile',
 ];
+
 
 app.use((req, res, next) => {
 	console.log(`Request received: ${req.method} ${req.url}`);
@@ -91,6 +92,11 @@ app.use((req, res, next) => {
 	}
 
 	next();
+});
+
+//keepalive route
+app.get('/ping', (req, res) => {
+	return res.status(200).send('pong');
 });
 
 // routes go here

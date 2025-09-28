@@ -22,9 +22,12 @@ AI-Powered African Wildlife Detection System
 
 </div>
 
+[BushBuddy PWA](https://bushbuddyapp.onrender.com/)
+
 ## Project Description
+BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South African wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
 <details>
-  <summary><b>What is BushBuddy?</b></summary>
+  <summary><b>Read More</b></summary>
   <p>
 Unleash the power of instant wildlife recognition: where every encounter with
 African wildlife becomes an opportunity for discovery. In this vibrant
@@ -58,6 +61,13 @@ Includes Architecture, Service contracts and Deployment model
 Git Branching Strategy included
 
 ## Demos
+
+### Demo 3
+
+[Demo 3 Video](https://drive.google.com/file/d/1AMMN1naXcNAdphJ7Y1E8ipeoW1hbINcK/view?usp=drive_link)
+
+[Demo 3 Presentation](https://drive.google.com/file/d/1Q6yOi7hcJ4naVVryF5NvuisK9J37QTsP/view?usp=drive_link)
+
 ### Demo 2
 
 [Demo 2 Video](https://drive.google.com/file/d/1AFVEid11rerREMEkVdt_w_FHNNJU121T/view?usp=drive_link)
@@ -99,7 +109,6 @@ Git Branching Strategy included
 <table style="border: 1px solid #ddd; width: 100%; font-family: Arial, sans-serif; border-collapse: collapse;">
   <!-- First Row -->
   <tr style="border-bottom: 1px solid #ddd;">
-
 <!--     <td style="vertical-align: top; width: 30%; padding: 20px; text-align: center;">
       <img src="res\img\team\placeholder.jpg" width="2000" height="auto">
     </td> -->
