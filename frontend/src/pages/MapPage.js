@@ -26,6 +26,7 @@ function RecenterMap({ position }) {
 
 const MapPage = () => {
   const [currentPosition, setCurrentPosition] = useState(null); // User's current location
+  const [recenterPosition, setRecenterPosition] = useState(null); //recenter on point
   const defaultPosition = [-25.8812222, 28.291611111111113]; // Fallback location
   const [sightings, setSightings] = useState([]); // List of all sightings
   const [selectedSighting, setSelectedSighting] = useState(null); // Data for the clicked marker
@@ -75,7 +76,7 @@ const MapPage = () => {
       const response = await SightingsController.handleFetchSightingDetails(sightingId);
       if (response.success) {
         setSelectedSighting(response.data);
-        setCurrentPosition([response.data.geolocation_lat, response.data.geolocation_long]);
+        setRecenterPosition([response.data.geolocation_lat, response.data.geolocation_long]);
       } else {
         console.error(response.message);
       }
@@ -124,28 +125,28 @@ const MapPage = () => {
         </LayersControl>
 
         {sightings.map((entry) => (
-          <Marker
-            key={entry.id} // Ensure each marker has a unique key
-            position={[entry.geolocation_lat, entry.geolocation_long]}
-            eventHandlers={{
-              click: () => fetchSightingDetails(entry.id), // Fetch details when marker is clicked
-            }}
-          >
-            <Popup className="popup">
-              {selectedSighting && selectedSighting.id === entry.id ? (
-                <div onClick={() => fetchPostDetails(entry.id)}>
-                  <h3>{selectedSighting.animal_id}</h3>
-                  <img className='popUpImg' src={selectedSighting.image_url}></img>
-                  <p><b>Sighted by:</b> {selectedSighting.user_id}</p>
-                  <p><b>{new Date(selectedSighting.created_at).toLocaleString()}</b></p>
-                </div>
-              ) : (
-                <div className="pop-up-loader-wrapper">
-                  <div className="pop-up-loader"></div>
-                </div>
-              )}
-            </Popup>
-          </Marker>
+            <Marker
+              key={entry.id} // Ensure each marker has a unique key
+              position={[entry.geolocation_lat, entry.geolocation_long]}
+              eventHandlers={{
+                click: () => fetchSightingDetails(entry.id), // Fetch details when marker is clicked
+              }}
+            >
+              <Popup className="popup">
+                {selectedSighting && selectedSighting.id === entry.id ? (
+                  <div onClick={() => fetchPostDetails(entry.id)}>
+                    <h3>{selectedSighting.animal_id}</h3>
+                    <img className='popUpImg' src={selectedSighting.image_url}></img>
+                    <p><b>Sighted by:</b> {selectedSighting.user_id}</p>
+                    <p><b>{new Date(selectedSighting.created_at).toLocaleString()}</b></p>
+                  </div>
+                ) : (
+                  <div className="pop-up-loader-wrapper">
+                    <div className="pop-up-loader"></div>
+                  </div>
+                )}
+              </Popup>
+            </Marker>
         ))}
 
         {/* User location marker */}

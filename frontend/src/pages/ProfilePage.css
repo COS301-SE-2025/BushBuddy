@@ -42,6 +42,20 @@
   transition: background-color 0.2s ease; 
 }
 
+.no-posts{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+  width: 80%;
+}
+
+.no-posts p{
+  color: rgb(116, 116, 116);
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .yes-button {
     background-color: #ff6b00;
     color: white;

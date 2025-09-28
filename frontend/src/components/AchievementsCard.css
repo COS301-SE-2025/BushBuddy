@@ -92,3 +92,42 @@
   justify-content: center;
   align-items: center;
 }
+
+.achievements-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+}
+
+.achievements-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid rgb(92, 128, 89);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.circular-progress {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-text {
+  position: absolute;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+}

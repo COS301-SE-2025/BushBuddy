@@ -82,10 +82,37 @@ async function fetchSighting(post_id) {
 	}
 }
 
+async function fetchAllUserSightings(user_id) {
+    try {
+		const query = `SELECT * FROM identifications WHERE user_id = $1;`;
+
+
+        const result = await db.query(query,[user_id]);
+
+		return result;
+	} catch (error) {
+		throw new Error(`Error fetching all sightings: ${error.message}`);
+	}
+}
+
+async function fetchAllUserSightingsWithAnimalNames(user_id) {
+    try {
+		const query = `SELECT identifications.*, animals.name FROM identifications
+			JOIN animals ON identifications.animal_id = animals.id
+			WHERE identifications.user_id = $1;`;
+
+        const result = await db.query(query,[user_id]);
+
+		return result;
+	} catch (error) {
+		throw new Error(`Error fetching all sightings: ${error.message}`);
+	}
+}
+
 async function fetchAllSightings() {
     try {
 		//add filters for sightings 
-		const query = `SELECT * FROM identifications ORDER BY created_at DESC LIMIT 5;`;
+		const query = `SELECT * FROM identifications WHERE geolocation_lat IS NOT NULL ORDER BY created_at DESC LIMIT 15;`;
 
         const result = await db.query(query);
 
@@ -193,6 +220,8 @@ export const sightingRepository = {
 	saveNewSight,
 	saveNewSighting,
 	fetchSighting,
+	fetchAllUserSightings,
+	fetchAllUserSightingsWithAnimalNames,
 	fetchAllSightings,
 	fetchPost,
 	fetchComments,
