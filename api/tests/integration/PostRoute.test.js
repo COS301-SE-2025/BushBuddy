@@ -14,6 +14,8 @@ let postingServer;
 
 const postIdToRemove = [];
 
+const agent = request.agent(app);
+
 beforeAll((done) => {
 	const AUTH_PORT = process.env.AUTH_PORT || 4001;
 	const POSTING_PORT = process.env.POSTING_PORT || 4004;
@@ -23,6 +25,8 @@ beforeAll((done) => {
 		console.log(`✅ API Gateway running on port ${GATEWAY_PORT}`);
 		done();
 	});
+
+	agent.set('Cookie', [`token=${token}`]);
 });
 
 afterAll(async () => {
@@ -47,12 +51,17 @@ describe('Posting Routes', () => {
 			const postData = {
 				identification_id: 6,
 				description: 'Beautiful elephant spotted in Kruger National Park',
-				shareLocation: false,
+				share_location: false,
 			};
 
-			const res = await request(app).post('/posts/').set('Cookie', `token=${token}`).send(postData);
+			const res = await request(app)
+				.post('/api/posts/')
+				.set('Cookie', [`token=${token}`])
+				.send(postData);
 
-			postIdToRemove.push(parseInt(res.body.data.id));
+			postIdToRemove.push(parseInt(res.body.identification_id));
+
+			console.log(res);
 
 			console.log(postIdToRemove);
 
@@ -68,7 +77,7 @@ describe('Posting Routes', () => {
 				description: 'Unauthorized post attempt',
 			};
 
-			const res = await request(app).post('/posts/').send(postData);
+			const res = await request(app).post('/api/posts/').send(postData);
 
 			expect(res.statusCode).toBe(401);
 			expect(res.body).toHaveProperty('message', 'You must be logged in to perform this action');
@@ -78,15 +87,17 @@ describe('Posting Routes', () => {
 	describe('GET /all - Fetch All Posts', () => {
 		test('should fetch all posts successfully', async () => {
 			// Create a test post first
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/1').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'Test post for fetching',
 				shareLocation: false,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
-			const res = await request(app).get('/posts/all').set('Cookie', `token=${token}`);
+			const res = await request(app).get('/api/posts/all').set('Cookie', `token=${token}`);
+
+			console.log(res.body);
 
 			expect(res.statusCode).toBe(200);
 			expect(res.body).toHaveProperty('success', true);
@@ -98,24 +109,24 @@ describe('Posting Routes', () => {
 	describe('GET /userPosts - Fetch User Posts', () => {
 		test('should fetch user posts successfully', async () => {
 			// Create a test post
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'User specific post',
 				shareLocation: true,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
-			const res = await request(app).get('/posts/userPosts').set('Cookie', `token=${token}`);
+			const res = await request(app).get('/api/posts/userPosts').set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(200);
 			expect(res.body).toHaveProperty('success', true);
 			expect(res.body).toHaveProperty('message', 'User posts fetched successfully');
-			expect(res.body).toHaveProperty('data');
+			expect(res.body).toHaveProperty('result');
 		});
 
 		test('should fail without authentication', async () => {
-			const res = await request(app).get('/posts/userPosts');
+			const res = await request(app).get('/api/posts/userPosts');
 
 			expect(res.statusCode).toBe(401);
 			expect(res.body).toHaveProperty('message', 'You must be logged in to perform this action');
@@ -125,17 +136,17 @@ describe('Posting Routes', () => {
 	describe('GET /:postId - Fetch Specific Post', () => {
 		test('should fetch specific post successfully', async () => {
 			// Create a test post
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/1').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'Specific post for fetching',
 				shareLocation: false,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
-			const postId = createRes.body.data.id;
+			const postId = createRes.body.identification_id;
 
-			const res = await request(app).get(`/posts/${postId}`).set('Cookie', `token=${token}`);
+			const res = await request(app).get(`/api/posts/${postId}`).set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(201);
 			expect(res.body).toHaveProperty('success', true);
@@ -145,7 +156,7 @@ describe('Posting Routes', () => {
 		});
 
 		test('should return 400 for non-existent post', async () => {
-			const res = await request(app).get('/posts/99999').set('Cookie', `token=${token}`);
+			const res = await request(app).get('/api/posts/99999').set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(400);
 			console.log(res.body);
@@ -156,17 +167,17 @@ describe('Posting Routes', () => {
 	describe('POST /:postId/like - Like Post', () => {
 		test('should like post successfully', async () => {
 			// Create a test post
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'Post to be liked',
 				shareLocation: true,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
-			const postId = createRes.body.data.id;
+			const postId = createRes.body.identification_id;
 
-			const res = await request(app).post(`/posts/${postId}/like`).set('Cookie', `token=${token}`);
+			const res = await request(app).post(`/api/posts/${postId}/like`).set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(200);
 			expect(res.body).toHaveProperty('success', true);
@@ -174,7 +185,7 @@ describe('Posting Routes', () => {
 		});
 
 		test('should fail without authentication', async () => {
-			const res = await request(app).post('/posts/1/like');
+			const res = await request(app).post('/api/posts/1/like');
 
 			expect(res.statusCode).toBe(401);
 			expect(res.body).toHaveProperty('message', 'You must be logged in to perform this action');
@@ -184,18 +195,18 @@ describe('Posting Routes', () => {
 	describe('POST /:postId/comment - Add Comment', () => {
 		test('should add comment successfully', async () => {
 			// Create a test post
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'Post to be commented on',
 				shareLocation: false,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
-			const postId = createRes.body.data.id;
+			const postId = createRes.body.identification_id;
 
 			const res = await request(app)
-				.post(`/posts/${postId}/comment`)
+				.post(`/api/posts/${postId}/comment`)
 				.set('Cookie', `token=${token}`)
 				.send({ comment: 'Amazing wildlife photo!' });
 
@@ -205,7 +216,7 @@ describe('Posting Routes', () => {
 		});
 
 		test('should fail without authentication', async () => {
-			const res = await request(app).post('/posts/1/comment').send({ comment: 'Unauthorized comment' });
+			const res = await request(app).post('/api/posts/1/comment').send({ comment: 'Unauthorized comment' });
 
 			expect(res.statusCode).toBe(401);
 			expect(res.body).toHaveProperty('message', 'You must be logged in to perform this action');
@@ -215,39 +226,39 @@ describe('Posting Routes', () => {
 	describe('Full Integration Flow', () => {
 		test('should complete entire post interaction flow', async () => {
 			// 1. Create post
-			const createRes = await request(app).post('/posts/').set('Cookie', `token=${token}`).send({
+			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
 				identification_id: 6,
 				description: 'Complete flow test post',
 				shareLocation: true,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.data.id));
+			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
 			expect(createRes.statusCode).toBe(201);
 			const postId = createRes.body.data.id;
 
 			// 2. Like the post
-			const likeRes = await request(app).post(`/posts/${postId}/like`).set('Cookie', `token=${token}`);
+			const likeRes = await request(app).post(`/api/posts/${postId}/like`).set('Cookie', `token=${token}`);
 
 			expect(likeRes.statusCode).toBe(200);
 
 			// 3. Add comment
 			const commentRes = await request(app)
-				.post(`/posts/${postId}/comment`)
+				.post(`/api/posts/${postId}/comment`)
 				.set('Cookie', `token=${token}`)
 				.send({ comment: 'Great sighting!' });
 
 			expect(commentRes.statusCode).toBe(201);
 
 			// 4. Verify post with comment
-			const fetchRes = await request(app).get(`/posts/${postId}`).set('Cookie', `token=${token}`);
+			const fetchRes = await request(app).get(`/api/posts/${postId}`).set('Cookie', `token=${token}`);
 
 			expect(fetchRes.statusCode).toBe(201);
 			expect(fetchRes.body.data.comments).toHaveLength(1);
 			expect(fetchRes.body.data.comments[0]).toHaveProperty('comment_text');
 
 			// 5. Verify user posts
-			const userPostsRes = await request(app).get('/posts/userPosts').set('Cookie', `token=${token}`);
+			const userPostsRes = await request(app).get('/api/posts/userPosts').set('Cookie', `token=${token}`);
 
 			expect(userPostsRes.statusCode).toBe(200);
 			expect(userPostsRes.body).toHaveProperty('data');

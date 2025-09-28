@@ -51,9 +51,13 @@ describe('AuthService', () => {
 			});
 
 			expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
-			expect(jwt.sign).toHaveBeenCalledWith({ id: expect.any(Number), username: 'testuser' }, expect.any(String), {
-				expiresIn: '24h',
-			});
+			expect(jwt.sign).toHaveBeenCalledWith(
+				{ id: mockUser.id, username: 'testuser', admin: undefined, email: 'test@user.com' },
+				expect.any(String),
+				{
+					expiresIn: '24h',
+				}
+			);
 			expect(authRepository.userExists).toHaveBeenCalledWith('testuser');
 			expect(authRepository.createUser).toHaveBeenCalledWith({
 				username: 'testuser',
@@ -133,9 +137,13 @@ describe('AuthService', () => {
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('testuser');
 			expect(bcrypt.compare).toHaveBeenCalledWith('password', 'hashedpassword');
-			expect(jwt.sign).toHaveBeenCalledWith({ id: mockUser.id, username: 'testuser' }, expect.any(String), {
-				expiresIn: '24h',
-			});
+			expect(jwt.sign).toHaveBeenCalledWith(
+				{ id: mockUser.id, username: 'testuser', admin: undefined, email: mockUser.email },
+				expect.any(String),
+				{
+					expiresIn: '24h',
+				}
+			);
 			expect(result).toEqual('mockedToken');
 		});
 
