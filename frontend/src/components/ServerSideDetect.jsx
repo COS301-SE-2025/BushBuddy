@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import './ServerSideDetect.css';
 import axios from 'axios';
+import endangered from "../utility/endangered.json"
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
 
@@ -50,7 +51,7 @@ const ServerSideDetect = () => {
                 { image: base64Image },
                 { headers: { 'Content-Type': 'application/json' } }
             );
-
+            console.log("AI API Response:" ,response);
             setAnimalName(response.data.detection ?? 'Unknown');
             setConfidence(response.data.confidence ?? 0);
             setApiImage(response.data.image);
@@ -214,19 +215,20 @@ const ServerSideDetect = () => {
                                     placeholder="Write something..."
                                 ></textarea>
                             </div>
-
-                            <div className="form-group">
-                                <label htmlFor="geolocation">Enable Geolocation</label>
-                                <label className="switch-label">
-                                    <input
-                                        type="checkbox"
-                                        id="geolocation"
-                                        name="geolocation"
-                                        className="geolocation-switch"
-                                    />
-                                    <span className="slider"></span>
-                                </label>
-                            </div>
+                            {!endangered.includes(animalName) && (
+                                <div className="form-group">
+                                    <label htmlFor="geolocation">Enable Geolocation</label>
+                                    <label className="switch-label">
+                                        <input
+                                            type="checkbox"
+                                            id="geolocation"
+                                            name="geolocation"
+                                            className="geolocation-switch"
+                                        />
+                                        <span className="slider"></span>
+                                    </label>
+                                </div>
+                            )}
 
                             <button type="submit" className="submit-button">
                                 Submit

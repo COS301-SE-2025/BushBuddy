@@ -6,12 +6,14 @@ import './CapturePage.css';
 import { detectImage } from "../utility/detect";
 import * as tf from "@tensorflow/tfjs";
 import { loadModel } from "../utility/modelStorageOperations";
+import endangered from "../utility/endangered.json"
 import { FaCamera } from 'react-icons/fa';
 import { IoMdClose } from "react-icons/io";
 import AudioDetect from '../components/AudioDetect';
 import ServerSideDetect from '../components/ServerSideDetect';
 import { SightingsController } from '../controllers/SightingsController';
 import { PostsController } from '../controllers/PostsController';
+
 
 //-- Mock data
 // import axios from 'axios';
@@ -45,8 +47,8 @@ const CapturePage = () => {
 
 
   const videoConstraints = {
-    width: { ideal:  800},
-    height: { ideal: 800 },
+    width: { ideal:  1280},
+    height: { ideal: 720 },
     facingMode: { ideal: "environment" },
   };
 
@@ -99,48 +101,6 @@ const CapturePage = () => {
       // Call an async function here
       runDetection(img, canvas);
     };
-
-    /* ------- API AI model
-    // Capture the image from webcam
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (!imageSrc) return;
-
-
-    setCapturedImage(imageSrc);
-    setBackgroundImage(imageSrc);
-
-    // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
-    const base64Image = imageSrc.split(",")[1];
-
-    // Show spinner
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        // "http://localhost:7860/detect",
-        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
-        { image: base64Image },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-
-      let animalName = response.data.detection;
-      let confidence = response.data.confidence;
-
-      setApiResponse(response.data);
-
-      if (animalName == null) {
-        animalName = "No animals found";
-        confidence = "";
-      }
-
-      setShowForm(true);
-
-    } catch (err) {
-      console.error("API request failed:", err);
-    } finally {
-      setLoading(false);
-    }*/
   };
 
   const runDetection = async (img, canvas) => {
@@ -149,9 +109,23 @@ const CapturePage = () => {
 
       console.log("Detection results CapturePage: ", results);
 
+      let labels = results.labels || [];
+      let scores = results.scores || [];
+
+      const filtered = labels
+      .map((label, i) => ({ label, score: scores[i] }))
+      .filter(item => item.label !== "Background");
+
+      if (filtered.length === 0) {
+      // If background was the only result
+      setAnimalName(["No results found"]);
+      setConfidence([]);
+    } else {
+      setAnimalName(filtered.map(f => f.label));
+      setConfidence(filtered.map(f => f.score));
+    }
+
       setCapturedImage(img.src);
-      setAnimalName(results.labels?.[0] ?? "Unknown");
-      setConfidence(results.scores?.[0] ?? 0);
       setShowForm(true);
     } catch (err) {
       console.error("Error during detection:", err);
@@ -215,10 +189,10 @@ const CapturePage = () => {
 
       // Sighting
       const sightingData = new FormData();
-      sightingData.append("animal", animalName ?? "Unknown");
+      sightingData.append("animal", animalName[0] ?? "Unknown");
       sightingData.append(
         "confidence",
-        confidence ? (confidence * 100).toFixed(2) : "0"
+        confidence[0] ? (confidence[0] * 100).toFixed(2) : "0"
       );
       sightingData.append("longitude", geoLocLong);
       sightingData.append("latitude", geoLocLat);
@@ -332,21 +306,42 @@ const CapturePage = () => {
 
             <h3 className="form-title">Animal Detection Result</h3>
 
-            {/* Visual Fields */}
             {capturedImage && (
               <div className="detection-result">
                 <img
                   src={capturedImage}
-                  alt="Detected Animal"
+                  alt="Detection Result"
                   className="detected-image"
                 />
-                {animalName ? (
-                  <>
-                    <h4 className="animal-name">{animalName}</h4>
-                    <p className="confidence">Confidence: {(confidence * 100).toFixed(2)}%</p>
-                    <hr style={{ width: "85%", backgroundColor: "lightgrey", height: "2px", border: "none" }} />
 
-                    {/* Form */}
+                {/* CASE 1: No results OR only "Background" */}
+                {animalName.length === 0 || (animalName.length === 1 && (animalName[0] === "Background" || animalName[0] === "No results found" )) ? (
+                  <div className="popup-message">
+                    <h4 className="animal-name">No results found</h4>
+                    <button className="submit-button" onClick={handleClose}>
+                      OK
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {/* CASE 2: Animal(s) detected → Show form */}
+                    <h4 className="animal-name">{animalName.join(", ")}</h4>
+
+                    {confidence.length > 0 && (
+                      <p className="confidence">
+                        Confidence: {confidence.map(c => `${(c * 100).toFixed(2)}%`).join(", ")}
+                      </p>
+                    )}
+
+                    <hr
+                      style={{
+                        width: "85%",
+                        backgroundColor: "lightgrey",
+                        height: "2px",
+                        border: "none",
+                      }}
+                    />
+
                     <form onSubmit={handleSubmit} className="detection-form">
                       <div className="form-group">
                         <label htmlFor="description" style={{ left: 0 }}>Description</label>
@@ -361,31 +356,26 @@ const CapturePage = () => {
                         ></textarea>
                       </div>
 
-                      {/* Add geolocation conditional for rhino */}
-                      <div className="form-group">
-                        <label htmlFor="geolocation">Enable Geolocation</label>
-                        <label className="switch-label">
-                          <input
-                            type="checkbox"
-                            id="geolocation"
-                            name="geolocation"
-                            className="geolocation-switch"
-                          />
-                          <span className="slider"></span>
-                        </label>
-                      </div>
+                      {/* Only show geolocation if none of the detected animals are endangered */}
+                      {!animalName.some(name => endangered.includes(name)) && (
+                        <div className="form-group">
+                          <label htmlFor="geolocation">Enable Geolocation</label>
+                          <label className="switch-label">
+                            <input
+                              type="checkbox"
+                              id="geolocation"
+                              name="geolocation"
+                              className="geolocation-switch"
+                            />
+                            <span className="slider"></span>
+                          </label>
+                        </div>
+                      )}
 
                       <button type="submit" className="submit-button">
                         Submit
                       </button>
                     </form>
-                  </>
-                ) : (
-                  <>
-                    <h4 className="animal-name">No Animal Detected</h4>
-                    <button className="submit-button" onClick={handleClose}>
-                      OK
-                    </button>
                   </>
                 )}
               </div>
@@ -393,6 +383,7 @@ const CapturePage = () => {
           </div>
         </div>
       )}
+
 
       {loading && (
         <div className="spinner-overlay">
@@ -432,43 +423,3 @@ const CapturePage = () => {
 };
 
 export default CapturePage;
-
-/*
-import React, { useRef, useState, useEffect } from "react";
-import { Container } from 'react-bootstrap';
-import './CapturePage.css';
-import { detectImage } from "../utility/detect";
-import * as tf from "@tensorflow/tfjs";
-import { loadModel } from "../utility/modelStorageOperations";
-
-const CapturePage = () => {
-  const [model, setModel] = useState(null);
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    async function initModel() {
-      const m = await loadModel();
-      setModel(m);
-    }
-    initModel();
-  }, []);
-
-  useEffect(() => {
-    if (model && canvasRef.current) {
-      detectImage(model, 0.5, canvasRef.current).then(results => {
-        console.log("Detection results in CapturePage:", results);
-      });
-    }
-  }, [model]);
-
-
-  return (
-    <Container className="scanner-page">
-      <Container className="webcam-wrapper">
-        <canvas ref={canvasRef} className="overlay" />
-      </Container>
-    </Container>
-  );
-};
-
-export default CapturePage; */

@@ -48,13 +48,6 @@ async function preprocess(img, modelWidth, modelHeight) {
   return { input, scale, paddingX, paddingY };
 }
 
-
-
-/**
- * Sigmoid helper
- */
-const sigmoid = (x) => 1 / (1 + Math.exp(-x));
-
 /**
  * Convert raw model output to bounding boxes, scores(probability), classes
  */
@@ -223,7 +216,8 @@ export async function detectImage(model, classThreshold = 0.25, canvasRef, img) 
     else rawOutput.dispose();
 
     // convert predictions to labels 
-    const combined = nmsResults.scores.map((score, i) => ({
+    const combined = nmsResults.scores
+    .map((score, i) => ({
       score: Math.round(score * 10000) / 10000,
       label: labels[nmsResults.classes[i]],
     }));
