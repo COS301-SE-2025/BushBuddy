@@ -209,5 +209,6 @@ authApp.post('/login', authController.loginUser);
  */
 authApp.post('/logout', authController.logoutUser);
 authApp.get('/status', authController.checkLoginStatus);
+authApp.post('/password', authController.updateUserPassword);
 
 export default authApp;
