@@ -311,7 +311,7 @@ const CapturePage = () => {
                 <img
                   src={capturedImage}
                   alt="Detection Result"
-                  className="detected-image"
+                  className="detected-image-live"
                 />
 
                 {/* CASE 1: No results OR only "Background" */}
