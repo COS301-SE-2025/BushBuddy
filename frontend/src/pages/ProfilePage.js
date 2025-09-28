@@ -12,7 +12,7 @@ import PostDetailModal from "../components/PostDetailModal";
 const ProfilePage = () => {
   const navigate = useNavigate();
   
-  const [activeMode, setActiveMode] = useState('POSTS');
+  const [activeMode, setActiveMode] = useState('PROFILE');
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
