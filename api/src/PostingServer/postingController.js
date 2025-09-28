@@ -113,7 +113,7 @@ async function fetchUserPostsAmount(req, res) {
 		const user = req.user;
 
 		const amount = await postingService.fetchUserPostsAmount(user.id);
-		if (!amount) {
+		if (!(amount>-1)) {
 			return res.status(400).json({
 				success: false,
 				message: 'Failed to fetch amount of posts',

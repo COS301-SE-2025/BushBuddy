@@ -62,9 +62,7 @@ const AchievementsCard = () => {
       try {
         setLoading(true);
         const response = await SightingsController.handleFetchUserAchievements();
-        console.log(response);
         if (response.success) {
-          console.log(response.achievements);
           setUserAchievements(response.achievements);
         } else {
           console.error(response.message);

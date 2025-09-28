@@ -150,7 +150,7 @@ async function fetchUserSightingsAmount(req, res) {
 		
 		const amount = await sightingService.fetchUserSightingsAmount(user.id);
 
-		if(!amount){
+		if(!(amount>-1)){
 			return res.status(400).json({
 				success: false,
 				message: 'Failed to fetch user sightings amount'
