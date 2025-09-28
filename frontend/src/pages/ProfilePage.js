@@ -10,15 +10,16 @@ import { PostsController } from '../controllers/PostsController';
 import PostDetailModal from '../components/PostDetailModal';
 
 const ProfilePage = () => {
-	const navigate = useNavigate();
-	const [activeMode, setActiveMode] = useState('POSTS');
-	const [loading, setLoading] = useState(false);
-	const [deleteLoading, setDeleteLoading] = useState(false);
-	const [postToDelete, setPostToDelete] = useState(null);
-	const [posts, setPosts] = useState([]);
-	const [selectedPost, setSelectedPost] = useState(null);
-	const [postDetailVisible, setPostDetailVisible] = useState(false);
-	const [showDeleteConfirmation, setDeleteConfirmation] = useState(false);
+  const navigate = useNavigate();
+  
+  const [activeMode, setActiveMode] = useState('PROFILE');
+  const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [postDetailVisible, setPostDetailVisible] = useState(false);
+  const [showDeleteConfirmation, setDeleteConfirmation] = useState(false);
 
 	const [showPopup, setShowPopup] = useState(false);
 	const [popUpText, setPopupText] = useState(null);
@@ -179,58 +180,62 @@ const ProfilePage = () => {
 				</span>
 			</div>
 
-			{activeMode === 'POSTS' ? (
-				<>
-					{loading ? (
-						<div className="loader-wrapper">
-							<div className="loader"></div>
-						</div>
-					) : (
-						<>
-							{posts.map((entry) => (
-								<FeedCard
-									key={entry.id}
-									entry={entry}
-									setSelectedPost={setSelectedPost}
-									setPostDetailVisible={setPostDetailVisible}
-									setDeleteConfirmation={setDeleteConfirmation}
-									setPostToDelete={setPostToDelete}
-								/>
-							))}
+      {activeMode === 'POSTS' ? (
+        <>
+          {loading ? (
+            <div className="loader-wrapper">
+              <div className="loader"></div>
+            </div>
+          ) : posts && posts.length > 0 ? (
+            <>
+              {posts.map((entry) => (
+                  <FeedCard
+                    key={entry.id}
+                    entry={entry}
+                    setSelectedPost={setSelectedPost}
+                    setPostDetailVisible={setPostDetailVisible}
+                    setDeleteConfirmation={setDeleteConfirmation}
+                    setPostToDelete={setPostToDelete}
+                  />
+              ))}
 
-							{postDetailVisible && selectedPost && (
-								<PostDetailModal
-									post={selectedPost.data.post}
-									comments={selectedPost.data.comments}
-									onClose={() => {
-										window.location.reload();
-									}} //temporary fix for modal not updating likes
-									onCommentAdded={handleIncrementComments}
-									onLikeDec={handleDecLikes}
-									onLikeInc={handleIncLikes}
-								/>
-							)}
-						</>
-					)}
-				</>
-			) : activeMode === 'ACHIEVEMENTS' ? (
-				<>
-					<p>achievements</p>
-					{/*<ActivityStatsCard />
-            <AchievementsCard />*/}
-				</>
-			) : (
-				<>
-					<ProfileHeader />
-					<SettingsSection onLogout={handleLogout} />
-				</>
-			)}
+              {postDetailVisible && selectedPost && (
+                <PostDetailModal
+                  post={selectedPost.data.post}
+                  comments={selectedPost.data.comments}
+                  onClose={() => {window.location.reload()}} //temporary fix for modal not updating likes
+                  onCommentAdded={handleIncrementComments}
+                  onLikeDec={handleDecLikes}
+                  onLikeInc={handleIncLikes}
+                />
+              )}
+            </>
+          ) : (
+            <div className='no-posts'>
+              <p>
+                You have no posts yet
+              </p>
+            </div>
+          )}
+        </>
+      ) : activeMode === 'ACHIEVEMENTS' ? (
+        <>
+          <ActivityStatsCard />
+          <AchievementsCard />
+        </>
+      ) : (
+        <>
+          <ProfileHeader />
+          <SettingsSection onLogout={handleLogout} />
+        </>
+      )}
+      
+      {loading && (
+        <div className="loader-wrapper">
+          <div className="loader"></div>
+        </div>
+      )}
 
-			{loading && (
-				<div className="loader-wrapper">
-					<div className="loader"></div>
-				</div>
-			)}
 
 			{showDeleteConfirmation && (
 				<div className="form-overlay">
