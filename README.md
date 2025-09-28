@@ -17,12 +17,19 @@ AI-Powered African Wildlife Detection System
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
 ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)
+![Keras](https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 
 ---
 
 </div>
 
-[BushBuddy PWA](https://bushbuddyapp.onrender.com/)
+[BushBuddy PWA](https://bushbuddyapp.onrender.com/) </br>
+Recommended for mobile
+
+<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/ac2e0e88-3324-4d0d-af01-71a208ae51be" />
+
 
 ## Project Description
 BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South African wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
@@ -46,10 +53,26 @@ both visual and audio detection.
 
 </details>
 
-## Documentation (For Demo 3)
+## Documentation
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
+
+
+## Demos
+
+### Demo 4
+
+<details>
+<summary>Previous Demos</summary>
+
+### Demo 3
+
+[Demo 3 Video](https://drive.google.com/file/d/1AMMN1naXcNAdphJ7Y1E8ipeoW1hbINcK/view?usp=drive_link)
+
+[Demo 3 Presentation](https://drive.google.com/file/d/1Q6yOi7hcJ4naVVryF5NvuisK9J37QTsP/view?usp=drive_link)
+
+### Demo 3-specific documentation (outdated)
 [SRS - v3](https://drive.google.com/file/d/1r2bg6XUfBbGcn0mc4chpqP5DMiF_vDWe/view?usp=drive_link) </br>
 Includes Architecture, Service contracts and Deployment model
 
@@ -59,14 +82,6 @@ Includes Architecture, Service contracts and Deployment model
 
 [Coding Standards - v2](https://drive.google.com/file/d/1L_oBp_nodmkSP0WaSuJJN3pnIfb4N2pT/view?usp=drive_link) </br>
 Git Branching Strategy included
-
-## Demos
-
-### Demo 3
-
-[Demo 3 Video](https://drive.google.com/file/d/1AMMN1naXcNAdphJ7Y1E8ipeoW1hbINcK/view?usp=drive_link)
-
-[Demo 3 Presentation](https://drive.google.com/file/d/1Q6yOi7hcJ4naVVryF5NvuisK9J37QTsP/view?usp=drive_link)
 
 ### Demo 2
 
@@ -92,6 +107,8 @@ Git Branching Strategy included
 
 #### Demo 1-specific documentation (Outdated)
 [SRS Document - v1](https://drive.google.com/file/d/1as2Smiv3X3nmtZsDTSZeNf9kDob4bsvy/view?usp=sharing)
+
+</details>
 
 ## GitHub Project Board
 [ReturnZero's Project Board](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/projects?query=is%3Aopen)
