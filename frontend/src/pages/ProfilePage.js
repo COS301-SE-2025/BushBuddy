@@ -179,7 +179,7 @@ const ProfilePage = () => {
             <div className="loader-wrapper">
               <div className="loader"></div>
             </div>
-          ) : (
+          ) : posts && posts.length > 0 ? (
             <>
               {posts.map((entry) => (
                   <FeedCard
@@ -203,6 +203,12 @@ const ProfilePage = () => {
                 />
               )}
             </>
+          ) : (
+            <div className='no-posts'>
+              <p>
+                You have no posts yet
+              </p>
+            </div>
           )}
         </>
       ) : activeMode === 'ACHIEVEMENTS' ? (
