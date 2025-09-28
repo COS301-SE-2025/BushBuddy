@@ -26,7 +26,7 @@ AI-Powered African Wildlife Detection System
 
 https://github.com/user-attachments/assets/45169e49-9320-45b6-a7c5-ad060fec1ca9
 
-
+---
 </div>
 
 
@@ -39,7 +39,7 @@ Recommended for mobile
   <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/ac2e0e88-3324-4d0d-af01-71a208ae51be" />
 </details>
 
-
+---
 ## Project Description
 BushBuddy is your eyes and ears on any safari adventure, using AI-powered vision and sound recognition to instantly identify animals in the great South African wilderness. With interactive achievements and a fun social platform, BushBuddy inspires exploration and supports conservation, turning every encounter into an opportunity for discovery and learning.
 <details>
@@ -65,6 +65,16 @@ both visual and audio detection.
 ## Documentation
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
+
+[SRS - v4](https://drive.google.com/file/d/1QoJKRDnDuhb7wCffyRPbhn0ykZNxZ1xJ/view?usp=drive_link)
+
+[User Manual - v2](https://drive.google.com/file/d/15P7FgWGsxwOyKAm_f9V3OXLqeNAxLeNM/view?usp=drive_link)
+
+[Technical Install Manual - v1](https://drive.google.com/file/d/1Lx3VMtIAtTjp7WuvvR5RGAKQY_ICeEOa/view?usp=drive_link)
+
+[Coding Standards - v2](https://drive.google.com/file/d/1c9f6vdehqTgaqyyxZoFZKgY0vzTKuraa/view?usp=drive_link)
+
+[Testing Policy - v1](https://drive.google.com/file/d/1SBR4MZwysTVYT7WmMsat2LjMQnh57sJv/view?usp=drive_link)
 
 
 
