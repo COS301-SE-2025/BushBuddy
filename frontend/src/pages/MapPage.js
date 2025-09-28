@@ -26,6 +26,7 @@ function RecenterMap({ position }) {
 
 const MapPage = () => {
   const [currentPosition, setCurrentPosition] = useState(null); // User's current location
+  const [recenterPosition, setRecenterPosition] = useState(null); //recenter on point
   const defaultPosition = [-25.8812222, 28.291611111111113]; // Fallback location
   const [sightings, setSightings] = useState([]); // List of all sightings
   const [selectedSighting, setSelectedSighting] = useState(null); // Data for the clicked marker
@@ -75,7 +76,7 @@ const MapPage = () => {
       const response = await SightingsController.handleFetchSightingDetails(sightingId);
       if (response.success) {
         setSelectedSighting(response.data);
-        setCurrentPosition([response.data.geolocation_lat, response.data.geolocation_long]);
+        setRecenterPosition([response.data.geolocation_lat, response.data.geolocation_long]);
       } else {
         console.error(response.message);
       }
@@ -152,7 +153,7 @@ const MapPage = () => {
         {currentPosition && <Marker position={currentPosition} icon={userIcon} />}
 
         {/* Recenter when user position updates */}
-        <RecenterMap position={currentPosition} />
+        <RecenterMap position={recenterPosition} />
       </MapContainer>
 
       {/* Render the PostDetailModal */}
