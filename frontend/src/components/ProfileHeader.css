@@ -1,91 +1,91 @@
 .profile-header {
-  background-color: #4b6949ff;
-  padding: 20px;
-  width: 85%;
-  max-width: 800px;
-  color: #fff;
-  border-radius: 15px;
-  margin: 2% auto;
+	background-color: #4b6949ff;
+	padding: 20px;
+	width: 85%;
+	max-width: 800px;
+	color: #fff;
+	border-radius: 15px;
+	margin: 2% auto;
 }
 
 .profile-header-row {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .profile-pic-container {
-  position: relative;
+	position: relative;
 }
 
 .profile-pic {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid white;
 }
 
 .camera-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #2e7d32;
-  border-radius: 10px;
-  padding: 4px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background-color: #2e7d32;
+	border-radius: 10px;
+	padding: 4px;
 }
 
 .profile-details {
-  margin-left: 15px;
+	margin-left: 15px;
 }
 
 .profile-details h3 {
-  margin: 0;
+	margin: 0;
 }
 
 .profile-details .role {
-  margin: 0;
-  font-size: 14px;
+	margin: 0;
+	font-size: 14px;
 }
 
 .profile-details .location {
-  margin: 0;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  color: #ff6b00;
+	margin: 0;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	color: #ff6b00;
 }
 
 .profile-details .member {
-  margin: 0;
-  font-size: 12px;
+	margin: 0;
+	font-size: 12px;
 }
 
 .profile-header-hr {
-  margin: 15px 0;
-  border: none;
-  border-top: 2px solid #5d785bcc;
+	margin: 15px 0;
+	border: none;
+	border-top: 2px solid #5d785bcc;
 }
 
 .profile-header-bio {
-  margin-top: 15px;
-  font-size: 14px;
+	margin-top: 15px;
+	font-size: 14px;
 }
 
 .profile-header-btn-row {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
 }
 
 .profile-header-btn {
-  background-color: #ff6b00;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  width: 95%;
-  justify-content: center;
-  font-weight: bold;
-  display: flex;
-  gap: 8px;
+	background-color: #ff6b00;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 8px;
+	width: 100%;
+	justify-content: center;
+	font-weight: bold;
+	display: flex;
+	gap: 8px;
 }
