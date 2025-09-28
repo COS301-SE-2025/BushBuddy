@@ -101,48 +101,6 @@ const CapturePage = () => {
       // Call an async function here
       runDetection(img, canvas);
     };
-
-    /* ------- API AI model
-    // Capture the image from webcam
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (!imageSrc) return;
-
-
-    setCapturedImage(imageSrc);
-    setBackgroundImage(imageSrc);
-
-    // Convert to clean Base64 (remove "data:image/jpeg;base64," header)
-    const base64Image = imageSrc.split(",")[1];
-
-    // Show spinner
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        // "http://localhost:7860/detect",
-        "https://RuanEsterhuizen-BushBuddy.hf.space/detect",
-        { image: base64Image },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-
-      let animalName = response.data.detection;
-      let confidence = response.data.confidence;
-
-      setApiResponse(response.data);
-
-      if (animalName == null) {
-        animalName = "No animals found";
-        confidence = "";
-      }
-
-      setShowForm(true);
-
-    } catch (err) {
-      console.error("API request failed:", err);
-    } finally {
-      setLoading(false);
-    }*/
   };
 
   const runDetection = async (img, canvas) => {
@@ -348,32 +306,42 @@ const CapturePage = () => {
 
             <h3 className="form-title">Animal Detection Result</h3>
 
-            {/* Visual Fields */}
             {capturedImage && (
               <div className="detection-result">
                 <img
                   src={capturedImage}
-                  alt="Detected Animal"
+                  alt="Detection Result"
                   className="detected-image"
                 />
 
-                {animalName.length > 0 ? (
+                {/* CASE 1: No results OR only "Background" */}
+                {animalName.length === 0 || (animalName.length === 1 && animalName[0] === "Background") ? (
+                  <div className="popup-message">
+                    <h4 className="animal-name">No results found</h4>
+                    <button className="submit-button" onClick={handleClose}>
+                      OK
+                    </button>
+                  </div>
+                ) : (
                   <>
-                    {/* Show detected animals */}
-                    <h4 className="animal-name">
-                      {animalName.join(", ")}
-                    </h4>
+                    {/* CASE 2: Animal(s) detected → Show form */}
+                    <h4 className="animal-name">{animalName.join(", ")}</h4>
 
-                    {/* Only show confidence if you’re still tracking it per detection */}
                     {confidence.length > 0 && (
                       <p className="confidence">
                         Confidence: {confidence.map(c => `${(c * 100).toFixed(2)}%`).join(", ")}
                       </p>
                     )}
 
-                    <hr style={{ width: "85%", backgroundColor: "lightgrey", height: "2px", border: "none" }} />
+                    <hr
+                      style={{
+                        width: "85%",
+                        backgroundColor: "lightgrey",
+                        height: "2px",
+                        border: "none",
+                      }}
+                    />
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit} className="detection-form">
                       <div className="form-group">
                         <label htmlFor="description" style={{ left: 0 }}>Description</label>
@@ -388,7 +356,7 @@ const CapturePage = () => {
                         ></textarea>
                       </div>
 
-                      {/* Only show geolocation toggle if NONE of the detected animals are endangered */}
+                      {/* Only show geolocation if none of the detected animals are endangered */}
                       {!animalName.some(name => endangered.includes(name)) && (
                         <div className="form-group">
                           <label htmlFor="geolocation">Enable Geolocation</label>
@@ -409,20 +377,13 @@ const CapturePage = () => {
                       </button>
                     </form>
                   </>
-                ) : (
-                  <>
-                    {/* If only "Background" → No Animal Detected */}
-                    <h4 className="animal-name">No Animal Detected</h4>
-                    <button className="submit-button" onClick={handleClose}>
-                      OK
-                    </button>
-                  </>
                 )}
               </div>
             )}
           </div>
         </div>
       )}
+
 
       {loading && (
         <div className="spinner-overlay">
