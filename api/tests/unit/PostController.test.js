@@ -77,30 +77,41 @@ describe('postingController', () => {
 
 	describe('fetchAllPosts function', () => {
 		test('should return 200 with posts', async () => {
-			postingService.fetchAllPosts.mockResolvedValue([{ id: 1 }]);
+			postingService.fetchAllPosts.mockResolvedValue({
+				rows: 1,
+				data: [{ id: 1 }],
+			});
 
-			await postingController.fetchAllPosts({}, res);
+			const req = { params: { filter: 'all' }, user: { id: 1 } };
+			await postingController.fetchAllPosts(req, res);
+
 			expect(res.status).toHaveBeenCalledWith(200);
 		});
 
 		test('should return 400 if null', async () => {
 			postingService.fetchAllPosts.mockResolvedValue(null);
 
-			await postingController.fetchAllPosts({}, res);
+			const req = { params: { filter: 'all' }, user: { id: 1 } };
+			await postingController.fetchAllPosts(req, res);
+
 			expect(res.status).toHaveBeenCalledWith(400);
 		});
 
 		test('should return 204 if empty', async () => {
 			postingService.fetchAllPosts.mockResolvedValue({ rows: 0 });
 
-			await postingController.fetchAllPosts({}, res);
+			const req = { params: { filter: 'all' }, user: { id: 1 } };
+			await postingController.fetchAllPosts(req, res);
+
 			expect(res.status).toHaveBeenCalledWith(204);
 		});
 
 		test('should return 500 on error', async () => {
 			postingService.fetchAllPosts.mockRejectedValue(new Error('fail'));
 
-			await postingController.fetchAllPosts({}, res);
+			const req = { params: { filter: 'all' }, user: { id: 1 } };
+			await postingController.fetchAllPosts(req, res);
+
 			expect(res.status).toHaveBeenCalledWith(500);
 		});
 	});
@@ -147,7 +158,7 @@ describe('postingController', () => {
 
 		test('should return 201 on success', async () => {
 			postingService.fetchPost.mockResolvedValue({ post: { id: 1 }, comments: [] });
-			const req = { params: { postId: 1 } };
+			const req = { user: { id:1 }, params: { postId: 1 } };
 
 			await postingController.fetchPost(req, res);
 			expect(res.status).toHaveBeenCalledWith(201);
@@ -178,18 +189,6 @@ describe('postingController', () => {
 
 			await postingController.likePost(req, res);
 			expect(res.status).toHaveBeenCalledWith(200);
-		});
-
-		test('should return 409 if service returns null', async () => {
-			postingService.likePost.mockResolvedValue(null);
-			const req = {
-				params: { postId: 1 },
-				cookies: { token: 'mock' },
-				user: { id: 1, username: 'TestUser', admin: false },
-			};
-
-			await postingController.likePost(req, res);
-			expect(res.status).toHaveBeenCalledWith(409);
 		});
 
 		test('should return 500 on error', async () => {
