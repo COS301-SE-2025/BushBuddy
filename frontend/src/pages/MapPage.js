@@ -153,7 +153,7 @@ const MapPage = () => {
         {currentPosition && <Marker position={currentPosition} icon={userIcon} />}
 
         {/* Recenter when user position updates */}
-        <RecenterMap position={recenterPosition} />
+        <RecenterMap position={currentPosition} />
       </MapContainer>
 
       {/* Render the PostDetailModal */}
