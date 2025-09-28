@@ -1,98 +1,97 @@
 .main-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0;
 }
 
 .welcome-message {
-    width: 90%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
+	width: 90%;
+	max-width: 700px;
+	display: flex;
+	flex-direction: column;
+	align-items: left;
 }
 
 .bestiary-welcome {
-    margin: 0.5rem 0;
+	margin: 0.5rem 0;
 }
 
 .bestiary-heading {
-    margin: 0.5rem 0
+	margin: 0.5rem 0;
 }
 
-
 .actions-container {
-    width: 80%;
-    max-width: 700px;
-    height: 10%;
-    background-color: #4b6949;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    overflow: hidden;
+	width: 80%;
+	max-width: 700px;
+	height: 10%;
+	background-color: #4b6949;
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem;
+	overflow: hidden;
+	box-sizing: border-box;
 }
 
 .quick-action-wrapper {
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .action-button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    /* justify-content: space-between; */
-    width: 60px;
-    height: 60px;
-    color: white;
-    background-color: #ff6b00;
-    border: none;
-    border-radius: 50%;
-    /* gap: 10px; */
+	background-color: transparent;
+	border: none;
+	color: white;
+	/* justify-content: space-between; */
+	width: 60px;
+	height: 60px;
+	color: white;
+	background-color: #ff6b00;
+	border: none;
+	border-radius: 50%;
+	/* gap: 10px; */
 }
 
 label {
-    color: white;
+	color: white;
 }
 
 .bestiary {
-    background-color: #FFFFF0; 
-    width: 90%;
-    max-width: 700px;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+	background-color: #fffff0;
+	width: 90%;
+	max-width: 700px;
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .bestiary-head-container {
-    width: 100%;
-    max-width: 700px;
-    height: 10%;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: space-between;
-    overflow: hidden;
+	width: 100%;
+	max-width: 700px;
+	height: 10%;
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: row;
+	align-items: left;
+	justify-content: space-between;
+	overflow: hidden;
 }
 
 .bestiary-container {
-    width: 100%;
-    max-width: 732px;
-    height: 10%;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
+	width: 100%;
+	max-width: 732px;
+	height: 10%;
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	overflow: hidden;
 }
