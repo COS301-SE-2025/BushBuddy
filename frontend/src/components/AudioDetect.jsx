@@ -6,16 +6,16 @@ import './AudioDetect.css';
 const AudioDetect = ({
   modelPath = "/audio-model/model.json",
   labels = [
-    "baboon",
-    "black_wildebeest",
-    "buffalo",
-    "cheetah",
-    "elephant",
-    "hippo",
-    "impala",
-    "lion",
-    "meerkat",
-    "rhino",
+    "Chacma Baboon",
+    "Black Wildebeest",
+    "Buffalo",
+    "Cheetah",
+    "Elephant",
+    "Hippopotamus",
+    "Impala",
+    "Lion",
+    "Meerkat",
+    "White Rhinoceros",
   ],
 }) => {
   const [model, setModel] = useState(null);
@@ -92,7 +92,13 @@ const AudioDetect = ({
       const label = labels[bestIdx];
       const confidence = (probs[bestIdx] * 100).toFixed(2);
 
-      setResult({ label, confidence });
+      // get the image from the detection result
+      const bestiary = JSON.parse(sessionStorage.getItem("bestiary") || "{}");
+      const bestiaryArray = Object.values(bestiary);
+      const match = bestiaryArray.find(entry => entry.name === label);
+
+      setResult({ label, confidence, image: match?.image_url });
+
 
       mfccTensor.dispose();
       prediction.dispose();
@@ -114,7 +120,7 @@ const AudioDetect = ({
     if (!file || !model) return;
 
     try {
-      setProcessing(true); // <-- show spinner right away
+      setProcessing(true); // show spinner
 
       const videoEl = document.createElement("video");
       videoEl.src = URL.createObjectURL(file);
@@ -260,9 +266,16 @@ const AudioDetect = ({
             {result.error ? (
               <p>{result.error}</p>
             ) : (
-              <p>
-                {result.label}, {result.confidence}%
-              </p>
+              <>
+                <p>{result.label}, {result.confidence}%</p>
+                {result.image && (
+                  <img
+                    src={result.image}
+                    alt={result.label}
+                    className="detection-image"
+                  />
+                )}
+              </>
             )}
             <button
               className="submit-button"
