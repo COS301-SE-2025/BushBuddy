@@ -23,12 +23,21 @@ AI-Powered African Wildlife Detection System
 
 ---
 
+
+https://github.com/user-attachments/assets/45169e49-9320-45b6-a7c5-ad060fec1ca9
+
+
 </div>
+
+
 
 [BushBuddy PWA](https://bushbuddyapp.onrender.com/) </br>
 Recommended for mobile
 
-<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/ac2e0e88-3324-4d0d-af01-71a208ae51be" />
+<details>
+  <summary>View QR Code</summary>
+  <img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/ac2e0e88-3324-4d0d-af01-71a208ae51be" />
+</details>
 
 
 ## Project Description
@@ -62,6 +71,10 @@ both visual and audio detection.
 ## Demos
 
 ### Demo 4
+
+[Demo 4 Video](https://drive.google.com/file/d/1LlI_fYnDlWavl9AXDyBqq0vTcNhbDi3i/view?usp=drive_link)
+
+[Demo 4 Presentation](https://drive.google.com/file/d/1R438jxNnJLr8LGhlKMX7e_T6THNo6ThQ/view?usp=sharing)
 
 <details>
 <summary>Previous Demos</summary>
@@ -101,7 +114,6 @@ Git Branching Strategy included
 [Branching Strategy - v1](https://drive.google.com/file/d/1-crGJMCqyGE81LttYcCsu5uUEpqjH8QF/view?usp=drive_link)
 
 ### Demo 1
-[Demo 1 Video](https://drive.google.com/file/d/1DejBLGORo3SBGFhOX99HVOPbHoyOWk6e/view?usp=drive_link)
 
 [Demo 1 Presentation](https://www.canva.com/design/DAGolPXXyvY/6SCDsRvBD6g2kgGMPxQ1ZA/edit?utm_content=DAGolPXXyvY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
