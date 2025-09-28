@@ -48,6 +48,19 @@ async function fetchAllUserPosts(user_id) {
     }
 }
 
+async function fetchUserPostsAmount(user_id) {
+    try {
+        const userPosts = await postingRepository.fetchAllUserPosts(user_id);
+
+        const amount = userPosts.length;
+
+        return amount;
+    } catch (error) {
+        console.error("Error in postingService.fetchAllUserPosts:", error);
+        throw new Error('Failed to fetch user posts amount');
+    }
+}
+
 async function fetchPost(user_id, post_id) {
     try{
         const result = await postingRepository.fetchPost(post_id);
@@ -132,6 +145,7 @@ export const postingService = {
     createPost,
     fetchPost,
     fetchAllUserPosts,
+    fetchUserPostsAmount,
     fetchAllPosts,
     likePost,
     addComment,

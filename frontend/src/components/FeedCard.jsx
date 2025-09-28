@@ -64,7 +64,7 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible, setDeleteConfi
           alt={`${entry.user}'s avatar`}
           className="avatar"
         /> */}
-        <div className="avatar">{entry.user_id[0]}</div>
+        <div className="avatar">{entry.user_id[0].toUpperCase()}</div>
         <span className="username">{entry.user_id}</span>
         {showDeleteButton ? (
           <div className="delete-div" onClick={() => handleDeleteClick(entry.id)}>

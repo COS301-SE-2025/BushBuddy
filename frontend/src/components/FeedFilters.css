@@ -1,7 +1,7 @@
 .filters-container {
   display: flex;
   flex-direction: column;
-  padding: 0.5% 20px;
+  padding: 0.8% 20px 0.5% 20px;
   width: 100%;
   max-width: 800px;
 }
@@ -9,7 +9,7 @@
 .filters-column {
   display: flex;
   flex-direction: column;
-  margin: 0 5%;
+  margin: 0 5.5%;
 }
 
 .dropdown-filter {
