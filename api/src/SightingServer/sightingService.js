@@ -78,11 +78,11 @@ async function fetchUserAchievements(user_id) {
 
 		let achievements = {
 			antelopes : 0,
-			antelopes_amount : antelope_arr.length,
+			antelopes_amount : 10,
 			predators : 0,
-			predators_amount : predators_arr.length,
+			predators_amount : 5,
 			small_mammals : 0,
-			small_mammals_amount : small_mammals_arr.length,
+			small_mammals_amount : 10,
 			all : 0,
 			all_amount : all_arr.length,
 			big_five : 0,

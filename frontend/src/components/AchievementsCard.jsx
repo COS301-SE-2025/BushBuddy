@@ -13,7 +13,7 @@ const achievements = [
   {
     key: "antelopes",
     name: "Antelope Master",
-    desc: "Identified 5 different antelope species",
+    desc: "Identified 10 different antelope species",
     rank: "COMMON",
     icon: <GiDeerTrack color="#6fdc8c" size={25} />,
     borderColor: "#6fdc8c"
