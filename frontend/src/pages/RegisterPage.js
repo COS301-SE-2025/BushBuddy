@@ -105,10 +105,15 @@ const AuthScreen = () => {
           </div>
           {/* {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>} */}
 
-          {error && <p className="text-red-500 text-sm mb-3" color='red'>{error}</p>}
+          {error && <p className="register-link">{error}</p>}
 
           <button type="submit" className="auth-button">Register</button>
         </form>
+
+        <p className="register-link">
+          Have an account? <a href="/login">Log in</a>
+        </p>
+
       </div>
     </div>
   );
