@@ -106,28 +106,32 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
 
 				<div className="map-section-img">
 					<img className="post-image" src={post.image_url} alt={post.title} />
-					{/* add navigate to map onclick */}
-					<div className="feed-map-overlay">
-						<MapContainer
-							center={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]}
-							zoom={11}
-							scrollWheelZoom={false}
-							className="feed-map-container"
-							attributionControl={false}
-							zoomControl={false}
-							dragging={false}
-							doubleClickZoom={false}
-							touchZoom={false}>
-							<TileLayer
-								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							/>
-							<Marker
-								position={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]}
-								icon={smallIcon}
-							/>
-						</MapContainer>
-					</div>
+					{post.geoLocation.geolocation_lat!=null && (
+						<>
+							{/* add navigate to map onclick */}
+							<div className="feed-map-overlay">
+								<MapContainer
+									center={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]}
+									zoom={11}
+									scrollWheelZoom={false}
+									className="feed-map-container"
+									attributionControl={false}
+									zoomControl={false}
+									dragging={false}
+									doubleClickZoom={false}
+									touchZoom={false}>
+									<TileLayer
+										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+										attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									/>
+									<Marker
+										position={[post.geoLocation.geolocation_lat, post.geoLocation.geolocation_long]}
+										icon={smallIcon}
+									/>
+								</MapContainer>
+							</div>
+						</>
+					)}
 				</div>
 
 				<div className="engagement-date">
