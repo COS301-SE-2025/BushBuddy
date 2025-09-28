@@ -66,8 +66,6 @@ both visual and audio detection.
 
 [Wiki](https://github.com/COS301-SE-2025/AI-Powered-African-Wildlife-Detection/wiki)
 
-### Google Drive Links (Refer to Wiki for Markdown Format)
-
 [SRS - v4](https://drive.google.com/file/d/1QoJKRDnDuhb7wCffyRPbhn0ykZNxZ1xJ/view?usp=drive_link)
 
 [User Manual - v2](https://drive.google.com/file/d/15P7FgWGsxwOyKAm_f9V3OXLqeNAxLeNM/view?usp=drive_link)
