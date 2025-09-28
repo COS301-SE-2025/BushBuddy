@@ -31,20 +31,20 @@ const FeedPage = () => {
 			}
 		};
 
-		fetchPosts();
+		if (!postDetailVisible) fetchPosts();
 	}, [filter, selectedPost]);
 
 	useEffect(() => {
 		if (postDetailVisible) {
 			document.body.style.overflow = 'hidden';
 		} else {
-			document.body.style.overflow = '';
+			document.body.style.overflow = 'auto';
 		}
 
 		return () => {
-			document.body.style.overflow = '';
+			document.body.style.overflow = 'auto';
 		};
-	}, [selectedPost]);
+	}, [postDetailVisible]);
 
 	const handleIncrementComments = (postId) => {
 		setPosts((prevPosts) => prevPosts.map((p) => (p.id === postId ? { ...p, comments: (p.comments || 0) + 1 } : p)));
@@ -90,7 +90,7 @@ const FeedPage = () => {
 							post={selectedPost.data.post}
 							comments={selectedPost.data.comments}
 							onClose={() => {
-								setSelectedPost(null);
+								setPostDetailVisible(false);
 							}} //temporary fix for modal not updating likes
 							onCommentAdded={handleIncrementComments}
 							onLikeDec={handleDecLikes}

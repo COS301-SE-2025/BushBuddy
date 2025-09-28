@@ -98,6 +98,12 @@
 	scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
 }
 
+@media (max-width: 480px) {
+	.modal-content {
+		max-width: 400px;
+	}
+}
+
 /* Scrollbar styles for Chrome, Edge and Safari */
 .my-modal-content::-webkit-scrollbar {
 	width: 2px;
