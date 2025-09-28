@@ -48,13 +48,6 @@ async function preprocess(img, modelWidth, modelHeight) {
   return { input, scale, paddingX, paddingY };
 }
 
-
-
-/**
- * Sigmoid helper
- */
-const sigmoid = (x) => 1 / (1 + Math.exp(-x));
-
 /**
  * Convert raw model output to bounding boxes, scores(probability), classes
  */
