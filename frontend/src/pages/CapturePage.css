@@ -189,12 +189,13 @@
     border-bottom: 1px solid #eee;
 }
 
-.detected-image {
+.detected-image-live {
     width: 100%;
-    max-width: 400px;
-    max-height: 300px;
+    max-height: 400px;
     object-fit: contain;
     border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .animal-name {

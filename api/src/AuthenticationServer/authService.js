@@ -76,8 +76,31 @@ async function logoutUser(userId) {
 	}
 }
 
+async function changePassword(userID, oldPassword, newPassword) {
+	if (!oldPassword || !newPassword) return 'REQ_FIELDS_MISSING';
+
+	try {
+		const user = await authRepository.getUserById(userID);
+		if (!user) return 'INVALID_REQUEST';
+
+		const validPassword = await bcrypt.compare(oldPassword, user.password_hash);
+		if (!validPassword) return 'INCORRECT_PASSWORD';
+
+		const hashedPassword = await bcrypt.hash(newPassword, 10);
+		const result = await authRepository.updatePassword(userID, hashedPassword);
+
+		if (result === true) return 'REQUEST_SUCCESS';
+
+		return result;
+	} catch (error) {
+		console(error);
+		return 'SERVER_ERROR';
+	}
+}
+
 export const authService = {
 	registerUser,
 	loginUser,
 	logoutUser,
+	changePassword,
 };

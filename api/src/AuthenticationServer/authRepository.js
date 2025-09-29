@@ -20,7 +20,7 @@ async function createUser(userData) {
 
 async function getUserById(userId) {
 	return db
-		.query('SELECT username, email FROM users WHERE id = $1', [userId])
+		.query('SELECT username, email, password_hash FROM users WHERE id = $1', [userId])
 		.then((result) => {
 			return result.rows[0] || null;
 		})
@@ -90,6 +90,19 @@ async function userExists(username) {
 		});
 }
 
+async function updatePassword(user, password) {
+	try {
+		const result = await db.query('UPDATE users SET password_hash=$1 WHERE id=$2;', [password, user]);
+
+		if (result.rowCount > 0) return true;
+
+		return 'DB_ERROR';
+	} catch (error) {
+		console.error(error);
+		return 'DB_ERROR';
+	}
+}
+
 export const authRepository = {
 	createUser,
 	getUserById,
@@ -98,4 +111,5 @@ export const authRepository = {
 	deleteUser,
 	getAllUsers,
 	userExists,
+	updatePassword,
 };
