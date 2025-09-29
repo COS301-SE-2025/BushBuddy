@@ -97,6 +97,7 @@ const AudioDetect = ({
       const bestiaryArray = Object.values(bestiary);
       const match = bestiaryArray.find(entry => entry.name === label);
 
+
       setResult({ label, confidence, image: match?.image_url });
 
 
@@ -286,6 +287,7 @@ const AudioDetect = ({
           </div>
         </div>
       )}
+
     </div>
   );
 };
