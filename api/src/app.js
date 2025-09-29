@@ -100,6 +100,7 @@ app.use((req, res, next) => {
 	next();
 });
 
+
 // routes go here
 app.use('/api/auth', authApp);
 

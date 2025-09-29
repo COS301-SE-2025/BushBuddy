@@ -105,7 +105,7 @@ const AuthScreen = () => {
           </div> */}
 
 					{error && (
-						<p className="text-red-500 text-sm mb-3" color="red">
+						<p className="register-link">
 							{error}
 						</p>
 					)}
