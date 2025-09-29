@@ -382,7 +382,7 @@
 }
 
 .modal-scientific-name {
-	color: #4caf50;
+	color: #ff6b00;
 	font-size: 16px;
 	font-style: italic;
 	margin-bottom: 15px;
@@ -406,7 +406,7 @@
 }
 
 .modal-section-title {
-	color: #4caf50;
+	color: #ff6b00;
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 12px;
@@ -452,7 +452,7 @@
 }
 
 .detail-label {
-	color: #4caf50;
+	color: #ff6b00;
 	font-size: 16px;
 	font-weight: 500;
 	min-width: 80px;
