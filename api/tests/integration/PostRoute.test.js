@@ -13,6 +13,7 @@ let authServer;
 let postingServer;
 
 const postIdToRemove = [];
+const identificationIdToRemove = [];
 
 const agent = request.agent(app);
 
@@ -49,7 +50,7 @@ describe('Posting Routes', () => {
 	describe('POST / - Create Post', () => {
 		test('should create a post successfully', async () => {
 			const postData = {
-				identification_id: 6,
+				identification_id: 325,
 				description: 'Beautiful elephant spotted in Kruger National Park',
 				share_location: false,
 			};
@@ -59,11 +60,9 @@ describe('Posting Routes', () => {
 				.set('Cookie', [`token=${token}`])
 				.send(postData);
 
-			postIdToRemove.push(parseInt(res.body.identification_id));
+			postIdToRemove.push(parseInt(res.body.data.id));
 
 			console.log(res);
-
-			console.log(postIdToRemove);
 
 			expect(res.statusCode).toBe(201);
 			expect(res.body).toHaveProperty('success', true);
@@ -73,7 +72,7 @@ describe('Posting Routes', () => {
 
 		test('should fail without authentication', async () => {
 			const postData = {
-				identification_id: 6,
+				identification_id: 325,
 				description: 'Unauthorized post attempt',
 			};
 
@@ -86,18 +85,7 @@ describe('Posting Routes', () => {
 
 	describe('GET /all - Fetch All Posts', () => {
 		test('should fetch all posts successfully', async () => {
-			// Create a test post first
-			const createRes = await request(app).post('/api/posts/1').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
-				description: 'Test post for fetching',
-				shareLocation: false,
-			});
-
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
-
-			const res = await request(app).get('/api/posts/all').set('Cookie', `token=${token}`);
-
-			console.log(res.body);
+			const res = await request(app).get('/api/posts/all/all').set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(200);
 			expect(res.body).toHaveProperty('success', true);
@@ -108,14 +96,6 @@ describe('Posting Routes', () => {
 
 	describe('GET /userPosts - Fetch User Posts', () => {
 		test('should fetch user posts successfully', async () => {
-			// Create a test post
-			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
-				description: 'User specific post',
-				shareLocation: true,
-			});
-
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
 
 			const res = await request(app).get('/api/posts/userPosts').set('Cookie', `token=${token}`);
 
@@ -136,15 +116,15 @@ describe('Posting Routes', () => {
 	describe('GET /:postId - Fetch Specific Post', () => {
 		test('should fetch specific post successfully', async () => {
 			// Create a test post
-			const createRes = await request(app).post('/api/posts/1').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
+			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
+				identification_id: 325,
 				description: 'Specific post for fetching',
 				shareLocation: false,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
+			postIdToRemove.push(parseInt(createRes.body.data.id));
 
-			const postId = createRes.body.identification_id;
+			const postId = createRes.body.data.id;
 
 			const res = await request(app).get(`/api/posts/${postId}`).set('Cookie', `token=${token}`);
 
@@ -164,18 +144,18 @@ describe('Posting Routes', () => {
 		});
 	});
 
-	describe('POST /:postId/like - Like Post', () => {
+ 	describe('POST /:postId/like - Like Post', () => {
 		test('should like post successfully', async () => {
 			// Create a test post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
+				identification_id: 325,
 				description: 'Post to be liked',
 				shareLocation: true,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
+			postIdToRemove.push(parseInt(createRes.body.data.id));
 
-			const postId = createRes.body.identification_id;
+			const postId = createRes.body.data.id;
 
 			const res = await request(app).post(`/api/posts/${postId}/like`).set('Cookie', `token=${token}`);
 
@@ -196,14 +176,14 @@ describe('Posting Routes', () => {
 		test('should add comment successfully', async () => {
 			// Create a test post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
+				identification_id: 325,
 				description: 'Post to be commented on',
 				shareLocation: false,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
+			postIdToRemove.push(parseInt(createRes.body.data.id));
 
-			const postId = createRes.body.identification_id;
+			const postId = createRes.body.data.id;
 
 			const res = await request(app)
 				.post(`/api/posts/${postId}/comment`)
@@ -227,12 +207,12 @@ describe('Posting Routes', () => {
 		test('should complete entire post interaction flow', async () => {
 			// 1. Create post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 6,
+				identification_id: 325,
 				description: 'Complete flow test post',
 				shareLocation: true,
 			});
 
-			postIdToRemove.push(parseInt(createRes.body.identification_id));
+			postIdToRemove.push(parseInt(createRes.body.data.id));
 
 			expect(createRes.statusCode).toBe(201);
 			const postId = createRes.body.data.id;
@@ -261,7 +241,7 @@ describe('Posting Routes', () => {
 			const userPostsRes = await request(app).get('/api/posts/userPosts').set('Cookie', `token=${token}`);
 
 			expect(userPostsRes.statusCode).toBe(200);
-			expect(userPostsRes.body).toHaveProperty('data');
+			expect(userPostsRes.body).toHaveProperty('result');
 		});
 	});
 });

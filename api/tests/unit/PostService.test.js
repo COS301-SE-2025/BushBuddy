@@ -12,7 +12,10 @@ jest.unstable_mockModule(`${POSTING_URL}postingRepository.js`, () => ({
         likePost: jest.fn(),
         addComment: jest.fn(),
         fetchPostImage: jest.fn(),
-        fetchUserName: jest.fn()
+        fetchUserName: jest.fn(),
+        checkLikedStatus: jest.fn(),
+        fetchGeoLocation: jest.fn(),
+        deletePost: jest.fn(),  
     },
 }));
 
