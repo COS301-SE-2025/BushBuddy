@@ -275,7 +275,7 @@ const CapturePage = () => {
             className={`captureNavButtons ${activeMode === 'UPLOAD' ? 'active' : ''}`}
             onClick={() => setActiveMode('UPLOAD')}
           >
-            ONLINE
+            UPLOAD
           </span>
           <span
             className={`captureNavButtons ${activeMode === 'LIVE' ? 'active' : ''}`}
