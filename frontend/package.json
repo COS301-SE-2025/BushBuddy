@@ -1,6 +1,6 @@
 {
   "name": "bush-buddy",
-  "version": "0.2.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
