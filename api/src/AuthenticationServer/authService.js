@@ -5,10 +5,10 @@ import { authRepository } from './authRepository.js';
 async function registerUser({ username, password, email }) {
 	const userData = { username, password, email };
 	if (!userData.username || !userData.password || !userData.email) {
-		throw new Error('Username, password, and email are required');
+		return 'MISSING_FIELDS';
 	}
 	if (await authRepository.userExists(userData.username)) {
-		throw new Error('Username already exists');
+		return 'DUPLICATE_ENTRY';
 	}
 	try {
 		const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -27,23 +27,26 @@ async function registerUser({ username, password, email }) {
 
 		return token;
 	} catch (error) {
-		throw new Error(`Error registering user: ${error.message}`);
+		console.error(error.message);
+		if (error.message === 'Error creating user: duplicate key value violates unique constraint "users_email_key"')
+			return 'DUPLICATE_EMAIL';
+		return 'SERVER_ERROR';
 	}
 }
 
 async function loginUser({ username, password }) {
 	if (!username || !password) {
-		throw new Error('Username and password are required');
+		return 'MISSING_FIELDS';
 	}
 
 	try {
 		const user = await authRepository.getUserByUsername(username);
 		if (!user) {
-			throw new Error('Invalid username or password');
+			return 'INVALID_CRED';
 		}
 		const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 		if (!isPasswordValid) {
-			throw new Error('Invalid username or password');
+			return 'INVALID_CRED';
 		}
 
 		const token = jwt.sign(
@@ -55,7 +58,8 @@ async function loginUser({ username, password }) {
 		);
 		return token;
 	} catch (error) {
-		throw new Error(`Error logging in user: ${error.message}`);
+		console.error(error.message);
+		return 'SERVER_ERROR';
 	}
 }
 
