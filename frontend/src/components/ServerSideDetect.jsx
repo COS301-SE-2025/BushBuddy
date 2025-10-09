@@ -11,6 +11,8 @@ const ServerSideDetect = () => {
 
     const [showForm, setShowForm] = useState(false);
     const [capturedImage, setCapturedImage] = useState(null);
+    const [showFullscreenImage, setShowFullscreenImage] = useState(false);
+    const [fullscreenImageSrc, setFullscreenImageSrc] = useState(null);
     const [animalName, setAnimalName] = useState(null);
     const [confidence, setConfidence] = useState(null);
     const [apiImage, setApiImage] = useState(null);
@@ -62,6 +64,16 @@ const ServerSideDetect = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const openFullscreenImage = (src) => {
+        setFullscreenImageSrc(src);
+        setShowFullscreenImage(true);
+    };
+
+    const closeFullscreenImage = () => {
+        setShowFullscreenImage(false);
+        setFullscreenImageSrc(null);
     };
 
     const handleClose = () => {
@@ -185,7 +197,8 @@ const ServerSideDetect = () => {
                                 <img
                                     src={`data:image/png;base64,${apiImage}`}
                                     alt="Detected Animal"
-                                    className="detected-image"
+                                    className="detected-image clickable-image"
+                                    onClick={() => openFullscreenImage(capturedImage)}
                                 />
                             ) : (
                                 capturedImage && (
@@ -235,6 +248,15 @@ const ServerSideDetect = () => {
                             </button>
                         </form>
                     </div>
+                </div>
+            )}
+
+            {showFullscreenImage && (
+                <div className="fullscreen-overlay" onClick={closeFullscreenImage}>
+                <div className="fullscreen-content" onClick={(e) => e.stopPropagation()}>
+                    <button className="fullscreen-close" onClick={closeFullscreenImage}>✕</button>
+                    <img src={fullscreenImageSrc} alt="Fullscreen" className="fullscreen-image" />
+                </div>
                 </div>
             )}
 
