@@ -76,7 +76,7 @@ describe('AuthService', () => {
 					email: 'test@user.com',
 					password: 'password',
 				})
-			).rejects.toThrow('Username already exists');
+			).resolves.toBe('DUPLICATE_ENTRY');
 
 			expect(authRepository.userExists).toHaveBeenCalledWith('testuser');
 			expect(jwt.sign).not.toHaveBeenCalled();
@@ -91,7 +91,7 @@ describe('AuthService', () => {
 					email: '',
 					password: '',
 				})
-			).rejects.toThrow('Username, password, and email are required');
+			).resolves.toBe('MISSING_FIELDS');
 
 			expect(authRepository.userExists).not.toHaveBeenCalled();
 			expect(jwt.sign).not.toHaveBeenCalled();
@@ -110,7 +110,7 @@ describe('AuthService', () => {
 					email: 'test@user.com',
 					password: 'password',
 				})
-			).rejects.toThrow('Error registering user: User creation failed');
+			).resolves.toBe('SERVER_ERROR');
 
 			expect(authRepository.createUser).toHaveBeenCalledWith({
 				username: 'testuser',
@@ -153,7 +153,7 @@ describe('AuthService', () => {
 					username: '',
 					password: '',
 				})
-			).rejects.toThrow('Username and password are required');
+			).resolves.toBe('MISSING_FIELDS');
 
 			expect(authRepository.userExists).not.toHaveBeenCalled();
 		});
@@ -165,7 +165,7 @@ describe('AuthService', () => {
 					username: 'invaliduser',
 					password: 'password',
 				})
-			).rejects.toThrow('Invalid username or password');
+			).resolves.toBe('INVALID_CRED');
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('invaliduser');
 			expect(bcrypt.compare).not.toHaveBeenCalled();
@@ -181,7 +181,7 @@ describe('AuthService', () => {
 					username: 'testuser',
 					password: 'wrongpassword',
 				})
-			).rejects.toThrow('Invalid username or password');
+			).resolves.toBe('INVALID_CRED');
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('testuser');
 			expect(bcrypt.compare).toHaveBeenCalledWith('wrongpassword', 'hashedpassword');
@@ -195,7 +195,7 @@ describe('AuthService', () => {
 					username: 'testuser',
 					password: 'password',
 				})
-			).rejects.toThrow('Error logging in user: Login failed');
+			).resolves.toBe('SERVER_ERROR');
 
 			expect(authRepository.getUserByUsername).toHaveBeenCalledWith('testuser');
 			expect(bcrypt.compare).not.toHaveBeenCalled();
