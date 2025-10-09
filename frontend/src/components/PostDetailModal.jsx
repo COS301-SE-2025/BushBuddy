@@ -55,7 +55,7 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
 		try {
 			const response = await PostsController.handleCommentPost(post.id, newComment);
 			if (response.success) {
-				const timestamp = new Date().toLocaleString();
+				const timestamp = new Date(Date.now() + 2 * 60 * 60 * 1000).toLocaleString();
 				comments.push({
 					id: response.commentId,
 					user_id: 'You',
@@ -106,7 +106,7 @@ const PostDetailModal = ({ post, comments, onClose, onCommentAdded, onLikeDec, o
 
 				<div className="map-section-img">
 					<img className="post-image" src={post.image_url} alt={post.title} />
-					{post.geoLocation.geolocation_lat!=null && (
+					{post.geoLocation.geolocation_lat != null && (
 						<>
 							{/* add navigate to map onclick */}
 							<div className="feed-map-overlay">
