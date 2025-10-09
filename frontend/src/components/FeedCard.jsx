@@ -98,7 +98,7 @@ const FeedCard = ({ entry, setSelectedPost, setPostDetailVisible, setDeleteConfi
           </span>
         </div>
         <div className="feed-card-footer">
-          <span className="timestamp">{entry.created_at}</span>
+          <span className="timestamp">{new Date(new Date(entry.created_at).getTime() + 2 * 60 * 60 * 1000).toLocaleString()}</span>
         </div>
       </div>
     </div>
