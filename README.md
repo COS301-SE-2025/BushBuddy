@@ -23,13 +23,15 @@ AI-Powered African Wildlife Detection System
 
 ---
 
+Watch The Trailer
 
 https://github.com/user-attachments/assets/45169e49-9320-45b6-a7c5-ad060fec1ca9
 
+Or watch on [YouTube](https://youtu.be/MlqfFlz1qXc).
+
 ---
+
 </div>
-
-
 
 [BushBuddy PWA](https://bushbuddyapp.onrender.com/) </br>
 Recommended for mobile
