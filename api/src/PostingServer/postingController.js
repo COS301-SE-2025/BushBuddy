@@ -5,10 +5,17 @@ async function createPost(req, res) {
 	try {
 		const user = req.user;
 
+		// check for gps coordinates in post description
+		const gpsRegex = /(?:lat(?:itude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)[\s,;\/]+(?:lon(?:gitude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)/gi;
+		var desc = req.body.description;
+		var newDesc = desc.replace(gpsRegex, "[HIDDEN INFORMATION]");
+
+
+
 		const details = {
 			user_id: user.id,
 			identification_id: req.body.identification_id,
-			description: req.body.description,
+			description: newDesc,
 			share_location: req.body.share_location,
 			image_url: req.body.image_url,
 		};
