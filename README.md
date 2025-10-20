@@ -78,7 +78,7 @@ both visual and audio detection.
 
 [Testing Policy - v1](https://drive.google.com/file/d/1SBR4MZwysTVYT7WmMsat2LjMQnh57sJv/view?usp=drive_link)
 
-
+View all documentation [here](/docs)
 
 ## Demos
 
