@@ -204,7 +204,10 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/ruben-gadd-227619356/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/RubenGadd"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
-    <a href="mailto:u23633353@tuks.co.za">
+      <a href="https://drive.google.com/file/d/1bA9cjvy250cnBZIU4h2swafb0U-gfGq0/view?usp=sharing">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
+      <a href="mailto:u23633353@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u23633353%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
       </a>
     </td>
