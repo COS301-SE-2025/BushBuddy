@@ -308,5 +308,4 @@ Git Branching Strategy included
 <a href="mailto:g24capstone@gmail.com"><img src="https://img.shields.io/badge/email-g24capstone%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
 
 # Stakeholders
-<img src="res\img\EPI-USE-Logo.png" alt="Epi-Use Logo" width="400">&nbsp;
-<img src="res\img\GroupElephant_logo.png" alt="Group Elephant Logo" width="400">
+<img src="res\img\EPI-USE Logo_White.png" alt="Epi-Use Logo" width="400">&nbsp;
