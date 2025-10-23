@@ -37,6 +37,8 @@ const CapturePage = () => {
   const [showForm, setShowForm] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [showFullscreenImage, setShowFullscreenImage] = useState(false);
+  const [fullscreenImageSrc, setFullscreenImageSrc] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
   const [activeMode, setActiveMode] = useState('LIVE');
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -141,6 +143,16 @@ const CapturePage = () => {
 
   const resetCapture = () => {
     setCapturedImage(null);
+  };
+
+  const openFullscreenImage = (src) => {
+    setFullscreenImageSrc(src);
+    setShowFullscreenImage(true);
+  };
+
+  const closeFullscreenImage = () => {
+    setShowFullscreenImage(false);
+    setFullscreenImageSrc(null);
   };
 
   const handleClose = () => {
@@ -311,7 +323,8 @@ const CapturePage = () => {
                 <img
                   src={capturedImage}
                   alt="Detection Result"
-                  className="detected-image-live"
+                  className="detected-image-live clickable-image"
+                  onClick={() => openFullscreenImage(capturedImage)}
                 />
 
                 {/* CASE 1: No results OR only "Background" */}
@@ -388,6 +401,15 @@ const CapturePage = () => {
       {loading && (
         <div className="spinner-overlay">
           <div className="spinner"></div>
+        </div>
+      )}
+
+      {showFullscreenImage && (
+        <div className="fullscreen-overlay" onClick={closeFullscreenImage}>
+          <div className="fullscreen-content" onClick={(e) => e.stopPropagation()}>
+            <button className="fullscreen-close" onClick={closeFullscreenImage}>✕</button>
+            <img src={fullscreenImageSrc} alt="Fullscreen" className="fullscreen-image" />
+          </div>
         </div>
       )}
 

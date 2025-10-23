@@ -198,6 +198,68 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.clickable-image {
+    cursor: zoom-in;
+}
+
+/* Fullscreen image overlay */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.fullscreen-content {
+    position: relative;
+    width: 80vw;
+    height: 80vh;
+    max-width: 1200px;
+    max-height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 8px;
+    background: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.fullscreen-close {
+    color: white;
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: #ff6b00;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.fullscreen-close:hover {
+    background: #e55a00;
+}
+
 .animal-name {
     margin: 10px 0 5px 0;
     color: #333;
