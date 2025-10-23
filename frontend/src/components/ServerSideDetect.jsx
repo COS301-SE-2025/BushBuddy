@@ -119,11 +119,17 @@ const ServerSideDetect = () => {
                 'confidence',
                 confidence ? (confidence * 100).toFixed(2) : '0'
             );
-            sightingData.append('longitude', geoLocLong);
-            sightingData.append('latitude', geoLocLat);
+            if(geoLocLong != null){
+                sightingData.append('longitude', geoLocLong);
+                
+            }
+            if(geoLocLat != null){
+                sightingData.append('latitude', geoLocLat);
+            }
             sightingData.append('file', imageBlob);
 
             const sightResult = await SightingsController.handleCreateSighting(sightingData);
+            console.log("YERR", sightResult);
 
             let postResult = null;
             if (sightResult.success) {
