@@ -23,13 +23,15 @@ AI-Powered African Wildlife Detection System
 
 ---
 
+Watch The Trailer
 
 https://github.com/user-attachments/assets/45169e49-9320-45b6-a7c5-ad060fec1ca9
 
+Or watch on [YouTube](https://youtu.be/MlqfFlz1qXc).
+
 ---
+
 </div>
-
-
 
 [BushBuddy PWA](https://bushbuddyapp.onrender.com/) </br>
 Recommended for mobile
@@ -76,7 +78,7 @@ both visual and audio detection.
 
 [Testing Policy - v1](https://drive.google.com/file/d/1SBR4MZwysTVYT7WmMsat2LjMQnh57sJv/view?usp=drive_link)
 
-
+View all documentation [here](/docs)
 
 ## Demos
 
@@ -170,6 +172,9 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/ruan-esterhuizen-87b841328/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/RuanEsterhuizen"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="https://drive.google.com/file/d/1S8Xp1c6HRJZxecJhAvsUszR4tSvlXI8A/view?usp=drive_link">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
       <a href="mailto:u23532387@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u23532387%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
       </a>
@@ -199,7 +204,10 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/ruben-gadd-227619356/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/RubenGadd"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
-    <a href="mailto:u23633353@tuks.co.za">
+      <a href="https://drive.google.com/file/d/1bA9cjvy250cnBZIU4h2swafb0U-gfGq0/view?usp=sharing">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
+      <a href="mailto:u23633353@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u23633353%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
       </a>
     </td>
@@ -227,6 +235,9 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/raphael-rato-597a43203/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/raphaelrato"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="https://drive.google.com/file/d/1rYjtE64YnbfgX5xR8rPOlflrPiOP3Vz7/view?usp=sharing">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
       <a href="mailto:u22887581@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u22887581%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
       </a>
@@ -249,6 +260,9 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/tom-schulz-18979a155/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href=https://github.com/tomschulz02><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="https://drive.google.com/file/d/1wXOuNkW5TK-0vaHOxR48edNM7bbblqKh/view?usp=sharing">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
       <a href="mailto:u05039364@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u05039364%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email Badge">
       </a>
@@ -277,6 +291,9 @@ Git Branching Strategy included
       </p>
       <a href="https://www.linkedin.com/in/jean-steyn-6a9380356/"><img src="https://img.shields.io/badge/LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
       <a href="https://github.com/JeanSteyn"><img src="https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+      <a href="https://drive.google.com/file/d/1OWFHeqNZ4uNuzyBW5HiA52rlh2kAXjuV/view?usp=sharing">
+        <img src="https://img.shields.io/badge/Curriculum%20Vitae-006400?style=for-the-badge&logoColor=white" alt="Curriculum Vitae">
+      </a>
       <a href="mailto:u22537229@tuks.co.za">
         <img src="https://img.shields.io/badge/email-u22537229%40tuks.co.za-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
       </a>
@@ -291,5 +308,4 @@ Git Branching Strategy included
 <a href="mailto:g24capstone@gmail.com"><img src="https://img.shields.io/badge/email-g24capstone%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
 
 # Stakeholders
-<img src="res\img\EPI-USE-Logo.png" alt="Epi-Use Logo" width="400">&nbsp;
-<img src="res\img\GroupElephant_logo.png" alt="Group Elephant Logo" width="400">
+<img src="res\img\EPI-USE Logo_White.png" alt="Epi-Use Logo" width="400">&nbsp;

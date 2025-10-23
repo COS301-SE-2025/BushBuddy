@@ -8,6 +8,19 @@ async function registerUser(req, res) {
 		if (!token) {
 			return res.status(400).json({ success: false, message: 'User registration failed' });
 		}
+		if (token === 'MISSING_FIELDS') {
+			return res.status(400).json({ success: false, message: 'User registration failed - Missing required fields' });
+		}
+		if (token === 'DUPLICATE_ENTRY') {
+			return res.status(400).json({ success: false, message: 'User registration failed - Username not available' });
+		}
+		if (token === 'SERVER_ERROR') {
+			return res.status(400).json({ success: false, message: 'User registration failed' });
+		}
+		if (token === 'DUPLICATE_EMAIL') {
+			return res.status(400).json({ success: false, message: 'User registration failed - Email already in use' });
+		}
+
 		res.cookie('token', token, {
 			httpOnly: true,
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
@@ -28,6 +41,16 @@ async function loginUser(req, res) {
 		if (!token) {
 			return res.status(401).json({ success: false, message: 'Invalid username or password' });
 		}
+		if (token === 'INVALID_CRED') {
+			return res.status(401).json({ success: false, message: 'Login failed - Invalid username or password' });
+		}
+		if (token === 'MISSING_FIELDS') {
+			return res.status(400).json({ success: false, message: 'Login failed - Missing required fields' });
+		}
+		if (token === 'SERVER_ERROR') {
+			return res.status(401).json({ success: false, message: 'Login failed - Server error' });
+		}
+
 		res.cookie('token', token, {
 			httpOnly: true,
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
@@ -37,7 +60,7 @@ async function loginUser(req, res) {
 		res.status(200).json({ success: true, message: 'User logged in successfully', data: { username } });
 	} catch (error) {
 		console.error('Error in loginUser:', error);
-		res.status(500).json({ success: false, message: 'Login failed' });
+		res.status(500).json({ success: false, message: 'Login failed - Internal server error' });
 	}
 }
 

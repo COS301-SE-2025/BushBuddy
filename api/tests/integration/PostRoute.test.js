@@ -50,7 +50,7 @@ describe('Posting Routes', () => {
 	describe('POST / - Create Post', () => {
 		test('should create a post successfully', async () => {
 			const postData = {
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Beautiful elephant spotted in Kruger National Park',
 				share_location: false,
 			};
@@ -72,7 +72,7 @@ describe('Posting Routes', () => {
 
 		test('should fail without authentication', async () => {
 			const postData = {
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Unauthorized post attempt',
 			};
 
@@ -96,7 +96,6 @@ describe('Posting Routes', () => {
 
 	describe('GET /userPosts - Fetch User Posts', () => {
 		test('should fetch user posts successfully', async () => {
-
 			const res = await request(app).get('/api/posts/userPosts').set('Cookie', `token=${token}`);
 
 			expect(res.statusCode).toBe(200);
@@ -117,7 +116,7 @@ describe('Posting Routes', () => {
 		test('should fetch specific post successfully', async () => {
 			// Create a test post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Specific post for fetching',
 				shareLocation: false,
 			});
@@ -144,11 +143,11 @@ describe('Posting Routes', () => {
 		});
 	});
 
- 	describe('POST /:postId/like - Like Post', () => {
+	describe('POST /:postId/like - Like Post', () => {
 		test('should like post successfully', async () => {
 			// Create a test post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Post to be liked',
 				shareLocation: true,
 			});
@@ -176,7 +175,7 @@ describe('Posting Routes', () => {
 		test('should add comment successfully', async () => {
 			// Create a test post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Post to be commented on',
 				shareLocation: false,
 			});
@@ -207,7 +206,7 @@ describe('Posting Routes', () => {
 		test('should complete entire post interaction flow', async () => {
 			// 1. Create post
 			const createRes = await request(app).post('/api/posts/').set('Cookie', `token=${token}`).send({
-				identification_id: 325,
+				identification_id: 326,
 				description: 'Complete flow test post',
 				shareLocation: true,
 			});
