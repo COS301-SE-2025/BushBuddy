@@ -206,8 +206,14 @@ const CapturePage = () => {
         "confidence",
         confidence[0] ? (confidence[0] * 100).toFixed(2) : "0"
       );
-      sightingData.append("longitude", geoLocLong);
-      sightingData.append("latitude", geoLocLat);
+
+      if(geoLocLong != null){
+        sightingData.append("longitude", geoLocLong);
+      }
+      
+      if(geoLocLong != null){
+        sightingData.append("latitude", geoLocLat);
+      }
       sightingData.append("file", imageBlob);
 
       const sightResult = await SightingsController.handleCreateSighting(sightingData);
