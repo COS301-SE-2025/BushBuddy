@@ -176,8 +176,8 @@ const BestiaryComponent = () => {
 								)}
 
 								{/* Additional Info */}
-								<div className="modal-section">
-									<h3 className="modal-section-title">Details</h3>
+								{/* <div className="modal-section"> */}
+									{/* <h3 className="modal-section-title">Details</h3>
 
 									{selectedAnimal.habitat && (
 										<div className="detail-row">
@@ -208,7 +208,7 @@ const BestiaryComponent = () => {
 											<span className="detail-label">Lifespan:</span>
 											<span className="detail-value">{selectedAnimal.lifespan}</span>
 										</div>
-									)}
+									)} */}
 
 									{/* <div className="detail-row">
 										<svg width="16" height="16" fill="#ff6b00" viewBox="0 0 16 16">
@@ -217,7 +217,7 @@ const BestiaryComponent = () => {
 										<span className="detail-label">Type:</span>
 										<span className="detail-value">{selectedAnimal.type}</span>
 									</div> */}
-								</div>
+								{/* </div> */}
 							</div>
 						</div>
 					</div>
