@@ -114,6 +114,8 @@
 	box-sizing: border-box;
 	background: #fafafa;
 	transition: border-color 0.2s, background-color 0.2s;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+		Helvetica Neue, sans-serif;
 }
 
 .edit-profile-content input[type='text']:focus,
