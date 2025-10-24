@@ -57,7 +57,7 @@ describe('postingController', () => {
 
 			const req = {
 				cookies: { token: 'mock' },
-				body: { identification_id: 1 },
+				body: { identification_id: 1, description: 'test' },
 				user: { id: 1, username: 'TestUser', admin: false },
 			};
 			await postingController.createPost(req, res);
@@ -158,7 +158,7 @@ describe('postingController', () => {
 
 		test('should return 201 on success', async () => {
 			postingService.fetchPost.mockResolvedValue({ post: { id: 1 }, comments: [] });
-			const req = { user: { id:1 }, params: { postId: 1 } };
+			const req = { user: { id: 1 }, params: { postId: 1 } };
 
 			await postingController.fetchPost(req, res);
 			expect(res.status).toHaveBeenCalledWith(201);

@@ -1,9 +1,14 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './ProfileEditModal.css';
 
 export default function ProfileEditModal({ show, onClose, onSubmit }) {
 	const containerRef = useRef(null);
 	const [preview, setPreview] = useState(null);
+	const [userData, setUserData] = useState({ role: 'Enter your role', bio: 'Write a short bio about yourself...' });
+
+	useEffect(() => {
+		setUserData(JSON.parse(sessionStorage.getItem('profile')));
+	}, []);
 
 	if (!show) return null;
 
@@ -23,6 +28,8 @@ export default function ProfileEditModal({ show, onClose, onSubmit }) {
 			reader.readAsDataURL(file);
 		}
 	};
+
+	console.log(userData);
 
 	return (
 		<div className="edit-profile-background" onClick={handleBackgroundClick}>
@@ -53,14 +60,14 @@ export default function ProfileEditModal({ show, onClose, onSubmit }) {
 					<div className="edit-profile-role">
 						<label>
 							Role:
-							<input type="text" name="role" placeholder="Enter your role" />
+							<input type="text" name="role" placeholder={userData.role} />
 						</label>
 					</div>
 
 					<div className="edit-profile-bio">
 						<label>
 							Bio:
-							<textarea name="bio" placeholder="Write a short bio..." rows="4" />
+							<textarea name="bio" placeholder={userData.bio} rows="4" />
 						</label>
 					</div>
 

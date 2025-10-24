@@ -6,11 +6,10 @@ async function createPost(req, res) {
 		const user = req.user;
 
 		// check for gps coordinates in post description
-		const gpsRegex = /(?:lat(?:itude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)[\s,;\/]+(?:lon(?:gitude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)/gi;
+		const gpsRegex =
+			/(?:lat(?:itude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)[\s,;\/]+(?:lon(?:gitude)?[:=\s]*)?([+-]?\d{1,3}(?:\.\d+)?)/gi;
 		var desc = req.body.description;
-		var newDesc = desc.replace(gpsRegex, "[HIDDEN INFORMATION]");
-
-
+		var newDesc = desc.replace(gpsRegex, '[HIDDEN INFORMATION]');
 
 		const details = {
 			user_id: user.id,
@@ -19,7 +18,7 @@ async function createPost(req, res) {
 			share_location: req.body.share_location,
 			image_url: req.body.image_url,
 		};
-		
+
 		const result = await postingService.createPost(details);
 
 		if (!result) {
@@ -120,7 +119,7 @@ async function fetchUserPostsAmount(req, res) {
 		const user = req.user;
 
 		const amount = await postingService.fetchUserPostsAmount(user.id);
-		if (!(amount>-1)) {
+		if (!(amount > -1)) {
 			return res.status(400).json({
 				success: false,
 				message: 'Failed to fetch amount of posts',
@@ -244,7 +243,6 @@ async function addComment(req, res) {
 
 async function deletePost(req, res) {
 	try {
-		
 		if (!req.params.postId) {
 			return res.status(400).json({
 				success: false,

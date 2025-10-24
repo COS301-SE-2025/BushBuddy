@@ -304,6 +304,15 @@ Git Branching Strategy included
 
 </details>
 
+# Contributing Guide
+Please follow these steps if you with to contribute to the development of BushBuddy:
+1. Fork the repository
+2. Clone your fork and create a new branch
+3. Make your changes and run the tests
+4. Create a pull requests
+
+For more details please read the [here](/documentation) or [contact us](mailto:g24capstone@gmail.com)
+
 <h3>Contact Us</h3>
 <a href="mailto:g24capstone@gmail.com"><img src="https://img.shields.io/badge/email-g24capstone%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
 
