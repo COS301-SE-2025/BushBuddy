@@ -119,10 +119,10 @@ const BestiaryComponent = () => {
 									className="modal-status-dot"
 									style={{ backgroundColor: getTypeColor(selectedAnimal.status || selectedAnimal.type) }}
 								/>
-								<svg width="20" height="20" fill="#4CAF50" viewBox="0 0 16 16">
+								{/* <svg width="20" height="20" fill="#4CAF50" viewBox="0 0 16 16">
 									<path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
 									<path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
-								</svg>
+								</svg> */}
 							</div>
 						</div>
 
@@ -142,9 +142,9 @@ const BestiaryComponent = () => {
 							{/* Animal Info */}
 							<div className="modal-info-container">
 								<h2 className="modal-animal-name">{selectedAnimal.name}</h2>
-								<p className="modal-scientific-name">
+								{/* <p className="modal-scientific-name">
 									{selectedAnimal.scientific_name || selectedAnimal.scientificName || 'Scientific name not available'}
-								</p>
+								</p> */}
 
 								<div className="modal-status-row">
 									<div
@@ -176,8 +176,8 @@ const BestiaryComponent = () => {
 								)}
 
 								{/* Additional Info */}
-								<div className="modal-section">
-									<h3 className="modal-section-title">Details</h3>
+								{/* <div className="modal-section"> */}
+									{/* <h3 className="modal-section-title">Details</h3>
 
 									{selectedAnimal.habitat && (
 										<div className="detail-row">
@@ -208,16 +208,16 @@ const BestiaryComponent = () => {
 											<span className="detail-label">Lifespan:</span>
 											<span className="detail-value">{selectedAnimal.lifespan}</span>
 										</div>
-									)}
+									)} */}
 
-									<div className="detail-row">
+									{/* <div className="detail-row">
 										<svg width="16" height="16" fill="#ff6b00" viewBox="0 0 16 16">
 											<path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
 										</svg>
 										<span className="detail-label">Type:</span>
 										<span className="detail-value">{selectedAnimal.type}</span>
-									</div>
-								</div>
+									</div> */}
+								{/* </div> */}
 							</div>
 						</div>
 					</div>
