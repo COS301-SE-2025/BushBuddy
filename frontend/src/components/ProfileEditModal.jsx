@@ -60,14 +60,14 @@ export default function ProfileEditModal({ show, onClose, onSubmit }) {
 					<div className="edit-profile-role">
 						<label>
 							Role:
-							<input type="text" name="role" placeholder="Enter your role" value={userData.role} />
+							<input type="text" name="role" placeholder={userData.role} />
 						</label>
 					</div>
 
 					<div className="edit-profile-bio">
 						<label>
 							Bio:
-							<textarea name="bio" placeholder="Write a short bio about yourself..." rows="4" value={userData.bio} />
+							<textarea name="bio" placeholder={userData.bio} rows="4" />
 						</label>
 					</div>
 
